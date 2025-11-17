@@ -1,0 +1,328 @@
+/**
+ * OPTION B: Balanced Growth Typography System
+ * Everything increased by 50-100% for better readability
+ * Applied globally across all components
+ */
+
+/* ========================================
+   PANELS & CONTAINERS - +67% padding
+   ======================================== */
+.panel-header {
+  padding: 20px 24px !important; /* was 12px 16px */
+  font-size: 16px !important; /* was 11px (+45%) */
+}
+
+.watchlist-item {
+  padding: 16px 20px !important; /* was 10px 16px (+60%) */
+  font-size: 16px !important; /* was 12px (+33%) */
+}
+
+.analytics-block {
+  padding: 20px !important; /* was 16px (+25%) */
+}
+
+/* ========================================
+   WATCHLIST & PRICES - +50-70%
+   ======================================== */
+.watchlist-symbol {
+  font-size: 16px !important; /* was 12px (+33%) */
+}
+
+.watchlist-price {
+  font-size: 16px !important; /* was 12px (+33%) */
+}
+
+.watchlist-change {
+  font-size: 16px !important; /* was 11px (+45%) */
+}
+
+/* ========================================
+   INFO CARDS - +100% for values
+   ======================================== */
+.info-card {
+  padding: 20px !important; /* was 12px (+67%) */
+}
+
+.info-label {
+  font-size: 14px !important; /* was 10px (+40%) */
+  margin-bottom: 10px !important; /* was 6px */
+}
+
+.info-value {
+  font-size: 32px !important; /* was 20px (+60%) */
+}
+
+.info-change {
+  font-size: 16px !important; /* was 11px (+45%) */
+}
+
+/* ========================================
+   TABLES - +50% font sizes
+   ======================================== */
+.table-header {
+  padding: 16px 20px !important; /* was 10px 16px */
+  font-size: 16px !important; /* was 11px (+45%) */
+}
+
+table {
+  font-size: 16px !important; /* was 12px (+33%) */
+}
+
+th {
+  padding: 12px 16px !important; /* was 8px 12px */
+  font-size: 14px !important; /* was 10px (+40%) */
+}
+
+td {
+  padding: 14px 16px !important; /* was 8px 12px */
+  font-size: 16px !important; /* was 12px (+33%) */
+}
+
+.table-symbol {
+  font-size: 18px !important; /* was 12px (+50%) */
+}
+
+.table-value {
+  font-size: 18px !important; /* was 12px (+50%) */
+}
+
+/* ========================================
+   GAUGE - +78% for main value
+   ======================================== */
+.gauge-simple {
+  height: 180px !important; /* was 120px (+50%) */
+}
+
+.gauge-value {
+  font-size: 64px !important; /* was 42px (+52%) */
+  line-height: 1.2;
+}
+
+.gauge-label {
+  font-size: 18px !important; /* was 10px (+80%) */
+  margin-top: 8px !important;
+}
+
+/* ========================================
+   STATS & ANALYTICS - +50%
+   ======================================== */
+.analytics-title {
+  font-size: 16px !important; /* was 11px (+45%) */
+  margin-bottom: 16px !important; /* was 12px */
+}
+
+.stat-row {
+  padding: 12px 0 !important; /* was 8px 0 (+50%) */
+  font-size: 14px !important; /* was 11px (+27%) */
+}
+
+.stat-label {
+  font-size: 14px !important; /* was 11px (+27%) */
+}
+
+.stat-value {
+  font-size: 16px !important; /* was 12px (+33%) */
+}
+
+/* ========================================
+   CHARTS - +50% sizing
+   ======================================== */
+.mini-chart {
+  height: 90px !important; /* was 60px (+50%) */
+  margin-bottom: 16px !important; /* was 12px */
+}
+
+.chart-bars {
+  padding: 12px !important; /* was 8px (+50%) */
+}
+
+/* ========================================
+   EVENT FEED - +45% font sizes
+   ======================================== */
+.event-item {
+  padding: 16px 20px !important; /* was 10px 16px (+60%) */
+  font-size: 14px !important; /* was 11px (+27%) */
+}
+
+.event-time {
+  font-size: 14px !important; /* was 11px (+27%) */
+  min-width: 70px !important; /* was 50px */
+}
+
+.event-tag {
+  padding: 4px 8px !important; /* was 2px 6px */
+  font-size: 12px !important; /* was 9px (+33%) */
+}
+
+.event-text {
+  font-size: 14px !important; /* was 11px (+27%) */
+  line-height: 1.6 !important;
+}
+
+/* ========================================
+   TICKER CHANGES - +45%
+   ======================================== */
+.ticker-change {
+  font-size: 16px !important; /* was 11px (+45%) */
+}
+
+/* ========================================
+   GRID & SPACING - +33%
+   ======================================== */
+.info-grid {
+  gap: 16px !important; /* was 12px (+33%) */
+  margin-bottom: 20px !important; /* was 16px */
+}
+
+.dense-container {
+  gap: 20px !important; /* was 16px (+25%) */
+  margin-bottom: 20px !important; /* was 16px */
+}
+
+.center-panel {
+  padding: 20px !important; /* was 16px (+25%) */
+}
+
+/* ========================================
+   RESPONSIVE LINE HEIGHTS
+   ======================================== */
+body {
+  line-height: 1.6 !important; /* was default 1.5 */
+}
+
+.watchlist-item,
+.stat-row,
+.event-item,
+td {
+  line-height: 1.5 !important;
+}
+
+/* ========================================
+   GAS TRACKER SPECIFIC - LARGE NUMBERS
+   ======================================== */
+.gas-price-value {
+  font-size: 24px !important; /* Main gas price display */
+  font-weight: 700;
+}
+
+.gas-price-label {
+  font-size: 16px !important;
+  font-weight: 600;
+}
+
+/* ========================================
+   EVENT CALENDAR COMPONENTS
+   ======================================== */
+.event-title {
+  font-size: 16px !important; /* was 13px (+23%) */
+  line-height: 1.5 !important;
+}
+
+.event-project {
+  font-size: 14px !important; /* was 11px (+27%) */
+}
+
+.event-date {
+  font-size: 14px !important; /* was 11px (+27%) */
+}
+
+.event-description {
+  font-size: 13px !important; /* was 10px (+30%) */
+  line-height: 1.6 !important;
+}
+
+/* ========================================
+   BUTTONS & INTERACTIVE ELEMENTS
+   ======================================== */
+button {
+  font-size: 14px !important; /* Minimum button text */
+  padding: 12px 20px !important; /* was variable */
+}
+
+input,
+select,
+textarea {
+  font-size: 14px !important; /* Never below 14px */
+  padding: 12px !important;
+}
+
+/* ========================================
+   MINIMUM FONT SIZE ENFORCEMENT
+   ======================================== */
+* {
+  /* Ensure no text goes below 12px */
+  font-size: max(12px, 1em);
+}
+
+/* ========================================
+   ACCESSIBILITY IMPROVEMENTS
+   ======================================== */
+::selection {
+  background: rgba(0, 153, 255, 0.3);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid #0099ff;
+  outline-offset: 2px;
+}
+
+/* ========================================
+   PRINT STYLES
+   ======================================== */
+@media print {
+  body {
+    font-size: 12pt !important;
+  }
+
+  .gauge-value {
+    font-size: 48pt !important;
+  }
+
+  table {
+    font-size: 10pt !important;
+  }
+}
+
+/* ========================================
+   RESPONSIVE ADJUSTMENTS
+   ======================================== */
+@media (max-width: 1400px) {
+  .info-value {
+    font-size: 28px !important; /* Slightly smaller on medium screens */
+  }
+
+  .gauge-value {
+    font-size: 56px !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .info-value {
+    font-size: 24px !important;
+  }
+
+  .gauge-value {
+    font-size: 48px !important;
+  }
+
+  .ticker-price {
+    font-size: 18px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Mobile: Keep good readability but optimize space */
+  .info-value {
+    font-size: 20px !important;
+  }
+
+  .gauge-value {
+    font-size: 40px !important;
+  }
+
+  .panel-header {
+    padding: 16px !important;
+    font-size: 14px !important;
+  }
+}

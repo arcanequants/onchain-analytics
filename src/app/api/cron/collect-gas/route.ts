@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getAllGasPrices } from '@/lib/gas-tracker'
-import { supabase } from '@/lib/supabase'
+import { supabaseAdmin } from '@/lib/supabase'
 import { withSentryMonitoring, captureError } from '@/lib/sentry'
 
 export const dynamic = 'force-dynamic'
@@ -12,7 +12,7 @@ export async function GET(request: Request) {
   const jobName = 'collect-gas-prices'
 
   // Log CRON execution start
-  const { data: cronExecution } = await supabase
+  const { data: cronExecution } = await supabaseAdmin
     .from('cron_executions')
     .insert({
       job_name: jobName,
@@ -29,7 +29,7 @@ export async function GET(request: Request) {
 
     if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
       // Log unauthorized attempt
-      await supabase
+      await supabaseAdmin
         .from('cron_executions')
         .update({
           status: 'failure',
@@ -48,7 +48,7 @@ export async function GET(request: Request) {
 
     // Insert each chain's data into Supabase
     const insertPromises = gasData.map(data =>
-      supabase.from('gas_prices').insert({
+      supabaseAdmin.from('gas_prices').insert({
         chain: data.chain,
         gas_price: data.gasPrice,
         block_number: data.blockNumber,
@@ -73,7 +73,7 @@ export async function GET(request: Request) {
       })
 
       // Log CRON failure
-      await supabase
+      await supabaseAdmin
         .from('cron_executions')
         .update({
           status: 'failure',
@@ -100,7 +100,7 @@ export async function GET(request: Request) {
     const duration = Date.now() - startTime
 
     // Log CRON success
-    await supabase
+    await supabaseAdmin
       .from('cron_executions')
       .update({
         status: 'success',
@@ -134,7 +134,7 @@ export async function GET(request: Request) {
     )
 
     // Log CRON failure
-    await supabase
+    await supabaseAdmin
       .from('cron_executions')
       .update({
         status: 'failure',

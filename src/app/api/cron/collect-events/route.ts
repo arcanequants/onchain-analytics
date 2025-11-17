@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { generateMockEvents, saveEventsToDatabase } from '@/lib/events'
+import { fetchAllEventsFromAPIs, saveEventsToDatabase } from '@/lib/events'
 import { supabaseAdmin } from '@/lib/supabase'
 import { captureException } from '@sentry/nextjs'
 
@@ -42,9 +42,9 @@ export async function GET(request: Request) {
         }
       })
 
-    // Step 1: Generate/fetch crypto events
-    const events = await generateMockEvents()
-    console.log(`📅 Fetched ${events.length} crypto events`)
+    // Step 1: Fetch crypto events from real APIs
+    const events = await fetchAllEventsFromAPIs()
+    console.log(`📅 Fetched ${events.length} crypto events from multiple sources`)
 
     // Step 2: Save events to database
     await saveEventsToDatabase(events)

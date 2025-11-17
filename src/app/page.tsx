@@ -3,7 +3,8 @@
 import { useEffect, useState } from 'react'
 import GasChart from '@/components/GasChart'
 import FearGreedGauge from '@/components/FearGreedGauge'
-import EventCalendar from '@/components/EventCalendar'
+import EventCalendarAdvanced from '@/components/EventCalendarAdvanced'
+import Link from 'next/link'
 
 interface GasData {
   chain: string
@@ -613,9 +614,14 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="panel-header">Crypto Events</div>
+            <div className="panel-header">
+              <Link href="/events" style={{ textDecoration: 'none', color: 'inherit', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span>Crypto Events</span>
+                <span style={{ fontSize: '10px', color: '#0099ff' }}>View All →</span>
+              </Link>
+            </div>
 
-            <EventCalendar limit={5} />
+            <EventCalendarAdvanced defaultLimit={5} showFilters={false} showSearch={false} />
           </div>
         </div>
       </div>

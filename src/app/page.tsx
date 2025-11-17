@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import GasChart from '@/components/GasChart'
 import FearGreedGauge from '@/components/FearGreedGauge'
+import EventCalendar from '@/components/EventCalendar'
 
 interface GasData {
   chain: string
@@ -612,43 +613,9 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="panel-header">Sports Odds</div>
+            <div className="panel-header">Crypto Events</div>
 
-            <div className="analytics-block">
-              <div className="analytics-title" style={{ marginBottom: '8px' }}>NFL - Chiefs vs Ravens</div>
-              <div style={{ fontSize: '10px', color: '#666', marginBottom: '12px' }}>Jan 28, 3:00 PM ET</div>
-
-              <div className="stat-row">
-                <span className="stat-label">Chiefs</span>
-                <span className="stat-value" style={{ color: '#0099ff' }}>-3.5</span>
-              </div>
-              <div className="stat-row">
-                <span className="stat-label">Ravens</span>
-                <span className="stat-value" style={{ color: '#00ff88' }}>+3.5</span>
-              </div>
-              <div className="stat-row">
-                <span className="stat-label">Sharp Money</span>
-                <span className="stat-value" style={{ color: '#00ff88' }}>68% Ravens</span>
-              </div>
-            </div>
-
-            <div className="analytics-block">
-              <div className="analytics-title" style={{ marginBottom: '8px' }}>NBA - Celtics vs Lakers</div>
-              <div style={{ fontSize: '10px', color: '#666', marginBottom: '12px' }}>Jan 20, 7:30 PM ET</div>
-
-              <div className="stat-row">
-                <span className="stat-label">Celtics</span>
-                <span className="stat-value" style={{ color: '#0099ff' }}>-7.5</span>
-              </div>
-              <div className="stat-row">
-                <span className="stat-label">Lakers</span>
-                <span className="stat-value" style={{ color: '#00ff88' }}>+7.5</span>
-              </div>
-              <div className="stat-row">
-                <span className="stat-label">AI Pick</span>
-                <span className="stat-value" style={{ color: '#0099ff' }}>Celtics (72%)</span>
-              </div>
-            </div>
+            <EventCalendar limit={5} />
           </div>
         </div>
       </div>

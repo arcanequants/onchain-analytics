@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import GasChart from '@/components/GasChart'
 
 interface GasData {
   chain: string
@@ -504,6 +505,14 @@ export default function Home() {
                   )}
                 </tbody>
               </table>
+            </div>
+
+            {/* Historical Gas Chart */}
+            <div className="data-table">
+              <div className="table-header">Ethereum Gas Price History (24h)</div>
+              <div style={{ padding: '20px' }}>
+                <GasChart chain="ethereum" hours={24} />
+              </div>
             </div>
 
             {/* Event Feed */}

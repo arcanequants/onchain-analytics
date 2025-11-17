@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import './typography-optionB.css'
-import GoogleAnalytics from '@/components/GoogleAnalytics'
+import ClientLayout from '@/components/ClientLayout'
 
 export const metadata: Metadata = {
   title: 'OnChain Analytics | Real-Time Crypto Data Oracle',
@@ -17,8 +17,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <GoogleAnalytics />
-        {children}
+        <ClientLayout>
+          {children}
+        </ClientLayout>
       </body>
     </html>
   )

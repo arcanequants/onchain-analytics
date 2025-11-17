@@ -2,7 +2,7 @@
   "crons": [
     {
       "path": "/api/cron/collect-gas",
-      "schedule": "0 * * * *"
+      "schedule": "* * * * *"
     }
   ]
 }

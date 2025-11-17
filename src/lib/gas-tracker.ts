@@ -1,4 +1,5 @@
 import { clients, ChainName } from './rpc'
+import { supabaseAdmin } from './supabase'
 
 export interface GasData {
   chain: string
@@ -95,4 +96,49 @@ export async function getAllGasPrices(): Promise<GasData[]> {
   })
 
   return gasData
+}
+
+/**
+ * Save gas price data to Supabase database
+ */
+export async function saveGasPriceToDatabase(gasData: GasData): Promise<void> {
+  try {
+    const { error } = await supabaseAdmin
+      .from('gas_prices')
+      .insert({
+        chain: gasData.chain,
+        gas_price: gasData.gasPrice,
+        block_number: gasData.blockNumber,
+        base_fee: gasData.baseFee || null,
+        priority_fee: gasData.priorityFee || null,
+        status: gasData.status
+      })
+
+    if (error) {
+      console.error(`Error saving gas price for ${gasData.chain}:`, error)
+      throw error
+    }
+  } catch (error) {
+    console.error(`Failed to save gas price for ${gasData.chain}:`, error)
+    throw error
+  }
+}
+
+/**
+ * Save all gas prices to database
+ * Returns count of successfully saved records
+ */
+export async function saveAllGasPricesToDatabase(gasDataArray: GasData[]): Promise<number> {
+  const results = await Promise.allSettled(
+    gasDataArray.map(gasData => saveGasPriceToDatabase(gasData))
+  )
+
+  const successCount = results.filter(r => r.status === 'fulfilled').length
+  const failureCount = results.filter(r => r.status === 'rejected').length
+
+  if (failureCount > 0) {
+    console.warn(`Saved ${successCount}/${gasDataArray.length} gas prices to database`)
+  }
+
+  return successCount
 }

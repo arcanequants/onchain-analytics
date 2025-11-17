@@ -64,7 +64,7 @@ const nextConfig = {
           {
             key: 'Access-Control-Allow-Origin',
             value: process.env.NODE_ENV === 'production'
-              ? 'https://onchain-analytics.vercel.app'
+              ? 'https://vectorialdata.com'
               : '*'
           },
           {

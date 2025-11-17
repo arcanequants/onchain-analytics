@@ -1,6 +1,8 @@
-# OnChain Analytics
+# Vectorial Data
 
-The #1 data oracle for crypto, traditional finance, and sports betting. Real-time metrics for humans and AI agents.
+**Live at:** https://vectorialdata.com
+
+Real-time blockchain analytics, gas price tracking, and on-chain metrics for humans and AI agents.
 
 ## Features
 
@@ -123,8 +125,6 @@ app/
 
 ## Contact
 
-- Website: [onchainanalytics.io](https://onchainanalytics.io)
-- Email: hello@onchainanalytics.io
-- Twitter: [@onchainanalytics](https://twitter.com/onchainanalytics)
-# Force redeploy
-# Redeploy with corrected SUPABASE_SERVICE_ROLE_KEY
+- Website: [vectorialdata.com](https://vectorialdata.com)
+- Email: support@vectorialdata.com
+- GitHub: [github.com/arcanequants/onchain-analytics](https://github.com/arcanequants/onchain-analytics)

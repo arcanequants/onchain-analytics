@@ -17,14 +17,34 @@ export async function getGasPrice(chainName: ChainName): Promise<GasData> {
   try {
     const client = clients[chainName]
 
-    // Fetch gas price and latest block in parallel
-    const [gasPrice, block] = await Promise.all([
-      client.getGasPrice(),
-      client.getBlock({ blockTag: 'latest' })
-    ])
+    // Fetch latest block first to get baseFee
+    const block = await client.getBlock({ blockTag: 'latest' })
 
-    // Convert from wei to Gwei (1 Gwei = 1e9 wei)
-    const gasPriceGwei = Number(gasPrice) / 1e9
+    // Get base fee from block (EIP-1559)
+    const baseFeeWei = block.baseFeePerGas || 0n
+    const baseFeeGwei = Number(baseFeeWei) / 1e9
+
+    // Get max priority fee per gas (EIP-1559)
+    let priorityFeeGwei = 0
+    try {
+      const maxPriorityFeePerGas = await client.estimateMaxPriorityFeePerGas()
+      priorityFeeGwei = Number(maxPriorityFeePerGas) / 1e9
+    } catch (error) {
+      // For chains without EIP-1559 or if the call fails, use legacy gas price
+      console.log(`No EIP-1559 support for ${chainName}, using legacy gas price`)
+    }
+
+    // Total gas price = baseFee + priorityFee (for EIP-1559 chains)
+    // For legacy chains, use getGasPrice()
+    let gasPriceGwei: number
+    if (baseFeeGwei > 0 && priorityFeeGwei > 0) {
+      // EIP-1559 chain
+      gasPriceGwei = baseFeeGwei + priorityFeeGwei
+    } else {
+      // Legacy chain or fallback
+      const gasPrice = await client.getGasPrice()
+      gasPriceGwei = Number(gasPrice) / 1e9
+    }
 
     // Determine status based on gas price
     let status: 'low' | 'medium' | 'high'
@@ -41,7 +61,9 @@ export async function getGasPrice(chainName: ChainName): Promise<GasData> {
       gasPrice: gasPriceGwei,
       blockNumber: Number(block.number),
       timestamp: new Date().toISOString(),
-      status
+      status,
+      baseFee: baseFeeGwei > 0 ? baseFeeGwei : undefined,
+      priorityFee: priorityFeeGwei > 0 ? priorityFeeGwei : undefined
     }
   } catch (error) {
     console.error(`Error fetching gas price for ${chainName}:`, error)

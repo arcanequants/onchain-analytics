@@ -8,6 +8,8 @@ interface GasData {
   blockNumber: number
   timestamp: string
   status: 'low' | 'medium' | 'high'
+  baseFee?: number
+  priorityFee?: number
 }
 
 export default function Home() {
@@ -451,27 +453,29 @@ export default function Home() {
 
             {/* Full Width Gas Tracker Table */}
             <div className="data-table">
-              <div className="table-header">Multi-Chain Gas Tracker (Live Data)</div>
+              <div className="table-header">Multi-Chain Gas Tracker (Live Data - EIP-1559)</div>
               <table>
                 <thead>
                   <tr>
                     <th>Chain</th>
-                    <th>Gas Price</th>
+                    <th>Total Gas</th>
+                    <th>Base Fee</th>
+                    <th>Priority Fee</th>
                     <th>Status</th>
-                    <th>Block Number</th>
+                    <th>Block</th>
                     <th>Updated</th>
                   </tr>
                 </thead>
                 <tbody>
                   {loading ? (
                     <tr>
-                      <td colSpan={5} style={{ textAlign: 'center', padding: '20px', color: '#666' }}>
+                      <td colSpan={7} style={{ textAlign: 'center', padding: '20px', color: '#666' }}>
                         Loading gas data...
                       </td>
                     </tr>
                   ) : gasData.length === 0 ? (
                     <tr>
-                      <td colSpan={5} style={{ textAlign: 'center', padding: '20px', color: '#666' }}>
+                      <td colSpan={7} style={{ textAlign: 'center', padding: '20px', color: '#666' }}>
                         No gas data available
                       </td>
                     </tr>
@@ -480,6 +484,12 @@ export default function Home() {
                       <tr key={gas.chain}>
                         <td className="table-symbol">{gas.chain.charAt(0).toUpperCase() + gas.chain.slice(1)}</td>
                         <td className="table-value">{gas.gasPrice.toFixed(2)} GWEI</td>
+                        <td style={{ color: '#0099ff' }}>
+                          {gas.baseFee ? `${gas.baseFee.toFixed(2)} GWEI` : 'N/A'}
+                        </td>
+                        <td style={{ color: '#00ff88' }}>
+                          {gas.priorityFee ? `${gas.priorityFee.toFixed(2)} GWEI` : 'N/A'}
+                        </td>
                         <td>
                           <span className={`status-dot ${
                             gas.status === 'low' ? 'green' :

@@ -3,6 +3,10 @@
     {
       "path": "/api/cron/collect-gas",
       "schedule": "* * * * *"
+    },
+    {
+      "path": "/api/cron/collect-fear-greed",
+      "schedule": "0 * * * *"
     }
   ]
 }

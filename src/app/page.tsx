@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import GasChart from '@/components/GasChart'
+import FearGreedGauge from '@/components/FearGreedGauge'
 
 interface GasData {
   chain: string
@@ -550,30 +551,7 @@ export default function Home() {
           <div className="right-panel">
             <div className="panel-header">Market Sentiment</div>
 
-            <div className="analytics-block">
-              <div className="analytics-title">Fear & Greed Index</div>
-              <div className="gauge-simple">
-                <div className="gauge-value" style={{ color: '#00ff88' }}>68</div>
-                <div className="gauge-label">Greed</div>
-              </div>
-
-              <div className="stat-row">
-                <span className="stat-label">Volatility</span>
-                <span className="stat-value">72</span>
-              </div>
-              <div className="stat-row">
-                <span className="stat-label">Volume</span>
-                <span className="stat-value">65</span>
-              </div>
-              <div className="stat-row">
-                <span className="stat-label">Sentiment</span>
-                <span className="stat-value">58</span>
-              </div>
-              <div className="stat-row">
-                <span className="stat-label">Dominance</span>
-                <span className="stat-value">54</span>
-              </div>
-            </div>
+            <FearGreedGauge />
 
             <div className="panel-header">Network Stats</div>
 

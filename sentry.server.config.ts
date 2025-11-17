@@ -41,8 +41,6 @@ Sentry.init({
   // Capture errors from CRON jobs
   integrations: [
     // Add breadcrumbs for better debugging
-    Sentry.httpIntegration({
-      tracing: true,
-    }),
+    Sentry.httpIntegration(),
   ],
 });

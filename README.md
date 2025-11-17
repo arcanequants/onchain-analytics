@@ -90,11 +90,20 @@ app/
 
 ## Roadmap
 
+### Week 0 (Infrastructure) ✅ COMPLETE
+- [x] Database schema (11 tables + 2 materialized views)
+- [x] Supabase integration with RLS
+- [x] Sentry error tracking
+- [x] CRON job infrastructure
+- [x] GitHub repository
+- [x] Vercel deployment
+
 ### Week 1 (Current)
 - [x] Project setup
 - [x] Legal pages
 - [x] Google Analytics
-- [x] Deploy to Vercel
+- [x] Gas Tracker MVP (5 chains)
+- [x] Deploy to production
 
 ### Week 2-3
 - [ ] Gas Tracker (live data)

@@ -6,6 +6,8 @@ export interface GasData {
   blockNumber: number
   timestamp: string
   status: 'low' | 'medium' | 'high'
+  baseFee?: number // EIP-1559 base fee in Gwei
+  priorityFee?: number // EIP-1559 priority fee in Gwei
 }
 
 /**

@@ -141,75 +141,75 @@ export default function Home() {
             <div className="watchlist-item active">
               <div>
                 <div className="watchlist-symbol">ETH/USD</div>
-                <div style={{ fontSize: '10px', color: '#666' }}>Ethereum</div>
+                <div style={{ fontSize: '10px', color: 'var(--text-tertiary)' }}>Ethereum</div>
               </div>
               <div style={{ textAlign: 'right' }}>
                 <div className="watchlist-price">3,150.42</div>
-                <div className="watchlist-change" style={{ color: '#00ff00' }}>+6.8%</div>
+                <div className="watchlist-change" style={{ color: 'var(--success)' }}>+6.8%</div>
               </div>
             </div>
 
             <div className="watchlist-item">
               <div>
                 <div className="watchlist-symbol">BTC/USD</div>
-                <div style={{ fontSize: '10px', color: '#666' }}>Bitcoin</div>
+                <div style={{ fontSize: '10px', color: 'var(--text-tertiary)' }}>Bitcoin</div>
               </div>
               <div style={{ textAlign: 'right' }}>
                 <div className="watchlist-price">94,280.15</div>
-                <div className="watchlist-change" style={{ color: '#00ff00' }}>+4.2%</div>
+                <div className="watchlist-change" style={{ color: 'var(--success)' }}>+4.2%</div>
               </div>
             </div>
 
             <div className="watchlist-item">
               <div>
                 <div className="watchlist-symbol">SOL/USD</div>
-                <div style={{ fontSize: '10px', color: '#666' }}>Solana</div>
+                <div style={{ fontSize: '10px', color: 'var(--text-tertiary)' }}>Solana</div>
               </div>
               <div style={{ textAlign: 'right' }}>
                 <div className="watchlist-price">238.67</div>
-                <div className="watchlist-change" style={{ color: '#ff0000' }}>-2.1%</div>
+                <div className="watchlist-change" style={{ color: 'var(--danger)' }}>-2.1%</div>
               </div>
             </div>
 
             <div className="watchlist-item">
               <div>
                 <div className="watchlist-symbol">ARB/USD</div>
-                <div style={{ fontSize: '10px', color: '#666' }}>Arbitrum</div>
+                <div style={{ fontSize: '10px', color: 'var(--text-tertiary)' }}>Arbitrum</div>
               </div>
               <div style={{ textAlign: 'right' }}>
                 <div className="watchlist-price">1.24</div>
-                <div className="watchlist-change" style={{ color: '#00ff00' }}>+4.8%</div>
+                <div className="watchlist-change" style={{ color: 'var(--success)' }}>+4.8%</div>
               </div>
             </div>
 
             <div className="watchlist-item">
               <div>
                 <div className="watchlist-symbol">OP/USD</div>
-                <div style={{ fontSize: '10px', color: '#666' }}>Optimism</div>
+                <div style={{ fontSize: '10px', color: 'var(--text-tertiary)' }}>Optimism</div>
               </div>
               <div style={{ textAlign: 'right' }}>
                 <div className="watchlist-price">2.85</div>
-                <div className="watchlist-change" style={{ color: '#ff0000' }}>-2.9%</div>
+                <div className="watchlist-change" style={{ color: 'var(--danger)' }}>-2.9%</div>
               </div>
             </div>
 
             <div className="panel-header" style={{ marginTop: '16px' }}>Gas Prices (Live)</div>
 
             {loading ? (
-              <div style={{ padding: '20px', textAlign: 'center', color: '#666' }}>Loading...</div>
+              <div style={{ padding: '20px', textAlign: 'center', color: 'var(--text-tertiary)' }}>Loading...</div>
             ) : (
               <>
                 {getChainGas('ethereum') && (
                   <div className="watchlist-item">
                     <div>
                       <div className="watchlist-symbol">ETHEREUM</div>
-                      <div style={{ fontSize: '10px', color: '#666' }}>Mainnet</div>
+                      <div style={{ fontSize: '10px', color: 'var(--text-tertiary)' }}>Mainnet</div>
                     </div>
                     <div style={{ textAlign: 'right' }}>
                       <div className="watchlist-price">{getChainGas('ethereum')!.gasPrice.toFixed(1)} GWEI</div>
                       <div className="watchlist-change" style={{
-                        color: getChainGas('ethereum')!.status === 'low' ? '#00ff00' :
-                               getChainGas('ethereum')!.status === 'medium' ? '#ffbb00' : '#ff0000'
+                        color: getChainGas('ethereum')!.status === 'low' ? 'var(--success)' :
+                               getChainGas('ethereum')!.status === 'medium' ? 'var(--warning)' : 'var(--danger)'
                       }}>
                         {getChainGas('ethereum')!.status.toUpperCase()}
                       </div>
@@ -221,13 +221,13 @@ export default function Home() {
                   <div className="watchlist-item">
                     <div>
                       <div className="watchlist-symbol">BASE</div>
-                      <div style={{ fontSize: '10px', color: '#666' }}>L2</div>
+                      <div style={{ fontSize: '10px', color: 'var(--text-tertiary)' }}>L2</div>
                     </div>
                     <div style={{ textAlign: 'right' }}>
                       <div className="watchlist-price">{getChainGas('base')!.gasPrice.toFixed(2)} GWEI</div>
                       <div className="watchlist-change" style={{
-                        color: getChainGas('base')!.status === 'low' ? '#00ff00' :
-                               getChainGas('base')!.status === 'medium' ? '#ffbb00' : '#ff0000'
+                        color: getChainGas('base')!.status === 'low' ? 'var(--success)' :
+                               getChainGas('base')!.status === 'medium' ? 'var(--warning)' : 'var(--danger)'
                       }}>
                         {getChainGas('base')!.status.toUpperCase()}
                       </div>
@@ -239,13 +239,13 @@ export default function Home() {
                   <div className="watchlist-item">
                     <div>
                       <div className="watchlist-symbol">ARBITRUM</div>
-                      <div style={{ fontSize: '10px', color: '#666' }}>L2</div>
+                      <div style={{ fontSize: '10px', color: 'var(--text-tertiary)' }}>L2</div>
                     </div>
                     <div style={{ textAlign: 'right' }}>
                       <div className="watchlist-price">{getChainGas('arbitrum')!.gasPrice.toFixed(2)} GWEI</div>
                       <div className="watchlist-change" style={{
-                        color: getChainGas('arbitrum')!.status === 'low' ? '#00ff00' :
-                               getChainGas('arbitrum')!.status === 'medium' ? '#ffbb00' : '#ff0000'
+                        color: getChainGas('arbitrum')!.status === 'low' ? 'var(--success)' :
+                               getChainGas('arbitrum')!.status === 'medium' ? 'var(--warning)' : 'var(--danger)'
                       }}>
                         {getChainGas('arbitrum')!.status.toUpperCase()}
                       </div>
@@ -257,13 +257,13 @@ export default function Home() {
                   <div className="watchlist-item">
                     <div>
                       <div className="watchlist-symbol">OPTIMISM</div>
-                      <div style={{ fontSize: '10px', color: '#666' }}>L2</div>
+                      <div style={{ fontSize: '10px', color: 'var(--text-tertiary)' }}>L2</div>
                     </div>
                     <div style={{ textAlign: 'right' }}>
                       <div className="watchlist-price">{getChainGas('optimism')!.gasPrice.toFixed(2)} GWEI</div>
                       <div className="watchlist-change" style={{
-                        color: getChainGas('optimism')!.status === 'low' ? '#00ff00' :
-                               getChainGas('optimism')!.status === 'medium' ? '#ffbb00' : '#ff0000'
+                        color: getChainGas('optimism')!.status === 'low' ? 'var(--success)' :
+                               getChainGas('optimism')!.status === 'medium' ? 'var(--warning)' : 'var(--danger)'
                       }}>
                         {getChainGas('optimism')!.status.toUpperCase()}
                       </div>
@@ -275,13 +275,13 @@ export default function Home() {
                   <div className="watchlist-item">
                     <div>
                       <div className="watchlist-symbol">POLYGON</div>
-                      <div style={{ fontSize: '10px', color: '#666' }}>Sidechain</div>
+                      <div style={{ fontSize: '10px', color: 'var(--text-tertiary)' }}>Sidechain</div>
                     </div>
                     <div style={{ textAlign: 'right' }}>
                       <div className="watchlist-price">{getChainGas('polygon')!.gasPrice.toFixed(1)} GWEI</div>
                       <div className="watchlist-change" style={{
-                        color: getChainGas('polygon')!.status === 'low' ? '#00ff00' :
-                               getChainGas('polygon')!.status === 'medium' ? '#ffbb00' : '#ff0000'
+                        color: getChainGas('polygon')!.status === 'low' ? 'var(--success)' :
+                               getChainGas('polygon')!.status === 'medium' ? 'var(--warning)' : 'var(--danger)'
                       }}>
                         {getChainGas('polygon')!.status.toUpperCase()}
                       </div>
@@ -328,27 +328,27 @@ export default function Home() {
               <div className="info-card">
                 <div className="info-label">Volume 24h</div>
                 <div className="info-value">$28.4B</div>
-                <div className="info-change" style={{ color: '#00ff00' }}>+14.2%</div>
+                <div className="info-change" style={{ color: 'var(--success)' }}>+14.2%</div>
               </div>
               <div className="info-card">
                 <div className="info-label">Active Wallets</div>
                 <div className="info-value">2.1M</div>
-                <div className="info-change" style={{ color: '#00ff00' }}>+8.7%</div>
+                <div className="info-change" style={{ color: 'var(--success)' }}>+8.7%</div>
               </div>
               <div className="info-card">
                 <div className="info-label">Network Health</div>
                 <div className="info-value">99.6%</div>
-                <div className="info-change" style={{ color: '#00ff00' }}>+0.3%</div>
+                <div className="info-change" style={{ color: 'var(--success)' }}>+0.3%</div>
               </div>
               <div className="info-card">
                 <div className="info-label">DeFi TVL</div>
                 <div className="info-value">$87.2B</div>
-                <div className="info-change" style={{ color: '#00ff00' }}>+5.8%</div>
+                <div className="info-change" style={{ color: 'var(--success)' }}>+5.8%</div>
               </div>
               <div className="info-card">
                 <div className="info-label">BTC Dom</div>
                 <div className="info-value">54.2%</div>
-                <div className="info-change" style={{ color: '#ff0000' }}>-1.4%</div>
+                <div className="info-change" style={{ color: 'var(--danger)' }}>-1.4%</div>
               </div>
               <div className="info-card">
                 <div className="info-label">Avg Gas</div>
@@ -358,7 +358,7 @@ export default function Home() {
                    (gasData.reduce((sum, g) => sum + g.gasPrice, 0) / gasData.length).toFixed(1) :
                    '...'}
                 </div>
-                <div className="info-change" style={{ color: '#00ff00' }}>
+                <div className="info-change" style={{ color: 'var(--success)' }}>
                   {loading ? '...' : gasData.length > 0 ? 'LIVE' : '...'}
                 </div>
               </div>
@@ -382,31 +382,31 @@ export default function Home() {
                     <tr>
                       <td className="table-symbol">AVAX</td>
                       <td className="table-value">$42.80</td>
-                      <td style={{ color: '#00ff00', fontWeight: 700 }}>+8.9%</td>
+                      <td style={{ color: 'var(--success)', fontWeight: 700 }}>+8.9%</td>
                       <td>$420M</td>
                     </tr>
                     <tr>
                       <td className="table-symbol">ETH</td>
                       <td className="table-value">$3,150</td>
-                      <td style={{ color: '#00ff00', fontWeight: 700 }}>+6.8%</td>
+                      <td style={{ color: 'var(--success)', fontWeight: 700 }}>+6.8%</td>
                       <td>$8.2B</td>
                     </tr>
                     <tr>
                       <td className="table-symbol">LINK</td>
                       <td className="table-value">$22.40</td>
-                      <td style={{ color: '#00ff00', fontWeight: 700 }}>+5.2%</td>
+                      <td style={{ color: 'var(--success)', fontWeight: 700 }}>+5.2%</td>
                       <td>$280M</td>
                     </tr>
                     <tr>
                       <td className="table-symbol">BTC</td>
                       <td className="table-value">$94,280</td>
-                      <td style={{ color: '#00ff00', fontWeight: 700 }}>+4.2%</td>
+                      <td style={{ color: 'var(--success)', fontWeight: 700 }}>+4.2%</td>
                       <td>$12.4B</td>
                     </tr>
                     <tr>
                       <td className="table-symbol">UNI</td>
                       <td className="table-value">$12.80</td>
-                      <td style={{ color: '#ff0000', fontWeight: 700 }}>-3.6%</td>
+                      <td style={{ color: 'var(--danger)', fontWeight: 700 }}>-3.6%</td>
                       <td>$180M</td>
                     </tr>
                   </tbody>
@@ -428,27 +428,27 @@ export default function Home() {
                     <tr>
                       <td className="table-symbol">S&P 500</td>
                       <td className="table-value">4,820</td>
-                      <td style={{ color: '#00ff00', fontWeight: 700 }}>+1.2%</td>
+                      <td style={{ color: 'var(--success)', fontWeight: 700 }}>+1.2%</td>
                     </tr>
                     <tr>
                       <td className="table-symbol">NASDAQ</td>
                       <td className="table-value">15,240</td>
-                      <td style={{ color: '#00ff00', fontWeight: 700 }}>+1.8%</td>
+                      <td style={{ color: 'var(--success)', fontWeight: 700 }}>+1.8%</td>
                     </tr>
                     <tr>
                       <td className="table-symbol">EUR/USD</td>
                       <td className="table-value">1.0892</td>
-                      <td style={{ color: '#00ff00', fontWeight: 700 }}>+0.3%</td>
+                      <td style={{ color: 'var(--success)', fontWeight: 700 }}>+0.3%</td>
                     </tr>
                     <tr>
                       <td className="table-symbol">GOLD</td>
                       <td className="table-value">$2,042</td>
-                      <td style={{ color: '#00ff00', fontWeight: 700 }}>+1.2%</td>
+                      <td style={{ color: 'var(--success)', fontWeight: 700 }}>+1.2%</td>
                     </tr>
                     <tr>
                       <td className="table-symbol">OIL</td>
                       <td className="table-value">$72.50</td>
-                      <td style={{ color: '#ff0000', fontWeight: 700 }}>-0.8%</td>
+                      <td style={{ color: 'var(--danger)', fontWeight: 700 }}>-0.8%</td>
                     </tr>
                   </tbody>
                 </table>
@@ -473,13 +473,13 @@ export default function Home() {
                 <tbody>
                   {loading ? (
                     <tr>
-                      <td colSpan={7} style={{ textAlign: 'center', padding: '20px', color: '#666' }}>
+                      <td colSpan={7} style={{ textAlign: 'center', padding: '20px', color: 'var(--text-tertiary)' }}>
                         Loading gas data...
                       </td>
                     </tr>
                   ) : gasData.length === 0 ? (
                     <tr>
-                      <td colSpan={7} style={{ textAlign: 'center', padding: '20px', color: '#666' }}>
+                      <td colSpan={7} style={{ textAlign: 'center', padding: '20px', color: 'var(--text-tertiary)' }}>
                         No gas data available
                       </td>
                     </tr>
@@ -488,10 +488,10 @@ export default function Home() {
                       <tr key={gas.chain}>
                         <td className="table-symbol">{gas.chain.charAt(0).toUpperCase() + gas.chain.slice(1)}</td>
                         <td className="table-value">{gas.gasPrice.toFixed(2)} GWEI</td>
-                        <td style={{ color: '#0099ff' }}>
+                        <td style={{ color: 'var(--accent-primary)' }}>
                           {gas.baseFee ? `${gas.baseFee.toFixed(2)} GWEI` : 'N/A'}
                         </td>
-                        <td style={{ color: '#00ff88' }}>
+                        <td style={{ color: 'var(--success)' }}>
                           {gas.priorityFee ? `${gas.priorityFee.toFixed(2)} GWEI` : 'N/A'}
                         </td>
                         <td>
@@ -502,7 +502,7 @@ export default function Home() {
                           {gas.status.toUpperCase()}
                         </td>
                         <td>{gas.blockNumber.toLocaleString()}</td>
-                        <td style={{ color: '#666' }}>{getTimeAgo(gas.timestamp)}</td>
+                        <td style={{ color: 'var(--text-tertiary)' }}>{getTimeAgo(gas.timestamp)}</td>
                       </tr>
                     ))
                   )}
@@ -617,7 +617,7 @@ export default function Home() {
             <div className="panel-header">
               <Link href="/events" style={{ textDecoration: 'none', color: 'inherit', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span>Crypto Events</span>
-                <span style={{ fontSize: '10px', color: '#0099ff' }}>View All →</span>
+                <span style={{ fontSize: '10px', color: 'var(--accent-primary)' }}>View All →</span>
               </Link>
             </div>
 

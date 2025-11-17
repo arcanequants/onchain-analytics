@@ -8,6 +8,11 @@
 
 # testing
 /coverage
+*.lcov
+playwright-report/
+test-results/
+tests/load/summary.json
+tests/security/reports/
 
 # next.js
 /.next/

@@ -127,3 +127,4 @@ app/
 - Email: hello@onchainanalytics.io
 - Twitter: [@onchainanalytics](https://twitter.com/onchainanalytics)
 # Force redeploy
+# Redeploy with corrected SUPABASE_SERVICE_ROLE_KEY

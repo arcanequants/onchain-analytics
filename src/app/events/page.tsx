@@ -1,10 +1,14 @@
 'use client'
 
+import { useState } from 'react'
 import EventCalendarAdvanced from '@/components/EventCalendarAdvanced'
 import EventSubmissionForm from '@/components/EventSubmissionForm'
+import EventAnalyticsDashboard from '@/components/EventAnalyticsDashboard'
 import Link from 'next/link'
 
 export default function EventsPage() {
+  const [activeTab, setActiveTab] = useState<'calendar' | 'analytics'>('calendar')
+
   return (
     <>
       {/* Animated Background Grid */}
@@ -37,15 +41,52 @@ export default function EventsPage() {
             </p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '20px' }}>
-            {/* Left: Event Calendar */}
-            <div>
-              <EventCalendarAdvanced
-                defaultLimit={20}
-                showFilters={true}
-                showSearch={true}
-              />
-            </div>
+          {/* Tabs */}
+          <div style={{ marginBottom: '20px', display: 'flex', gap: '12px', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', paddingBottom: '12px' }}>
+            <button
+              onClick={() => setActiveTab('calendar')}
+              style={{
+                padding: '8px 20px',
+                backgroundColor: activeTab === 'calendar' ? 'rgba(0, 153, 255, 0.2)' : 'transparent',
+                border: activeTab === 'calendar' ? '1px solid rgba(0, 153, 255, 0.5)' : '1px solid transparent',
+                borderRadius: '6px',
+                color: activeTab === 'calendar' ? '#0099ff' : '#888',
+                fontSize: '14px',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease'
+              }}
+            >
+              📅 Events Calendar
+            </button>
+            <button
+              onClick={() => setActiveTab('analytics')}
+              style={{
+                padding: '8px 20px',
+                backgroundColor: activeTab === 'analytics' ? 'rgba(0, 153, 255, 0.2)' : 'transparent',
+                border: activeTab === 'analytics' ? '1px solid rgba(0, 153, 255, 0.5)' : '1px solid transparent',
+                borderRadius: '6px',
+                color: activeTab === 'analytics' ? '#0099ff' : '#888',
+                fontSize: '14px',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease'
+              }}
+            >
+              🤖 AI Analytics & Predictions
+            </button>
+          </div>
+
+          {activeTab === 'calendar' ? (
+            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '20px' }}>
+              {/* Left: Event Calendar */}
+              <div>
+                <EventCalendarAdvanced
+                  defaultLimit={20}
+                  showFilters={true}
+                  showSearch={true}
+                />
+              </div>
 
             {/* Right: Event Submission & Stats */}
             <div>
@@ -121,6 +162,9 @@ export default function EventsPage() {
               </div>
             </div>
           </div>
+          ) : (
+            <EventAnalyticsDashboard />
+          )}
         </div>
       </div>
     </>

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 
 interface TokenPrice {
-  id: string
+  coingecko_id: string
   symbol: string
   name: string
   image: string
@@ -12,6 +12,7 @@ interface TokenPrice {
   market_cap: number
   market_cap_rank: number
   total_volume: number
+  last_updated: string
 }
 
 interface PriceTableProps {
@@ -40,7 +41,7 @@ export default function PriceTable({ limit = 10, showHeader = true }: PriceTable
       }
 
       const data = await response.json()
-      setPrices(data.data || [])
+      setPrices(data.prices || [])
       setError(null)
     } catch (err: any) {
       console.error('[PriceTable] Error fetching prices:', err)
@@ -127,7 +128,7 @@ export default function PriceTable({ limit = 10, showHeader = true }: PriceTable
             </tr>
           ) : (
             prices.map((token) => (
-              <tr key={token.id}>
+              <tr key={token.coingecko_id}>
                 <td className="table-value">{token.market_cap_rank}</td>
                 <td>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>

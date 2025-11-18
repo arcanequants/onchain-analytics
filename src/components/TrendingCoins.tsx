@@ -3,15 +3,15 @@
 import { useEffect, useState } from 'react'
 
 interface TrendingCoin {
-  item: {
-    id: string
-    name: string
-    symbol: string
-    market_cap_rank: number
-    thumb: string
-    price_btc: number
-    score: number
-  }
+  coingecko_id: string
+  name: string
+  symbol: string
+  market_cap_rank: number
+  thumb: string
+  large: string
+  price_btc: number
+  score: number
+  timestamp: string
 }
 
 export default function TrendingCoins() {
@@ -28,14 +28,14 @@ export default function TrendingCoins() {
 
   const fetchTrending = async () => {
     try {
-      const response = await fetch('/api/prices/trending')
+      const response = await fetch('/api/trending')
 
       if (!response.ok) {
         throw new Error(`Failed to fetch trending: ${response.status}`)
       }
 
       const data = await response.json()
-      setTrending(data.data || [])
+      setTrending(data.trending || [])
       setError(null)
     } catch (err: any) {
       console.error('[TrendingCoins] Error fetching trending:', err)
@@ -71,14 +71,14 @@ export default function TrendingCoins() {
     <div className="analytics-block">
       <div className="analytics-title">🔥 Trending Coins</div>
       {trending.slice(0, 7).map((coin, index) => (
-        <div key={coin.item.id} className="stat-row">
+        <div key={coin.coingecko_id} className="stat-row">
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span style={{ fontSize: '10px', color: 'var(--text-tertiary)' }}>
               #{index + 1}
             </span>
             <img
-              src={coin.item.thumb}
-              alt={coin.item.name}
+              src={coin.thumb || coin.large}
+              alt={coin.name}
               style={{ width: '16px', height: '16px', borderRadius: '50%' }}
               onError={(e) => {
                 (e.target as HTMLImageElement).style.display = 'none'
@@ -86,15 +86,15 @@ export default function TrendingCoins() {
             />
             <div>
               <div className="stat-label" style={{ fontSize: '11px', fontWeight: 600 }}>
-                {coin.item.symbol.toUpperCase()}
+                {coin.symbol.toUpperCase()}
               </div>
               <div style={{ fontSize: '9px', color: 'var(--text-tertiary)' }}>
-                {coin.item.name}
+                {coin.name}
               </div>
             </div>
           </div>
           <div className="stat-value" style={{ fontSize: '10px' }}>
-            #{coin.item.market_cap_rank}
+            #{coin.market_cap_rank || 'N/A'}
           </div>
         </div>
       ))}

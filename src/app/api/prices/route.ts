@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
     const limit = Math.min(parseInt(searchParams.get('limit') || '10'), 100)
 
     // Get more records to ensure we have enough after deduplication
-    const fetchLimit = limit * 30 // Fetch 30x more to account for duplicates
+    const fetchLimit = limit * 100 // Fetch 100x more to account for duplicates
 
     const { data: allPrices, error } = await supabase
       .from('token_prices')

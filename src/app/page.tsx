@@ -7,6 +7,7 @@ import EventCalendarAdvanced from '@/components/EventCalendarAdvanced'
 import PriceTable from '@/components/PriceTable'
 import TrendingCoins from '@/components/TrendingCoins'
 import PriceChart from '@/components/PriceChart'
+import CoinSearch from '@/components/CoinSearch'
 import Link from 'next/link'
 
 interface GasData {
@@ -365,6 +366,11 @@ export default function Home() {
                   {loading ? '...' : gasData.length > 0 ? 'LIVE' : '...'}
                 </div>
               </div>
+            </div>
+
+            {/* Coin Search */}
+            <div style={{ marginBottom: '12px', display: 'flex', justifyContent: 'center' }}>
+              <CoinSearch />
             </div>
 
             {/* Top Cryptocurrencies - Real-time from CoinGecko */}

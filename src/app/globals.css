@@ -1059,3 +1059,300 @@ tbody tr:hover td {
   background: var(--danger);
   box-shadow: 0 0 8px var(--danger-glow);
 }
+
+/* ============================================
+   MOBILE RESPONSIVE STYLES
+   ============================================ */
+
+/* Tablet and below (1024px) */
+@media (max-width: 1024px) {
+  .terminal-grid {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .left-panel, .right-panel {
+    display: none;
+  }
+
+  .top-bar {
+    flex-wrap: wrap;
+    padding: 12px 16px;
+  }
+
+  .top-tickers {
+    gap: 16px;
+    order: 3;
+    width: 100%;
+    margin-top: 8px;
+    justify-content: space-between;
+  }
+
+  .ticker-item {
+    gap: 4px;
+  }
+
+  .ticker-symbol {
+    font-size: 12px;
+  }
+
+  .ticker-price {
+    font-size: 14px;
+  }
+
+  .logo {
+    font-size: 16px;
+  }
+
+  .info-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .info-card {
+    padding: 8px;
+  }
+
+  .info-value {
+    font-size: 16px;
+  }
+
+  .info-label {
+    font-size: 9px;
+  }
+}
+
+/* Mobile (768px) */
+@media (max-width: 768px) {
+  .top-bar {
+    padding: 10px 12px;
+  }
+
+  .logo {
+    font-size: 14px;
+  }
+
+  .top-tickers {
+    gap: 12px;
+  }
+
+  .ticker-symbol {
+    font-size: 10px;
+  }
+
+  .ticker-price {
+    font-size: 12px;
+  }
+
+  .top-time {
+    font-size: 10px;
+  }
+
+  .center-panel {
+    padding: 12px;
+  }
+
+  .info-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .info-card {
+    padding: 8px;
+  }
+
+  .info-value {
+    font-size: 14px;
+  }
+
+  .info-label {
+    font-size: 8px;
+  }
+
+  .data-table {
+    margin-bottom: 12px;
+  }
+
+  table {
+    font-size: 10px;
+  }
+
+  th, td {
+    padding: 6px 8px;
+  }
+
+  th {
+    font-size: 8px;
+  }
+
+  .table-header {
+    padding: 8px 12px;
+    font-size: 10px;
+  }
+
+  /* Hide less important columns on mobile */
+  .data-table th:nth-child(n+5),
+  .data-table td:nth-child(n+5) {
+    display: none;
+  }
+
+  .event-feed {
+    margin-bottom: 12px;
+  }
+
+  .event-item {
+    padding: 8px 12px;
+    font-size: 10px;
+  }
+
+  .event-time {
+    min-width: 40px;
+    font-size: 9px;
+  }
+
+  .event-tag {
+    font-size: 8px;
+    padding: 2px 4px;
+  }
+
+  .theme-toggle {
+    bottom: 1rem;
+    right: 1rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 12px;
+  }
+}
+
+/* Small Mobile (480px) */
+@media (max-width: 480px) {
+  .top-bar {
+    padding: 8px 10px;
+    font-size: 10px;
+  }
+
+  .logo {
+    font-size: 12px;
+  }
+
+  .top-tickers {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .ticker-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .ticker-symbol {
+    font-size: 9px;
+  }
+
+  .ticker-price {
+    font-size: 11px;
+  }
+
+  .ticker-change {
+    font-size: 9px;
+  }
+
+  .top-time {
+    font-size: 9px;
+    width: 100%;
+    text-align: center;
+    margin-top: 4px;
+  }
+
+  .center-panel {
+    padding: 8px;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+
+  .info-card {
+    padding: 6px;
+  }
+
+  .info-value {
+    font-size: 12px;
+  }
+
+  .info-label {
+    font-size: 7px;
+    margin-bottom: 4px;
+  }
+
+  .info-change {
+    font-size: 9px;
+  }
+
+  .data-table {
+    margin-bottom: 8px;
+  }
+
+  table {
+    font-size: 9px;
+  }
+
+  th, td {
+    padding: 4px 6px;
+  }
+
+  th {
+    font-size: 7px;
+  }
+
+  .table-header {
+    padding: 6px 10px;
+    font-size: 9px;
+  }
+
+  /* Hide even more columns on small mobile */
+  .data-table th:nth-child(n+4),
+  .data-table td:nth-child(n+4) {
+    display: none;
+  }
+
+  .event-item {
+    padding: 6px 10px;
+    font-size: 9px;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .event-time {
+    min-width: auto;
+    font-size: 8px;
+  }
+
+  .event-tag {
+    font-size: 7px;
+    padding: 1px 3px;
+  }
+
+  .theme-toggle {
+    bottom: 0.75rem;
+    right: 0.75rem;
+    padding: 0.4rem 0.6rem;
+    font-size: 11px;
+  }
+
+  .theme-toggle-label {
+    display: none;
+  }
+
+  /* Make background particles less prominent on mobile */
+  .particle {
+    display: none;
+  }
+
+  .bg-grid {
+    background-size: 30px 30px;
+  }
+}

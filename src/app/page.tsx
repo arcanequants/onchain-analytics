@@ -8,6 +8,7 @@ import PriceTable from '@/components/PriceTable'
 import TrendingCoins from '@/components/TrendingCoins'
 import PriceChart from '@/components/PriceChart'
 import CoinSearch from '@/components/CoinSearch'
+import PriceAlerts from '@/components/PriceAlerts'
 import Link from 'next/link'
 
 interface GasData {
@@ -514,6 +515,8 @@ export default function Home() {
             </div>
 
             <TrendingCoins />
+
+            <PriceAlerts />
 
             <div className="panel-header">DEX Analytics</div>
 

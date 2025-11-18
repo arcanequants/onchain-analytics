@@ -22,6 +22,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <meta name="coinzilla" content="8db58937faf87c02e615ea7fe53d1185" />
+      </head>
       <body>
         <AdScripts />
         <ClientLayout>

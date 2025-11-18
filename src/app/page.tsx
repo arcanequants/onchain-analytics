@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react'
 import GasChart from '@/components/GasChart'
 import FearGreedGauge from '@/components/FearGreedGauge'
 import EventCalendarAdvanced from '@/components/EventCalendarAdvanced'
+import PriceTable from '@/components/PriceTable'
+import TrendingCoins from '@/components/TrendingCoins'
 import Link from 'next/link'
 
 interface GasData {
@@ -364,96 +366,8 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Dense Container for Tables */}
-            <div className="dense-container">
-              {/* Top Movers */}
-              <div className="data-table">
-                <div className="table-header">Top Movers 24h</div>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Symbol</th>
-                      <th>Price</th>
-                      <th>Change</th>
-                      <th>Volume</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td className="table-symbol">AVAX</td>
-                      <td className="table-value">$42.80</td>
-                      <td style={{ color: 'var(--success)', fontWeight: 700 }}>+8.9%</td>
-                      <td>$420M</td>
-                    </tr>
-                    <tr>
-                      <td className="table-symbol">ETH</td>
-                      <td className="table-value">$3,150</td>
-                      <td style={{ color: 'var(--success)', fontWeight: 700 }}>+6.8%</td>
-                      <td>$8.2B</td>
-                    </tr>
-                    <tr>
-                      <td className="table-symbol">LINK</td>
-                      <td className="table-value">$22.40</td>
-                      <td style={{ color: 'var(--success)', fontWeight: 700 }}>+5.2%</td>
-                      <td>$280M</td>
-                    </tr>
-                    <tr>
-                      <td className="table-symbol">BTC</td>
-                      <td className="table-value">$94,280</td>
-                      <td style={{ color: 'var(--success)', fontWeight: 700 }}>+4.2%</td>
-                      <td>$12.4B</td>
-                    </tr>
-                    <tr>
-                      <td className="table-symbol">UNI</td>
-                      <td className="table-value">$12.80</td>
-                      <td style={{ color: 'var(--danger)', fontWeight: 700 }}>-3.6%</td>
-                      <td>$180M</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              {/* TradFi Markets */}
-              <div className="data-table">
-                <div className="table-header">Traditional Markets</div>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Symbol</th>
-                      <th>Price</th>
-                      <th>Change</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td className="table-symbol">S&P 500</td>
-                      <td className="table-value">4,820</td>
-                      <td style={{ color: 'var(--success)', fontWeight: 700 }}>+1.2%</td>
-                    </tr>
-                    <tr>
-                      <td className="table-symbol">NASDAQ</td>
-                      <td className="table-value">15,240</td>
-                      <td style={{ color: 'var(--success)', fontWeight: 700 }}>+1.8%</td>
-                    </tr>
-                    <tr>
-                      <td className="table-symbol">EUR/USD</td>
-                      <td className="table-value">1.0892</td>
-                      <td style={{ color: 'var(--success)', fontWeight: 700 }}>+0.3%</td>
-                    </tr>
-                    <tr>
-                      <td className="table-symbol">GOLD</td>
-                      <td className="table-value">$2,042</td>
-                      <td style={{ color: 'var(--success)', fontWeight: 700 }}>+1.2%</td>
-                    </tr>
-                    <tr>
-                      <td className="table-symbol">OIL</td>
-                      <td className="table-value">$72.50</td>
-                      <td style={{ color: 'var(--danger)', fontWeight: 700 }}>-0.8%</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
+            {/* Top Cryptocurrencies - Real-time from CoinGecko */}
+            <PriceTable limit={10} showHeader={true} />
 
             {/* Full Width Gas Tracker Table */}
             <div className="data-table">
@@ -584,6 +498,8 @@ export default function Home() {
                 <span className="stat-value">125 GWEI</span>
               </div>
             </div>
+
+            <TrendingCoins />
 
             <div className="panel-header">DEX Analytics</div>
 

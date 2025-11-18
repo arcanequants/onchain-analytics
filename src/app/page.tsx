@@ -1,16 +1,19 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import GasChart from '@/components/GasChart'
-import FearGreedGauge from '@/components/FearGreedGauge'
-import EventCalendarAdvanced from '@/components/EventCalendarAdvanced'
-import PriceTable from '@/components/PriceTable'
-import TrendingCoins from '@/components/TrendingCoins'
-import PriceChart from '@/components/PriceChart'
-import CoinSearch from '@/components/CoinSearch'
-import PriceAlerts from '@/components/PriceAlerts'
-import WalletSummaryWidget from '@/components/WalletSummaryWidget'
+import { useEffect, useState, memo } from 'react'
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
+
+// Lazy load heavy components for better performance
+const GasChart = dynamic(() => import('@/components/GasChart'), { ssr: false })
+const FearGreedGauge = dynamic(() => import('@/components/FearGreedGauge'), { ssr: false })
+const EventCalendarAdvanced = dynamic(() => import('@/components/EventCalendarAdvanced'), { ssr: false })
+const PriceTable = dynamic(() => import('@/components/PriceTable'), { ssr: false })
+const TrendingCoins = dynamic(() => import('@/components/TrendingCoins'), { ssr: false })
+const PriceChart = dynamic(() => import('@/components/PriceChart'), { ssr: false })
+const CoinSearch = dynamic(() => import('@/components/CoinSearch'), { ssr: false })
+const PriceAlerts = dynamic(() => import('@/components/PriceAlerts'), { ssr: false })
+const WalletSummaryWidget = dynamic(() => import('@/components/WalletSummaryWidget'), { ssr: false })
 
 interface GasData {
   chain: string
@@ -107,7 +110,7 @@ export default function Home() {
           <div className="logo">ONCHAIN TERMINAL</div>
 
           {/* Wallet Button */}
-          <Link href="/wallet" className="wallet-nav-button">
+          <Link href="/wallet" className="wallet-nav-button" prefetch={false}>
             <span className="wallet-icon">💼</span>
             <span className="wallet-label">WALLET</span>
           </Link>

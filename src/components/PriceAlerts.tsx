@@ -94,14 +94,14 @@ export default function PriceAlerts() {
     }
   }
 
-  const showNotification = (alert: PriceAlert, currentPrice: number) => {
+  const showNotification = (priceAlert: PriceAlert, currentPrice: number) => {
     if ('Notification' in window && Notification.permission === 'granted') {
-      new Notification(`${alert.coinSymbol.toUpperCase()} Price Alert!`, {
-        body: `${alert.coinName} is now ${alert.condition} $${alert.targetPrice}. Current: $${currentPrice}`,
+      new Notification(`${priceAlert.coinSymbol.toUpperCase()} Price Alert!`, {
+        body: `${priceAlert.coinName} is now ${priceAlert.condition} $${priceAlert.targetPrice}. Current: $${currentPrice}`,
         icon: '/logo.png'
       })
     } else {
-      alert(`${alert.coinSymbol.toUpperCase()} Alert: ${alert.coinName} is now ${alert.condition} $${alert.targetPrice}!`)
+      window.alert(`${priceAlert.coinSymbol.toUpperCase()} Alert: ${priceAlert.coinName} is now ${priceAlert.condition} $${priceAlert.targetPrice}!`)
     }
   }
 

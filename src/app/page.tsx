@@ -1,19 +1,16 @@
 'use client'
 
-import { useEffect, useState, memo } from 'react'
-import dynamic from 'next/dynamic'
+import { useEffect, useState } from 'react'
+import GasChart from '@/components/GasChart'
+import FearGreedGauge from '@/components/FearGreedGauge'
+import EventCalendarAdvanced from '@/components/EventCalendarAdvanced'
+import PriceTable from '@/components/PriceTable'
+import TrendingCoins from '@/components/TrendingCoins'
+import PriceChart from '@/components/PriceChart'
+import CoinSearch from '@/components/CoinSearch'
+import PriceAlerts from '@/components/PriceAlerts'
+import WalletSummaryWidget from '@/components/WalletSummaryWidget'
 import Link from 'next/link'
-
-// Lazy load heavy components for better performance
-const GasChart = dynamic(() => import('@/components/GasChart'), { ssr: false })
-const FearGreedGauge = dynamic(() => import('@/components/FearGreedGauge'), { ssr: false })
-const EventCalendarAdvanced = dynamic(() => import('@/components/EventCalendarAdvanced'), { ssr: false })
-const PriceTable = dynamic(() => import('@/components/PriceTable'), { ssr: false })
-const TrendingCoins = dynamic(() => import('@/components/TrendingCoins'), { ssr: false })
-const PriceChart = dynamic(() => import('@/components/PriceChart'), { ssr: false })
-const CoinSearch = dynamic(() => import('@/components/CoinSearch'), { ssr: false })
-const PriceAlerts = dynamic(() => import('@/components/PriceAlerts'), { ssr: false })
-const WalletSummaryWidget = dynamic(() => import('@/components/WalletSummaryWidget'), { ssr: false })
 
 interface GasData {
   chain: string
@@ -62,8 +59,21 @@ export default function Home() {
     return () => clearInterval(interval)
   }, [])
 
-  // Removed price update interval - caused performance issues on old hardware
-  // The DOM manipulation every 3 seconds blocked navigation
+  useEffect(() => {
+    // Simulate price updates for crypto tickers (BTC, ETH, SOL)
+    const priceInterval = setInterval(() => {
+      const priceElements = document.querySelectorAll('.ticker-price')
+      priceElements.forEach(el => {
+        const current = parseFloat(el.textContent?.replace(/[$,]/g, '') || '0')
+        const change = (Math.random() - 0.5) * (current * 0.001)
+        el.classList.add('flash')
+        setTimeout(() => el.classList.remove('flash'), 500)
+        el.textContent = (current + change).toFixed(2)
+      })
+    }, 3000)
+
+    return () => clearInterval(priceInterval)
+  }, [])
 
   // Helper to get gas data for a specific chain
   const getChainGas = (chainName: string) => {
@@ -81,7 +91,15 @@ export default function Home() {
 
   return (
     <>
-      {/* Removed animated background grid and particles - caused performance issues on old hardware */}
+      {/* Animated Background Grid */}
+      <div className="bg-grid"></div>
+
+      {/* Floating Particles */}
+      <div className="particle" style={{ left: '10%', animationDelay: '0s' }}></div>
+      <div className="particle" style={{ left: '25%', animationDelay: '3s' }}></div>
+      <div className="particle" style={{ left: '50%', animationDelay: '6s' }}></div>
+      <div className="particle" style={{ left: '75%', animationDelay: '9s' }}></div>
+      <div className="particle" style={{ left: '90%', animationDelay: '12s' }}></div>
 
       <div className="content-layer">
         {/* Top Bar */}
@@ -89,7 +107,7 @@ export default function Home() {
           <div className="logo">ONCHAIN TERMINAL</div>
 
           {/* Wallet Button */}
-          <Link href="/wallet" className="wallet-nav-button" prefetch={false}>
+          <Link href="/wallet" className="wallet-nav-button">
             <span className="wallet-icon">💼</span>
             <span className="wallet-label">WALLET</span>
           </Link>

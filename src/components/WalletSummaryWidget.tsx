@@ -62,7 +62,7 @@ export default function WalletSummaryWidget() {
           <div style={{ color: 'var(--text-tertiary)', marginBottom: '12px' }}>
             No wallet tracked yet
           </div>
-          <Link href="/wallet" className="wallet-link" prefetch={false}>
+          <Link href="/wallet" className="wallet-link">
             TRACK WALLET →
           </Link>
         </div>
@@ -96,7 +96,7 @@ export default function WalletSummaryWidget() {
         </div>
       ))}
 
-      <Link href="/wallet" className="wallet-link" prefetch={false}>
+      <Link href="/wallet" className="wallet-link">
         VIEW DETAILS →
       </Link>
     </div>

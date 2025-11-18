@@ -24,6 +24,50 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        {/* Theme initialization script - prevents flash of unstyled content */}
+        <Script
+          id="theme-init"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  // Get saved theme mode (auto, dark, or light)
+                  const savedMode = localStorage.getItem('theme-mode');
+                  const legacyTheme = localStorage.getItem('theme');
+
+                  let mode = 'auto'; // default
+
+                  if (savedMode && ['auto', 'dark', 'light'].includes(savedMode)) {
+                    mode = savedMode;
+                  } else if (legacyTheme && ['dark', 'light'].includes(legacyTheme)) {
+                    // Migrate from old theme system
+                    mode = legacyTheme;
+                    localStorage.setItem('theme-mode', legacyTheme);
+                    localStorage.removeItem('theme');
+                  }
+
+                  // Resolve theme based on mode
+                  let theme = mode;
+                  if (mode === 'auto') {
+                    const hour = new Date().getHours();
+                    // 6 AM (6) to 6 PM (18) = light mode
+                    // 6 PM (18) to 6 AM (6) = dark mode
+                    theme = (hour >= 6 && hour < 18) ? 'light' : 'dark';
+                  }
+
+                  // Apply theme immediately
+                  document.documentElement.setAttribute('data-theme', theme);
+                } catch (e) {
+                  // Fallback to dark mode if anything fails
+                  document.documentElement.setAttribute('data-theme', 'dark');
+                }
+              })();
+            `,
+          }}
+        />
+      </head>
       <body>
         <Script
           id="coinzilla-meta"

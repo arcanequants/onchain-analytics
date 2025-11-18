@@ -6,6 +6,7 @@ import FearGreedGauge from '@/components/FearGreedGauge'
 import EventCalendarAdvanced from '@/components/EventCalendarAdvanced'
 import PriceTable from '@/components/PriceTable'
 import TrendingCoins from '@/components/TrendingCoins'
+import PriceChart from '@/components/PriceChart'
 import Link from 'next/link'
 
 interface GasData {
@@ -368,6 +369,13 @@ export default function Home() {
 
             {/* Top Cryptocurrencies - Real-time from CoinGecko */}
             <PriceTable limit={10} showHeader={true} />
+
+            {/* Price Charts - Historical Data */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '12px', marginBottom: '12px' }}>
+              <PriceChart coinId="bitcoin" coinName="Bitcoin" coinSymbol="btc" hours={24} />
+              <PriceChart coinId="ethereum" coinName="Ethereum" coinSymbol="eth" hours={24} />
+              <PriceChart coinId="solana" coinName="Solana" coinSymbol="sol" hours={24} />
+            </div>
 
             {/* Full Width Gas Tracker Table */}
             <div className="data-table">

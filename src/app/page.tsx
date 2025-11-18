@@ -11,6 +11,7 @@ import CoinSearch from '@/components/CoinSearch'
 import PriceAlerts from '@/components/PriceAlerts'
 import WalletSummaryWidget from '@/components/WalletSummaryWidget'
 import Link from 'next/link'
+import { usePerformanceMode } from '@/hooks/usePerformanceMode'
 
 interface GasData {
   chain: string
@@ -26,6 +27,7 @@ export default function Home() {
   const [currentTime, setCurrentTime] = useState('')
   const [gasData, setGasData] = useState<GasData[]>([])
   const [loading, setLoading] = useState(true)
+  const performanceMode = usePerformanceMode()
 
   // Fetch real gas price data
   useEffect(() => {
@@ -60,6 +62,9 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
+    // Only run price animations on high-performance hardware
+    if (performanceMode !== 'high') return
+
     // Simulate price updates for crypto tickers (BTC, ETH, SOL)
     const priceInterval = setInterval(() => {
       const priceElements = document.querySelectorAll('.ticker-price')
@@ -73,7 +78,7 @@ export default function Home() {
     }, 3000)
 
     return () => clearInterval(priceInterval)
-  }, [])
+  }, [performanceMode])
 
   // Helper to get gas data for a specific chain
   const getChainGas = (chainName: string) => {
@@ -91,15 +96,19 @@ export default function Home() {
 
   return (
     <>
-      {/* Animated Background Grid */}
-      <div className="bg-grid"></div>
+      {/* Animated Background Grid - only on high-performance hardware */}
+      {performanceMode === 'high' && <div className="bg-grid"></div>}
 
-      {/* Floating Particles */}
-      <div className="particle" style={{ left: '10%', animationDelay: '0s' }}></div>
-      <div className="particle" style={{ left: '25%', animationDelay: '3s' }}></div>
-      <div className="particle" style={{ left: '50%', animationDelay: '6s' }}></div>
-      <div className="particle" style={{ left: '75%', animationDelay: '9s' }}></div>
-      <div className="particle" style={{ left: '90%', animationDelay: '12s' }}></div>
+      {/* Floating Particles - only on high-performance hardware */}
+      {performanceMode === 'high' && (
+        <>
+          <div className="particle" style={{ left: '10%', animationDelay: '0s' }}></div>
+          <div className="particle" style={{ left: '25%', animationDelay: '3s' }}></div>
+          <div className="particle" style={{ left: '50%', animationDelay: '6s' }}></div>
+          <div className="particle" style={{ left: '75%', animationDelay: '9s' }}></div>
+          <div className="particle" style={{ left: '90%', animationDelay: '12s' }}></div>
+        </>
+      )}
 
       <div className="content-layer">
         {/* Top Bar */}

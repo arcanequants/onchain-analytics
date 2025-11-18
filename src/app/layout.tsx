@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Script from 'next/script'
 import './globals.css'
 import './typography-optionB.css'
 import ClientLayout from '@/components/ClientLayout'
@@ -8,10 +9,8 @@ export const metadata: Metadata = {
   title: 'OnChain Analytics | Real-Time Crypto Data Oracle',
   description: 'The #1 oracle for on-chain metrics, gas prices, and crypto analytics. Real-time data for humans and AI agents.',
   keywords: 'crypto, blockchain, gas tracker, ethereum, polygon, arbitrum, optimism, base, on-chain analytics',
-  verification: {
-    other: {
-      'coinzilla': '8db58937faf87c02e615ea7fe53d1185',
-    },
+  other: {
+    'coinzilla': '8db58937faf87c02e615ea7fe53d1185',
   },
 }
 
@@ -22,10 +21,21 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <meta name="coinzilla" content="8db58937faf87c02e615ea7fe53d1185" />
-      </head>
       <body>
+        <Script
+          id="coinzilla-meta"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                var meta = document.createElement('meta');
+                meta.name = 'coinzilla';
+                meta.content = '8db58937faf87c02e615ea7fe53d1185';
+                document.head.appendChild(meta);
+              })();
+            `,
+          }}
+        />
         <AdScripts />
         <ClientLayout>
           {children}

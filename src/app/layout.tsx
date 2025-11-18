@@ -33,28 +33,28 @@ export default function RootLayout({
             __html: `
               (function() {
                 try {
-                  // Get saved theme mode (auto, dark, or light)
-                  const savedMode = localStorage.getItem('theme-mode');
-                  const legacyTheme = localStorage.getItem('theme');
+                  const today = new Date().toDateString();
+                  const savedDate = localStorage.getItem('theme-override-date');
+                  const override = localStorage.getItem('theme-override');
 
-                  let mode = 'auto'; // default
+                  let theme;
 
-                  if (savedMode && ['auto', 'dark', 'light'].includes(savedMode)) {
-                    mode = savedMode;
-                  } else if (legacyTheme && ['dark', 'light'].includes(legacyTheme)) {
-                    // Migrate from old theme system
-                    mode = legacyTheme;
-                    localStorage.setItem('theme-mode', legacyTheme);
-                    localStorage.removeItem('theme');
-                  }
-
-                  // Resolve theme based on mode
-                  let theme = mode;
-                  if (mode === 'auto') {
+                  // Check if there's a valid override for today
+                  if (savedDate === today && override && ['dark', 'light'].includes(override)) {
+                    // Same day, use override
+                    theme = override;
+                  } else {
+                    // Different day or no override → use AUTO (time-based)
                     const hour = new Date().getHours();
                     // 6 AM (6) to 6 PM (18) = light mode
                     // 6 PM (18) to 6 AM (6) = dark mode
                     theme = (hour >= 6 && hour < 18) ? 'light' : 'dark';
+
+                    // Clean up old override
+                    if (savedDate !== today) {
+                      localStorage.removeItem('theme-override');
+                      localStorage.removeItem('theme-override-date');
+                    }
                   }
 
                   // Apply theme immediately

@@ -5,13 +5,16 @@ import './typography-optionB.css'
 import ClientLayout from '@/components/ClientLayout'
 import AdScripts from '@/components/AdScripts'
 
-export const metadata: Metadata = {
-  title: 'OnChain Analytics | Real-Time Crypto Data Oracle',
-  description: 'The #1 oracle for on-chain metrics, gas prices, and crypto analytics. Real-time data for humans and AI agents.',
-  keywords: 'crypto, blockchain, gas tracker, ethereum, polygon, arbitrum, optimism, base, on-chain analytics',
-  other: {
-    'coinzilla': '8db58937faf87c02e615ea7fe53d1185',
-  },
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: 'OnChain Analytics | Real-Time Crypto Data Oracle',
+    description: 'The #1 oracle for on-chain metrics, gas prices, and crypto analytics. Real-time data for humans and AI agents.',
+    keywords: 'crypto, blockchain, gas tracker, ethereum, polygon, arbitrum, optimism, base, on-chain analytics',
+    other: {
+      coinzilla: '8db58937faf87c02e615ea7fe53d1185',
+    },
+    metadataBase: new URL('https://vectorialdata.com'),
+  }
 }
 
 export default function RootLayout({

@@ -149,8 +149,7 @@ export async function GET(request: NextRequest) {
         job_name: 'collect-prices',
         status: 'success',
         duration_ms: duration,
-        records_processed: coins.length,
-        executed_at: new Date().toISOString()
+        metadata: { coins_collected: coins.length }
       })
 
     console.log(`[CRON collect-prices] ✅ Completed in ${duration}ms`)
@@ -171,10 +170,9 @@ export async function GET(request: NextRequest) {
       .from('cron_executions')
       .insert({
         job_name: 'collect-prices',
-        status: 'error',
+        status: 'failure',
         error_message: error.message,
-        duration_ms: duration,
-        executed_at: new Date().toISOString()
+        duration_ms: duration
       })
 
     return NextResponse.json(

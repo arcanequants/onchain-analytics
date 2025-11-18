@@ -14,8 +14,8 @@ import { rateLimitByIP, getClientIP, isCronRequest, getRateLimitHeaders } from '
 
 export const config = {
   matcher: [
-    // Apply to all API routes except health check and monitoring
-    '/api/((?!health|monitoring).*)'
+    // Apply to all API routes except health check, monitoring, and CRON jobs
+    '/api/((?!health|monitoring|cron).*)'
   ]
 }
 

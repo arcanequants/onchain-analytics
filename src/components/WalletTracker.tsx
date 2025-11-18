@@ -73,10 +73,46 @@ export default function WalletTracker() {
       }
 
       setWalletData(data)
+
+      // Save to localStorage for widget display
+      saveToLocalStorage(data)
     } catch (err: any) {
       setError(err.message || 'Failed to fetch wallet data')
     } finally {
       setLoading(false)
+    }
+  }
+
+  const saveToLocalStorage = (data: WalletData) => {
+    try {
+      // Group balances by chain and calculate totals
+      const chainTotals = data.balances.reduce((acc, balance) => {
+        const chain = balance.chain
+        const chainName = chains.find(c => c.id === chain)?.name || chain
+
+        if (!acc[chainName]) {
+          acc[chainName] = 0
+        }
+        acc[chainName] += balance.balanceUsd || 0
+        return acc
+      }, {} as Record<string, number>)
+
+      // Format data for widget
+      const widgetData = {
+        address: data.walletAddress,
+        totalUsd: data.totalValueUsd,
+        chainCount: Object.keys(chainTotals).length,
+        tokenCount: data.balances.length,
+        chains: Object.entries(chainTotals).map(([name, balanceUsd]) => ({
+          name,
+          balanceUsd
+        })),
+        timestamp: new Date().toISOString()
+      }
+
+      localStorage.setItem('lastTrackedWallet', JSON.stringify(widgetData))
+    } catch (error) {
+      console.error('[WalletTracker] Error saving to localStorage:', error)
     }
   }
 

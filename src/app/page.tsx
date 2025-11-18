@@ -9,6 +9,7 @@ import TrendingCoins from '@/components/TrendingCoins'
 import PriceChart from '@/components/PriceChart'
 import CoinSearch from '@/components/CoinSearch'
 import PriceAlerts from '@/components/PriceAlerts'
+import WalletSummaryWidget from '@/components/WalletSummaryWidget'
 import Link from 'next/link'
 
 interface GasData {
@@ -104,6 +105,12 @@ export default function Home() {
         {/* Top Bar */}
         <div className="top-bar">
           <div className="logo">ONCHAIN TERMINAL</div>
+
+          {/* Wallet Button */}
+          <Link href="/wallet" className="wallet-nav-button">
+            <span className="wallet-icon">💼</span>
+            <span className="wallet-label">WALLET</span>
+          </Link>
 
           <div className="top-tickers">
             <div className="ticker-item">
@@ -517,6 +524,8 @@ export default function Home() {
             <TrendingCoins />
 
             <PriceAlerts />
+
+            <WalletSummaryWidget />
 
             <div className="panel-header">DEX Analytics</div>
 

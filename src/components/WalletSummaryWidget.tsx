@@ -3,6 +3,14 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
+// Helper to pause main page intervals before navigation
+const pauseMainPageIntervals = () => {
+  // Dispatch custom event that main page will listen to
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('pauseIntervals'))
+  }
+}
+
 interface WalletData {
   address: string
   totalUsd: number
@@ -62,7 +70,7 @@ export default function WalletSummaryWidget() {
           <div style={{ color: 'var(--text-tertiary)', marginBottom: '12px' }}>
             No wallet tracked yet
           </div>
-          <Link href="/wallet" className="wallet-link">
+          <Link href="/wallet" className="wallet-link" onClick={pauseMainPageIntervals}>
             TRACK WALLET →
           </Link>
         </div>
@@ -96,7 +104,7 @@ export default function WalletSummaryWidget() {
         </div>
       ))}
 
-      <Link href="/wallet" className="wallet-link">
+      <Link href="/wallet" className="wallet-link" onClick={pauseMainPageIntervals}>
         VIEW DETAILS →
       </Link>
     </div>

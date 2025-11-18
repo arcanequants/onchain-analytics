@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import GasChart from '@/components/GasChart'
 import FearGreedGauge from '@/components/FearGreedGauge'
 import EventCalendarAdvanced from '@/components/EventCalendarAdvanced'
@@ -29,6 +29,11 @@ export default function Home() {
   const [loading, setLoading] = useState(true)
   const performanceMode = usePerformanceMode()
 
+  // Refs to store interval IDs for cleanup
+  const gasIntervalRef = useRef<NodeJS.Timeout | undefined>(undefined)
+  const timeIntervalRef = useRef<NodeJS.Timeout | undefined>(undefined)
+  const priceIntervalRef = useRef<NodeJS.Timeout | undefined>(undefined)
+
   // Fetch real gas price data
   useEffect(() => {
     const fetchGasData = async () => {
@@ -45,8 +50,10 @@ export default function Home() {
 
     fetchGasData()
     // Refresh gas data every 12 seconds
-    const interval = setInterval(fetchGasData, 12000)
-    return () => clearInterval(interval)
+    gasIntervalRef.current = setInterval(fetchGasData, 12000)
+    return () => {
+      if (gasIntervalRef.current) clearInterval(gasIntervalRef.current)
+    }
   }, [])
 
   useEffect(() => {
@@ -57,8 +64,10 @@ export default function Home() {
       setCurrentTime(`${timeStr} EST | ${dateStr}`)
     }
     updateTime()
-    const interval = setInterval(updateTime, 1000)
-    return () => clearInterval(interval)
+    timeIntervalRef.current = setInterval(updateTime, 1000)
+    return () => {
+      if (timeIntervalRef.current) clearInterval(timeIntervalRef.current)
+    }
   }, [])
 
   useEffect(() => {
@@ -66,7 +75,7 @@ export default function Home() {
     if (performanceMode !== 'high') return
 
     // Simulate price updates for crypto tickers (BTC, ETH, SOL)
-    const priceInterval = setInterval(() => {
+    priceIntervalRef.current = setInterval(() => {
       const priceElements = document.querySelectorAll('.ticker-price')
       priceElements.forEach(el => {
         const current = parseFloat(el.textContent?.replace(/[$,]/g, '') || '0')
@@ -77,7 +86,9 @@ export default function Home() {
       })
     }, 3000)
 
-    return () => clearInterval(priceInterval)
+    return () => {
+      if (priceIntervalRef.current) clearInterval(priceIntervalRef.current)
+    }
   }, [performanceMode])
 
   // Helper to get gas data for a specific chain
@@ -93,6 +104,19 @@ export default function Home() {
     if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`
     return `${Math.floor(seconds / 3600)}h ago`
   }
+
+  // Pause all intervals to free CPU for navigation
+  const pauseIntervals = () => {
+    if (gasIntervalRef.current) clearInterval(gasIntervalRef.current)
+    if (timeIntervalRef.current) clearInterval(timeIntervalRef.current)
+    if (priceIntervalRef.current) clearInterval(priceIntervalRef.current)
+  }
+
+  // Listen for pause event from other components (like WalletSummaryWidget)
+  useEffect(() => {
+    window.addEventListener('pauseIntervals', pauseIntervals)
+    return () => window.removeEventListener('pauseIntervals', pauseIntervals)
+  }, [])
 
   return (
     <>
@@ -116,7 +140,7 @@ export default function Home() {
           <div className="logo">ONCHAIN TERMINAL</div>
 
           {/* Wallet Button */}
-          <Link href="/wallet" className="wallet-nav-button">
+          <Link href="/wallet" className="wallet-nav-button" onClick={pauseIntervals}>
             <span className="wallet-icon">💼</span>
             <span className="wallet-label">WALLET</span>
           </Link>

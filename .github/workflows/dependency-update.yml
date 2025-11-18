@@ -1,0 +1,44 @@
+name: Dependency Updates
+
+on:
+  schedule:
+    # Run weekly on Mondays at 9am
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+jobs:
+  update-dependencies:
+    name: Update Dependencies
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Update dependencies
+        run: |
+          npm update
+          npm outdated || true
+
+      - name: Run tests
+        run: npm test
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          commit-message: 'chore: update dependencies'
+          title: '🔄 Weekly Dependency Updates'
+          body: |
+            Automated dependency updates
+
+            - Updated npm packages to latest versions
+            - All tests passed
+
+            Please review changes before merging.
+          branch: dependency-updates
+          delete-branch: true

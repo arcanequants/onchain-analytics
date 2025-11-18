@@ -19,13 +19,23 @@ export async function GET(request: NextRequest) {
   const startTime = Date.now()
 
   try {
+    // Debug: Check all headers
+    const allHeaders: Record<string, string> = {}
+    request.headers.forEach((value, key) => {
+      if (key.toLowerCase().includes('auth') || key.toLowerCase().includes('bearer')) {
+        allHeaders[key] = value
+      }
+    })
+
     // Verify authorization
     const authHeader = request.headers.get('authorization')
     const token = authHeader?.replace('Bearer ', '')
     const expectedToken = process.env.CRON_SECRET
 
     console.log('[CRON collect-prices] Auth check:', {
+      allAuthHeaders: allHeaders,
       hasAuthHeader: !!authHeader,
+      authHeaderValue: authHeader,
       hasToken: !!token,
       hasExpectedToken: !!expectedToken,
       tokenLength: token?.length,
@@ -39,6 +49,8 @@ export async function GET(request: NextRequest) {
         {
           error: 'Unauthorized',
           debug: {
+            allAuthHeaders,
+            authHeaderValue: authHeader,
             hasToken: !!token,
             hasExpectedToken: !!expectedToken,
             tokenLength: token?.length || 0,

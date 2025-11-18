@@ -9,7 +9,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { getTopCoins, getTrendingCoins } from '@/lib/coingecko'
-import { supabase } from '@/lib/supabase'
+import { supabaseAdmin } from '@/lib/supabase'
 
 export const runtime = 'edge'
 export const dynamic = 'force-dynamic'
@@ -19,47 +19,14 @@ export async function GET(request: NextRequest) {
   const startTime = Date.now()
 
   try {
-    // Debug: Check all headers
-    const allHeaders: Record<string, string> = {}
-    request.headers.forEach((value, key) => {
-      if (key.toLowerCase().includes('auth') || key.toLowerCase().includes('bearer')) {
-        allHeaders[key] = value
-      }
-    })
-
     // Verify authorization
     const authHeader = request.headers.get('authorization')
     const token = authHeader?.replace('Bearer ', '')
-    const expectedToken = process.env.CRON_SECRET
 
-    console.log('[CRON collect-prices] Auth check:', {
-      allAuthHeaders: allHeaders,
-      hasAuthHeader: !!authHeader,
-      authHeaderValue: authHeader,
-      hasToken: !!token,
-      hasExpectedToken: !!expectedToken,
-      tokenLength: token?.length,
-      expectedTokenLength: expectedToken?.length,
-      tokensMatch: token === expectedToken
-    })
-
-    if (!token || token !== expectedToken) {
+    if (!token || token !== process.env.CRON_SECRET) {
       console.error('[CRON collect-prices] Unauthorized request')
       return NextResponse.json(
-        {
-          error: 'Unauthorized',
-          debug: {
-            allAuthHeaders,
-            authHeaderValue: authHeader,
-            hasToken: !!token,
-            hasExpectedToken: !!expectedToken,
-            tokenLength: token?.length || 0,
-            expectedTokenLength: expectedToken?.length || 0,
-            tokenPreview: token?.substring(0, 10) + '...',
-            expectedPreview: expectedToken?.substring(0, 10) + '...',
-            match: token === expectedToken
-          }
-        },
+        { error: 'Unauthorized' },
         { status: 401 }
       )
     }
@@ -103,7 +70,7 @@ export async function GET(request: NextRequest) {
         last_updated: coin.last_updated
       }))
 
-      const { error: upsertError } = await supabase
+      const { error: upsertError } = await supabaseAdmin
         .from('token_prices')
         .upsert(dbRecords, {
           onConflict: 'coingecko_id,last_updated',
@@ -127,7 +94,7 @@ export async function GET(request: NextRequest) {
         timestamp: new Date().toISOString()
       }))
 
-      const { error: historyError } = await supabase
+      const { error: historyError } = await supabaseAdmin
         .from('token_price_history')
         .insert(historyRecords)
 
@@ -157,7 +124,7 @@ export async function GET(request: NextRequest) {
           timestamp: new Date().toISOString()
         }))
 
-        const { error: trendingError } = await supabase
+        const { error: trendingError } = await supabaseAdmin
           .from('trending_coins')
           .insert(trendingRecords)
 
@@ -176,7 +143,7 @@ export async function GET(request: NextRequest) {
     const duration = Date.now() - startTime
 
     // Log execution to cron_executions table
-    await supabase
+    await supabaseAdmin
       .from('cron_executions')
       .insert({
         job_name: 'collect-prices',
@@ -199,7 +166,7 @@ export async function GET(request: NextRequest) {
     console.error('[CRON collect-prices] ❌ Error:', error)
 
     // Log failed execution
-    await supabase
+    await supabaseAdmin
       .from('cron_executions')
       .insert({
         job_name: 'collect-prices',

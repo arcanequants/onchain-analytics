@@ -22,8 +22,18 @@ export async function GET(request: NextRequest) {
     // Verify authorization
     const authHeader = request.headers.get('authorization')
     const token = authHeader?.replace('Bearer ', '')
+    const expectedToken = process.env.CRON_SECRET
 
-    if (!token || token !== process.env.CRON_SECRET) {
+    console.log('[CRON collect-prices] Auth check:', {
+      hasAuthHeader: !!authHeader,
+      hasToken: !!token,
+      hasExpectedToken: !!expectedToken,
+      tokenLength: token?.length,
+      expectedTokenLength: expectedToken?.length,
+      tokensMatch: token === expectedToken
+    })
+
+    if (!token || token !== expectedToken) {
       console.error('[CRON collect-prices] Unauthorized request')
       return NextResponse.json(
         { error: 'Unauthorized' },

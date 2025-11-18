@@ -3,7 +3,7 @@
 const https = require('https');
 
 const VERCEL_TOKEN = 'E4SHDXmoBXQo1v3GgJZ7azqQ';
-const PROJECT_ID = 'prj_TjGvYSYOj2pCoE7Q8amrBf7wZ8CP';
+const PROJECT_ID = 'prj_TjGvY8Y0j2pCoE7O8amiBf7wZ8CP';
 
 console.log('🔧 Configuring environment variables in Vercel...');
 console.log('');

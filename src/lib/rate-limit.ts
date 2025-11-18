@@ -224,6 +224,14 @@ export function isCronRequest(request: Request): boolean {
   const authHeader = request.headers.get('authorization')
   const cronSecret = process.env.CRON_SECRET
 
+  console.log('[Rate Limit] isCronRequest check:', {
+    hasAuthHeader: !!authHeader,
+    hasCronSecret: !!cronSecret,
+    authHeader: authHeader?.substring(0, 20) + '...',
+    expectedHeader: cronSecret ? `Bearer ${cronSecret}`.substring(0, 20) + '...' : 'undefined',
+    match: authHeader === `Bearer ${cronSecret}`
+  })
+
   if (!authHeader || !cronSecret) {
     return false
   }

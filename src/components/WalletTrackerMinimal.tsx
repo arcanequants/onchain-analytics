@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import { validateAddress } from '@/lib/wallet'
 import '../app/wallet/wallet.css'
 
@@ -45,7 +45,7 @@ export default function WalletTrackerMinimal() {
     { id: 'polygon', name: 'Polygon', icon: '🟣' },
   ]
 
-  const fetchWalletBalances = async (refresh = false) => {
+  const fetchWalletBalances = useCallback(async (refresh = false) => {
     if (!address) {
       setError('Please enter a wallet address')
       return
@@ -80,7 +80,7 @@ export default function WalletTrackerMinimal() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [address, selectedChains])
 
   const saveToLocalStorage = (data: WalletData) => {
     try {
@@ -150,46 +150,54 @@ export default function WalletTrackerMinimal() {
     return num.toFixed(8)
   }
 
-  // Group balances by chain
-  const groupedBalances = walletData?.balances.reduce((acc, balance) => {
-    if (!acc[balance.chain]) {
-      acc[balance.chain] = []
-    }
-    acc[balance.chain].push(balance)
-    return acc
-  }, {} as Record<string, TokenBalance[]>)
+  // Group balances by chain (memoized for performance)
+  const groupedBalances = useMemo(() => {
+    return walletData?.balances.reduce((acc, balance) => {
+      if (!acc[balance.chain]) {
+        acc[balance.chain] = []
+      }
+      acc[balance.chain].push(balance)
+      return acc
+    }, {} as Record<string, TokenBalance[]>)
+  }, [walletData?.balances])
 
-  // Calculate chain distribution
-  const chainDistribution = groupedBalances ? Object.entries(groupedBalances).map(([chainId, balances]) => {
-    const chainInfo = chains.find(c => c.id === chainId)
-    const total = balances.reduce((sum, b) => sum + (b.balanceUsd || 0), 0)
-    const percentage = walletData ? (total / walletData.totalValueUsd) * 100 : 0
+  // Calculate chain distribution (memoized for performance)
+  const chainDistribution = useMemo(() => {
+    return groupedBalances ? Object.entries(groupedBalances).map(([chainId, balances]) => {
+      const chainInfo = chains.find(c => c.id === chainId)
+      const total = balances.reduce((sum, b) => sum + (b.balanceUsd || 0), 0)
+      const percentage = walletData ? (total / walletData.totalValueUsd) * 100 : 0
 
-    return {
-      chainId,
-      name: chainInfo?.name || chainId,
-      icon: chainInfo?.icon || '⚪',
-      total,
-      percentage,
-      tokenCount: balances.length
-    }
-  }).sort((a, b) => b.total - a.total) : []
+      return {
+        chainId,
+        name: chainInfo?.name || chainId,
+        icon: chainInfo?.icon || '⚪',
+        total,
+        percentage,
+        tokenCount: balances.length
+      }
+    }).sort((a, b) => b.total - a.total) : []
+  }, [groupedBalances, walletData?.totalValueUsd])
 
-  // Get top holdings (sorted by USD value)
-  const topHoldings = walletData?.balances
-    .filter(b => b.balanceUsd && b.balanceUsd > 0)
-    .sort((a, b) => (b.balanceUsd || 0) - (a.balanceUsd || 0))
-    .slice(0, 8) || []
+  // Get top holdings (memoized for performance)
+  const topHoldings = useMemo(() => {
+    return walletData?.balances
+      .filter(b => b.balanceUsd && b.balanceUsd > 0)
+      .sort((a, b) => (b.balanceUsd || 0) - (a.balanceUsd || 0))
+      .slice(0, 8) || []
+  }, [walletData?.balances])
 
-  // Stats
-  const stats = walletData ? {
-    totalValue: walletData.totalValueUsd,
-    totalAssets: walletData.balances.length,
-    chainCount: Object.keys(groupedBalances || {}).length,
-    largestPosition: topHoldings[0]?.tokenSymbol || '-',
-    largestValue: topHoldings[0]?.balanceUsd || 0,
-    largestPercentage: topHoldings[0]?.balanceUsd ? (topHoldings[0].balanceUsd / walletData.totalValueUsd) * 100 : 0
-  } : null
+  // Stats (memoized for performance)
+  const stats = useMemo(() => {
+    return walletData ? {
+      totalValue: walletData.totalValueUsd,
+      totalAssets: walletData.balances.length,
+      chainCount: Object.keys(groupedBalances || {}).length,
+      largestPosition: topHoldings[0]?.tokenSymbol || '-',
+      largestValue: topHoldings[0]?.balanceUsd || 0,
+      largestPercentage: topHoldings[0]?.balanceUsd ? (topHoldings[0].balanceUsd / walletData.totalValueUsd) * 100 : 0
+    } : null
+  }, [walletData, groupedBalances, topHoldings])
 
   return (
     <div className="wallet-container">

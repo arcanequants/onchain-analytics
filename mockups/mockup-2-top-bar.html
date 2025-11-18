@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mockup 2: Top Bar Navigation - OnChain Terminal</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root[data-theme="dark"] {
+      --bg-primary: #0a0e1a;
+      --bg-secondary: rgba(15, 20, 25, 0.95);
+      --text-primary: #e0e0e0;
+      --text-secondary: #888;
+      --text-tertiary: #666;
+      --border-primary: #1a1f2e;
+      --accent-primary: #0099ff;
+      --success: #00ff88;
+      --danger: #ff0000;
+      --warning: #ffbb00;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      overflow-x: hidden;
+    }
+
+    .bg-grid {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-image:
+        linear-gradient(rgba(0, 153, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 153, 255, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+      z-index: 0;
+      animation: gridScroll 20s linear infinite;
+    }
+
+    @keyframes gridScroll {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(50px, 50px); }
+    }
+
+    .content-layer { position: relative; z-index: 10; }
+
+    .top-bar {
+      background: rgba(0, 0, 0, 0.95);
+      border-bottom: 1px solid var(--border-primary);
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 16px;
+      backdrop-filter: blur(10px);
+      gap: 20px;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--accent-primary);
+      letter-spacing: 1px;
+      text-shadow: 0 0 10px rgba(0, 153, 255, 0.5);
+    }
+
+    /* ⭐ NEW WALLET BUTTON IN TOP BAR ⭐ */
+    .wallet-nav-button {
+      padding: 8px 18px;
+      background: rgba(0, 153, 255, 0.15);
+      border: 2px solid var(--accent-primary);
+      border-radius: 4px;
+      color: var(--accent-primary);
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+      animation: buttonGlow 2s ease-in-out infinite;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    @keyframes buttonGlow {
+      0%, 100% {
+        box-shadow: 0 0 15px rgba(0, 153, 255, 0.5);
+        border-color: var(--accent-primary);
+      }
+      50% {
+        box-shadow: 0 0 25px rgba(0, 153, 255, 0.8);
+        border-color: #00b3ff;
+      }
+    }
+
+    .wallet-nav-button:hover {
+      background: rgba(0, 153, 255, 0.25);
+      box-shadow: 0 0 30px rgba(0, 153, 255, 0.8);
+      transform: translateY(-2px);
+    }
+
+    .new-badge {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background: #ff0000;
+      color: #fff;
+      padding: 2px 6px;
+      border-radius: 10px;
+      font-size: 8px;
+      font-weight: 700;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+    }
+
+    .wallet-icon {
+      font-size: 16px;
+    }
+
+    .top-tickers {
+      display: flex;
+      gap: 24px;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .ticker-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ticker-symbol {
+      color: var(--text-secondary);
+      font-weight: 500;
+      font-size: 16px;
+    }
+
+    .ticker-price {
+      color: #fff;
+      font-weight: 700;
+      font-size: 20px;
+    }
+
+    .ticker-change {
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .ticker-change.up { color: var(--success); }
+    .ticker-change.down { color: var(--danger); }
+
+    .top-time { color: var(--text-secondary); }
+
+    .terminal-grid {
+      display: grid;
+      grid-template-columns: 300px 1fr 280px;
+      height: calc(100vh - 50px);
+      gap: 1px;
+      background: #000;
+    }
+
+    .left-panel {
+      background: var(--bg-secondary);
+      border-right: 1px solid var(--border-primary);
+      overflow-y: auto;
+      backdrop-filter: blur(10px);
+    }
+
+    .panel-header {
+      padding: 12px 16px;
+      background: #000;
+      border-bottom: 1px solid var(--border-primary);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      letter-spacing: 1px;
+    }
+
+    .watchlist-item {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border-primary);
+      display: flex;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+    }
+
+    .watchlist-item:hover {
+      background: #1a1f2e;
+      transform: translateX(4px);
+      box-shadow: -3px 0 0 var(--accent-primary);
+    }
+
+    .watchlist-symbol {
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .watchlist-price {
+      color: var(--text-primary);
+    }
+
+    .watchlist-change {
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .center-panel {
+      background: rgba(10, 14, 26, 0.95);
+      overflow-y: auto;
+      padding: 16px;
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-tertiary);
+      font-size: 14px;
+    }
+
+    .right-panel {
+      background: var(--bg-secondary);
+      border-left: 1px solid var(--border-primary);
+      overflow-y: auto;
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-tertiary);
+      font-size: 14px;
+    }
+
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #0a0e1a; }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #1a1f2e, var(--accent-primary));
+      border-radius: 4px;
+    }
+
+    .annotation {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.9);
+      border: 2px solid var(--accent-primary);
+      padding: 16px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      color: var(--accent-primary);
+      font-weight: 700;
+      text-align: center;
+      z-index: 1000;
+      box-shadow: 0 0 30px rgba(0, 153, 255, 0.5);
+      animation: annotationPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes annotationPulse {
+      0%, 100% { box-shadow: 0 0 30px rgba(0, 153, 255, 0.5); }
+      50% { box-shadow: 0 0 50px rgba(0, 153, 255, 0.8); }
+    }
+
+    /* Mobile responsive preview */
+    @media (max-width: 1024px) {
+      .terminal-grid { grid-template-columns: 1fr; }
+      .left-panel, .right-panel { display: none; }
+      .wallet-label { display: none; }
+      .wallet-nav-button { padding: 8px 12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-grid"></div>
+
+  <div class="content-layer">
+    <div class="top-bar">
+      <div class="logo">ONCHAIN TERMINAL</div>
+
+      <!-- ⭐ NEW WALLET BUTTON ⭐ -->
+      <a href="#" class="wallet-nav-button">
+        <span class="new-badge">NEW!</span>
+        <span class="wallet-icon">💼</span>
+        <span class="wallet-label">WALLET</span>
+      </a>
+
+      <div class="top-tickers">
+        <div class="ticker-item">
+          <span class="ticker-symbol">BTC</span>
+          <span class="ticker-price">94280</span>
+          <span class="ticker-change up">+4.2%</span>
+        </div>
+        <div class="ticker-item">
+          <span class="ticker-symbol">ETH</span>
+          <span class="ticker-price">3150</span>
+          <span class="ticker-change up">+6.8%</span>
+        </div>
+        <div class="ticker-item">
+          <span class="ticker-symbol">SOL</span>
+          <span class="ticker-price">238</span>
+          <span class="ticker-change down">-2.1%</span>
+        </div>
+        <div class="ticker-item">
+          <span class="ticker-symbol">GAS</span>
+          <span class="ticker-price">25</span>
+          <span class="ticker-change up">LOW</span>
+        </div>
+      </div>
+
+      <div class="top-time">17:45:30 EST | JAN 18, 2025</div>
+    </div>
+
+    <div class="terminal-grid">
+      <!-- LEFT PANEL -->
+      <div class="left-panel">
+        <div class="panel-header">Watchlist</div>
+
+        <div class="watchlist-item">
+          <div>
+            <div class="watchlist-symbol">ETH/USD</div>
+            <div style="fontSize: 10px; color: var(--text-tertiary)">Ethereum</div>
+          </div>
+          <div style="text-align: right">
+            <div class="watchlist-price">3,150.42</div>
+            <div class="watchlist-change" style="color: var(--success)">+6.8%</div>
+          </div>
+        </div>
+
+        <div class="watchlist-item">
+          <div>
+            <div class="watchlist-symbol">BTC/USD</div>
+            <div style="fontSize: 10px; color: var(--text-tertiary)">Bitcoin</div>
+          </div>
+          <div style="text-align: right">
+            <div class="watchlist-price">94,280.15</div>
+            <div class="watchlist-change" style="color: var(--success)">+4.2%</div>
+          </div>
+        </div>
+
+        <div class="watchlist-item">
+          <div>
+            <div class="watchlist-symbol">SOL/USD</div>
+            <div style="fontSize: 10px; color: var(--text-tertiary)">Solana</div>
+          </div>
+          <div style="text-align: right">
+            <div class="watchlist-price">238.67</div>
+            <div class="watchlist-change" style="color: var(--danger)">-2.1%</div>
+          </div>
+        </div>
+
+        <div class="panel-header">Gas Prices (Live)</div>
+
+        <div class="watchlist-item">
+          <div>
+            <div class="watchlist-symbol">ETHEREUM</div>
+            <div style="fontSize: 10px; color: var(--text-tertiary)">Mainnet</div>
+          </div>
+          <div style="text-align: right">
+            <div class="watchlist-price">25.2 GWEI</div>
+            <div class="watchlist-change" style="color: var(--success)">LOW</div>
+          </div>
+        </div>
+
+        <div class="watchlist-item">
+          <div>
+            <div class="watchlist-symbol">BASE</div>
+            <div style="fontSize: 10px; color: var(--text-tertiary)">L2</div>
+          </div>
+          <div style="text-align: right">
+            <div class="watchlist-price">0.45 GWEI</div>
+            <div class="watchlist-change" style="color: var(--success)">LOW</div>
+          </div>
+        </div>
+
+        <div class="panel-header">DEX Volume 24h</div>
+
+        <div class="watchlist-item">
+          <div>
+            <div class="watchlist-symbol">UNISWAP V3</div>
+          </div>
+          <div style="text-align: right">
+            <div class="watchlist-price">$4.2B</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CENTER PANEL -->
+      <div class="center-panel">
+        [Main Content Area: Price Tables, Charts, Gas Tracker, Event Feed]
+      </div>
+
+      <!-- RIGHT PANEL -->
+      <div class="right-panel">
+        [Analytics Panel: Fear & Greed, Gas Trend, Trending Coins, Price Alerts]
+      </div>
+    </div>
+  </div>
+
+  <div class="annotation">
+    ⭐ PROPOSAL 2: Wallet button en Top Bar (RECOMENDADO) - Visible en desktop y mobile
+  </div>
+</body>
+</html>

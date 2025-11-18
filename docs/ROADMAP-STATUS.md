@@ -1,7 +1,7 @@
 # 📊 ROADMAP STATUS - Live Progress Tracker
-**Last Updated:** 2025-01-18 01:15 GMT-6
-**Overall Progress:** 62% (137/222 tasks)
-**Current Phase:** Multi-Chain Wallet Tracking (95% complete - UI integration pending) 🔄
+**Last Updated:** 2025-01-18 13:45 GMT-6
+**Overall Progress:** 64% (142/222 tasks)
+**Current Phase:** UX/UI Enhancements + Performance Optimization 🔄
 
 ---
 
@@ -14,12 +14,13 @@
 | **Fear & Greed** | ✅ Done | 8 | 0 | 8 |
 | **Event Calendar** | ✅ Done | 12 | 0 | 12 |
 | **Typography** | ✅ Done | 5 | 0 | 5 |
-| **UI/UX Enhancements** | ✅ Done | 3 | 0 | 3 |
+| **UI/UX Enhancements** | ✅ Done | 8 | 0 | 8 |
 | **Token Price Tracking** | ✅ Done | 13 | 0 | 13 |
-| **Wallet Tracking** | 🟡 In Progress | 7 | 1 | 8 |
-| **Month 2** | 🟡 In Progress | 20 | 17 | 37 |
+| **Wallet Tracking** | ✅ Done | 8 | 0 | 8 |
+| **Month 2** | 🟡 In Progress | 25 | 12 | 37 |
 | **Month 3-6** | ⭕ Not Started | 0 | 111 | 111 |
-| **TOTAL** | **62%** | **137** | **85** | **222** |
+| **Performance** | 🟡 In Progress | 0 | 5 | 5 |
+| **TOTAL** | **64%** | **142** | **85** | **227** |
 
 ---
 
@@ -98,7 +99,7 @@
 - [x] Global integration
 - [x] Documentation
 
-### UI/UX Enhancements (3/3 - 100%) ✅
+### UI/UX Enhancements (8/8 - 100%) ✅
 - [x] Arctic Clarity light mode theme design
 - [x] Theme toggle component (ThemeContext + ThemeToggle)
 - [x] Comprehensive light mode CSS overrides (246 lines)
@@ -106,6 +107,23 @@
   - Fixed page.tsx inline styles to use variables
   - Added light mode overrides for all UI components
   - Proper Arctic Clarity color scheme (#F7F9FC bg, #0EA5E9 accent)
+- [x] **Wallet Page Redesign - Proposal #3 Minimalist Elegance** ✨ NEW
+  - Apple + Notion inspired clean aesthetics
+  - Minimalist header with elegant typography
+  - Search card with clean input and chain tag selection
+  - 4-column stats grid (Total Value, Assets, Largest Position, Last Updated)
+  - 2-column content grid (Holdings + Chain Distribution)
+  - Token cards with avatars and smooth hover effects
+  - Animated progress bars for chain distribution
+  - Mobile-responsive layout (3 breakpoints)
+  - Custom wallet.css with theme support
+- [x] **Improved Theme System - Date-based Override** 🌓 NEW
+  - Default: AUTO mode (time-based 6 AM-6 PM = light)
+  - Manual override persists for entire day
+  - Automatic reset after midnight
+  - Simple Dark ↔ Light toggle (no confusing "Auto" option)
+  - localStorage with date tracking (theme-override + theme-override-date)
+  - Zero flash on page load (inline script)
 
 ### Token Price Tracking (13/13 - 100%) ✅
 - [x] CoinGecko API integration (price data collection)
@@ -122,7 +140,7 @@
 - [x] Mobile responsive design (3 breakpoints: 1024px, 768px, 480px)
 - [x] Homepage integration (all components live)
 
-### Multi-Chain Wallet Tracking (7/8 - 87.5%) 🔄 IN PROGRESS
+### Multi-Chain Wallet Tracking (8/8 - 100%) ✅ COMPLETE
 - [x] Database schema (4 tables: wallet_balances, wallet_nfts, wallet_history, tracked_wallets)
 - [x] Migration applied to Supabase
 - [x] Multi-chain RPC utilities (getNativeBalance, getTokenBalance, getChainBalances, getWalletBalances)
@@ -130,27 +148,34 @@
 - [x] WalletTracker component (address input, chain selection, balance display)
 - [x] PortfolioDashboard component (total value, top holdings, chain distribution)
 - [x] `/wallet` page (accessible at https://vectorialdata.com/wallet)
-- [ ] **UI Integration - Add navigation link to main interface** ⏸️ PENDING
-
-**Note:** Wallet Tracker is fully functional and deployed, but only accessible via direct URL: `https://vectorialdata.com/wallet`
+- [x] **WalletTrackerMinimal - Redesigned UI (Proposal #3)** ✨ NEW
+  - Replaced old component with minimalist design
+  - Modern Apple/Notion aesthetics
+  - Enhanced UX with stats grid and content layout
+  - Full theme support (dark/light modes)
+  - Mobile-responsive design
+  - Integrated into production
 
 ---
 
 ## 🔄 IN PROGRESS
 
-### Multi-Chain Wallet Tracking (95% Complete)
-**Current Focus:** Add navigation link to homepage
+### Performance Optimization for Legacy Browsers/Hardware (0/5 - 0%) 🚀 NEW PRIORITY
+**Current Focus:** Optimize wallet page loading for older Safari versions + older computers
 
-**Completed:**
-- ✅ Full backend implementation (RPC utilities + API)
-- ✅ Database schema (4 tables with indexes & RLS)
-- ✅ Frontend components (WalletTracker + PortfolioDashboard)
-- ✅ Deployed and accessible at /wallet
+**Issue Identified:**
+- Safari (older versions) + older computers show slow loading when clicking wallet button
+- Potential causes: React 19, CSS animations, large component bundles, backdrop-filter effects
+- Affects user experience on legacy devices (pre-2020 hardware, Safari <15)
 
-**Pending:**
-- [ ] Add wallet tracker link to navigation/sidebar
-- [ ] Integrate with homepage UI
-- [ ] Add to main menu system
+**Proposed Solutions:**
+1. [ ] Code splitting for wallet page (lazy loading)
+2. [ ] Progressive enhancement (reduce animations on older browsers)
+3. [ ] Conditional CSS (simpler styles for older browsers)
+4. [ ] Performance monitoring (identify bottlenecks)
+5. [ ] Fallback UI (lighter version for detected slow devices)
+
+**Priority:** HIGH - Affects real users on production
 
 ---
 
@@ -279,6 +304,35 @@
 
 ## 📝 RECENT UPDATES
 
+### 2025-01-18 (Afternoon - WALLET REDESIGN + THEME SYSTEM V2 COMPLETE! 🎨):
+- ✅ **Implemented Proposal #3 - Minimalist Elegance Design**
+  - Complete wallet page redesign with Apple/Notion aesthetics
+  - Created WalletTrackerMinimal component (replacing old WalletTracker)
+  - Custom wallet.css with minimalist styling (470+ lines)
+  - 4-column stats grid: Total Value, Assets, Largest Position, Last Updated
+  - 2-column content grid: Holdings list + Chain Distribution
+  - Token cards with gradient avatars and hover effects
+  - Animated progress bars for chain distribution
+  - Mobile-responsive (3 breakpoints: 1200px, 768px, 480px)
+  - Full dark/light theme support via CSS variables
+- ✅ **Improved Theme System - Date-based Override**
+  - Replaced 3-state system (Auto/Dark/Light) with smarter 2-state (Dark/Light)
+  - Default behavior: AUTO (time-based 6 AM-6 PM = light, 6 PM-6 AM = dark)
+  - Manual override persists for entire day (localStorage with date)
+  - Automatic reset after midnight (fresh start daily)
+  - Simple toggle button (no confusing "Auto" option in UI)
+  - Updated ThemeContext with date comparison logic
+  - Updated ThemeToggle to simple Dark ↔ Light toggle
+  - Updated layout.tsx inline script for zero flash
+  - Better UX: "Set it and forget it for the day"
+- ✅ Deployed to production (https://vectorialdata.com/wallet)
+- 🚨 **IDENTIFIED: Performance issue on older Safari + older computers**
+  - Wallet page loads slowly on pre-2020 hardware
+  - Priority task: Performance optimization for legacy browsers
+- ✅ **UI/UX Enhancements: 100% COMPLETE (8/8 tasks)** +5 new tasks
+- ✅ **Wallet Tracking: 100% COMPLETE (8/8 tasks)** +1 new task
+- ✅ **Month 2 Progress: 68% (25/37 tasks)** +5 tasks completed
+
 ### 2025-01-18 (Early Morning - WALLET TRACKING 87.5% COMPLETE! 💼):
 - ✅ Created database schema (4 tables: wallet_balances, wallet_nfts, wallet_history, tracked_wallets)
 - ✅ Applied migration to Supabase production
@@ -377,13 +431,28 @@
 
 ## 🚀 NEXT ACTIONS
 
-**Priority 1 (NEXT SESSION - Navigation Integration):**
-- [ ] **Add Wallet Tracker link to homepage**
-  - [ ] Add to left panel (Watchlist section) OR
-  - [ ] Create main navigation menu OR
-  - [ ] Add quick access button
-  - Development is COMPLETE, just needs UI integration
-  - Currently accessible only via direct URL: https://vectorialdata.com/wallet
+**Priority 1 (URGENT - Performance Optimization for Legacy Browsers):** 🚨
+- [ ] **Investigate performance bottleneck on older Safari + older computers**
+  - Issue: Wallet page loads slowly on pre-2020 hardware
+  - Browsers affected: Safari <15, older Chrome/Firefox
+  - Root cause analysis needed
+- [ ] **Implement code splitting for wallet page**
+  - Lazy load WalletTrackerMinimal component
+  - Split wallet.css into critical and non-critical
+  - Use dynamic imports for heavy dependencies
+- [ ] **Progressive enhancement for CSS**
+  - Detect browser capabilities
+  - Reduce/disable animations on older browsers
+  - Simplify backdrop-filter effects
+  - Conditional CSS loading
+- [ ] **Performance monitoring**
+  - Add timing metrics to wallet page
+  - Track loading time by browser/device
+  - Identify specific slow operations
+- [ ] **Fallback UI for slow devices**
+  - Light version without animations
+  - Simpler layout for detected slow connections
+  - Progressive image loading
 
 **Priority 2 (This Week - Enhancements):**
 - [ ] NFT balance tracking (enhancement to wallet tracker)
@@ -414,11 +483,11 @@
 3. ✅ **Fear & Greed Index** - 100% Complete (8/8)
 4. ✅ **Event Calendar** - 100% Complete (12/12)
 5. ✅ **Typography System** - 100% Complete (5/5)
-6. ✅ **Light/Dark Mode** - 100% Complete (3/3)
+6. ✅ **UI/UX Enhancements** - 100% Complete (8/8) - Includes Proposal #3 + Theme V2
 7. ✅ **Token Price Tracking** - 100% Complete (13/13)
-8. 🔄 **Wallet Tracking** - 87.5% Complete (7/8) - UI integration pending
+8. ✅ **Wallet Tracking** - 100% Complete (8/8) - Redesigned with Minimalist UI
 
-**Total Progress: 62% (137/222 tasks)**
+**Total Progress: 64% (142/227 tasks)**
 
 ---
 

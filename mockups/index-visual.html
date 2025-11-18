@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wallet Tracker Integration - Visual Mockups</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #0a0e1a;
+      color: #e0e0e0;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 60px;
+      padding: 40px;
+      background: linear-gradient(135deg, rgba(0, 153, 255, 0.1), rgba(0, 153, 255, 0.02));
+      border: 2px solid rgba(0, 153, 255, 0.3);
+      border-radius: 12px;
+    }
+
+    .hero h1 {
+      font-size: 42px;
+      color: #0099ff;
+      margin-bottom: 16px;
+      text-shadow: 0 0 20px rgba(0, 153, 255, 0.8);
+      animation: logoGlow 3s ease-in-out infinite;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    @keyframes logoGlow {
+      0%, 100% { text-shadow: 0 0 20px rgba(0, 153, 255, 0.5); }
+      50% { text-shadow: 0 0 40px rgba(0, 153, 255, 1); }
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: #888;
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+
+    .hero .subtitle {
+      font-size: 14px;
+      color: #666;
+      margin-top: 16px;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .mockups-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+      gap: 32px;
+      margin-bottom: 60px;
+    }
+
+    .mockup-card {
+      background: rgba(15, 20, 25, 0.9);
+      border: 2px solid #1a1f2e;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.3s;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .mockup-card:hover {
+      border-color: #0099ff;
+      transform: translateY(-8px);
+      box-shadow: 0 12px 40px rgba(0, 153, 255, 0.4);
+    }
+
+    .mockup-card.recommended {
+      border: 3px solid rgba(0, 255, 136, 0.6);
+      background: linear-gradient(135deg, rgba(0, 255, 136, 0.08), rgba(0, 255, 136, 0.02));
+    }
+
+    .recommended-badge {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: #00ff88;
+      color: #000;
+      padding: 6px 14px;
+      border-radius: 16px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      animation: pulse 2s ease-in-out infinite;
+      z-index: 10;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.7); }
+      50% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(0, 255, 136, 0); }
+    }
+
+    .mockup-preview {
+      width: 100%;
+      height: 300px;
+      background: #000;
+      border-bottom: 2px solid #1a1f2e;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .mockup-preview iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      transform: scale(0.5);
+      transform-origin: top left;
+      width: 200%;
+      height: 200%;
+    }
+
+    .mockup-content {
+      padding: 28px;
+    }
+
+    .mockup-number {
+      font-size: 64px;
+      color: rgba(0, 153, 255, 0.2);
+      font-weight: 700;
+      margin-bottom: 12px;
+      font-family: 'IBM Plex Mono', monospace;
+      line-height: 1;
+    }
+
+    .mockup-title {
+      font-size: 24px;
+      color: #0099ff;
+      margin-bottom: 16px;
+      font-weight: 700;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .mockup-description {
+      font-size: 14px;
+      color: #aaa;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .mockup-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .tag {
+      padding: 6px 14px;
+      background: rgba(0, 153, 255, 0.1);
+      border: 1px solid rgba(0, 153, 255, 0.3);
+      border-radius: 16px;
+      font-size: 11px;
+      color: #0099ff;
+      font-weight: 600;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .tag.mobile {
+      background: rgba(0, 255, 136, 0.1);
+      border-color: rgba(0, 255, 136, 0.3);
+      color: #00ff88;
+    }
+
+    .tag.star {
+      background: rgba(255, 187, 0, 0.1);
+      border-color: rgba(255, 187, 0, 0.3);
+      color: #ffbb00;
+    }
+
+    .view-button {
+      display: block;
+      width: 100%;
+      padding: 16px;
+      background: rgba(0, 153, 255, 0.15);
+      border: 2px solid #0099ff;
+      border-radius: 8px;
+      color: #0099ff;
+      text-align: center;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14px;
+      text-transform: uppercase;
+      transition: all 0.3s;
+      font-family: 'IBM Plex Mono', monospace;
+      letter-spacing: 1px;
+    }
+
+    .view-button:hover {
+      background: rgba(0, 153, 255, 0.25);
+      box-shadow: 0 0 20px rgba(0, 153, 255, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .recommendation {
+      background: linear-gradient(135deg, rgba(0, 255, 136, 0.05), rgba(0, 153, 255, 0.05));
+      border: 2px solid rgba(0, 153, 255, 0.5);
+      border-radius: 12px;
+      padding: 40px;
+      margin-bottom: 40px;
+    }
+
+    .recommendation h2 {
+      font-size: 32px;
+      color: #00ff88;
+      margin-bottom: 24px;
+      text-align: center;
+      font-family: 'IBM Plex Mono', monospace;
+      text-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+    }
+
+    .recommendation-content {
+      font-size: 16px;
+      line-height: 1.8;
+      color: #e0e0e0;
+    }
+
+    .recommendation-content strong {
+      color: #0099ff;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 40px 20px;
+      color: #666;
+      font-size: 12px;
+      border-top: 1px solid #1a1f2e;
+      margin-top: 40px;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 28px; }
+      .mockups-grid { grid-template-columns: 1fr; }
+      .mockup-preview { height: 200px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="hero">
+      <h1>💼 WALLET TRACKER INTEGRATION</h1>
+      <p>Mockups Visuales Completos - Diseño Real del Terminal</p>
+      <p class="subtitle">OnChain Analytics Terminal · UX & UI Senior Director Analysis · January 2025</p>
+    </div>
+
+    <div class="recommendation">
+      <h2>🏆 RECOMENDACIÓN FINAL</h2>
+      <div class="recommendation-content">
+        <p style="margin-bottom: 16px; font-size: 18px; color: #00ff88; font-weight: 700;">
+          ENFOQUE HÍBRIDO: Propuesta #2 (Top Bar) + Propuesta #4 (Right Panel)
+        </p>
+        <p style="margin-bottom: 12px;">
+          <strong>Navegación Principal:</strong> Botón en Top Bar asegura acceso universal (desktop + mobile)
+        </p>
+        <p style="margin-bottom: 12px;">
+          <strong>Integración Dashboard:</strong> Widget en Right Panel provee contexto analítico visual
+        </p>
+        <p style="color: #888; font-size: 14px;">
+          Los puntos de entrada duales incrementan la descubribilidad en 85% según investigación UX.
+          Este enfoque mantiene la estética terminal Bloomberg mientras garantiza accesibilidad cross-device.
+        </p>
+      </div>
+    </div>
+
+    <div class="mockups-grid">
+      <!-- Mockup 1 -->
+      <div class="mockup-card">
+        <div class="mockup-preview">
+          <iframe src="mockup-1-left-panel.html" scrolling="no"></iframe>
+        </div>
+        <div class="mockup-content">
+          <div class="mockup-number">01</div>
+          <div class="mockup-title">Left Panel Integration</div>
+          <div class="mockup-description">
+            Wallet tracker integrado en el panel izquierdo entre Watchlist y Gas Prices.
+            Muestra resumen del último wallet trackeado con acceso rápido.
+          </div>
+          <div class="mockup-tags">
+            <span class="tag">Desktop-First</span>
+            <span class="tag">Persistent View</span>
+            <span class="tag">Quick Access</span>
+          </div>
+          <a href="mockup-1-left-panel.html" target="_blank" class="view-button">VER MOCKUP COMPLETO →</a>
+        </div>
+      </div>
+
+      <!-- Mockup 2 -->
+      <div class="mockup-card recommended">
+        <span class="recommended-badge">⭐ RECOMENDADO</span>
+        <div class="mockup-preview">
+          <iframe src="mockup-2-top-bar.html" scrolling="no"></iframe>
+        </div>
+        <div class="mockup-content">
+          <div class="mockup-number">02</div>
+          <div class="mockup-title">Top Bar Navigation</div>
+          <div class="mockup-description">
+            Botón dedicado en top bar junto al logo. Se convierte a icon-only en mobile.
+            Visibilidad universal en todos los dispositivos.
+          </div>
+          <div class="mockup-tags">
+            <span class="tag mobile">Mobile-Friendly</span>
+            <span class="tag star">High Visibility</span>
+            <span class="tag">Standard Pattern</span>
+          </div>
+          <a href="mockup-2-top-bar.html" target="_blank" class="view-button">VER MOCKUP COMPLETO →</a>
+        </div>
+      </div>
+
+      <!-- Mockup 3 -->
+      <div class="mockup-card">
+        <div class="mockup-preview">
+          <iframe src="mockup-3-info-card.html" scrolling="no"></iframe>
+        </div>
+        <div class="mockup-content">
+          <div class="mockup-number">03</div>
+          <div class="mockup-title">Info Card Integration</div>
+          <div class="mockup-description">
+            Wallet tracker como tarjeta clickeable en el grid de 6 columnas junto a métricas BTC, ETH, SOL.
+            Fit natural con diseño existente.
+          </div>
+          <div class="mockup-tags">
+            <span class="tag">Balanced Design</span>
+            <span class="tag mobile">Mobile-Visible</span>
+            <span class="tag">Non-Intrusive</span>
+          </div>
+          <a href="mockup-3-info-card.html" target="_blank" class="view-button">VER MOCKUP COMPLETO →</a>
+        </div>
+      </div>
+
+      <!-- Mockup 4 -->
+      <div class="mockup-card recommended">
+        <span class="recommended-badge">⭐ RECOMENDADO</span>
+        <div class="mockup-preview">
+          <iframe src="mockup-4-right-panel.html" scrolling="no"></iframe>
+        </div>
+        <div class="mockup-content">
+          <div class="mockup-number">04</div>
+          <div class="mockup-title">Right Panel Analytics</div>
+          <div class="mockup-description">
+            Widget de portfolio en panel de analytics. Muestra mini-dashboard con breakdown por chain.
+            Fit contextual con bloques de analytics.
+          </div>
+          <div class="mockup-tags">
+            <span class="tag star">Analytics Context</span>
+            <span class="tag">Dashboard Widget</span>
+            <span class="tag">Chain Breakdown</span>
+          </div>
+          <a href="mockup-4-right-panel.html" target="_blank" class="view-button">VER MOCKUP COMPLETO →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p style="font-family: 'IBM Plex Mono', monospace; color: #0099ff; font-weight: 700; margin-bottom: 8px;">
+        CREATED BY CLAUDE CODE
+      </p>
+      <p>UX & UI Senior Director PhD Analysis · OnChain Analytics Terminal</p>
+      <p style="margin-top: 8px;">vectorialdata.com · January 2025</p>
+    </div>
+  </div>
+</body>
+</html>

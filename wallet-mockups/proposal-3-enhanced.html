@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proposal 3: Minimalist Elegance Enhanced | Wallet Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #FAFBFC 0%, #F3F4F6 100%);
+      color: #1F2937;
+      overflow-x: hidden;
+      font-weight: 400;
+      position: relative;
+    }
+
+    /* Floating orbs background */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.15;
+      pointer-events: none;
+      z-index: 0;
+      animation: float 20s ease-in-out infinite;
+    }
+
+    .orb-1 {
+      width: 400px;
+      height: 400px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      top: 10%;
+      left: -10%;
+      animation-delay: 0s;
+    }
+
+    .orb-2 {
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(135deg, #f093fb, #f5576c);
+      top: 60%;
+      right: -5%;
+      animation-delay: 7s;
+    }
+
+    .orb-3 {
+      width: 350px;
+      height: 350px;
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+      bottom: 10%;
+      left: 30%;
+      animation-delay: 14s;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translate(0, 0) scale(1);
+      }
+      33% {
+        transform: translate(30px, -30px) scale(1.1);
+      }
+      66% {
+        transform: translate(-20px, 20px) scale(0.9);
+      }
+    }
+
+    .content {
+      padding: 48px;
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Minimal Header with parallax */
+    .minimal-header {
+      margin-bottom: 48px;
+      animation: fadeIn 0.8s ease;
+      transform-style: preserve-3d;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .header-title {
+      font-size: 56px;
+      font-weight: 200;
+      color: #111827;
+      margin-bottom: 12px;
+      letter-spacing: -1.5px;
+      background: linear-gradient(135deg, #111827, #4B5563);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 3s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .header-subtitle {
+      font-size: 17px;
+      color: #6B7280;
+      font-weight: 400;
+    }
+
+    /* Glassmorphism Search Card */
+    .search-card {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 24px;
+      padding: 40px;
+      margin-bottom: 32px;
+      box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.04),
+        0 2px 8px rgba(0, 0, 0, 0.02),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+      animation: slideUp 0.8s ease;
+      animation-delay: 0.1s;
+      animation-fill-mode: both;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .search-card:hover {
+      transform: translateY(-4px);
+      box-shadow:
+        0 16px 48px rgba(0, 0, 0, 0.08),
+        0 4px 16px rgba(0, 0, 0, 0.04),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .search-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 12px;
+      display: block;
+      letter-spacing: 0.3px;
+    }
+
+    .search-wrapper {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .search-input {
+      flex: 1;
+      padding: 16px 20px;
+      background: rgba(249, 250, 251, 0.5);
+      border: 1.5px solid rgba(229, 231, 235, 0.6);
+      border-radius: 12px;
+      color: #111827;
+      font-size: 15px;
+      font-family: 'IBM Plex Mono', monospace;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: #667eea;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow:
+        0 0 0 4px rgba(102, 126, 234, 0.1),
+        0 4px 16px rgba(102, 126, 234, 0.08);
+      transform: scale(1.01);
+    }
+
+    .btn-minimal {
+      padding: 16px 32px;
+      background: linear-gradient(135deg, #111827 0%, #1F2937 100%);
+      border: none;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-minimal::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn-minimal:hover::before {
+      left: 100%;
+    }
+
+    .btn-minimal:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-minimal:active {
+      transform: translateY(0);
+    }
+
+    /* Magnetic Chain Tags */
+    .chain-tags {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .chain-tag {
+      padding: 10px 18px;
+      background: rgba(243, 244, 246, 0.6);
+      backdrop-filter: blur(10px);
+      border: 1.5px solid rgba(229, 231, 235, 0.6);
+      border-radius: 24px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #4B5563;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      position: relative;
+    }
+
+    .chain-tag:hover {
+      background: rgba(255, 255, 255, 0.9);
+      border-color: #667eea;
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+    }
+
+    .chain-tag.active {
+      background: linear-gradient(135deg, #111827, #374151);
+      color: #fff;
+      border-color: #111827;
+      box-shadow: 0 4px 16px rgba(17, 24, 39, 0.3);
+    }
+
+    /* Floating Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-bottom: 32px;
+      animation: slideUp 0.8s ease;
+      animation-delay: 0.2s;
+      animation-fill-mode: both;
+    }
+
+    .stat-minimal {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow:
+        0 4px 16px rgba(0, 0, 0, 0.04),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-minimal::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .stat-minimal:hover::before {
+      opacity: 1;
+    }
+
+    .stat-minimal:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow:
+        0 16px 32px rgba(0, 0, 0, 0.08),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+    }
+
+    .stat-minimal-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #6B7280;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .stat-minimal-value {
+      font-size: 42px;
+      font-weight: 200;
+      color: #111827;
+      line-height: 1;
+      margin-bottom: 12px;
+      letter-spacing: -2px;
+      background: linear-gradient(135deg, #111827, #4B5563);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-minimal-change {
+      font-size: 14px;
+      color: #10B981;
+      font-weight: 600;
+    }
+
+    /* Content Grid */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 24px;
+      animation: slideUp 0.8s ease;
+      animation-delay: 0.3s;
+      animation-fill-mode: both;
+    }
+
+    .content-card {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 24px;
+      padding: 36px;
+      box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.04),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .content-card:hover {
+      transform: translateY(-4px);
+      box-shadow:
+        0 16px 48px rgba(0, 0, 0, 0.08),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+    }
+
+    .card-title {
+      font-size: 22px;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 28px;
+      letter-spacing: -0.3px;
+    }
+
+    /* Token List with magnetic effect */
+    .token-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .token-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px;
+      background: rgba(249, 250, 251, 0.5);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(229, 231, 235, 0.5);
+      border-radius: 16px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .token-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 16px 0 0 16px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .token-item:hover::before {
+      opacity: 1;
+    }
+
+    .token-item:hover {
+      background: rgba(255, 255, 255, 0.9);
+      border-color: rgba(102, 126, 234, 0.3);
+      transform: translateX(8px) scale(1.01);
+      box-shadow: 0 4px 16px rgba(102, 126, 234, 0.1);
+    }
+
+    .token-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .token-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: #fff;
+      font-size: 16px;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+      transition: all 0.3s;
+    }
+
+    .token-item:hover .token-avatar {
+      transform: rotate(10deg) scale(1.1);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .token-name-minimal {
+      font-weight: 600;
+      color: #111827;
+      font-size: 15px;
+      margin-bottom: 3px;
+    }
+
+    .token-symbol-minimal {
+      font-size: 13px;
+      color: #6B7280;
+    }
+
+    .token-right {
+      text-align: right;
+    }
+
+    .token-value-minimal {
+      font-weight: 600;
+      color: #111827;
+      font-size: 17px;
+      margin-bottom: 3px;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .token-change-minimal {
+      font-size: 13px;
+      color: #10B981;
+      font-weight: 600;
+    }
+
+    /* Chain Progress with smooth animations */
+    .chain-progress-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .chain-progress-item {
+      padding: 22px;
+      background: rgba(249, 250, 251, 0.5);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(229, 231, 235, 0.5);
+      border-radius: 16px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+
+    .chain-progress-item:hover {
+      background: rgba(255, 255, 255, 0.9);
+      border-color: rgba(102, 126, 234, 0.3);
+      transform: translateX(4px);
+      box-shadow: 0 4px 16px rgba(102, 126, 234, 0.1);
+    }
+
+    .chain-progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .chain-progress-name {
+      font-weight: 600;
+      color: #111827;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .chain-progress-value {
+      font-weight: 600;
+      color: #111827;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 16px;
+    }
+
+    .chain-progress-bar {
+      width: 100%;
+      height: 8px;
+      background: rgba(229, 231, 235, 0.5);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 10px;
+      position: relative;
+    }
+
+    .chain-progress-bar::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      animation: shimmerBar 2s infinite;
+    }
+
+    @keyframes shimmerBar {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    .chain-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+      border-radius: 4px;
+      transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 0 12px rgba(102, 126, 234, 0.4);
+      position: relative;
+    }
+
+    .chain-progress-item:hover .chain-progress-fill {
+      box-shadow: 0 0 20px rgba(102, 126, 234, 0.6);
+    }
+
+    .chain-progress-meta {
+      font-size: 13px;
+      color: #6B7280;
+      font-weight: 500;
+    }
+
+    /* Enhanced Annotation */
+    .annotation {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(229, 231, 235, 0.8);
+      padding: 16px 32px;
+      border-radius: 16px;
+      font-size: 13px;
+      color: #374151;
+      font-weight: 600;
+      text-align: center;
+      z-index: 1000;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      animation: floatAnnotation 3s ease-in-out infinite;
+    }
+
+    @keyframes floatAnnotation {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-5px); }
+    }
+
+    /* Cursor trail effect */
+    .cursor-trail {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    @media (max-width: 1200px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .content-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating Orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <div class="content">
+    <!-- Minimal Header -->
+    <div class="minimal-header">
+      <h1 class="header-title">Wallet Portfolio</h1>
+      <p class="header-subtitle">Track your multi-chain cryptocurrency holdings</p>
+    </div>
+
+    <!-- Search Card -->
+    <div class="search-card">
+      <label class="search-label">Wallet Address</label>
+      <div class="search-wrapper">
+        <input type="text" class="search-input" placeholder="Enter wallet address (0x...)" value="0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045">
+        <button class="btn-minimal">Track</button>
+      </div>
+
+      <div class="chain-tags">
+        <div class="chain-tag active">⟠ Ethereum</div>
+        <div class="chain-tag active">🔵 Base</div>
+        <div class="chain-tag active">🔷 Arbitrum</div>
+        <div class="chain-tag active">🔴 Optimism</div>
+        <div class="chain-tag active">🟣 Polygon</div>
+      </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+      <div class="stat-minimal">
+        <div class="stat-minimal-label">Total Value</div>
+        <div class="stat-minimal-value">$2.4M</div>
+        <div class="stat-minimal-change">+5.2% today</div>
+      </div>
+      <div class="stat-minimal">
+        <div class="stat-minimal-label">Total Assets</div>
+        <div class="stat-minimal-value">47</div>
+        <div class="stat-minimal-change">Across 5 chains</div>
+      </div>
+      <div class="stat-minimal">
+        <div class="stat-minimal-label">Largest Position</div>
+        <div class="stat-minimal-value">ETH</div>
+        <div class="stat-minimal-change">$1.2M · 48%</div>
+      </div>
+      <div class="stat-minimal">
+        <div class="stat-minimal-label">Gas Available</div>
+        <div class="stat-minimal-value">15.4</div>
+        <div class="stat-minimal-change">ETH equivalent</div>
+      </div>
+    </div>
+
+    <!-- Content Grid -->
+    <div class="content-grid">
+      <!-- Token Holdings -->
+      <div class="content-card">
+        <h2 class="card-title">Holdings</h2>
+        <div class="token-list">
+          <div class="token-item">
+            <div class="token-left">
+              <div class="token-avatar" style="background: linear-gradient(135deg, #627eea 0%, #4d5fb7 100%);">⟠</div>
+              <div>
+                <div class="token-name-minimal">Ethereum</div>
+                <div class="token-symbol-minimal">385.2 ETH</div>
+              </div>
+            </div>
+            <div class="token-right">
+              <div class="token-value-minimal">$1,156,800</div>
+              <div class="token-change-minimal">+4.2%</div>
+            </div>
+          </div>
+
+          <div class="token-item">
+            <div class="token-left">
+              <div class="token-avatar" style="background: linear-gradient(135deg, #f7931a 0%, #e07a00 100%);">₿</div>
+              <div>
+                <div class="token-name-minimal">Wrapped Bitcoin</div>
+                <div class="token-symbol-minimal">4.5 WBTC</div>
+              </div>
+            </div>
+            <div class="token-right">
+              <div class="token-value-minimal">$379,200</div>
+              <div class="token-change-minimal">+2.8%</div>
+            </div>
+          </div>
+
+          <div class="token-item">
+            <div class="token-left">
+              <div class="token-avatar" style="background: linear-gradient(135deg, #2775ca 0%, #1e5ea8 100%);">U</div>
+              <div>
+                <div class="token-name-minimal">USD Coin</div>
+                <div class="token-symbol-minimal">285,000 USDC</div>
+              </div>
+            </div>
+            <div class="token-right">
+              <div class="token-value-minimal">$285,000</div>
+              <div class="token-change-minimal" style="color: #6B7280;">0.0%</div>
+            </div>
+          </div>
+
+          <div class="token-item">
+            <div class="token-left">
+              <div class="token-avatar" style="background: linear-gradient(135deg, #375bd2 0%, #2a4aab 100%);">◆</div>
+              <div>
+                <div class="token-name-minimal">Chainlink</div>
+                <div class="token-symbol-minimal">8,500 LINK</div>
+              </div>
+            </div>
+            <div class="token-right">
+              <div class="token-value-minimal">$129,600</div>
+              <div class="token-change-minimal">+6.1%</div>
+            </div>
+          </div>
+
+          <div class="token-item">
+            <div class="token-left">
+              <div class="token-avatar" style="background: linear-gradient(135deg, #ff007a 0%, #d6006a 100%);">◎</div>
+              <div>
+                <div class="token-name-minimal">Uniswap</div>
+                <div class="token-symbol-minimal">15,200 UNI</div>
+              </div>
+            </div>
+            <div class="token-right">
+              <div class="token-value-minimal">$115,200</div>
+              <div class="token-change-minimal" style="color: #EF4444;">-1.2%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chain Distribution -->
+      <div class="content-card">
+        <h2 class="card-title">Distribution</h2>
+        <div class="chain-progress-list">
+          <div class="chain-progress-item">
+            <div class="chain-progress-header">
+              <div class="chain-progress-name">⟠ Ethereum</div>
+              <div class="chain-progress-value">$1,156,800</div>
+            </div>
+            <div class="chain-progress-bar">
+              <div class="chain-progress-fill" style="width: 48%"></div>
+            </div>
+            <div class="chain-progress-meta">18 tokens · 48.2%</div>
+          </div>
+
+          <div class="chain-progress-item">
+            <div class="chain-progress-header">
+              <div class="chain-progress-name">🔵 Base</div>
+              <div class="chain-progress-value">$540,000</div>
+            </div>
+            <div class="chain-progress-bar">
+              <div class="chain-progress-fill" style="width: 22.5%"></div>
+            </div>
+            <div class="chain-progress-meta">12 tokens · 22.5%</div>
+          </div>
+
+          <div class="chain-progress-item">
+            <div class="chain-progress-header">
+              <div class="chain-progress-name">🔷 Arbitrum</div>
+              <div class="chain-progress-value">$379,200</div>
+            </div>
+            <div class="chain-progress-bar">
+              <div class="chain-progress-fill" style="width: 15.8%"></div>
+            </div>
+            <div class="chain-progress-meta">8 tokens · 15.8%</div>
+          </div>
+
+          <div class="chain-progress-item">
+            <div class="chain-progress-header">
+              <div class="chain-progress-name">🔴 Optimism</div>
+              <div class="chain-progress-value">$218,400</div>
+            </div>
+            <div class="chain-progress-bar">
+              <div class="chain-progress-fill" style="width: 9.1%"></div>
+            </div>
+            <div class="chain-progress-meta">6 tokens · 9.1%</div>
+          </div>
+
+          <div class="chain-progress-item">
+            <div class="chain-progress-header">
+              <div class="chain-progress-name">🟣 Polygon</div>
+              <div class="chain-progress-value">$105,600</div>
+            </div>
+            <div class="chain-progress-bar">
+              <div class="chain-progress-fill" style="width: 4.4%"></div>
+            </div>
+            <div class="chain-progress-meta">3 tokens · 4.4%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="annotation">
+    ✨ PROPOSAL 3 ENHANCED: Minimalist Elegance with Special Effects
+  </div>
+</body>
+</html>

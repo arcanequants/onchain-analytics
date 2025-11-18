@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proposal 1: Command Center | Wallet Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #000000;
+      color: #e0e0e0;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Radar Grid Background */
+    .radar-bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(0, 255, 136, 0.03) 0%, transparent 50%),
+        repeating-linear-gradient(0deg, rgba(0, 255, 136, 0.03) 0px, transparent 2px, transparent 40px),
+        repeating-linear-gradient(90deg, rgba(0, 255, 136, 0.03) 0px, transparent 2px, transparent 40px);
+      z-index: 0;
+      animation: radarSweep 8s linear infinite;
+    }
+
+    @keyframes radarSweep {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .content { position: relative; z-index: 10; padding: 24px; max-width: 1600px; margin: 0 auto; }
+
+    /* Mission Header */
+    .mission-header {
+      background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 153, 255, 0.1));
+      border: 2px solid #00ff88;
+      border-radius: 8px;
+      padding: 24px 32px;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 40px rgba(0, 255, 136, 0.3);
+    }
+
+    .mission-header::before {
+      content: '';
+      position: absolute;
+      top: -2px; left: -100%;
+      width: 100%; height: 4px;
+      background: linear-gradient(90deg, transparent, #00ff88, transparent);
+      animation: scan 3s linear infinite;
+    }
+
+    @keyframes scan {
+      0% { left: -100%; }
+      100% { left: 200%; }
+    }
+
+    .mission-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: #00ff88;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: 8px;
+      text-shadow: 0 0 20px rgba(0, 255, 136, 0.8);
+    }
+
+    .mission-subtitle {
+      font-size: 14px;
+      color: #888;
+      font-family: 'IBM Plex Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .mission-status {
+      position: absolute;
+      top: 24px; right: 32px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: #00ff88;
+    }
+
+    .status-indicator {
+      width: 10px;
+      height: 10px;
+      background: #00ff88;
+      border-radius: 50%;
+      box-shadow: 0 0 20px #00ff88;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.2); }
+    }
+
+    /* Control Grid */
+    .control-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .control-panel {
+      background: rgba(10, 14, 26, 0.95);
+      border: 2px solid #1a1f2e;
+      border-radius: 8px;
+      padding: 24px;
+      position: relative;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s;
+    }
+
+    .control-panel:hover {
+      border-color: #00ff88;
+      box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
+    }
+
+    .panel-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #00ff88;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #1a1f2e;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    /* Target Input */
+    .target-input-group {
+      margin-bottom: 20px;
+    }
+
+    .input-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #888;
+      margin-bottom: 8px;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .target-input {
+      width: 100%;
+      padding: 14px 16px;
+      background: #000;
+      border: 2px solid #1a1f2e;
+      border-radius: 6px;
+      color: #00ff88;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 14px;
+      transition: all 0.3s;
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    .target-input:focus {
+      outline: none;
+      border-color: #00ff88;
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.3), inset 0 2px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Chain Selector */
+    .chain-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .chain-button {
+      padding: 12px;
+      background: #0a0e1a;
+      border: 2px solid #1a1f2e;
+      border-radius: 6px;
+      color: #888;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .chain-button:hover {
+      border-color: #00ff88;
+      background: rgba(0, 255, 136, 0.05);
+      color: #00ff88;
+      box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+    }
+
+    .chain-button.active {
+      border-color: #00ff88;
+      background: rgba(0, 255, 136, 0.1);
+      color: #00ff88;
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+      display: grid;
+      grid-template-columns: 1fr 80px;
+      gap: 12px;
+    }
+
+    .btn-engage {
+      padding: 16px;
+      background: linear-gradient(135deg, #00ff88, #00cc70);
+      border: none;
+      border-radius: 6px;
+      color: #000;
+      font-weight: 800;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 20px rgba(0, 255, 136, 0.4);
+    }
+
+    .btn-engage:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0, 255, 136, 0.6);
+    }
+
+    .btn-refresh {
+      padding: 16px;
+      background: #0a0e1a;
+      border: 2px solid #00ff88;
+      border-radius: 6px;
+      color: #00ff88;
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-refresh:hover {
+      background: rgba(0, 255, 136, 0.1);
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+      transform: rotate(90deg);
+    }
+
+    /* Status Display */
+    .status-display {
+      background: #000;
+      border: 2px solid #1a1f2e;
+      border-radius: 8px;
+      padding: 20px;
+      height: 100%;
+    }
+
+    .status-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid #1a1f2e;
+      font-size: 13px;
+    }
+
+    .status-row:last-child { border-bottom: none; }
+
+    .status-label {
+      color: #888;
+      font-family: 'IBM Plex Mono', monospace;
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 1px;
+    }
+
+    .status-value {
+      color: #00ff88;
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 700;
+    }
+
+    /* Data Grid */
+    .data-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .metric-card {
+      background: #0a0e1a;
+      border: 2px solid #1a1f2e;
+      border-radius: 8px;
+      padding: 20px;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .metric-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px; height: 100%;
+      background: #00ff88;
+      box-shadow: 0 0 10px #00ff88;
+    }
+
+    .metric-card:hover {
+      border-color: #00ff88;
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 255, 136, 0.2);
+    }
+
+    .metric-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #666;
+      margin-bottom: 12px;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .metric-value {
+      font-size: 32px;
+      font-weight: 800;
+      color: #00ff88;
+      font-family: 'IBM Plex Mono', monospace;
+      text-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+      line-height: 1;
+    }
+
+    .metric-change {
+      font-size: 12px;
+      color: #888;
+      margin-top: 8px;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    /* Chain Breakdown */
+    .chain-breakdown {
+      background: #0a0e1a;
+      border: 2px solid #1a1f2e;
+      border-radius: 8px;
+      padding: 24px;
+    }
+
+    .breakdown-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #1a1f2e;
+    }
+
+    .breakdown-title {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #00ff88;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .chain-item {
+      display: flex;
+      align-items: center;
+      padding: 16px;
+      background: #000;
+      border: 1px solid #1a1f2e;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      transition: all 0.3s;
+    }
+
+    .chain-item:hover {
+      border-color: #00ff88;
+      transform: translateX(4px);
+      box-shadow: 0 0 15px rgba(0, 255, 136, 0.15);
+    }
+
+    .chain-icon {
+      font-size: 24px;
+      margin-right: 16px;
+    }
+
+    .chain-info {
+      flex: 1;
+    }
+
+    .chain-name {
+      font-weight: 700;
+      color: #e0e0e0;
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+
+    .chain-tokens {
+      font-size: 11px;
+      color: #666;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .chain-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: #00ff88;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    /* Progress Bar */
+    .progress-bar {
+      width: 100%;
+      height: 4px;
+      background: #1a1f2e;
+      border-radius: 2px;
+      margin-top: 8px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #00ff88, #00cc70);
+      box-shadow: 0 0 10px #00ff88;
+      transition: width 1s ease;
+    }
+
+    /* Annotation */
+    .annotation {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.95);
+      border: 2px solid #00ff88;
+      padding: 16px 32px;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #00ff88;
+      font-weight: 700;
+      text-align: center;
+      z-index: 1000;
+      box-shadow: 0 0 40px rgba(0, 255, 136, 0.5);
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    @media (max-width: 1024px) {
+      .control-grid { grid-template-columns: 1fr; }
+      .data-grid { grid-template-columns: repeat(2, 1fr); }
+      .chain-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="radar-bg"></div>
+
+  <div class="content">
+    <!-- Mission Header -->
+    <div class="mission-header">
+      <div class="mission-title">⦿ WALLET COMMAND CENTER</div>
+      <div class="mission-subtitle">Multi-Chain Asset Tracking System · Operational</div>
+      <div class="mission-status">
+        <div class="status-indicator"></div>
+        SYSTEM ONLINE
+      </div>
+    </div>
+
+    <!-- Control Grid -->
+    <div class="control-grid">
+      <!-- Left: Input Control -->
+      <div class="control-panel">
+        <div class="panel-label">◆ Target Acquisition</div>
+
+        <div class="target-input-group">
+          <label class="input-label">Wallet Address</label>
+          <input type="text" class="target-input" placeholder="0x..." value="0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045">
+        </div>
+
+        <div class="target-input-group">
+          <label class="input-label">Chain Selection</label>
+          <div class="chain-grid">
+            <button class="chain-button active">⟠ Ethereum</button>
+            <button class="chain-button active">🔵 Base</button>
+            <button class="chain-button active">🔷 Arbitrum</button>
+            <button class="chain-button active">🔴 Optimism</button>
+            <button class="chain-button active">🟣 Polygon</button>
+          </div>
+        </div>
+
+        <div class="action-buttons">
+          <button class="btn-engage">▸ ENGAGE SCAN</button>
+          <button class="btn-refresh">🔄</button>
+        </div>
+      </div>
+
+      <!-- Right: Status -->
+      <div class="control-panel">
+        <div class="panel-label">◆ System Status</div>
+        <div class="status-display">
+          <div class="status-row">
+            <span class="status-label">Target Status</span>
+            <span class="status-value">LOCKED</span>
+          </div>
+          <div class="status-row">
+            <span class="status-label">Scan Progress</span>
+            <span class="status-value">100%</span>
+          </div>
+          <div class="status-row">
+            <span class="status-label">Chains Active</span>
+            <span class="status-value">5/5</span>
+          </div>
+          <div class="status-row">
+            <span class="status-label">Data Source</span>
+            <span class="status-value">LIVE</span>
+          </div>
+          <div class="status-row">
+            <span class="status-label">Cache Status</span>
+            <span class="status-value">FRESH</span>
+          </div>
+          <div class="status-row">
+            <span class="status-label">Last Update</span>
+            <span class="status-value">12s AGO</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Metrics Grid -->
+    <div class="data-grid">
+      <div class="metric-card">
+        <div class="metric-label">Total Value</div>
+        <div class="metric-value">$2.4M</div>
+        <div class="metric-change">▲ 5.2% 24h</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Total Tokens</div>
+        <div class="metric-value">47</div>
+        <div class="metric-change">Across 5 chains</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Largest Holding</div>
+        <div class="metric-value">ETH</div>
+        <div class="metric-change">$1.2M · 48%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Gas Available</div>
+        <div class="metric-value">15.4</div>
+        <div class="metric-change">ETH across chains</div>
+      </div>
+    </div>
+
+    <!-- Chain Breakdown -->
+    <div class="chain-breakdown">
+      <div class="breakdown-header">
+        <div class="breakdown-title">◆ Asset Distribution by Chain</div>
+      </div>
+
+      <div class="chain-item">
+        <div class="chain-icon">⟠</div>
+        <div class="chain-info">
+          <div class="chain-name">Ethereum Mainnet</div>
+          <div class="chain-tokens">18 tokens · 48.2% of portfolio</div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 48%"></div>
+          </div>
+        </div>
+        <div class="chain-value">$1,156,800</div>
+      </div>
+
+      <div class="chain-item">
+        <div class="chain-icon">🔵</div>
+        <div class="chain-info">
+          <div class="chain-name">Base</div>
+          <div class="chain-tokens">12 tokens · 22.5% of portfolio</div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 22.5%"></div>
+          </div>
+        </div>
+        <div class="chain-value">$540,000</div>
+      </div>
+
+      <div class="chain-item">
+        <div class="chain-icon">🔷</div>
+        <div class="chain-info">
+          <div class="chain-name">Arbitrum One</div>
+          <div class="chain-tokens">8 tokens · 15.8% of portfolio</div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 15.8%"></div>
+          </div>
+        </div>
+        <div class="chain-value">$379,200</div>
+      </div>
+
+      <div class="chain-item">
+        <div class="chain-icon">🔴</div>
+        <div class="chain-info">
+          <div class="chain-name">Optimism</div>
+          <div class="chain-tokens">6 tokens · 9.1% of portfolio</div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 9.1%"></div>
+          </div>
+        </div>
+        <div class="chain-value">$218,400</div>
+      </div>
+
+      <div class="chain-item">
+        <div class="chain-icon">🟣</div>
+        <div class="chain-info">
+          <div class="chain-name">Polygon</div>
+          <div class="chain-tokens">3 tokens · 4.4% of portfolio</div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 4.4%"></div>
+          </div>
+        </div>
+        <div class="chain-value">$105,600</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="annotation">
+    ⦿ PROPOSAL 1: COMMAND CENTER — NASA/SpaceX Mission Control Aesthetic
+  </div>
+</body>
+</html>

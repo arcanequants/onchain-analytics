@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proposal 3: Minimalist Elegance | Wallet Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #FAFBFC;
+      color: #1F2937;
+      overflow-x: hidden;
+      font-weight: 400;
+    }
+
+    .content { padding: 48px; max-width: 1400px; margin: 0 auto; }
+
+    /* Minimal Header */
+    .minimal-header {
+      margin-bottom: 48px;
+      animation: fadeIn 0.6s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .header-title {
+      font-size: 48px;
+      font-weight: 300;
+      color: #111827;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+
+    .header-subtitle {
+      font-size: 16px;
+      color: #6B7280;
+      font-weight: 400;
+    }
+
+    /* Search Card */
+    .search-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 40px;
+      margin-bottom: 32px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+      animation: slideUp 0.6s ease;
+      animation-delay: 0.1s;
+      animation-fill-mode: both;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .search-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #374151;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .search-wrapper {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .search-input {
+      flex: 1;
+      padding: 14px 18px;
+      background: #F9FAFB;
+      border: 1px solid #E5E7EB;
+      border-radius: 10px;
+      color: #111827;
+      font-size: 15px;
+      font-family: 'IBM Plex Mono', monospace;
+      transition: all 0.3s;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: #3B82F6;
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    .btn-minimal {
+      padding: 14px 28px;
+      background: #111827;
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-minimal:hover {
+      background: #1F2937;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-minimal:active {
+      transform: translateY(0);
+    }
+
+    /* Chain Tags */
+    .chain-tags {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .chain-tag {
+      padding: 8px 16px;
+      background: #F3F4F6;
+      border: 1px solid #E5E7EB;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #4B5563;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .chain-tag:hover {
+      background: #E5E7EB;
+    }
+
+    .chain-tag.active {
+      background: #111827;
+      color: #fff;
+      border-color: #111827;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-bottom: 32px;
+      animation: slideUp 0.6s ease;
+      animation-delay: 0.2s;
+      animation-fill-mode: both;
+    }
+
+    .stat-minimal {
+      background: #fff;
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+      transition: all 0.3s;
+    }
+
+    .stat-minimal:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-minimal-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: #6B7280;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .stat-minimal-value {
+      font-size: 36px;
+      font-weight: 300;
+      color: #111827;
+      line-height: 1;
+      margin-bottom: 8px;
+      letter-spacing: -1px;
+    }
+
+    .stat-minimal-change {
+      font-size: 14px;
+      color: #10B981;
+      font-weight: 500;
+    }
+
+    /* Content Grid */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 24px;
+      animation: slideUp 0.6s ease;
+      animation-delay: 0.3s;
+      animation-fill-mode: both;
+    }
+
+    .content-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    }
+
+    .card-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 24px;
+    }
+
+    /* Token List */
+    .token-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .token-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px;
+      background: #F9FAFB;
+      border-radius: 12px;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .token-item:hover {
+      background: #F3F4F6;
+      transform: translateX(4px);
+    }
+
+    .token-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .token-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    .token-name-minimal {
+      font-weight: 600;
+      color: #111827;
+      font-size: 15px;
+      margin-bottom: 2px;
+    }
+
+    .token-symbol-minimal {
+      font-size: 13px;
+      color: #6B7280;
+    }
+
+    .token-right {
+      text-align: right;
+    }
+
+    .token-value-minimal {
+      font-weight: 600;
+      color: #111827;
+      font-size: 16px;
+      margin-bottom: 2px;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .token-change-minimal {
+      font-size: 13px;
+      color: #10B981;
+      font-weight: 500;
+    }
+
+    /* Chain Progress */
+    .chain-progress-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .chain-progress-item {
+      padding: 20px;
+      background: #F9FAFB;
+      border-radius: 12px;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .chain-progress-item:hover {
+      background: #F3F4F6;
+    }
+
+    .chain-progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .chain-progress-name {
+      font-weight: 600;
+      color: #111827;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .chain-progress-value {
+      font-weight: 600;
+      color: #111827;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 15px;
+    }
+
+    .chain-progress-bar {
+      width: 100%;
+      height: 6px;
+      background: #E5E7EB;
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .chain-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+      border-radius: 3px;
+      transition: width 1s ease;
+    }
+
+    .chain-progress-meta {
+      font-size: 13px;
+      color: #6B7280;
+    }
+
+    /* Annotation */
+    .annotation {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #fff;
+      border: 1px solid #E5E7EB;
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-size: 13px;
+      color: #374151;
+      font-weight: 600;
+      text-align: center;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    @media (max-width: 1200px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .content-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="content">
+    <!-- Minimal Header -->
+    <div class="minimal-header">
+      <h1 class="header-title">Wallet Portfolio</h1>
+      <p class="header-subtitle">Track your multi-chain cryptocurrency holdings</p>
+    </div>
+
+    <!-- Search Card -->
+    <div class="search-card">
+      <label class="search-label">Wallet Address</label>
+      <div class="search-wrapper">
+        <input type="text" class="search-input" placeholder="Enter wallet address (0x...)" value="0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045">
+        <button class="btn-minimal">Track</button>
+      </div>
+
+      <div class="chain-tags">
+        <div class="chain-tag active">⟠ Ethereum</div>
+        <div class="chain-tag active">🔵 Base</div>
+        <div class="chain-tag active">🔷 Arbitrum</div>
+        <div class="chain-tag active">🔴 Optimism</div>
+        <div class="chain-tag active">🟣 Polygon</div>
+      </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+      <div class="stat-minimal">
+        <div class="stat-minimal-label">Total Value</div>
+        <div class="stat-minimal-value">$2.4M</div>
+        <div class="stat-minimal-change">+5.2% today</div>
+      </div>
+      <div class="stat-minimal">
+        <div class="stat-minimal-label">Total Assets</div>
+        <div class="stat-minimal-value">47</div>
+        <div class="stat-minimal-change">Across 5 chains</div>
+      </div>
+      <div class="stat-minimal">
+        <div class="stat-minimal-label">Largest Position</div>
+        <div class="stat-minimal-value">ETH</div>
+        <div class="stat-minimal-change">$1.2M · 48%</div>
+      </div>
+      <div class="stat-minimal">
+        <div class="stat-minimal-label">Gas Available</div>
+        <div class="stat-minimal-value">15.4</div>
+        <div class="stat-minimal-change">ETH equivalent</div>
+      </div>
+    </div>
+
+    <!-- Content Grid -->
+    <div class="content-grid">
+      <!-- Token Holdings -->
+      <div class="content-card">
+        <h2 class="card-title">Holdings</h2>
+        <div class="token-list">
+          <div class="token-item">
+            <div class="token-left">
+              <div class="token-avatar" style="background: linear-gradient(135deg, #627eea 0%, #4d5fb7 100%);">⟠</div>
+              <div>
+                <div class="token-name-minimal">Ethereum</div>
+                <div class="token-symbol-minimal">385.2 ETH</div>
+              </div>
+            </div>
+            <div class="token-right">
+              <div class="token-value-minimal">$1,156,800</div>
+              <div class="token-change-minimal">+4.2%</div>
+            </div>
+          </div>
+
+          <div class="token-item">
+            <div class="token-left">
+              <div class="token-avatar" style="background: linear-gradient(135deg, #f7931a 0%, #e07a00 100%);">₿</div>
+              <div>
+                <div class="token-name-minimal">Wrapped Bitcoin</div>
+                <div class="token-symbol-minimal">4.5 WBTC</div>
+              </div>
+            </div>
+            <div class="token-right">
+              <div class="token-value-minimal">$379,200</div>
+              <div class="token-change-minimal">+2.8%</div>
+            </div>
+          </div>
+
+          <div class="token-item">
+            <div class="token-left">
+              <div class="token-avatar" style="background: linear-gradient(135deg, #2775ca 0%, #1e5ea8 100%);">U</div>
+              <div>
+                <div class="token-name-minimal">USD Coin</div>
+                <div class="token-symbol-minimal">285,000 USDC</div>
+              </div>
+            </div>
+            <div class="token-right">
+              <div class="token-value-minimal">$285,000</div>
+              <div class="token-change-minimal" style="color: #6B7280;">0.0%</div>
+            </div>
+          </div>
+
+          <div class="token-item">
+            <div class="token-left">
+              <div class="token-avatar" style="background: linear-gradient(135deg, #375bd2 0%, #2a4aab 100%);">◆</div>
+              <div>
+                <div class="token-name-minimal">Chainlink</div>
+                <div class="token-symbol-minimal">8,500 LINK</div>
+              </div>
+            </div>
+            <div class="token-right">
+              <div class="token-value-minimal">$129,600</div>
+              <div class="token-change-minimal">+6.1%</div>
+            </div>
+          </div>
+
+          <div class="token-item">
+            <div class="token-left">
+              <div class="token-avatar" style="background: linear-gradient(135deg, #ff007a 0%, #d6006a 100%);">◎</div>
+              <div>
+                <div class="token-name-minimal">Uniswap</div>
+                <div class="token-symbol-minimal">15,200 UNI</div>
+              </div>
+            </div>
+            <div class="token-right">
+              <div class="token-value-minimal">$115,200</div>
+              <div class="token-change-minimal" style="color: #EF4444;">-1.2%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chain Distribution -->
+      <div class="content-card">
+        <h2 class="card-title">Distribution</h2>
+        <div class="chain-progress-list">
+          <div class="chain-progress-item">
+            <div class="chain-progress-header">
+              <div class="chain-progress-name">⟠ Ethereum</div>
+              <div class="chain-progress-value">$1,156,800</div>
+            </div>
+            <div class="chain-progress-bar">
+              <div class="chain-progress-fill" style="width: 48%"></div>
+            </div>
+            <div class="chain-progress-meta">18 tokens · 48.2%</div>
+          </div>
+
+          <div class="chain-progress-item">
+            <div class="chain-progress-header">
+              <div class="chain-progress-name">🔵 Base</div>
+              <div class="chain-progress-value">$540,000</div>
+            </div>
+            <div class="chain-progress-bar">
+              <div class="chain-progress-fill" style="width: 22.5%"></div>
+            </div>
+            <div class="chain-progress-meta">12 tokens · 22.5%</div>
+          </div>
+
+          <div class="chain-progress-item">
+            <div class="chain-progress-header">
+              <div class="chain-progress-name">🔷 Arbitrum</div>
+              <div class="chain-progress-value">$379,200</div>
+            </div>
+            <div class="chain-progress-bar">
+              <div class="chain-progress-fill" style="width: 15.8%"></div>
+            </div>
+            <div class="chain-progress-meta">8 tokens · 15.8%</div>
+          </div>
+
+          <div class="chain-progress-item">
+            <div class="chain-progress-header">
+              <div class="chain-progress-name">🔴 Optimism</div>
+              <div class="chain-progress-value">$218,400</div>
+            </div>
+            <div class="chain-progress-bar">
+              <div class="chain-progress-fill" style="width: 9.1%"></div>
+            </div>
+            <div class="chain-progress-meta">6 tokens · 9.1%</div>
+          </div>
+
+          <div class="chain-progress-item">
+            <div class="chain-progress-header">
+              <div class="chain-progress-name">🟣 Polygon</div>
+              <div class="chain-progress-value">$105,600</div>
+            </div>
+            <div class="chain-progress-bar">
+              <div class="chain-progress-fill" style="width: 4.4%"></div>
+            </div>
+            <div class="chain-progress-meta">3 tokens · 4.4%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="annotation">
+    ✨ PROPOSAL 3: MINIMALIST ELEGANCE — Apple + Notion Inspired Clean Design
+  </div>
+</body>
+</html>

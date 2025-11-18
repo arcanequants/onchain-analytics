@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proposal 4: Right Panel Analytics Block</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'IBM Plex Mono', 'Courier New', monospace;
+      background: #0a0e1a;
+      color: #e0e0e0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      background: #000;
+      border: 1px solid #1a1f2e;
+    }
+
+    .header {
+      background: rgba(0, 0, 0, 0.95);
+      padding: 20px;
+      border-bottom: 1px solid #1a1f2e;
+      text-align: center;
+    }
+
+    .header h1 {
+      color: #0099ff;
+      font-size: 24px;
+      margin-bottom: 10px;
+      text-shadow: 0 0 10px rgba(0, 153, 255, 0.5);
+    }
+
+    .header p {
+      color: #888;
+      font-size: 14px;
+    }
+
+    .terminal-grid {
+      display: grid;
+      grid-template-columns: 300px 1fr 280px;
+      gap: 1px;
+      background: #000;
+      min-height: 600px;
+    }
+
+    .left-panel {
+      background: rgba(15, 20, 25, 0.95);
+      border-right: 1px solid #1a1f2e;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #666;
+      font-size: 14px;
+    }
+
+    .center-panel {
+      background: rgba(10, 14, 26, 0.95);
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #666;
+      font-size: 14px;
+    }
+
+    .right-panel {
+      background: rgba(15, 20, 25, 0.95);
+      border-left: 1px solid #1a1f2e;
+      overflow-y: auto;
+    }
+
+    .analytics-block {
+      padding: 16px;
+      border-bottom: 1px solid #1a1f2e;
+      transition: all 0.3s;
+    }
+
+    .analytics-block:hover {
+      background: rgba(26, 31, 46, 0.3);
+    }
+
+    .analytics-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .wallet-block {
+      background: linear-gradient(180deg, rgba(0, 153, 255, 0.1), rgba(0, 153, 255, 0.02));
+      border-bottom: 2px solid rgba(0, 153, 255, 0.3);
+      animation: blockGlow 2s ease-in-out infinite;
+    }
+
+    @keyframes blockGlow {
+      0%, 100% {
+        border-bottom-color: rgba(0, 153, 255, 0.3);
+        background: linear-gradient(180deg, rgba(0, 153, 255, 0.1), rgba(0, 153, 255, 0.02));
+      }
+      50% {
+        border-bottom-color: rgba(0, 153, 255, 0.5);
+        background: linear-gradient(180deg, rgba(0, 153, 255, 0.15), rgba(0, 153, 255, 0.05));
+      }
+    }
+
+    .wallet-block:hover {
+      background: linear-gradient(180deg, rgba(0, 153, 255, 0.15), rgba(0, 153, 255, 0.05));
+    }
+
+    .wallet-block .analytics-title {
+      color: #0099ff;
+    }
+
+    .new-badge {
+      background: #ff0000;
+      color: #fff;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 8px;
+      font-weight: 700;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .gauge-simple {
+      width: 100%;
+      height: 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #0a0e1a;
+      border-radius: 4px;
+      margin-bottom: 12px;
+      border: 1px solid rgba(0, 255, 136, 0.2);
+    }
+
+    .gauge-value {
+      font-size: 36px;
+      font-weight: 700;
+      color: #00ff88;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .gauge-label {
+      font-size: 10px;
+      color: #666;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #1a1f2e;
+      font-size: 11px;
+      transition: all 0.2s;
+    }
+
+    .stat-row:hover {
+      padding-left: 8px;
+      background: rgba(0, 153, 255, 0.05);
+      border-left: 2px solid #0099ff;
+    }
+
+    .stat-row:last-child {
+      border-bottom: none;
+    }
+
+    .stat-label {
+      color: #888;
+    }
+
+    .stat-value {
+      font-weight: 700;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .wallet-summary {
+      text-align: center;
+      padding: 16px 0;
+    }
+
+    .wallet-icon {
+      font-size: 40px;
+      margin-bottom: 12px;
+    }
+
+    .wallet-total {
+      font-size: 24px;
+      font-weight: 700;
+      color: #0099ff;
+      margin-bottom: 12px;
+      font-family: 'IBM Plex Mono', monospace;
+      text-shadow: 0 0 10px rgba(0, 153, 255, 0.5);
+    }
+
+    .wallet-details {
+      font-size: 10px;
+      color: #666;
+      margin-bottom: 16px;
+    }
+
+    .wallet-link {
+      display: block;
+      padding: 10px 16px;
+      background: rgba(0, 153, 255, 0.1);
+      border: 1px solid #0099ff;
+      border-radius: 4px;
+      text-align: center;
+      color: #0099ff;
+      font-size: 11px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .wallet-link:hover {
+      background: rgba(0, 153, 255, 0.2);
+      box-shadow: 0 0 12px rgba(0, 153, 255, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 16px;
+    }
+
+    .empty-state-icon {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    .empty-state-text {
+      font-size: 10px;
+      color: #666;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .pros-cons {
+      margin-top: 20px;
+      padding: 20px;
+      background: rgba(15, 20, 25, 0.8);
+      border: 1px solid #1a1f2e;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .pros-cons h3 {
+      color: #0099ff;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+
+    .pros-cons ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .pros-cons li {
+      padding: 6px 0;
+      font-size: 12px;
+      color: #e0e0e0;
+    }
+
+    .pros-cons .pros li:before {
+      content: "✅ ";
+      margin-right: 8px;
+    }
+
+    .pros-cons .cons li:before {
+      content: "⚠️ ";
+      margin-right: 8px;
+    }
+
+    @media (max-width: 1024px) {
+      .terminal-grid {
+        grid-template-columns: 1fr;
+      }
+      .left-panel, .right-panel {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🎯 PROPOSAL 4: RIGHT PANEL ANALYTICS BLOCK</h1>
+      <p>Wallet portfolio widget in the analytics sidebar</p>
+    </div>
+
+    <div class="terminal-grid">
+      <!-- LEFT PANEL -->
+      <div class="left-panel">
+        [Watchlist Panel]
+      </div>
+
+      <!-- CENTER PANEL -->
+      <div class="center-panel">
+        [Main Content - Charts & Tables]
+      </div>
+
+      <!-- RIGHT PANEL -->
+      <div class="right-panel">
+        <!-- Fear & Greed Gauge -->
+        <div class="analytics-block">
+          <div class="analytics-title">FEAR & GREED INDEX</div>
+          <div class="gauge-simple">
+            <div class="gauge-value">65</div>
+            <div class="gauge-label">Greed</div>
+          </div>
+        </div>
+
+        <!-- Gas Trend -->
+        <div class="analytics-block">
+          <div class="analytics-title">GAS TREND (7D)</div>
+          <div class="stat-row">
+            <span class="stat-label">Average</span>
+            <span class="stat-value" style="color: #00ff88;">22 gwei</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Peak</span>
+            <span class="stat-value">45 gwei</span>
+          </div>
+        </div>
+
+        <!-- Trending Coins -->
+        <div class="analytics-block">
+          <div class="analytics-title">TRENDING COINS</div>
+          <div class="stat-row">
+            <span class="stat-label">PEPE</span>
+            <span class="stat-value" style="color: #00ff88;">+45%</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">ARB</span>
+            <span class="stat-value" style="color: #00ff88;">+23%</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">OP</span>
+            <span class="stat-value" style="color: #00ff88;">+18%</span>
+          </div>
+        </div>
+
+        <!-- Price Alerts -->
+        <div class="analytics-block">
+          <div class="analytics-title">PRICE ALERTS</div>
+          <div class="stat-row">
+            <span class="stat-label">Active Alerts</span>
+            <span class="stat-value" style="color: #0099ff;">3</span>
+          </div>
+        </div>
+
+        <!-- NEW WALLET PORTFOLIO BLOCK -->
+        <div class="analytics-block wallet-block">
+          <div class="analytics-title">
+            <span>💼 WALLET PORTFOLIO</span>
+            <span class="new-badge">NEW!</span>
+          </div>
+
+          <!-- OPTION A: With Data -->
+          <div class="wallet-summary" style="display: block;">
+            <div class="wallet-total">$125,432.50</div>
+            <div class="wallet-details">
+              5 chains · 15 tokens
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">Ethereum</span>
+              <span class="stat-value" style="color: #0099ff;">$45,200</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">Base</span>
+              <span class="stat-value" style="color: #0099ff;">$32,100</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">Arbitrum</span>
+              <span class="stat-value" style="color: #0099ff;">$25,800</span>
+            </div>
+            <a href="#" class="wallet-link" style="margin-top: 12px;">Track Wallet →</a>
+          </div>
+
+          <!-- OPTION B: Empty State (uncomment to see) -->
+          <!-- <div class="empty-state">
+            <div class="empty-state-icon">💼</div>
+            <div class="empty-state-text">
+              Track your portfolio<br/>across 5 EVM chains
+            </div>
+            <a href="#" class="wallet-link">Launch Tracker →</a>
+          </div> -->
+        </div>
+
+        <!-- DEX Analytics -->
+        <div class="analytics-block">
+          <div class="analytics-title">DEX ANALYTICS</div>
+          <div class="stat-row">
+            <span class="stat-label">Uniswap V3</span>
+            <span class="stat-value">$1.2B</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">PancakeSwap</span>
+            <span class="stat-value">$850M</span>
+          </div>
+        </div>
+
+        <!-- Events -->
+        <div class="analytics-block">
+          <div class="analytics-title">UPCOMING EVENTS</div>
+          <div class="stat-row">
+            <span class="stat-label">Today</span>
+            <span class="stat-value" style="color: #ffbb00;">3</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pros-cons">
+      <div class="pros">
+        <h3>✅ STRENGTHS</h3>
+        <ul>
+          <li>Analytics context - right panel is "analytics hub"</li>
+          <li>Logical progression: sentiment → gas → trends → alerts → <strong>portfolio</strong></li>
+          <li>Persistent widget showing last tracked wallet summary</li>
+          <li>Pattern consistency with existing analytics blocks</li>
+          <li>Space available for additional analytics</li>
+          <li>Can show mini-dashboard with chain breakdown</li>
+          <li>Natural fit with other financial metrics</li>
+        </ul>
+      </div>
+      <div class="cons">
+        <h3>⚠️ CONSIDERATIONS</h3>
+        <ul>
+          <li>Right panel hidden on mobile/tablet (<1024px)</li>
+          <li>Less prominent than top bar option</li>
+          <li>Requires scrolling if many analytics blocks</li>
+          <li>Needs alternative mobile entry point</li>
+          <li>Lower priority visual hierarchy</li>
+          <li>May be overlooked by users focused on main content</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

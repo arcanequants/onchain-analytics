@@ -1495,3 +1495,67 @@ tbody tr:hover td {
     background-size: 30px 30px;
   }
 }
+
+/* ============================================
+   PROGRESSIVE ENHANCEMENT FOR LEGACY BROWSERS
+   ============================================ */
+
+/* Fallback for browsers that don't support backdrop-filter */
+@supports not (backdrop-filter: blur(10px)) {
+  .top-bar {
+    background: rgba(0, 0, 0, 0.98); /* More opaque fallback */
+  }
+
+  .left-panel,
+  .center-panel,
+  .right-panel {
+    background: rgba(15, 20, 25, 0.98); /* More opaque fallback */
+  }
+
+  /* Light mode fallbacks */
+  [data-theme="light"] .top-bar {
+    background: rgba(255, 255, 255, 0.98);
+  }
+
+  [data-theme="light"] .left-panel,
+  [data-theme="light"] .center-panel,
+  [data-theme="light"] .right-panel {
+    background: var(--bg-secondary);
+  }
+}
+
+/* Reduce animations for users who prefer reduced motion or older browsers */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .logo,
+  .wallet-nav-button,
+  .panel-header::after,
+  .watchlist-item:hover,
+  .info-card:hover,
+  .gauge-simple::before,
+  .gauge-value,
+  .event-item,
+  .status-dot,
+  .particle,
+  .bg-grid {
+    animation: none !important;
+  }
+
+  /* Disable transforms that might be expensive */
+  .wallet-nav-button:hover,
+  .ticker-item:hover,
+  .info-card:hover,
+  .watchlist-item:hover,
+  tbody tr:hover,
+  .wallet-link:hover,
+  .theme-toggle:hover {
+    transform: none !important;
+  }
+}

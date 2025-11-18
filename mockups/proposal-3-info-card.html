@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proposal 3: Info Card Integration</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'IBM Plex Mono', 'Courier New', monospace;
+      background: #0a0e1a;
+      color: #e0e0e0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      background: #000;
+      border: 1px solid #1a1f2e;
+    }
+
+    .header {
+      background: rgba(0, 0, 0, 0.95);
+      padding: 20px;
+      border-bottom: 1px solid #1a1f2e;
+      text-align: center;
+    }
+
+    .header h1 {
+      color: #0099ff;
+      font-size: 24px;
+      margin-bottom: 10px;
+      text-shadow: 0 0 10px rgba(0, 153, 255, 0.5);
+    }
+
+    .header p {
+      color: #888;
+      font-size: 14px;
+    }
+
+    .center-panel {
+      background: rgba(10, 14, 26, 0.95);
+      padding: 20px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .info-card {
+      background: rgba(15, 20, 25, 0.8);
+      border: 1px solid #1a1f2e;
+      border-radius: 4px;
+      padding: 16px;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      min-height: 100px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .info-card:hover {
+      border-color: #0099ff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 153, 255, 0.2);
+    }
+
+    .wallet-card {
+      background: linear-gradient(135deg, rgba(0, 153, 255, 0.15), rgba(0, 153, 255, 0.05));
+      border: 2px solid rgba(0, 153, 255, 0.3);
+      animation: cardGlow 2s ease-in-out infinite;
+      position: relative;
+    }
+
+    @keyframes cardGlow {
+      0%, 100% {
+        box-shadow: 0 4px 12px rgba(0, 153, 255, 0.2);
+        border-color: rgba(0, 153, 255, 0.3);
+      }
+      50% {
+        box-shadow: 0 6px 20px rgba(0, 153, 255, 0.4);
+        border-color: rgba(0, 153, 255, 0.5);
+      }
+    }
+
+    .wallet-card:hover {
+      background: linear-gradient(135deg, rgba(0, 153, 255, 0.25), rgba(0, 153, 255, 0.1));
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 8px 24px rgba(0, 153, 255, 0.4);
+    }
+
+    .new-badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: #ff0000;
+      color: #fff;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 8px;
+      font-weight: 700;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .info-label {
+      font-size: 10px;
+      color: #666;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .wallet-card .info-label {
+      color: #0099ff;
+      font-weight: 700;
+      font-size: 11px;
+    }
+
+    .info-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      font-family: 'IBM Plex Mono', monospace;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+      margin-bottom: 6px;
+    }
+
+    .wallet-card .info-value {
+      color: #0099ff;
+      font-size: 16px;
+      text-shadow: 0 0 10px rgba(0, 153, 255, 0.5);
+    }
+
+    .info-change {
+      font-size: 11px;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .change-up {
+      color: #00ff88;
+    }
+
+    .change-down {
+      color: #ff0000;
+    }
+
+    .wallet-card .info-change {
+      color: #0099ff;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .mobile-preview {
+      margin-top: 30px;
+      padding: 20px;
+      background: rgba(15, 20, 25, 0.8);
+      border: 1px solid #1a1f2e;
+    }
+
+    .mobile-preview h3 {
+      color: #0099ff;
+      margin-bottom: 15px;
+      font-size: 16px;
+    }
+
+    .mobile-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .mobile-card {
+      background: rgba(15, 20, 25, 0.8);
+      border: 1px solid #1a1f2e;
+      border-radius: 4px;
+      padding: 12px;
+      min-height: 80px;
+    }
+
+    .mobile-card.wallet {
+      background: linear-gradient(135deg, rgba(0, 153, 255, 0.15), rgba(0, 153, 255, 0.05));
+      border: 2px solid rgba(0, 153, 255, 0.3);
+    }
+
+    .pros-cons {
+      margin-top: 20px;
+      padding: 20px;
+      background: rgba(15, 20, 25, 0.8);
+      border: 1px solid #1a1f2e;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .pros-cons h3 {
+      color: #0099ff;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+
+    .pros-cons ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .pros-cons li {
+      padding: 6px 0;
+      font-size: 12px;
+      color: #e0e0e0;
+    }
+
+    .pros-cons .pros li:before {
+      content: "✅ ";
+      margin-right: 8px;
+    }
+
+    .pros-cons .cons li:before {
+      content: "⚠️ ";
+      margin-right: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🎯 PROPOSAL 3: INFO CARD INTEGRATION</h1>
+      <p>Wallet tracker as a clickable card in the 6-column info grid</p>
+    </div>
+
+    <div class="center-panel">
+      <div class="info-grid">
+        <!-- Regular Info Cards -->
+        <div class="info-card">
+          <div class="info-label">BTC/USD</div>
+          <div class="info-value">$45K</div>
+          <div class="info-change change-up">▲ +1.2%</div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-label">ETH/USD</div>
+          <div class="info-value">$2.5K</div>
+          <div class="info-change change-up">▲ +2.5%</div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-label">SOL/USD</div>
+          <div class="info-value">$98</div>
+          <div class="info-change change-down">▼ -0.8%</div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-label">GAS (ETH)</div>
+          <div class="info-value">25</div>
+          <div class="info-change" style="color: #00ff88;">Low</div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-label">24H VOLUME</div>
+          <div class="info-value">$2.5B</div>
+          <div class="info-change change-up">▲ +15%</div>
+        </div>
+
+        <!-- NEW WALLET CARD -->
+        <div class="info-card wallet-card">
+          <span class="new-badge">NEW!</span>
+          <div class="info-label">💼 WALLET TRACKER</div>
+          <div class="info-value">Track Assets</div>
+          <div class="info-change">
+            <span>Multi-chain</span>
+            <span>→</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="color: #666; text-align: center; padding: 20px; font-size: 14px;">
+        [Additional content below: Price Tables, Charts, Event Feed...]
+      </div>
+    </div>
+
+    <!-- MOBILE PREVIEW -->
+    <div class="mobile-preview">
+      <h3>📱 MOBILE VERSION (2 Columns)</h3>
+      <div class="mobile-grid">
+        <div class="mobile-card">
+          <div class="info-label">BTC/USD</div>
+          <div class="info-value">$45K</div>
+          <div class="info-change change-up">▲ +1.2%</div>
+        </div>
+
+        <div class="mobile-card">
+          <div class="info-label">ETH/USD</div>
+          <div class="info-value">$2.5K</div>
+          <div class="info-change change-up">▲ +2.5%</div>
+        </div>
+
+        <div class="mobile-card">
+          <div class="info-label">SOL/USD</div>
+          <div class="info-value">$98</div>
+          <div class="info-change change-down">▼ -0.8%</div>
+        </div>
+
+        <div class="mobile-card wallet">
+          <div class="info-label" style="color: #0099ff;">💼 WALLET</div>
+          <div class="info-value" style="font-size: 14px; color: #0099ff;">Track</div>
+          <div class="info-change" style="color: #0099ff;">Multi-chain →</div>
+        </div>
+      </div>
+      <p style="color: #666; font-size: 11px; margin-top: 10px; text-align: center;">
+        Grid collapses to 2 columns on mobile - Wallet card remains visible
+      </p>
+    </div>
+
+    <div class="pros-cons">
+      <div class="pros">
+        <h3>✅ STRENGTHS</h3>
+        <ul>
+          <li>Balanced integration - fits naturally into existing grid</li>
+          <li>Visual consistency with other metric cards</li>
+          <li>Discoverable - users scanning metrics will notice it</li>
+          <li>Mobile-friendly - grid collapses to 2 columns, card stays visible</li>
+          <li>Non-intrusive - doesn't alter navigation or panels</li>
+          <li>Quick to implement - single card addition</li>
+          <li>Matches existing design pattern perfectly</li>
+        </ul>
+      </div>
+      <div class="cons">
+        <h3>⚠️ CONSIDERATIONS</h3>
+        <ul>
+          <li>Competes for attention with metric cards</li>
+          <li>Users may overlook as static data vs. navigation</li>
+          <li>Less prominent than top bar or left panel</li>
+          <li>Pushes other content down by one row</li>
+          <li>May not be immediately recognized as clickable</li>
+          <li>Lower discoverability compared to navigation options</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

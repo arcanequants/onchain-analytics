@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proposal 4: Cyberpunk Analytics | Wallet Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: #000000;
+      color: #00ffff;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Cyber Grid */
+    .cyber-grid {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background:
+        repeating-linear-gradient(0deg, rgba(255, 0, 255, 0.03) 0px, transparent 1px, transparent 50px),
+        repeating-linear-gradient(90deg, rgba(0, 255, 255, 0.03) 0px, transparent 1px, transparent 50px),
+        radial-gradient(circle at 50% 50%, rgba(255, 0, 255, 0.05) 0%, transparent 70%);
+      z-index: 0;
+      animation: gridGlitch 0.1s infinite;
+    }
+
+    @keyframes gridGlitch {
+      0%, 90% { transform: translate(0, 0); }
+      92% { transform: translate(2px, 1px); }
+      94% { transform: translate(-2px, -1px); }
+      96% { transform: translate(1px, -2px); }
+      98% { transform: translate(-1px, 2px); }
+      100% { transform: translate(0, 0); }
+    }
+
+    /* Scanlines */
+    .scanlines {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: repeating-linear-gradient(0deg, rgba(0, 255, 255, 0.03) 0px, transparent 2px, transparent 4px);
+      z-index: 5;
+      pointer-events: none;
+      animation: scan 8s linear infinite;
+    }
+
+    @keyframes scan {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(50px); }
+    }
+
+    .content { position: relative; z-index: 10; padding: 24px; max-width: 1600px; margin: 0 auto; }
+
+    /* Glitch Text */
+    .glitch {
+      position: relative;
+      display: inline-block;
+    }
+
+    .glitch::before,
+    .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .glitch::before {
+      animation: glitch-1 2.5s infinite;
+      color: #ff00ff;
+      z-index: -1;
+    }
+
+    .glitch::after {
+      animation: glitch-2 2.5s infinite;
+      color: #00ff00;
+      z-index: -2;
+    }
+
+    @keyframes glitch-1 {
+      0%, 100% { transform: translate(0); }
+      20% { transform: translate(-2px, 2px); }
+      40% { transform: translate(-2px, -2px); }
+      60% { transform: translate(2px, 2px); }
+      80% { transform: translate(2px, -2px); }
+    }
+
+    @keyframes glitch-2 {
+      0%, 100% { transform: translate(0); }
+      20% { transform: translate(2px, -2px); }
+      40% { transform: translate(2px, 2px); }
+      60% { transform: translate(-2px, -2px); }
+      80% { transform: translate(-2px, 2px); }
+    }
+
+    /* Cyber Header */
+    .cyber-header {
+      margin-bottom: 32px;
+      padding: 24px;
+      background: linear-gradient(135deg, rgba(255, 0, 255, 0.1), rgba(0, 255, 255, 0.1));
+      border: 2px solid;
+      border-image: linear-gradient(90deg, #ff00ff, #00ffff, #ff00ff) 1;
+      clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cyber-header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
+      animation: cyberSweep 3s linear infinite;
+    }
+
+    @keyframes cyberSweep {
+      0% { left: -100%; }
+      100% { left: 200%; }
+    }
+
+    .cyber-title {
+      font-size: 42px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff, 0 0 40px #ff00ff;
+      margin-bottom: 8px;
+    }
+
+    .cyber-subtitle {
+      font-size: 14px;
+      color: #ff00ff;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .cyber-corner {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #00ffff;
+      box-shadow: 0 0 10px #00ffff;
+    }
+
+    .cyber-corner.tl { top: 0; left: 0; border-right: none; border-bottom: none; }
+    .cyber-corner.tr { top: 0; right: 0; border-left: none; border-bottom: none; }
+    .cyber-corner.bl { bottom: 0; left: 0; border-right: none; border-top: none; }
+    .cyber-corner.br { bottom: 0; right: 0; border-left: none; border-top: none; }
+
+    /* Terminal Panel */
+    .terminal-panel {
+      background: rgba(0, 0, 0, 0.8);
+      border: 2px solid #00ffff;
+      margin-bottom: 24px;
+      position: relative;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.3), inset 0 0 20px rgba(0, 255, 255, 0.1);
+      clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px));
+    }
+
+    .terminal-header {
+      padding: 12px 20px;
+      background: rgba(0, 255, 255, 0.1);
+      border-bottom: 1px solid #00ffff;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-family: 'IBM Plex Mono', monospace;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .terminal-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #00ff00;
+    }
+
+    .status-blink {
+      width: 8px;
+      height: 8px;
+      background: #00ff00;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #00ff00;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%, 49%, 100% { opacity: 1; }
+      50%, 99% { opacity: 0; }
+    }
+
+    .terminal-body {
+      padding: 24px;
+    }
+
+    /* Input Terminal */
+    .input-terminal {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .terminal-prompt {
+      color: #ff00ff;
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .terminal-input {
+      flex: 1;
+      padding: 14px 16px;
+      background: #000;
+      border: 2px solid #ff00ff;
+      color: #00ffff;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 14px;
+      box-shadow: 0 0 10px rgba(255, 0, 255, 0.3), inset 0 0 10px rgba(255, 0, 255, 0.1);
+      text-transform: uppercase;
+    }
+
+    .terminal-input:focus {
+      outline: none;
+      box-shadow: 0 0 20px rgba(255, 0, 255, 0.5), inset 0 0 15px rgba(255, 0, 255, 0.2);
+    }
+
+    .cyber-button {
+      padding: 14px 28px;
+      background: linear-gradient(135deg, #ff00ff, #00ffff);
+      border: 2px solid #00ffff;
+      color: #000;
+      font-weight: 900;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+      transition: all 0.3s;
+    }
+
+    .cyber-button::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s;
+    }
+
+    .cyber-button:hover::before {
+      left: 100%;
+    }
+
+    .cyber-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
+    }
+
+    /* Chain Selector */
+    .chain-selector {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+
+    .chain-cyber {
+      padding: 12px;
+      background: rgba(0, 255, 255, 0.05);
+      border: 1px solid #00ffff;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.3s;
+      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+      text-align: center;
+    }
+
+    .chain-cyber:hover {
+      background: rgba(0, 255, 255, 0.1);
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+    }
+
+    .chain-cyber.active {
+      background: rgba(255, 0, 255, 0.2);
+      border-color: #ff00ff;
+      box-shadow: 0 0 15px rgba(255, 0, 255, 0.5);
+    }
+
+    /* Data Matrix */
+    .data-matrix {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .matrix-cell {
+      background: rgba(0, 0, 0, 0.8);
+      border: 1px solid #00ffff;
+      padding: 20px;
+      position: relative;
+      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.2), inset 0 0 15px rgba(0, 255, 255, 0.05);
+      transition: all 0.3s;
+    }
+
+    .matrix-cell:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(255, 0, 255, 0.4);
+      border-color: #ff00ff;
+    }
+
+    .matrix-label {
+      font-size: 10px;
+      color: #ff00ff;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .matrix-value {
+      font-size: 32px;
+      font-weight: 900;
+      color: #00ffff;
+      text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+      font-family: 'Orbitron', sans-serif;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .matrix-meta {
+      font-size: 11px;
+      color: #00ff00;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    /* Asset Grid */
+    .asset-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+    }
+
+    /* Hologram List */
+    .hologram-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .hologram-item {
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid #00ffff;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+      transition: all 0.3s;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hologram-item::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+      transition: left 0.5s;
+    }
+
+    .hologram-item:hover::before {
+      left: 100%;
+    }
+
+    .hologram-item:hover {
+      border-color: #ff00ff;
+      box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+      transform: translateX(4px);
+    }
+
+    .hologram-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .hologram-icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, #ff00ff, #00ffff);
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 900;
+      color: #000;
+      box-shadow: 0 0 15px rgba(255, 0, 255, 0.5);
+    }
+
+    .hologram-info {
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .hologram-name {
+      font-weight: 700;
+      color: #00ffff;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .hologram-balance {
+      font-size: 12px;
+      color: #ff00ff;
+    }
+
+    .hologram-value {
+      text-align: right;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .hologram-amount {
+      font-size: 18px;
+      font-weight: 900;
+      color: #00ffff;
+      text-shadow: 0 0 10px #00ffff;
+    }
+
+    .hologram-change {
+      font-size: 12px;
+      color: #00ff00;
+      margin-top: 4px;
+    }
+
+    /* Annotation */
+    .annotation {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.95);
+      border: 2px solid #ff00ff;
+      padding: 16px 32px;
+      border-radius: 0;
+      font-size: 14px;
+      color: #00ffff;
+      font-weight: 700;
+      text-align: center;
+      z-index: 1000;
+      box-shadow: 0 0 40px rgba(255, 0, 255, 0.5);
+      font-family: 'Orbitron', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+    }
+
+    @media (max-width: 1200px) {
+      .data-matrix { grid-template-columns: repeat(2, 1fr); }
+      .asset-grid { grid-template-columns: 1fr; }
+      .chain-selector { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <div class="cyber-grid"></div>
+  <div class="scanlines"></div>
+
+  <div class="content">
+    <!-- Cyber Header -->
+    <div class="cyber-header">
+      <div class="cyber-corner tl"></div>
+      <div class="cyber-corner tr"></div>
+      <div class="cyber-corner bl"></div>
+      <div class="cyber-corner br"></div>
+      <h1 class="cyber-title glitch" data-text="WALLET MATRIX">WALLET MATRIX</h1>
+      <div class="cyber-subtitle">Multi-Dimensional Asset Analyzer · v2.077</div>
+    </div>
+
+    <!-- Terminal Input -->
+    <div class="terminal-panel">
+      <div class="terminal-header">
+        <span>◈ TARGET ACQUISITION PROTOCOL</span>
+        <div class="terminal-status">
+          <div class="status-blink"></div>
+          SYSTEM OPERATIONAL
+        </div>
+      </div>
+      <div class="terminal-body">
+        <div class="input-terminal">
+          <span class="terminal-prompt">></span>
+          <input type="text" class="terminal-input" value="0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045">
+          <button class="cyber-button">EXECUTE</button>
+        </div>
+
+        <div class="chain-selector">
+          <div class="chain-cyber active">⟠ ETH</div>
+          <div class="chain-cyber active">🔵 BASE</div>
+          <div class="chain-cyber active">🔷 ARB</div>
+          <div class="chain-cyber active">🔴 OPT</div>
+          <div class="chain-cyber active">🟣 POLY</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Data Matrix -->
+    <div class="data-matrix">
+      <div class="matrix-cell">
+        <div class="matrix-label">Total Matrix Value</div>
+        <div class="matrix-value">$2.4M</div>
+        <div class="matrix-meta">▲ +5.2% SURGE</div>
+      </div>
+      <div class="matrix-cell">
+        <div class="matrix-label">Asset Count</div>
+        <div class="matrix-value">47</div>
+        <div class="matrix-meta">5 CHAINS ACTIVE</div>
+      </div>
+      <div class="matrix-cell">
+        <div class="matrix-label">Dominant Asset</div>
+        <div class="matrix-value">ETH</div>
+        <div class="matrix-meta">48% DOMINANCE</div>
+      </div>
+      <div class="matrix-cell">
+        <div class="matrix-label">Gas Reserves</div>
+        <div class="matrix-value">15.4</div>
+        <div class="matrix-meta">ETH EQUIVALENT</div>
+      </div>
+    </div>
+
+    <!-- Asset Grid -->
+    <div class="asset-grid">
+      <!-- Hologram Holdings -->
+      <div class="terminal-panel">
+        <div class="terminal-header">
+          <span>◈ ASSET HOLOGRAMS</span>
+          <span style="color: #00ff00;">REAL-TIME FEED</span>
+        </div>
+        <div class="terminal-body">
+          <div class="hologram-list">
+            <div class="hologram-item">
+              <div class="hologram-left">
+                <div class="hologram-icon">⟠</div>
+                <div class="hologram-info">
+                  <div class="hologram-name">ETHEREUM</div>
+                  <div class="hologram-balance">385.2 ETH · MAINNET</div>
+                </div>
+              </div>
+              <div class="hologram-value">
+                <div class="hologram-amount">$1,156,800</div>
+                <div class="hologram-change">▲ +4.2%</div>
+              </div>
+            </div>
+
+            <div class="hologram-item">
+              <div class="hologram-left">
+                <div class="hologram-icon">₿</div>
+                <div class="hologram-info">
+                  <div class="hologram-name">WRAPPED BTC</div>
+                  <div class="hologram-balance">4.5 WBTC · ETHEREUM</div>
+                </div>
+              </div>
+              <div class="hologram-value">
+                <div class="hologram-amount">$379,200</div>
+                <div class="hologram-change">▲ +2.8%</div>
+              </div>
+            </div>
+
+            <div class="hologram-item">
+              <div class="hologram-left">
+                <div class="hologram-icon">U</div>
+                <div class="hologram-info">
+                  <div class="hologram-name">USD COIN</div>
+                  <div class="hologram-balance">285,000 USDC · MULTI</div>
+                </div>
+              </div>
+              <div class="hologram-value">
+                <div class="hologram-amount">$285,000</div>
+                <div class="hologram-change" style="color: #888;">▬ 0.0%</div>
+              </div>
+            </div>
+
+            <div class="hologram-item">
+              <div class="hologram-left">
+                <div class="hologram-icon">◆</div>
+                <div class="hologram-info">
+                  <div class="hologram-name">CHAINLINK</div>
+                  <div class="hologram-balance">8,500 LINK · ETHEREUM</div>
+                </div>
+              </div>
+              <div class="hologram-value">
+                <div class="hologram-amount">$129,600</div>
+                <div class="hologram-change">▲ +6.1%</div>
+              </div>
+            </div>
+
+            <div class="hologram-item">
+              <div class="hologram-left">
+                <div class="hologram-icon">◎</div>
+                <div class="hologram-info">
+                  <div class="hologram-name">UNISWAP</div>
+                  <div class="hologram-balance">15,200 UNI · ETHEREUM</div>
+                </div>
+              </div>
+              <div class="hologram-value">
+                <div class="hologram-amount">$115,200</div>
+                <div class="hologram-change" style="color: #ff0000;">▼ -1.2%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chain Matrix -->
+      <div class="terminal-panel">
+        <div class="terminal-header">
+          <span>◈ CHAIN DISTRIBUTION</span>
+        </div>
+        <div class="terminal-body">
+          <div style="display: flex; flex-direction: column; gap: 16px;">
+            <div class="matrix-cell">
+              <div class="matrix-label">⟠ ETHEREUM</div>
+              <div class="matrix-value" style="font-size: 24px;">$1.16M</div>
+              <div class="matrix-meta">18 ASSETS · 48.2%</div>
+              <div style="width: 100%; height: 4px; background: rgba(0,255,255,0.2); margin-top: 12px; border-radius: 2px; overflow: hidden;">
+                <div style="width: 48%; height: 100%; background: linear-gradient(90deg, #ff00ff, #00ffff); box-shadow: 0 0 10px #00ffff;"></div>
+              </div>
+            </div>
+
+            <div class="matrix-cell">
+              <div class="matrix-label">🔵 BASE</div>
+              <div class="matrix-value" style="font-size: 24px;">$540K</div>
+              <div class="matrix-meta">12 ASSETS · 22.5%</div>
+              <div style="width: 100%; height: 4px; background: rgba(0,255,255,0.2); margin-top: 12px; border-radius: 2px; overflow: hidden;">
+                <div style="width: 22.5%; height: 100%; background: linear-gradient(90deg, #ff00ff, #00ffff); box-shadow: 0 0 10px #00ffff;"></div>
+              </div>
+            </div>
+
+            <div class="matrix-cell">
+              <div class="matrix-label">🔷 ARBITRUM</div>
+              <div class="matrix-value" style="font-size: 24px;">$379K</div>
+              <div class="matrix-meta">8 ASSETS · 15.8%</div>
+              <div style="width: 100%; height: 4px; background: rgba(0,255,255,0.2); margin-top: 12px; border-radius: 2px; overflow: hidden;">
+                <div style="width: 15.8%; height: 100%; background: linear-gradient(90deg, #ff00ff, #00ffff); box-shadow: 0 0 10px #00ffff;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="annotation">
+    ⬢ PROPOSAL 4: CYBERPUNK ANALYTICS — Sci-Fi Data Visualization
+  </div>
+</body>
+</html>

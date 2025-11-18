@@ -1,4 +1,5 @@
 /* Wallet Page - Proposal #3: Minimalist Elegance */
+/* Performance optimizations for legacy browsers */
 
 .wallet-container {
   padding: 48px;
@@ -15,6 +16,30 @@
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* Disable animations for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .wallet-minimal-header,
+  .wallet-search-card,
+  .wallet-stats-grid,
+  .wallet-content-grid {
+    animation: none !important;
+  }
+
+  .wallet-stat-minimal:hover,
+  .wallet-token-item:hover,
+  .wallet-btn-minimal:hover {
+    transform: none !important;
+  }
 }
 
 .wallet-header-title {

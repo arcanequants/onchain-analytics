@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proposal 2: Top Bar Navigation</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'IBM Plex Mono', 'Courier New', monospace;
+      background: #0a0e1a;
+      color: #e0e0e0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      background: #000;
+      border: 1px solid #1a1f2e;
+    }
+
+    .header {
+      background: rgba(0, 0, 0, 0.95);
+      padding: 20px;
+      border-bottom: 1px solid #1a1f2e;
+      text-align: center;
+    }
+
+    .header h1 {
+      color: #0099ff;
+      font-size: 24px;
+      margin-bottom: 10px;
+      text-shadow: 0 0 10px rgba(0, 153, 255, 0.5);
+    }
+
+    .header p {
+      color: #888;
+      font-size: 14px;
+    }
+
+    .top-bar {
+      background: rgba(0, 0, 0, 0.95);
+      border-bottom: 1px solid #1a1f2e;
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: 700;
+      color: #0099ff;
+      letter-spacing: 1px;
+      text-shadow: 0 0 10px rgba(0, 153, 255, 0.5);
+    }
+
+    .wallet-nav-button {
+      padding: 8px 18px;
+      background: rgba(0, 153, 255, 0.15);
+      border: 2px solid #0099ff;
+      border-radius: 4px;
+      color: #0099ff;
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+      animation: buttonPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes buttonPulse {
+      0%, 100% {
+        box-shadow: 0 0 15px rgba(0, 153, 255, 0.4);
+        border-color: #0099ff;
+      }
+      50% {
+        box-shadow: 0 0 25px rgba(0, 153, 255, 0.7);
+        border-color: #00b3ff;
+      }
+    }
+
+    .wallet-nav-button:hover {
+      background: rgba(0, 153, 255, 0.25);
+      box-shadow: 0 0 20px rgba(0, 153, 255, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .new-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: #ff0000;
+      color: #fff;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 8px;
+      font-weight: 700;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+    }
+
+    .wallet-icon {
+      font-size: 16px;
+    }
+
+    .top-tickers {
+      display: flex;
+      gap: 24px;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .ticker-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ticker-symbol {
+      color: #888;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .ticker-price {
+      color: #fff;
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .ticker-change {
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .change-up {
+      color: #00ff88;
+    }
+
+    .change-down {
+      color: #ff0000;
+    }
+
+    .top-time {
+      color: #888;
+      font-size: 14px;
+    }
+
+    .terminal-grid {
+      display: grid;
+      grid-template-columns: 300px 1fr 280px;
+      gap: 1px;
+      background: #000;
+      min-height: 500px;
+    }
+
+    .left-panel, .center-panel, .right-panel {
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #666;
+      font-size: 14px;
+    }
+
+    .left-panel {
+      background: rgba(15, 20, 25, 0.95);
+      border-right: 1px solid #1a1f2e;
+    }
+
+    .center-panel {
+      background: rgba(10, 14, 26, 0.95);
+    }
+
+    .right-panel {
+      background: rgba(15, 20, 25, 0.95);
+      border-left: 1px solid #1a1f2e;
+    }
+
+    .mobile-preview {
+      margin-top: 30px;
+      padding: 20px;
+      background: rgba(15, 20, 25, 0.8);
+      border: 1px solid #1a1f2e;
+    }
+
+    .mobile-preview h3 {
+      color: #0099ff;
+      margin-bottom: 15px;
+      font-size: 16px;
+    }
+
+    .mobile-bar {
+      background: rgba(0, 0, 0, 0.95);
+      border: 1px solid #1a1f2e;
+      padding: 10px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .mobile-logo {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0099ff;
+    }
+
+    .wallet-icon-only {
+      padding: 6px 10px;
+      background: rgba(0, 153, 255, 0.15);
+      border: 2px solid #0099ff;
+      border-radius: 4px;
+      color: #0099ff;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+      animation: buttonPulse 2s ease-in-out infinite;
+    }
+
+    .mobile-time {
+      color: #888;
+      font-size: 12px;
+    }
+
+    .pros-cons {
+      margin-top: 20px;
+      padding: 20px;
+      background: rgba(15, 20, 25, 0.8);
+      border: 1px solid #1a1f2e;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .pros-cons h3 {
+      color: #0099ff;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+
+    .pros-cons ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .pros-cons li {
+      padding: 6px 0;
+      font-size: 12px;
+      color: #e0e0e0;
+    }
+
+    .pros-cons .pros li:before {
+      content: "✅ ";
+      margin-right: 8px;
+    }
+
+    .pros-cons .cons li:before {
+      content: "⚠️ ";
+      margin-right: 8px;
+    }
+
+    @media (max-width: 1024px) {
+      .terminal-grid {
+        grid-template-columns: 1fr;
+      }
+      .left-panel, .right-panel {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🎯 PROPOSAL 2: TOP BAR NAVIGATION</h1>
+      <p>Primary navigation button in top bar for universal access</p>
+    </div>
+
+    <!-- DESKTOP TOP BAR -->
+    <div class="top-bar">
+      <div class="logo">ONCHAIN TERMINAL</div>
+
+      <a href="#" class="wallet-nav-button">
+        <span class="new-badge">NEW!</span>
+        <span class="wallet-icon">💼</span>
+        <span class="wallet-label">WALLET</span>
+      </a>
+
+      <div class="top-tickers">
+        <div class="ticker-item">
+          <span class="ticker-symbol">BTC</span>
+          <span class="ticker-price">$45K</span>
+          <span class="ticker-change change-up">▲ +1.2%</span>
+        </div>
+        <div class="ticker-item">
+          <span class="ticker-symbol">ETH</span>
+          <span class="ticker-price">$2.5K</span>
+          <span class="ticker-change change-up">▲ +2.5%</span>
+        </div>
+        <div class="ticker-item">
+          <span class="ticker-symbol">SOL</span>
+          <span class="ticker-price">$98</span>
+          <span class="ticker-change change-down">▼ -0.8%</span>
+        </div>
+        <div class="ticker-item">
+          <span class="ticker-symbol">GAS</span>
+          <span class="ticker-price">25</span>
+          <span class="ticker-change change-up">Low</span>
+        </div>
+      </div>
+
+      <div class="top-time">12:45 UTC</div>
+    </div>
+
+    <div class="terminal-grid">
+      <div class="left-panel">[Watchlist Panel]</div>
+      <div class="center-panel">[Main Content - Charts & Tables]</div>
+      <div class="right-panel">[Analytics Panel]</div>
+    </div>
+
+    <!-- MOBILE PREVIEW -->
+    <div class="mobile-preview">
+      <h3>📱 MOBILE VERSION (Icon-Only)</h3>
+      <div class="mobile-bar">
+        <div class="mobile-logo">ONCHAIN</div>
+        <span class="wallet-icon-only">💼</span>
+        <div class="mobile-time">12:45 UTC</div>
+      </div>
+      <p style="color: #666; font-size: 11px; margin-top: 10px; text-align: center;">
+        Button converts to icon-only on mobile to save space
+      </p>
+    </div>
+
+    <div class="pros-cons">
+      <div class="pros">
+        <h3>✅ STRENGTHS</h3>
+        <ul>
+          <li>Universal visibility on ALL devices (desktop, tablet, mobile)</li>
+          <li>Industry standard navigation pattern (Bloomberg, TradingView)</li>
+          <li>Zero vertical scroll required</li>
+          <li>Mobile-friendly - remains accessible when panels collapse</li>
+          <li>Clear call-to-action with prominent positioning</li>
+          <li>Easy to implement - single component addition</li>
+          <li>High discoverability - users naturally look at top bar</li>
+        </ul>
+      </div>
+      <div class="cons">
+        <h3>⚠️ CONSIDERATIONS</h3>
+        <ul>
+          <li>Top bar space is premium - adds visual weight</li>
+          <li>May push tickers to wrap on smaller screens</li>
+          <li>Breaks current minimalist top bar aesthetic</li>
+          <li>Requires responsive design for mobile icon-only mode</li>
+          <li>Competes for attention with logo and tickers</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -19,32 +19,39 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const limit = Math.min(parseInt(searchParams.get('limit') || '10'), 100)
 
-    // Get latest prices - the CRON job handles deduplication via unique constraint
-    const { data: prices, error } = await supabase
+    // Get more records to ensure we have enough after deduplication
+    const fetchLimit = limit * 30 // Fetch 30x more to account for duplicates
+
+    const { data: allPrices, error } = await supabase
       .from('token_prices')
       .select('coingecko_id, symbol, name, current_price, market_cap, market_cap_rank, total_volume, price_change_24h, price_change_percentage_24h, price_change_percentage_7d, price_change_percentage_30d, image, last_updated')
       .order('market_cap_rank', { ascending: true })
-      .limit(limit)
+      .limit(fetchLimit)
 
     if (error) {
       throw error
     }
 
     // Group by coingecko_id and keep only the latest
-    const uniquePrices = prices?.reduce((acc: any[], current: any) => {
-      const existing = acc.find(item => item.coingecko_id === current.coingecko_id)
+    const seenCoins = new Map()
+
+    allPrices?.forEach((price: any) => {
+      const existing = seenCoins.get(price.coingecko_id)
       if (!existing) {
-        acc.push(current)
+        seenCoins.set(price.coingecko_id, price)
       } else {
-        const currentTime = new Date(current.last_updated).getTime()
+        const currentTime = new Date(price.last_updated).getTime()
         const existingTime = new Date(existing.last_updated).getTime()
         if (currentTime > existingTime) {
-          const index = acc.indexOf(existing)
-          acc[index] = current
+          seenCoins.set(price.coingecko_id, price)
         }
       }
-      return acc
-    }, [])
+    })
+
+    // Convert Map to array and limit to requested amount
+    const uniquePrices = Array.from(seenCoins.values())
+      .sort((a, b) => (a.market_cap_rank || 999) - (b.market_cap_rank || 999))
+      .slice(0, limit)
 
     return NextResponse.json({
       success: true,

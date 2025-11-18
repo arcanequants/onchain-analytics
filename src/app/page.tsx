@@ -62,21 +62,8 @@ export default function Home() {
     return () => clearInterval(interval)
   }, [])
 
-  useEffect(() => {
-    // Simulate price updates for crypto tickers (BTC, ETH, SOL)
-    const priceInterval = setInterval(() => {
-      const priceElements = document.querySelectorAll('.ticker-price')
-      priceElements.forEach(el => {
-        const current = parseFloat(el.textContent?.replace(/[$,]/g, '') || '0')
-        const change = (Math.random() - 0.5) * (current * 0.001)
-        el.classList.add('flash')
-        setTimeout(() => el.classList.remove('flash'), 500)
-        el.textContent = (current + change).toFixed(2)
-      })
-    }, 3000)
-
-    return () => clearInterval(priceInterval)
-  }, [])
+  // Removed price update interval - caused performance issues on old hardware
+  // The DOM manipulation every 3 seconds blocked navigation
 
   // Helper to get gas data for a specific chain
   const getChainGas = (chainName: string) => {
@@ -94,15 +81,7 @@ export default function Home() {
 
   return (
     <>
-      {/* Animated Background Grid */}
-      <div className="bg-grid"></div>
-
-      {/* Floating Particles */}
-      <div className="particle" style={{ left: '10%', animationDelay: '0s' }}></div>
-      <div className="particle" style={{ left: '25%', animationDelay: '3s' }}></div>
-      <div className="particle" style={{ left: '50%', animationDelay: '6s' }}></div>
-      <div className="particle" style={{ left: '75%', animationDelay: '9s' }}></div>
-      <div className="particle" style={{ left: '90%', animationDelay: '12s' }}></div>
+      {/* Removed animated background grid and particles - caused performance issues on old hardware */}
 
       <div className="content-layer">
         {/* Top Bar */}

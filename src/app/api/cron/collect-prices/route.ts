@@ -36,7 +36,18 @@ export async function GET(request: NextRequest) {
     if (!token || token !== expectedToken) {
       console.error('[CRON collect-prices] Unauthorized request')
       return NextResponse.json(
-        { error: 'Unauthorized' },
+        {
+          error: 'Unauthorized',
+          debug: {
+            hasToken: !!token,
+            hasExpectedToken: !!expectedToken,
+            tokenLength: token?.length || 0,
+            expectedTokenLength: expectedToken?.length || 0,
+            tokenPreview: token?.substring(0, 10) + '...',
+            expectedPreview: expectedToken?.substring(0, 10) + '...',
+            match: token === expectedToken
+          }
+        },
         { status: 401 }
       )
     }

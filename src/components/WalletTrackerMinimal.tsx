@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
 import { validateAddress } from '@/lib/wallet'
 import NFTGallery from './NFTGallery'
 import '../app/wallet/wallet.css'
@@ -184,21 +184,26 @@ export default function WalletTrackerMinimal() {
     }
   }
 
+  // Effect to refetch data when chains change (if wallet is already loaded)
+  useEffect(() => {
+    if (address && validateAddress(address) && walletData && selectedChains.length > 0) {
+      // Refetch with new chain selection
+      fetchWalletBalances(true)
+    }
+  }, [selectedChains.join(',')]) // Only trigger when chains actually change
+
   const toggleChain = (chainId: string) => {
-    setSelectedChains(prev => {
-      const newChains = prev.includes(chainId)
-        ? prev.filter(c => c !== chainId)
-        : [...prev, chainId]
+    const newChains = selectedChains.includes(chainId)
+      ? selectedChains.filter(c => c !== chainId)
+      : [...selectedChains, chainId]
 
-      // If we have wallet data, automatically refresh with new chain selection
-      if (walletData && newChains.length > 0) {
-        setTimeout(() => {
-          fetchWalletBalances(true)
-        }, 100)
-      }
+    // Don't allow deselecting all chains
+    if (newChains.length === 0) {
+      return
+    }
 
-      return newChains
-    })
+    // Update selected chains (this will trigger useEffect above)
+    setSelectedChains(newChains)
   }
 
   const formatUSD = (value: number) => {
@@ -230,32 +235,13 @@ export default function WalletTrackerMinimal() {
     return num.toFixed(8)
   }
 
-  // Get token icon gradient based on symbol
-  const getTokenGradient = (symbol: string) => {
-    const gradients = {
-      'ETH': 'linear-gradient(135deg, #627eea 0%, #8a92b2 100%)',
-      'BTC': 'linear-gradient(135deg, #f7931a 0%, #ffb74d 100%)',
-      'USDT': 'linear-gradient(135deg, #26a17b 0%, #50af95 100%)',
-      'USDC': 'linear-gradient(135deg, #2775ca 0%, #4e9ce6 100%)',
-      'DAI': 'linear-gradient(135deg, #f4b731 0%, #ffca42 100%)',
-      'WETH': 'linear-gradient(135deg, #627eea 0%, #8a92b2 100%)',
-      'MATIC': 'linear-gradient(135deg, #8247e5 0%, #a370f7 100%)',
-      'UNI': 'linear-gradient(135deg, #ff007a 0%, #ff4ea3 100%)',
-      'LINK': 'linear-gradient(135deg, #2a5ada 0%, #4e7fe9 100%)',
-      'AAVE': 'linear-gradient(135deg, #b6509e 0%, #d077bf 100%)',
-      'ARB': 'linear-gradient(135deg, #2d374b 0%, #4a5568 100%)',
-      'OP': 'linear-gradient(135deg, #ff0420 0%, #ff3a4e 100%)',
-    }
+  // Get token logo URL using CryptoLogos CDN
+  const getTokenLogoUrl = (symbol: string) => {
+    // Normalize symbol
+    const normalizedSymbol = symbol.toUpperCase()
 
-    // Return specific gradient if available, otherwise generate based on first letter
-    if (gradients[symbol as keyof typeof gradients]) {
-      return gradients[symbol as keyof typeof gradients]
-    }
-
-    // Generate color based on first character
-    const char = symbol.charCodeAt(0)
-    const hue = (char * 137.5) % 360
-    return `linear-gradient(135deg, hsl(${hue}, 65%, 55%) 0%, hsl(${hue + 30}, 65%, 65%) 100%)`
+    // Use CryptoLogos CDN for crypto icons
+    return `https://cryptologos.cc/logos/thumbs/${normalizedSymbol.toLowerCase()}.png?v=033`
   }
 
   // Group balances by chain (memoized for performance)
@@ -412,11 +398,22 @@ export default function WalletTrackerMinimal() {
                   topHoldings.map((token, index) => (
                     <div key={`${token.tokenAddress || 'native'}-${index}`} className="wallet-token-item">
                       <div className="wallet-token-left">
-                        <div
-                          className="wallet-token-avatar"
-                          style={{ background: getTokenGradient(token.tokenSymbol) }}
-                        >
-                          {token.tokenSymbol.charAt(0)}
+                        <div className="wallet-token-avatar">
+                          <img
+                            src={getTokenLogoUrl(token.tokenSymbol)}
+                            alt={token.tokenSymbol}
+                            className="wallet-token-logo"
+                            onError={(e) => {
+                              // Fallback to first letter if image fails to load
+                              e.currentTarget.style.display = 'none'
+                              if (e.currentTarget.nextSibling) {
+                                (e.currentTarget.nextSibling as HTMLElement).style.display = 'flex'
+                              }
+                            }}
+                          />
+                          <div className="wallet-token-logo-fallback" style={{ display: 'none' }}>
+                            {token.tokenSymbol.charAt(0)}
+                          </div>
                         </div>
                         <div>
                           <div className="wallet-token-name-minimal">{token.tokenName}</div>

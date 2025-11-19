@@ -81,7 +81,7 @@ export async function GET(request: NextRequest) {
         chains_supported: protocol.chains,
         logo_url: protocol.logo,
         url: protocol.url,
-        raw_data: protocol,
+        raw_data: null, // Skip raw_data to avoid type conflicts
         data_timestamp: dataTimestamp,
       })
     })

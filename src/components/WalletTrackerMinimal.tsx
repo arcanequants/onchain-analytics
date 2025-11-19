@@ -138,12 +138,16 @@ export default function WalletTrackerMinimal() {
       const data = await response.json()
 
       if (response.ok) {
+        console.log('[WalletTracker] NFT data received:', data.totalCount, 'NFTs')
         setNftData(data)
       } else {
         console.error('[WalletTracker] Failed to fetch NFTs:', data.error)
+        // Set empty NFT data on error so we don't show stale data
+        setNftData(null)
       }
     } catch (err: any) {
       console.error('[WalletTracker] Error fetching NFTs:', err)
+      setNftData(null)
     } finally {
       setNftLoading(false)
     }
@@ -181,11 +185,20 @@ export default function WalletTrackerMinimal() {
   }
 
   const toggleChain = (chainId: string) => {
-    setSelectedChains(prev =>
-      prev.includes(chainId)
+    setSelectedChains(prev => {
+      const newChains = prev.includes(chainId)
         ? prev.filter(c => c !== chainId)
         : [...prev, chainId]
-    )
+
+      // If we have wallet data, automatically refresh with new chain selection
+      if (walletData && newChains.length > 0) {
+        setTimeout(() => {
+          fetchWalletBalances(true)
+        }, 100)
+      }
+
+      return newChains
+    })
   }
 
   const formatUSD = (value: number) => {
@@ -215,6 +228,34 @@ export default function WalletTrackerMinimal() {
       return num.toFixed(4)
     }
     return num.toFixed(8)
+  }
+
+  // Get token icon gradient based on symbol
+  const getTokenGradient = (symbol: string) => {
+    const gradients = {
+      'ETH': 'linear-gradient(135deg, #627eea 0%, #8a92b2 100%)',
+      'BTC': 'linear-gradient(135deg, #f7931a 0%, #ffb74d 100%)',
+      'USDT': 'linear-gradient(135deg, #26a17b 0%, #50af95 100%)',
+      'USDC': 'linear-gradient(135deg, #2775ca 0%, #4e9ce6 100%)',
+      'DAI': 'linear-gradient(135deg, #f4b731 0%, #ffca42 100%)',
+      'WETH': 'linear-gradient(135deg, #627eea 0%, #8a92b2 100%)',
+      'MATIC': 'linear-gradient(135deg, #8247e5 0%, #a370f7 100%)',
+      'UNI': 'linear-gradient(135deg, #ff007a 0%, #ff4ea3 100%)',
+      'LINK': 'linear-gradient(135deg, #2a5ada 0%, #4e7fe9 100%)',
+      'AAVE': 'linear-gradient(135deg, #b6509e 0%, #d077bf 100%)',
+      'ARB': 'linear-gradient(135deg, #2d374b 0%, #4a5568 100%)',
+      'OP': 'linear-gradient(135deg, #ff0420 0%, #ff3a4e 100%)',
+    }
+
+    // Return specific gradient if available, otherwise generate based on first letter
+    if (gradients[symbol as keyof typeof gradients]) {
+      return gradients[symbol as keyof typeof gradients]
+    }
+
+    // Generate color based on first character
+    const char = symbol.charCodeAt(0)
+    const hue = (char * 137.5) % 360
+    return `linear-gradient(135deg, hsl(${hue}, 65%, 55%) 0%, hsl(${hue + 30}, 65%, 65%) 100%)`
   }
 
   // Group balances by chain (memoized for performance)
@@ -371,7 +412,10 @@ export default function WalletTrackerMinimal() {
                   topHoldings.map((token, index) => (
                     <div key={`${token.tokenAddress || 'native'}-${index}`} className="wallet-token-item">
                       <div className="wallet-token-left">
-                        <div className="wallet-token-avatar">
+                        <div
+                          className="wallet-token-avatar"
+                          style={{ background: getTokenGradient(token.tokenSymbol) }}
+                        >
                           {token.tokenSymbol.charAt(0)}
                         </div>
                         <div>
@@ -424,13 +468,15 @@ export default function WalletTrackerMinimal() {
             </div>
           </div>
 
-          {/* NFT Gallery */}
-          {nftData && (
-            <NFTGallery nfts={nftData.nfts} loading={nftLoading} />
-          )}
-          {!nftData && nftLoading && (
-            <NFTGallery nfts={[]} loading={true} />
-          )}
+          {/* NFT Gallery Section */}
+          <div style={{ marginTop: '32px' }}>
+            {nftLoading && !nftData && (
+              <NFTGallery nfts={[]} loading={true} />
+            )}
+            {nftData && (
+              <NFTGallery nfts={nftData.nfts} loading={nftLoading} />
+            )}
+          </div>
         </>
       )}
 

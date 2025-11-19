@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Performance Test - Wallet Page</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background: #0a0e1a;
+            color: #00ff88;
+        }
+        .metric {
+            padding: 10px;
+            margin: 5px 0;
+            background: rgba(0, 255, 136, 0.1);
+            border-left: 3px solid #00ff88;
+        }
+        .warning {
+            border-left-color: #ffbb00;
+            background: rgba(255, 187, 0, 0.1);
+        }
+        .error {
+            border-left-color: #ff0000;
+            background: rgba(255, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Performance Diagnostics - Wallet Page</h1>
+    <div id="results"></div>
+
+    <script>
+        const results = document.getElementById('results');
+
+        function addMetric(label, value, status = 'ok') {
+            const div = document.createElement('div');
+            div.className = `metric ${status}`;
+            div.innerHTML = `<strong>${label}:</strong> ${value}`;
+            results.appendChild(div);
+        }
+
+        // Test 1: Backdrop Filter Support
+        const supportsBackdrop = CSS.supports('backdrop-filter', 'blur(10px)');
+        addMetric('Backdrop Filter Support', supportsBackdrop ? 'YES ✅' : 'NO ❌ (Using fallback)', supportsBackdrop ? 'ok' : 'warning');
+
+        // Test 2: Prefers Reduced Motion
+        const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        addMetric('Prefers Reduced Motion', prefersReduced ? 'YES (Animations disabled)' : 'NO (Animations enabled)', prefersReduced ? 'warning' : 'ok');
+
+        // Test 3: Load Time Test
+        const loadStart = performance.now();
+
+        // Simulate loading wallet page resources
+        fetch('https://www.vectorialdata.com/wallet')
+            .then(response => response.text())
+            .then(html => {
+                const loadTime = performance.now() - loadStart;
+                const status = loadTime < 1000 ? 'ok' : loadTime < 3000 ? 'warning' : 'error';
+                addMetric('Page Load Time', `${loadTime.toFixed(0)}ms`, status);
+
+                // Test 4: Check for lazy loading
+                const hasLazyLoading = html.includes('dynamic') || html.includes('loading');
+                addMetric('Lazy Loading Detected', hasLazyLoading ? 'YES ✅' : 'NO ❌', hasLazyLoading ? 'ok' : 'warning');
+
+                // Test 5: CSS Size
+                const cssLinks = html.match(/href="([^"]*\.css[^"]*)"/g) || [];
+                addMetric('CSS Files', cssLinks.length, 'ok');
+
+                // Test 6: JS Chunks
+                const jsChunks = html.match(/src="([^"]*\.js[^"]*)"/g) || [];
+                addMetric('JavaScript Chunks', jsChunks.length, jsChunks.length > 10 ? 'warning' : 'ok');
+
+                // Test 7: Check progressive enhancement in CSS
+                return fetch(cssLinks[0]?.match(/href="([^"]*)"/)[1]);
+            })
+            .then(response => response?.text())
+            .then(css => {
+                const hasProgressive = css?.includes('@supports not');
+                addMetric('Progressive Enhancement in CSS', hasProgressive ? 'YES ✅' : 'NO ❌', hasProgressive ? 'ok' : 'error');
+
+                const hasReducedMotion = css?.includes('prefers-reduced-motion');
+                addMetric('Reduced Motion Support in CSS', hasReducedMotion ? 'YES ✅' : 'NO ❌', hasReducedMotion ? 'ok' : 'error');
+            })
+            .catch(err => {
+                addMetric('Error', err.message, 'error');
+            });
+
+        // Test 8: Browser Info
+        addMetric('User Agent', navigator.userAgent);
+        addMetric('Hardware Concurrency', `${navigator.hardwareConcurrency || 'unknown'} cores`);
+        addMetric('Device Memory', `${navigator.deviceMemory || 'unknown'} GB`);
+        addMetric('Connection Type', navigator.connection?.effectiveType || 'unknown');
+
+        // Test 9: Performance API
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const perfData = performance.getEntriesByType('navigation')[0];
+                if (perfData) {
+                    addMetric('DOM Content Loaded', `${perfData.domContentLoadedEventEnd - perfData.domContentLoadedEventStart}ms`);
+                    addMetric('Load Event', `${perfData.loadEventEnd - perfData.loadEventStart}ms`);
+                    addMetric('Total Page Load', `${perfData.loadEventEnd - perfData.fetchStart}ms`);
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

@@ -2,7 +2,9 @@
 
 import { useState, useMemo, useCallback } from 'react'
 import { validateAddress } from '@/lib/wallet'
+import NFTGallery from './NFTGallery'
 import '../app/wallet/wallet.css'
+import './NFTGallery.css'
 
 interface TokenBalance {
   chain: string
@@ -24,11 +26,44 @@ interface WalletData {
   cached: boolean
 }
 
+interface NFTMedia {
+  gateway: string
+  thumbnail?: string
+  raw: string
+  format?: string
+}
+
+interface NFT {
+  chain: string
+  contractAddress: string
+  tokenId: string
+  tokenType: string
+  title: string
+  description?: string
+  media?: NFTMedia[]
+  collectionName?: string
+  balance: string
+  isSpam: boolean
+  floorPriceEth?: number
+  floorPriceUsd?: number
+}
+
+interface NFTData {
+  walletAddress: string
+  chains: string[]
+  nfts: NFT[]
+  totalCount: number
+  lastUpdated: string
+  cached: boolean
+}
+
 export default function WalletTrackerMinimal() {
   const [address, setAddress] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [walletData, setWalletData] = useState<WalletData | null>(null)
+  const [nftData, setNftData] = useState<NFTData | null>(null)
+  const [nftLoading, setNftLoading] = useState(false)
   const [selectedChains, setSelectedChains] = useState<string[]>([
     'ethereum',
     'base',
@@ -75,10 +110,42 @@ export default function WalletTrackerMinimal() {
 
       setWalletData(data)
       saveToLocalStorage(data)
+
+      // Automatically fetch NFTs after successful token balance fetch
+      fetchNFTs(refresh)
     } catch (err: any) {
       setError(err.message || 'Failed to fetch wallet data')
     } finally {
       setLoading(false)
+    }
+  }, [address, selectedChains])
+
+  const fetchNFTs = useCallback(async (refresh = false) => {
+    if (!address || !validateAddress(address)) {
+      return
+    }
+
+    setNftLoading(true)
+
+    try {
+      const params = new URLSearchParams({
+        chains: selectedChains.join(','),
+        refresh: refresh.toString(),
+        save: refresh.toString(),
+      })
+
+      const response = await fetch(`/api/wallet/${address}/nfts?${params}`)
+      const data = await response.json()
+
+      if (response.ok) {
+        setNftData(data)
+      } else {
+        console.error('[WalletTracker] Failed to fetch NFTs:', data.error)
+      }
+    } catch (err: any) {
+      console.error('[WalletTracker] Error fetching NFTs:', err)
+    } finally {
+      setNftLoading(false)
     }
   }, [address, selectedChains])
 
@@ -294,67 +361,77 @@ export default function WalletTrackerMinimal() {
 
       {/* Content Grid */}
       {walletData && (
-        <div className="wallet-content-grid">
-          {/* Token Holdings */}
-          <div className="wallet-content-card">
-            <h2 className="wallet-card-title">Holdings</h2>
-            <div className="wallet-token-list">
-              {topHoldings.length > 0 ? (
-                topHoldings.map((token, index) => (
-                  <div key={`${token.tokenAddress || 'native'}-${index}`} className="wallet-token-item">
-                    <div className="wallet-token-left">
-                      <div className="wallet-token-avatar">
-                        {token.tokenSymbol.charAt(0)}
+        <>
+          <div className="wallet-content-grid">
+            {/* Token Holdings */}
+            <div className="wallet-content-card">
+              <h2 className="wallet-card-title">Holdings</h2>
+              <div className="wallet-token-list">
+                {topHoldings.length > 0 ? (
+                  topHoldings.map((token, index) => (
+                    <div key={`${token.tokenAddress || 'native'}-${index}`} className="wallet-token-item">
+                      <div className="wallet-token-left">
+                        <div className="wallet-token-avatar">
+                          {token.tokenSymbol.charAt(0)}
+                        </div>
+                        <div>
+                          <div className="wallet-token-name-minimal">{token.tokenName}</div>
+                          <div className="wallet-token-symbol-minimal">
+                            {formatNumber(token.balanceFormatted)} {token.tokenSymbol}
+                          </div>
+                        </div>
                       </div>
-                      <div>
-                        <div className="wallet-token-name-minimal">{token.tokenName}</div>
-                        <div className="wallet-token-symbol-minimal">
-                          {formatNumber(token.balanceFormatted)} {token.tokenSymbol}
+                      <div className="wallet-token-right">
+                        <div className="wallet-token-value-minimal">
+                          {formatUSD(token.balanceUsd || 0)}
+                        </div>
+                        <div className="wallet-token-change-minimal">
+                          {((token.balanceUsd || 0) / walletData.totalValueUsd * 100).toFixed(1)}%
                         </div>
                       </div>
                     </div>
-                    <div className="wallet-token-right">
-                      <div className="wallet-token-value-minimal">
-                        {formatUSD(token.balanceUsd || 0)}
+                  ))
+                ) : (
+                  <div className="wallet-empty-state">
+                    <div className="wallet-empty-icon">💰</div>
+                    <div>No tokens found</div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Chain Distribution */}
+            <div className="wallet-content-card">
+              <h2 className="wallet-card-title">Distribution</h2>
+              <div className="wallet-chain-progress-list">
+                {chainDistribution.map(chain => (
+                  <div key={chain.chainId} className="wallet-chain-progress-item">
+                    <div className="wallet-chain-progress-header">
+                      <div className="wallet-chain-progress-name">
+                        {chain.icon} {chain.name}
                       </div>
-                      <div className="wallet-token-change-minimal">
-                        {((token.balanceUsd || 0) / walletData.totalValueUsd * 100).toFixed(1)}%
-                      </div>
+                      <div className="wallet-chain-progress-value">{formatUSD(chain.total)}</div>
+                    </div>
+                    <div className="wallet-chain-progress-bar">
+                      <div className="wallet-chain-progress-fill" style={{ width: `${chain.percentage}%` }}></div>
+                    </div>
+                    <div className="wallet-chain-progress-meta">
+                      {chain.tokenCount} tokens · {chain.percentage.toFixed(1)}%
                     </div>
                   </div>
-                ))
-              ) : (
-                <div className="wallet-empty-state">
-                  <div className="wallet-empty-icon">💰</div>
-                  <div>No tokens found</div>
-                </div>
-              )}
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* Chain Distribution */}
-          <div className="wallet-content-card">
-            <h2 className="wallet-card-title">Distribution</h2>
-            <div className="wallet-chain-progress-list">
-              {chainDistribution.map(chain => (
-                <div key={chain.chainId} className="wallet-chain-progress-item">
-                  <div className="wallet-chain-progress-header">
-                    <div className="wallet-chain-progress-name">
-                      {chain.icon} {chain.name}
-                    </div>
-                    <div className="wallet-chain-progress-value">{formatUSD(chain.total)}</div>
-                  </div>
-                  <div className="wallet-chain-progress-bar">
-                    <div className="wallet-chain-progress-fill" style={{ width: `${chain.percentage}%` }}></div>
-                  </div>
-                  <div className="wallet-chain-progress-meta">
-                    {chain.tokenCount} tokens · {chain.percentage.toFixed(1)}%
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+          {/* NFT Gallery */}
+          {nftData && (
+            <NFTGallery nfts={nftData.nfts} loading={nftLoading} />
+          )}
+          {!nftData && nftLoading && (
+            <NFTGallery nfts={[]} loading={true} />
+          )}
+        </>
       )}
 
       {/* Empty State */}

@@ -1,0 +1,333 @@
+/**
+ * TVL (Total Value Locked) Service
+ *
+ * Integrates with DeFiLlama API to fetch TVL data for DeFi protocols
+ * API Docs: https://defillama.com/docs/api
+ */
+
+// =====================================================
+// TYPES
+// =====================================================
+
+export interface ProtocolTVL {
+  id: string
+  name: string
+  symbol: string
+  chain: string | null
+  tvl: number
+  tvlPrevDay: number | null
+  tvlPrevWeek: number | null
+  tvlPrevMonth: number | null
+  change_1h: number | null
+  change_1d: number | null
+  change_7d: number | null
+  change_1m: number | null
+  mcap: number | null
+  category: string
+  chains: string[]
+  chainTvls?: Record<string, number>
+  logo?: string
+  url?: string
+}
+
+export interface TVLResponse {
+  protocols: ProtocolTVL[]
+  total: number
+  lastUpdated: string
+}
+
+export interface ChainTVL {
+  gecko_id: string | null
+  tvl: number
+  tokenSymbol: string | null
+  cmcId: string | null
+  name: string
+  chainId: string | null
+}
+
+// =====================================================
+// CONSTANTS
+// =====================================================
+
+const DEFILLAMA_BASE_URL = 'https://api.llama.fi'
+
+// Default protocols to track (top DeFi protocols)
+export const DEFAULT_PROTOCOLS = [
+  'aave',           // Lending
+  'uniswap',        // DEX
+  'curve',          // DEX (stablecoins)
+  'lido',           // Liquid Staking
+  'makerdao',       // CDP
+  'compound',       // Lending
+  'justlend',       // Lending
+  'pancakeswap',    // DEX
+  'convex-finance', // Yield
+  'rocket-pool',    // Liquid Staking
+  'eigenlayer',     // Restaking
+  'balancer',       // DEX
+  'sushi',          // DEX
+  'gmx',            // Derivatives
+  'synthetix',      // Derivatives
+]
+
+// Supported chains for TVL tracking
+export const SUPPORTED_CHAINS = [
+  'ethereum',
+  'base',
+  'arbitrum',
+  'optimism',
+  'polygon',
+  'avalanche',
+  'bsc',
+]
+
+// =====================================================
+// API FUNCTIONS
+// =====================================================
+
+/**
+ * Get all protocols with TVL data
+ */
+export async function getAllProtocols(): Promise<ProtocolTVL[]> {
+  try {
+    const response = await fetch(`${DEFILLAMA_BASE_URL}/protocols`, {
+      next: { revalidate: 3600 }, // Cache for 1 hour
+    })
+
+    if (!response.ok) {
+      throw new Error(`DeFiLlama API error: ${response.status} ${response.statusText}`)
+    }
+
+    const data = await response.json()
+
+    return data.map((protocol: any) => ({
+      id: protocol.slug || protocol.id,
+      name: protocol.name,
+      symbol: protocol.symbol,
+      chain: null, // All chains combined
+      tvl: protocol.tvl || 0,
+      tvlPrevDay: protocol.tvlPrevDay || null,
+      tvlPrevWeek: protocol.tvlPrevWeek || null,
+      tvlPrevMonth: protocol.tvlPrevMonth || null,
+      change_1h: protocol.change_1h || null,
+      change_1d: protocol.change_1d || null,
+      change_7d: protocol.change_7d || null,
+      change_1m: protocol.change_1m || null,
+      mcap: protocol.mcap || null,
+      category: protocol.category || 'Unknown',
+      chains: protocol.chains || [],
+      chainTvls: protocol.chainTvls || {},
+      logo: protocol.logo || null,
+      url: protocol.url || null,
+    }))
+  } catch (error) {
+    console.error('[TVL] Error fetching all protocols:', error)
+    throw error
+  }
+}
+
+/**
+ * Get TVL data for a specific protocol
+ */
+export async function getProtocolTVL(protocolSlug: string): Promise<ProtocolTVL | null> {
+  try {
+    const response = await fetch(`${DEFILLAMA_BASE_URL}/protocol/${protocolSlug}`, {
+      next: { revalidate: 3600 },
+    })
+
+    if (!response.ok) {
+      throw new Error(`DeFiLlama API error: ${response.status} ${response.statusText}`)
+    }
+
+    const protocol = await response.json()
+
+    return {
+      id: protocol.slug || protocol.id,
+      name: protocol.name,
+      symbol: protocol.symbol,
+      chain: null,
+      tvl: protocol.tvl || 0,
+      tvlPrevDay: protocol.tvlPrevDay || null,
+      tvlPrevWeek: protocol.tvlPrevWeek || null,
+      tvlPrevMonth: protocol.tvlPrevMonth || null,
+      change_1h: protocol.change_1h || null,
+      change_1d: protocol.change_1d || null,
+      change_7d: protocol.change_7d || null,
+      change_1m: protocol.change_1m || null,
+      mcap: protocol.mcap || null,
+      category: protocol.category || 'Unknown',
+      chains: protocol.chains || [],
+      chainTvls: protocol.chainTvls || {},
+      logo: protocol.logo || null,
+      url: protocol.url || null,
+    }
+  } catch (error) {
+    console.error(`[TVL] Error fetching protocol ${protocolSlug}:`, error)
+    return null
+  }
+}
+
+/**
+ * Get current TVL for all chains
+ */
+export async function getChainsTVL(): Promise<ChainTVL[]> {
+  try {
+    const response = await fetch(`${DEFILLAMA_BASE_URL}/v2/chains`, {
+      next: { revalidate: 3600 },
+    })
+
+    if (!response.ok) {
+      throw new Error(`DeFiLlama API error: ${response.status} ${response.statusText}`)
+    }
+
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error('[TVL] Error fetching chains TVL:', error)
+    throw error
+  }
+}
+
+/**
+ * Get historical TVL for a protocol
+ */
+export async function getProtocolTVLHistory(protocolSlug: string): Promise<any> {
+  try {
+    const response = await fetch(`${DEFILLAMA_BASE_URL}/protocol/${protocolSlug}`, {
+      next: { revalidate: 3600 },
+    })
+
+    if (!response.ok) {
+      throw new Error(`DeFiLlama API error: ${response.status} ${response.statusText}`)
+    }
+
+    const data = await response.json()
+    return data.tvl || [] // Historical TVL data points
+  } catch (error) {
+    console.error(`[TVL] Error fetching TVL history for ${protocolSlug}:`, error)
+    return []
+  }
+}
+
+/**
+ * Get top protocols by TVL
+ */
+export async function getTopProtocolsByTVL(
+  limit: number = 10,
+  chain?: string
+): Promise<ProtocolTVL[]> {
+  try {
+    const allProtocols = await getAllProtocols()
+
+    // Filter by chain if specified
+    let filtered = allProtocols
+    if (chain && chain !== 'all') {
+      filtered = allProtocols.filter(p =>
+        p.chains.some(c => c.toLowerCase() === chain.toLowerCase())
+      )
+    }
+
+    // Sort by TVL descending and limit
+    return filtered
+      .sort((a, b) => (b.tvl || 0) - (a.tvl || 0))
+      .slice(0, limit)
+  } catch (error) {
+    console.error('[TVL] Error fetching top protocols:', error)
+    return []
+  }
+}
+
+/**
+ * Get TVL data for multiple protocols
+ */
+export async function getProtocolsTVL(
+  protocolSlugs: string[]
+): Promise<ProtocolTVL[]> {
+  try {
+    const promises = protocolSlugs.map(slug => getProtocolTVL(slug))
+    const results = await Promise.allSettled(promises)
+
+    return results
+      .filter(r => r.status === 'fulfilled' && r.value !== null)
+      .map(r => (r as PromiseFulfilledResult<ProtocolTVL>).value)
+  } catch (error) {
+    console.error('[TVL] Error fetching multiple protocols:', error)
+    return []
+  }
+}
+
+/**
+ * Get TVL by category
+ */
+export async function getTVLByCategory(): Promise<Record<string, number>> {
+  try {
+    const allProtocols = await getAllProtocols()
+
+    const categoryTVL: Record<string, number> = {}
+
+    allProtocols.forEach(protocol => {
+      const category = protocol.category || 'Unknown'
+      categoryTVL[category] = (categoryTVL[category] || 0) + (protocol.tvl || 0)
+    })
+
+    return categoryTVL
+  } catch (error) {
+    console.error('[TVL] Error calculating TVL by category:', error)
+    return {}
+  }
+}
+
+// =====================================================
+// UTILITY FUNCTIONS
+// =====================================================
+
+/**
+ * Format TVL value for display
+ */
+export function formatTVL(tvl: number | null | undefined): string {
+  if (tvl === null || tvl === undefined) return 'N/A'
+
+  if (tvl >= 1_000_000_000) {
+    return `$${(tvl / 1_000_000_000).toFixed(2)}B`
+  } else if (tvl >= 1_000_000) {
+    return `$${(tvl / 1_000_000).toFixed(2)}M`
+  } else if (tvl >= 1_000) {
+    return `$${(tvl / 1_000).toFixed(2)}K`
+  } else {
+    return `$${tvl.toFixed(2)}`
+  }
+}
+
+/**
+ * Format change percentage for display
+ */
+export function formatChange(change: number | null | undefined): string {
+  if (change === null || change === undefined) return 'N/A'
+
+  const prefix = change >= 0 ? '+' : ''
+  return `${prefix}${change.toFixed(2)}%`
+}
+
+/**
+ * Get color class based on change value
+ */
+export function getChangeColor(change: number | null | undefined): 'positive' | 'negative' | 'neutral' {
+  if (change === null || change === undefined || change === 0) return 'neutral'
+  return change > 0 ? 'positive' : 'negative'
+}
+
+/**
+ * Calculate market cap to TVL ratio
+ */
+export function calculateMcapTvlRatio(mcap: number | null, tvl: number | null): number | null {
+  if (!mcap || !tvl || tvl === 0) return null
+  return mcap / tvl
+}
+
+/**
+ * Format market cap to TVL ratio
+ */
+export function formatMcapTvlRatio(ratio: number | null): string {
+  if (ratio === null || ratio === undefined) return 'N/A'
+  return ratio.toFixed(2)
+}

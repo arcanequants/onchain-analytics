@@ -11,9 +11,11 @@ import CoinSearch from '@/components/CoinSearch'
 import PriceAlerts from '@/components/PriceAlerts'
 import WalletSummaryWidget from '@/components/WalletSummaryWidget'
 import DEXVolumeChart from '@/components/DEXVolumeChart'
+import TVLChart from '@/components/TVLChart'
 import Link from 'next/link'
 import { usePerformanceMode } from '@/hooks/usePerformanceMode'
 import '@/components/DEXVolumeChart.css'
+import '@/components/TVLChart.css'
 
 interface GasData {
   chain: string
@@ -428,6 +430,9 @@ export default function Home() {
 
             {/* DEX Volume Tracker - Live Data from DeFiLlama */}
             <DEXVolumeChart chain="all" limit={10} showChainFilter={true} />
+
+            {/* TVL Tracker - Total Value Locked from DeFiLlama */}
+            <TVLChart chain="all" limit={10} showChainFilter={true} showCategoryFilter={true} />
 
             {/* Full Width Gas Tracker Table */}
             <div className="data-table">

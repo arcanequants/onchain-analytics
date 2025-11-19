@@ -52,18 +52,20 @@ export async function GET(request: NextRequest) {
     const recordsToInsert: any[] = []
 
     // =====================================================
-    // 1. Collect Top 20 Protocols (All Chains Combined)
+    // SIMPLIFIED: Only Collect Default Protocols
     // =====================================================
+    // This avoids the expensive getAllProtocols() call
+    // that downloads 3000+ protocols from DeFiLlama
 
-    console.log('[CRON] Fetching top 20 protocols...')
-    const topProtocols = await getTopProtocolsByTVL(20)
+    console.log('[CRON] Fetching default protocols...')
+    const defaultProtocolsData = await getProtocolsTVL(DEFAULT_PROTOCOLS)
 
-    topProtocols.forEach(protocol => {
+    defaultProtocolsData.forEach(protocol => {
       recordsToInsert.push({
         protocol_slug: protocol.id,
         protocol_name: protocol.name,
         protocol_symbol: protocol.symbol,
-        chain: null, // All chains combined
+        chain: null,
         tvl: protocol.tvl,
         tvl_prev_day: protocol.tvlPrevDay,
         tvl_prev_week: protocol.tvlPrevWeek,
@@ -83,92 +85,7 @@ export async function GET(request: NextRequest) {
       })
     })
 
-    console.log(`[CRON] ✅ Collected ${topProtocols.length} top protocols`)
-
-    // =====================================================
-    // 2. Collect Default Protocols (Specific Tracking)
-    // =====================================================
-
-    console.log('[CRON] Fetching default protocols...')
-    const defaultProtocolsData = await getProtocolsTVL(DEFAULT_PROTOCOLS)
-
-    defaultProtocolsData.forEach(protocol => {
-      // Only add if not already in top 50
-      const alreadyExists = recordsToInsert.some(
-        r => r.protocol_slug === protocol.id && r.chain === null
-      )
-
-      if (!alreadyExists) {
-        recordsToInsert.push({
-          protocol_slug: protocol.id,
-          protocol_name: protocol.name,
-          protocol_symbol: protocol.symbol,
-          chain: null,
-          tvl: protocol.tvl,
-          tvl_prev_day: protocol.tvlPrevDay,
-          tvl_prev_week: protocol.tvlPrevWeek,
-          tvl_prev_month: protocol.tvlPrevMonth,
-          change_1h: protocol.change_1h,
-          change_1d: protocol.change_1d,
-          change_7d: protocol.change_7d,
-          change_1m: protocol.change_1m,
-          mcap: protocol.mcap,
-          mcap_tvl_ratio: protocol.mcap && protocol.tvl ? protocol.mcap / protocol.tvl : null,
-          category: protocol.category,
-          chains_supported: protocol.chains,
-          logo_url: protocol.logo,
-          url: protocol.url,
-          raw_data: protocol,
-          data_timestamp: dataTimestamp,
-        })
-      }
-    })
-
     console.log(`[CRON] ✅ Collected ${defaultProtocolsData.length} default protocols`)
-
-    // =====================================================
-    // 3. Collect Top 5 Protocols Per Chain
-    // =====================================================
-
-    console.log('[CRON] Fetching top protocols per chain...')
-    for (const chain of SUPPORTED_CHAINS) {
-      try {
-        const chainProtocols = await getTopProtocolsByTVL(5, chain)
-
-        chainProtocols.forEach(protocol => {
-          // Extract chain-specific TVL from chainTvls
-          const chainTvl = protocol.chainTvls?.[chain] || protocol.tvl
-
-          recordsToInsert.push({
-            protocol_slug: protocol.id,
-            protocol_name: protocol.name,
-            protocol_symbol: protocol.symbol,
-            chain: chain,
-            tvl: chainTvl,
-            tvl_prev_day: protocol.tvlPrevDay,
-            tvl_prev_week: protocol.tvlPrevWeek,
-            tvl_prev_month: protocol.tvlPrevMonth,
-            change_1h: protocol.change_1h,
-            change_1d: protocol.change_1d,
-            change_7d: protocol.change_7d,
-            change_1m: protocol.change_1m,
-            mcap: protocol.mcap,
-            mcap_tvl_ratio: protocol.mcap && protocol.tvl ? protocol.mcap / protocol.tvl : null,
-            category: protocol.category,
-            chains_supported: protocol.chains,
-            logo_url: protocol.logo,
-            url: protocol.url,
-            raw_data: protocol,
-            data_timestamp: dataTimestamp,
-          })
-        })
-
-        console.log(`[CRON] ✅ Collected ${chainProtocols.length} protocols for ${chain}`)
-      } catch (error) {
-        console.error(`[CRON] ⚠️ Error collecting TVL for ${chain}:`, error)
-        // Continue with other chains
-      }
-    }
 
     // =====================================================
     // 4. Insert All Records into Supabase
@@ -200,9 +117,7 @@ export async function GET(request: NextRequest) {
       records_affected: recordsToInsert.length,
       duration_ms: duration,
       metadata: {
-        top_protocols_count: topProtocols.length,
         default_protocols_count: defaultProtocolsData.length,
-        chains: SUPPORTED_CHAINS,
         total_records: recordsToInsert.length,
       },
     })
@@ -216,12 +131,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       success: true,
       recordsInserted: recordsToInsert.length,
-      chains: SUPPORTED_CHAINS,
-      protocols: {
-        top: topProtocols.length,
-        default: defaultProtocolsData.length,
-        total: recordsToInsert.length,
-      },
+      protocols: defaultProtocolsData.length,
       duration_ms: duration,
       timestamp: dataTimestamp,
     })

@@ -1,0 +1,305 @@
+/* DEX Volume Chart Styles */
+
+.dex-volume-chart {
+  background: var(--bg-card);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 24px;
+}
+
+/* Header */
+.dex-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.dex-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.dex-updated {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+/* Chain Filter */
+.dex-chain-filter {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-primary);
+}
+
+.dex-chain-btn {
+  padding: 8px 16px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dex-chain-btn:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--accent-primary);
+  color: var(--text-primary);
+}
+
+.dex-chain-btn.active {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: #fff;
+}
+
+/* DEX List */
+.dex-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dex-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.dex-item:hover {
+  background: var(--bg-tertiary);
+  transform: translateX(4px);
+}
+
+.dex-rank {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-tertiary);
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.dex-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.dex-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.dex-chains {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.dex-volume {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.dex-volume-24h {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-family: 'IBM Plex Mono', monospace;
+  margin-bottom: 4px;
+}
+
+.dex-change {
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.dex-change-positive {
+  color: var(--success);
+}
+
+.dex-change-negative {
+  color: var(--danger);
+}
+
+.dex-change-neutral {
+  color: var(--text-secondary);
+}
+
+/* Summary */
+.dex-summary {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-primary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dex-summary-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dex-summary-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--accent-primary);
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+/* Loading State */
+.dex-loading {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-secondary);
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 16px;
+  border: 4px solid var(--border-primary);
+  border-top-color: var(--accent-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Error State */
+.dex-error {
+  padding: 20px;
+  background: var(--danger-glow);
+  border: 1px solid var(--danger);
+  border-radius: 12px;
+  color: var(--danger);
+  text-align: center;
+}
+
+/* Empty State */
+.dex-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-secondary);
+}
+
+.dex-empty-icon {
+  font-size: 4rem;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .dex-volume-chart {
+    padding: 16px;
+  }
+
+  .dex-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .dex-chain-filter {
+    gap: 6px;
+  }
+
+  .dex-chain-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .dex-item {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .dex-rank {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+
+  .dex-name {
+    font-size: 14px;
+  }
+
+  .dex-volume-24h {
+    font-size: 16px;
+  }
+
+  .dex-change {
+    font-size: 12px;
+  }
+
+  .dex-summary-value {
+    font-size: 20px;
+  }
+}
+
+/* Dark Mode Support (already uses CSS variables) */
+
+/* Light Mode Overrides */
+[data-theme="light"] .dex-volume-chart {
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .dex-item {
+  background: #f8f9fa;
+}
+
+[data-theme="light"] .dex-item:hover {
+  background: #e9ecef;
+}
+
+[data-theme="light"] .dex-rank {
+  background: #e9ecef;
+}
+
+[data-theme="light"] .dex-chain-btn {
+  background: #f8f9fa;
+  border-color: #dee2e6;
+}
+
+[data-theme="light"] .dex-chain-btn:hover {
+  background: #e9ecef;
+}
+
+[data-theme="light"] .dex-chain-btn.active {
+  background: var(--accent-primary);
+  color: #ffffff;
+}

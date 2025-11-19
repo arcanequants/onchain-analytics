@@ -10,8 +10,10 @@ import PriceChart from '@/components/PriceChart'
 import CoinSearch from '@/components/CoinSearch'
 import PriceAlerts from '@/components/PriceAlerts'
 import WalletSummaryWidget from '@/components/WalletSummaryWidget'
+import DEXVolumeChart from '@/components/DEXVolumeChart'
 import Link from 'next/link'
 import { usePerformanceMode } from '@/hooks/usePerformanceMode'
+import '@/components/DEXVolumeChart.css'
 
 interface GasData {
   chain: string
@@ -423,6 +425,9 @@ export default function Home() {
               <PriceChart coinId="ethereum" coinName="Ethereum" coinSymbol="eth" hours={24} />
               <PriceChart coinId="solana" coinName="Solana" coinSymbol="sol" hours={24} />
             </div>
+
+            {/* DEX Volume Tracker - Live Data from DeFiLlama */}
+            <DEXVolumeChart chain="all" limit={10} showChainFilter={true} />
 
             {/* Full Width Gas Tracker Table */}
             <div className="data-table">

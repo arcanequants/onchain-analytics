@@ -52,11 +52,11 @@ export async function GET(request: NextRequest) {
     const recordsToInsert: any[] = []
 
     // =====================================================
-    // 1. Collect Top 50 Protocols (All Chains Combined)
+    // 1. Collect Top 20 Protocols (All Chains Combined)
     // =====================================================
 
-    console.log('[CRON] Fetching top 50 protocols...')
-    const topProtocols = await getTopProtocolsByTVL(50)
+    console.log('[CRON] Fetching top 20 protocols...')
+    const topProtocols = await getTopProtocolsByTVL(20)
 
     topProtocols.forEach(protocol => {
       recordsToInsert.push({
@@ -127,13 +127,13 @@ export async function GET(request: NextRequest) {
     console.log(`[CRON] ✅ Collected ${defaultProtocolsData.length} default protocols`)
 
     // =====================================================
-    // 3. Collect Top 10 Protocols Per Chain
+    // 3. Collect Top 5 Protocols Per Chain
     // =====================================================
 
     console.log('[CRON] Fetching top protocols per chain...')
     for (const chain of SUPPORTED_CHAINS) {
       try {
-        const chainProtocols = await getTopProtocolsByTVL(10, chain)
+        const chainProtocols = await getTopProtocolsByTVL(5, chain)
 
         chainProtocols.forEach(protocol => {
           // Extract chain-specific TVL from chainTvls

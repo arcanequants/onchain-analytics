@@ -70,15 +70,11 @@ export const DEFAULT_PROTOCOLS = [
   'synthetix',      // Derivatives
 ]
 
-// Supported chains for TVL tracking
+// Supported chains for TVL tracking (reduced for performance)
 export const SUPPORTED_CHAINS = [
   'ethereum',
   'base',
   'arbitrum',
-  'optimism',
-  'polygon',
-  'avalanche',
-  'bsc',
 ]
 
 // =====================================================

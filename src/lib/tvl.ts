@@ -124,10 +124,12 @@ export async function getAllProtocols(): Promise<ProtocolTVL[]> {
 
 /**
  * Get TVL data for a specific protocol
+ * Uses /protocols endpoint to avoid historical data arrays from /protocol/{slug}
  */
 export async function getProtocolTVL(protocolSlug: string): Promise<ProtocolTVL | null> {
   try {
-    const response = await fetch(`${DEFILLAMA_BASE_URL}/protocol/${protocolSlug}`, {
+    // Fetch from /protocols which returns simpler data without historical arrays
+    const response = await fetch(`${DEFILLAMA_BASE_URL}/protocols`, {
       next: { revalidate: 3600 },
     })
 
@@ -135,14 +137,23 @@ export async function getProtocolTVL(protocolSlug: string): Promise<ProtocolTVL 
       throw new Error(`DeFiLlama API error: ${response.status} ${response.statusText}`)
     }
 
-    const protocol = await response.json()
+    const allProtocols = await response.json()
+    const protocol = allProtocols.find((p: any) => p.slug === protocolSlug || p.id === protocolSlug)
+
+    if (!protocol) {
+      console.warn(`[TVL] Protocol not found: ${protocolSlug}`)
+      return null
+    }
+
+    // Extract current TVL value (not historical array)
+    const currentTVL = typeof protocol.tvl === 'number' ? protocol.tvl : 0
 
     return {
       id: protocol.slug || protocol.id,
       name: protocol.name,
       symbol: protocol.symbol,
       chain: null,
-      tvl: protocol.tvl || 0,
+      tvl: currentTVL,
       tvlPrevDay: protocol.tvlPrevDay || null,
       tvlPrevWeek: protocol.tvlPrevWeek || null,
       tvlPrevMonth: protocol.tvlPrevMonth || null,
@@ -153,7 +164,7 @@ export async function getProtocolTVL(protocolSlug: string): Promise<ProtocolTVL 
       mcap: protocol.mcap || null,
       category: protocol.category || 'Unknown',
       chains: protocol.chains || [],
-      chainTvls: protocol.chainTvls || {},
+      chainTvls: typeof protocol.chainTvls === 'object' && !Array.isArray(protocol.chainTvls) ? protocol.chainTvls : {},
       logo: protocol.logo || null,
       url: protocol.url || null,
     }

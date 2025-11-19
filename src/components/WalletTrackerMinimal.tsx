@@ -235,13 +235,24 @@ export default function WalletTrackerMinimal() {
     return num.toFixed(8)
   }
 
-  // Get token logo URL using CryptoLogos CDN
+  // Get token logo URL using cryptocurrency-icons GitHub CDN
   const getTokenLogoUrl = (symbol: string) => {
-    // Normalize symbol
-    const normalizedSymbol = symbol.toUpperCase()
+    // Normalize symbol to lowercase
+    const normalizedSymbol = symbol.toLowerCase()
 
-    // Use CryptoLogos CDN for crypto icons
-    return `https://cryptologos.cc/logos/thumbs/${normalizedSymbol.toLowerCase()}.png?v=033`
+    // Map common wrapped/alternative symbols to their base symbol
+    const symbolMap: Record<string, string> = {
+      'weth': 'eth',
+      'wbtc': 'btc',
+      'wmatic': 'matic',
+      'usdt': 'usdt',
+      'usdc': 'usdc',
+    }
+
+    const iconSymbol = symbolMap[normalizedSymbol] || normalizedSymbol
+
+    // Use cryptocurrency-icons from GitHub (128px color icons)
+    return `https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/${iconSymbol}.png`
   }
 
   // Group balances by chain (memoized for performance)

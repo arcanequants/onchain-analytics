@@ -18,8 +18,9 @@ import {
   DEFAULT_PROTOCOLS,
 } from '@/lib/tvl'
 
-// Edge runtime for better performance
-export const runtime = 'edge'
+// Node.js runtime for longer timeout (60s instead of 25s for Edge)
+export const runtime = 'nodejs'
+export const maxDuration = 60
 
 // Supabase client with service role key (admin access)
 const supabase = createClient(

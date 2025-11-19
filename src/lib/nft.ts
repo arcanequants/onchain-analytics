@@ -99,7 +99,8 @@ export async function getNFTsForChain(
       url.searchParams.set('owner', address)
       url.searchParams.set('pageSize', '100')
       url.searchParams.set('withMetadata', 'true')
-      url.searchParams.set('excludeFilters[]', 'SPAM') // Filter out spam by default
+      // Note: excludeFilters[] 'SPAM' requires Growth plan or higher
+      // We'll filter spam client-side using the isSpam field
 
       if (pageKey) {
         url.searchParams.set('pageKey', pageKey)

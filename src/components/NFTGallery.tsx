@@ -33,6 +33,10 @@ interface NFTGalleryProps {
 export default function NFTGallery({ nfts, loading = false }: NFTGalleryProps) {
   const [selectedNFT, setSelectedNFT] = useState<NFT | null>(null)
   const [imageErrors, setImageErrors] = useState<Set<string>>(new Set())
+  const [showSpam, setShowSpam] = useState(false)
+
+  // Filter out spam NFTs by default (client-side filtering)
+  const filteredNFTs = showSpam ? nfts : nfts.filter(nft => !nft.isSpam)
 
   const handleImageError = (nftId: string) => {
     setImageErrors(prev => new Set(prev).add(nftId))
@@ -82,13 +86,38 @@ export default function NFTGallery({ nfts, loading = false }: NFTGalleryProps) {
     )
   }
 
-  if (nfts.length === 0) {
+  if (filteredNFTs.length === 0 && nfts.length === 0) {
     return (
       <div className="nft-gallery-empty">
         <div className="nft-gallery-empty-icon">🖼️</div>
         <div className="nft-gallery-empty-text">No NFTs found</div>
         <div className="nft-gallery-empty-subtext">
           This wallet doesn't own any NFTs on the selected chains
+        </div>
+      </div>
+    )
+  }
+
+  if (filteredNFTs.length === 0 && nfts.length > 0) {
+    return (
+      <div className="nft-gallery-empty">
+        <div className="nft-gallery-empty-icon">🗑️</div>
+        <div className="nft-gallery-empty-text">All NFTs filtered (spam)</div>
+        <div className="nft-gallery-empty-subtext">
+          <button
+            onClick={() => setShowSpam(true)}
+            style={{
+              background: 'var(--accent-color)',
+              color: 'white',
+              border: 'none',
+              padding: '8px 16px',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              marginTop: '12px'
+            }}
+          >
+            Show {nfts.length} spam NFTs
+          </button>
         </div>
       </div>
     )
@@ -114,7 +143,7 @@ export default function NFTGallery({ nfts, loading = false }: NFTGalleryProps) {
         </div>
 
         <div className="nft-grid">
-          {nfts.map((nft) => {
+          {filteredNFTs.map((nft) => {
             const nftId = getNFTId(nft)
             const imageUrl = getImageUrl(nft)
             const hasImageError = imageErrors.has(nftId)

@@ -235,36 +235,24 @@ export default function WalletTrackerMinimal() {
     return num.toFixed(8)
   }
 
-  // Get token logo URL using CoinGecko API (no CSP issues)
+  // Get token logo URL using jsDelivr CDN (no CSP issues)
   const getTokenLogoUrl = (symbol: string) => {
     // Normalize symbol to lowercase
     const normalizedSymbol = symbol.toLowerCase()
 
-    // Map token symbols to CoinGecko coin IDs
+    // Map some common variations to standard symbols
     const symbolMap: Record<string, string> = {
-      'eth': 'ethereum',
-      'weth': 'ethereum',
-      'btc': 'bitcoin',
-      'wbtc': 'bitcoin',
-      'usdt': 'tether',
-      'usdc': 'usd-coin',
-      'dai': 'dai',
-      'matic': 'matic-network',
-      'wmatic': 'matic-network',
-      'uni': 'uniswap',
-      'link': 'chainlink',
-      'aave': 'aave',
-      'arb': 'arbitrum',
-      'op': 'optimism',
-      'avax': 'avalanche-2',
-      'sol': 'solana',
-      'bnb': 'binancecoin',
+      'weth': 'eth',
+      'wbtc': 'btc',
+      'wmatic': 'matic',
+      'usdt': 'usdt',
+      'usdc': 'usdc',
     }
 
-    const coinId = symbolMap[normalizedSymbol] || normalizedSymbol
+    const iconSymbol = symbolMap[normalizedSymbol] || normalizedSymbol
 
-    // Use CoinGecko API for coin images (more reliable, no CSP issues)
-    return `https://assets.coingecko.com/coins/images/1/small/${coinId}.png`
+    // Use jsDelivr CDN for cryptocurrency-icons package (widely used, no CSP issues)
+    return `https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/svg/color/${iconSymbol}.svg`
   }
 
   // Group balances by chain (memoized for performance)

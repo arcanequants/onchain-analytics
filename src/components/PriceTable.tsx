@@ -19,21 +19,30 @@ interface TokenPrice {
 interface PriceTableProps {
   limit?: number
   showHeader?: boolean
+  externalPrices?: TokenPrice[]
+  externalLoading?: boolean
 }
 
-export default function PriceTable({ limit = 10, showHeader = true }: PriceTableProps) {
-  const [prices, setPrices] = useState<TokenPrice[]>([])
-  const [loading, setLoading] = useState(true)
+export default function PriceTable({ limit = 10, showHeader = true, externalPrices, externalLoading }: PriceTableProps) {
+  const [internalPrices, setInternalPrices] = useState<TokenPrice[]>([])
+  const [internalLoading, setInternalLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const performanceMode = usePerformanceMode()
   const interpolationIntervalRef = useRef<NodeJS.Timeout | undefined>(undefined)
 
+  // Use external prices if provided, otherwise fetch internally
+  const prices = externalPrices || internalPrices
+  const loading = externalLoading !== undefined ? externalLoading : internalLoading
+
   useEffect(() => {
+    // Skip internal fetching if external prices are provided
+    if (externalPrices) return
+
     fetchPrices()
     // Refresh every 30 seconds
     const interval = setInterval(fetchPrices, 30000)
     return () => clearInterval(interval)
-  }, [limit])
+  }, [limit, externalPrices])
 
   const fetchPrices = async () => {
     try {
@@ -44,13 +53,13 @@ export default function PriceTable({ limit = 10, showHeader = true }: PriceTable
       }
 
       const data = await response.json()
-      setPrices(data.prices || [])
+      setInternalPrices(data.prices || [])
       setError(null)
     } catch (err: any) {
       console.error('[PriceTable] Error fetching prices:', err)
       setError(err.message)
     } finally {
-      setLoading(false)
+      setInternalLoading(false)
     }
   }
 

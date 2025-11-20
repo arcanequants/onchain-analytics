@@ -369,7 +369,7 @@ export default function Home() {
                 <div style={{ fontSize: '10px', color: 'var(--text-tertiary)' }}>Optimism</div>
               </div>
               <div style={{ textAlign: 'right' }}>
-                <div className="watchlist-price">
+                <div className="watchlist-price price-value" data-coin-id="optimism">
                   {pricesLoading ? '...' : getCoinPrice('optimism')?.current_price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) || '...'}
                 </div>
                 <div className="watchlist-change" style={{
@@ -559,7 +559,7 @@ export default function Home() {
             </div>
 
             {/* Top Cryptocurrencies - Real-time from CoinGecko */}
-            <PriceTable limit={10} showHeader={true} />
+            <PriceTable limit={10} showHeader={true} externalPrices={priceData} externalLoading={pricesLoading} />
 
             {/* Price Charts - Historical Data */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '12px', marginBottom: '12px' }}>

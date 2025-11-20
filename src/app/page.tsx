@@ -112,26 +112,58 @@ export default function Home() {
     }
   }, [])
 
+  // Intelligent price micro-interpolation
+  // Simulates smooth price movements between real API updates
   useEffect(() => {
     // Only run price animations on high-performance hardware
     if (performanceMode !== 'high') return
+    if (priceData.length === 0) return
 
-    // Simulate price updates for crypto tickers (BTC, ETH, SOL)
+    // Store interpolated prices (separate from real prices)
+    let interpolatedPrices = new Map<string, number>()
+
+    // Initialize with real prices
+    priceData.forEach(coin => {
+      interpolatedPrices.set(coin.coingecko_id, coin.current_price)
+    })
+
+    // Micro-interpolation every 5 seconds
     priceIntervalRef.current = setInterval(() => {
-      const priceElements = document.querySelectorAll('.ticker-price')
-      priceElements.forEach(el => {
-        const current = parseFloat(el.textContent?.replace(/[$,]/g, '') || '0')
-        const change = (Math.random() - 0.5) * (current * 0.001)
-        el.classList.add('flash')
-        setTimeout(() => el.classList.remove('flash'), 500)
-        el.textContent = (current + change).toFixed(2)
+      priceData.forEach(coin => {
+        // Calculate realistic volatility based on 24h change
+        const volatility24h = Math.abs(coin.price_change_percentage_24h || 0) / 100
+
+        // Max change per tick: 1% of the 24h volatility (very conservative)
+        // Example: If BTC moved 2% in 24h, max micro-change is 0.02% per 5 seconds
+        const maxChangePercent = volatility24h * 0.01
+
+        // Generate random change within realistic bounds
+        const changePercent = (Math.random() - 0.5) * 2 * maxChangePercent
+        const currentInterpolated = interpolatedPrices.get(coin.coingecko_id) || coin.current_price
+        const newPrice = currentInterpolated * (1 + changePercent)
+
+        // Update interpolated price
+        interpolatedPrices.set(coin.coingecko_id, newPrice)
+
+        // Update DOM with flash animation
+        const priceElements = document.querySelectorAll(`[data-coin-id="${coin.coingecko_id}"]`)
+        priceElements.forEach(el => {
+          if (el.classList.contains('price-value')) {
+            el.classList.add('flash')
+            setTimeout(() => el.classList.remove('flash'), 500)
+            el.textContent = newPrice.toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2
+            })
+          }
+        })
       })
-    }, 3000)
+    }, 5000) // Every 5 seconds
 
     return () => {
       if (priceIntervalRef.current) clearInterval(priceIntervalRef.current)
     }
-  }, [performanceMode])
+  }, [performanceMode, priceData])
 
   // Helper to get gas data for a specific chain
   const getChainGas = (chainName: string) => {
@@ -196,7 +228,7 @@ export default function Home() {
           <div className="top-tickers">
             <div className="ticker-item">
               <span className="ticker-symbol">BTC</span>
-              <span className="ticker-price">
+              <span className="ticker-price price-value" data-coin-id="bitcoin">
                 {pricesLoading ? '...' : getCoinPrice('bitcoin')?.current_price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) || '...'}
               </span>
               <span className={`ticker-change ${
@@ -209,7 +241,7 @@ export default function Home() {
             </div>
             <div className="ticker-item">
               <span className="ticker-symbol">ETH</span>
-              <span className="ticker-price">
+              <span className="ticker-price price-value" data-coin-id="ethereum">
                 {pricesLoading ? '...' : getCoinPrice('ethereum')?.current_price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) || '...'}
               </span>
               <span className={`ticker-change ${
@@ -222,7 +254,7 @@ export default function Home() {
             </div>
             <div className="ticker-item">
               <span className="ticker-symbol">SOL</span>
-              <span className="ticker-price">
+              <span className="ticker-price price-value" data-coin-id="solana">
                 {pricesLoading ? '...' : getCoinPrice('solana')?.current_price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) || '...'}
               </span>
               <span className={`ticker-change ${
@@ -261,7 +293,7 @@ export default function Home() {
                 <div style={{ fontSize: '10px', color: 'var(--text-tertiary)' }}>Ethereum</div>
               </div>
               <div style={{ textAlign: 'right' }}>
-                <div className="watchlist-price">
+                <div className="watchlist-price price-value" data-coin-id="ethereum">
                   {pricesLoading ? '...' : getCoinPrice('ethereum')?.current_price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) || '...'}
                 </div>
                 <div className="watchlist-change" style={{
@@ -280,7 +312,7 @@ export default function Home() {
                 <div style={{ fontSize: '10px', color: 'var(--text-tertiary)' }}>Bitcoin</div>
               </div>
               <div style={{ textAlign: 'right' }}>
-                <div className="watchlist-price">
+                <div className="watchlist-price price-value" data-coin-id="bitcoin">
                   {pricesLoading ? '...' : getCoinPrice('bitcoin')?.current_price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) || '...'}
                 </div>
                 <div className="watchlist-change" style={{
@@ -299,7 +331,7 @@ export default function Home() {
                 <div style={{ fontSize: '10px', color: 'var(--text-tertiary)' }}>Solana</div>
               </div>
               <div style={{ textAlign: 'right' }}>
-                <div className="watchlist-price">
+                <div className="watchlist-price price-value" data-coin-id="solana">
                   {pricesLoading ? '...' : getCoinPrice('solana')?.current_price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) || '...'}
                 </div>
                 <div className="watchlist-change" style={{
@@ -318,7 +350,7 @@ export default function Home() {
                 <div style={{ fontSize: '10px', color: 'var(--text-tertiary)' }}>Arbitrum</div>
               </div>
               <div style={{ textAlign: 'right' }}>
-                <div className="watchlist-price">
+                <div className="watchlist-price price-value" data-coin-id="arbitrum">
                   {pricesLoading ? '...' : getCoinPrice('arbitrum')?.current_price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) || '...'}
                 </div>
                 <div className="watchlist-change" style={{

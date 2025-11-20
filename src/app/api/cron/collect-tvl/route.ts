@@ -14,6 +14,7 @@ import {
   getAllProtocols,
   getTopProtocolsByTVL,
   getProtocolsTVL,
+  extractChainTvls,
   SUPPORTED_CHAINS,
   DEFAULT_PROTOCOLS,
 } from '@/lib/tvl'
@@ -86,37 +87,32 @@ export async function GET(request: NextRequest) {
         data_timestamp: dataTimestamp,
       })
 
-      // 2. Insert per-chain records from chainTvls
-      if (protocol.chainTvls && typeof protocol.chainTvls === 'object') {
-        // Only insert for SUPPORTED_CHAINS to avoid too many records
-        SUPPORTED_CHAINS.forEach(chain => {
-          const chainKey = chain.charAt(0).toUpperCase() + chain.slice(1) // Capitalize: ethereum -> Ethereum
-          const chainTvl = protocol.chainTvls?.[chainKey]
+      // 2. Insert per-chain records using optimized extraction
+      // extractChainTvls handles: name mapping, staking aggregation, quality filtering
+      const chainTvls = extractChainTvls(protocol.chainTvls, 10_000) // Min $10K TVL
 
-          if (chainTvl && chainTvl > 0) {
-            recordsToInsert.push({
-              protocol_slug: protocol.id,
-              protocol_name: protocol.name,
-              protocol_symbol: protocol.symbol,
-              chain: chain, // Specific chain (lowercase)
-              tvl: chainTvl,
-              tvl_prev_day: null, // Per-chain historical data not available
-              tvl_prev_week: null,
-              tvl_prev_month: null,
-              change_1h: null,
-              change_1d: null,
-              change_7d: null,
-              change_1m: null,
-              mcap: null, // Market cap is protocol-level, not chain-specific
-              mcap_tvl_ratio: null,
-              category: protocol.category,
-              chains_supported: protocol.chains,
-              logo_url: protocol.logo,
-              url: protocol.url,
-              raw_data: null,
-              data_timestamp: dataTimestamp,
-            })
-          }
+      for (const [chain, tvl] of Object.entries(chainTvls)) {
+        recordsToInsert.push({
+          protocol_slug: protocol.id,
+          protocol_name: protocol.name,
+          protocol_symbol: protocol.symbol,
+          chain: chain, // Normalized chain name (ethereum, solana, etc.)
+          tvl: tvl, // Principal + Staking combined
+          tvl_prev_day: null, // Per-chain historical data not available from API
+          tvl_prev_week: null,
+          tvl_prev_month: null,
+          change_1h: null,
+          change_1d: null,
+          change_7d: null,
+          change_1m: null,
+          mcap: null, // Market cap is protocol-level, not chain-specific
+          mcap_tvl_ratio: null,
+          category: protocol.category,
+          chains_supported: protocol.chains,
+          logo_url: protocol.logo,
+          url: protocol.url,
+          raw_data: null,
+          data_timestamp: dataTimestamp,
         })
       }
     })

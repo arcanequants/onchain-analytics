@@ -1,7 +1,6 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react'
-import { usePerformanceMode } from '@/hooks/usePerformanceMode'
+import { useEffect, useState } from 'react'
 
 interface TokenPrice {
   coingecko_id: string
@@ -27,8 +26,6 @@ export default function PriceTable({ limit = 10, showHeader = true, externalPric
   const [internalPrices, setInternalPrices] = useState<TokenPrice[]>([])
   const [internalLoading, setInternalLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const performanceMode = usePerformanceMode()
-  const interpolationIntervalRef = useRef<NodeJS.Timeout | undefined>(undefined)
 
   // Use external prices if provided, otherwise fetch internally
   const prices = externalPrices || internalPrices
@@ -63,62 +60,6 @@ export default function PriceTable({ limit = 10, showHeader = true, externalPric
     }
   }
 
-  // Intelligent price micro-interpolation (same as page.tsx)
-  useEffect(() => {
-    // Only run on high-performance hardware
-    if (performanceMode !== 'high') return
-    if (prices.length === 0) return
-
-    // Store interpolated prices
-    let interpolatedPrices = new Map<string, number>()
-
-    // Initialize with real prices
-    prices.forEach(coin => {
-      interpolatedPrices.set(coin.coingecko_id, coin.current_price)
-    })
-
-    // Micro-interpolation every 5 seconds
-    interpolationIntervalRef.current = setInterval(() => {
-      prices.forEach(coin => {
-        // Calculate realistic volatility based on 24h change
-        const volatility24h = Math.abs(coin.price_change_percentage_24h || 0) / 100
-
-        // Max change per tick: 1% of the 24h volatility
-        const maxChangePercent = volatility24h * 0.01
-
-        // Generate random change within realistic bounds
-        const changePercent = (Math.random() - 0.5) * 2 * maxChangePercent
-        const currentInterpolated = interpolatedPrices.get(coin.coingecko_id) || coin.current_price
-        const newPrice = currentInterpolated * (1 + changePercent)
-
-        // Update interpolated price
-        interpolatedPrices.set(coin.coingecko_id, newPrice)
-
-        // Update DOM with flash animation
-        const priceElements = document.querySelectorAll(`[data-coin-id="${coin.coingecko_id}"][data-table-price]`)
-        priceElements.forEach(el => {
-          el.classList.add('flash')
-          setTimeout(() => el.classList.remove('flash'), 500)
-
-          // Format price same way as formatPrice()
-          let formattedPrice = ''
-          if (newPrice >= 1) {
-            formattedPrice = `$${newPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-          } else if (newPrice >= 0.01) {
-            formattedPrice = `$${newPrice.toFixed(4)}`
-          } else {
-            formattedPrice = `$${newPrice.toFixed(8)}`
-          }
-
-          el.textContent = formattedPrice
-        })
-      })
-    }, 5000) // Every 5 seconds
-
-    return () => {
-      if (interpolationIntervalRef.current) clearInterval(interpolationIntervalRef.current)
-    }
-  }, [performanceMode, prices])
 
   const formatPrice = (price: number) => {
     if (price >= 1) {

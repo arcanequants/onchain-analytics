@@ -148,6 +148,7 @@ export default function Home() {
         // Update DOM with flash animation
         const priceElements = document.querySelectorAll(`[data-coin-id="${coin.coingecko_id}"]`)
         priceElements.forEach(el => {
+          // Handle Top Bar and Watchlist prices (price-value class)
           if (el.classList.contains('price-value')) {
             el.classList.add('flash')
             setTimeout(() => el.classList.remove('flash'), 500)
@@ -155,6 +156,23 @@ export default function Home() {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2
             })
+          }
+          // Handle PriceTable prices (data-table-price attribute)
+          else if (el.hasAttribute('data-table-price')) {
+            el.classList.add('flash')
+            setTimeout(() => el.classList.remove('flash'), 500)
+
+            // Format price based on value (same as PriceTable formatPrice)
+            let formattedPrice = ''
+            if (newPrice >= 1) {
+              formattedPrice = `$${newPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+            } else if (newPrice >= 0.01) {
+              formattedPrice = `$${newPrice.toFixed(4)}`
+            } else {
+              formattedPrice = `$${newPrice.toFixed(8)}`
+            }
+
+            el.textContent = formattedPrice
           }
         })
       })

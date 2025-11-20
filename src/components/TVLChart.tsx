@@ -62,13 +62,13 @@ export default function TVLChart({
 
   const categories = [
     { id: null, name: 'All Categories' },
-    { id: 'Dexes', name: 'DEXes' },
+    { id: 'Dexs', name: 'DEXes' }, // DeFiLlama uses "Dexs" (without 'e')
     { id: 'Lending', name: 'Lending' },
     { id: 'Liquid Staking', name: 'Liquid Staking' },
     { id: 'CDP', name: 'CDP' },
     { id: 'Yield', name: 'Yield' },
     { id: 'Derivatives', name: 'Derivatives' },
-    { id: 'Bridge', name: 'Bridge' },
+    { id: 'Restaking', name: 'Restaking' }, // Add Restaking (EigenLayer)
   ]
 
   useEffect(() => {
@@ -109,12 +109,13 @@ export default function TVLChart({
 
   const getCategoryIcon = (cat: string) => {
     const icons: Record<string, string> = {
-      Dexes: '🔄',
+      Dexs: '🔄', // DeFiLlama uses "Dexs" not "Dexes"
       Lending: '🏦',
       'Liquid Staking': '💎',
       CDP: '🏛️',
       Yield: '🌾',
       Derivatives: '📈',
+      Restaking: '⚡',
       Bridge: '🌉',
       Unknown: '❓',
     }

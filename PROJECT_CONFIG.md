@@ -11,8 +11,8 @@
 | **Project Name** | Onchain Analytics |
 | **Repository** | arcanequants/onchain-analytics |
 | **Production URL** | https://www.vectorialdata.com |
-| **Vercel Project ID** | prj_pQLaGTCD6fgF8JDWxWUWpAPPBZB4 |
-| **Vercel Project Name** | app |
+| **Vercel Project ID** | prj_TjGvYSYOj2pCoE7Q8amrBf7wZ8CP |
+| **Vercel Project Name** | onchain-analytics |
 | **Database** | Supabase (xkrkqntnpzkwzqkbfyex) |
 
 ---
@@ -98,7 +98,7 @@ curl "https://www.vectorialdata.com/api/prices?limit=10"
 | Property | Value |
 |----------|-------|
 | **Access Token** | KlnUFDSXZt2fNFse7QFs5OG9 |
-| **Project ID** | prj_pQLaGTCD6fgF8JDWxWUWpAPPBZB4 |
+| **Project ID** | prj_TjGvYSYOj2pCoE7Q8amrBf7wZ8CP |
 | **Team ID** | team_7jDtAKalGLbMoub2ZnOejvLI |
 | **CRON Secret** | L+e90h3WQtfGF0I/P/dTuKAVA0S9q5IZ7Nb3hiu9rsI= |
 
@@ -124,8 +124,8 @@ NEXT_PUBLIC_COINGECKO_API_KEY=(if needed)
 ## 🚨 BEFORE RUNNING ANY COMMAND, ASK:
 
 1. ✅ Am I using **www.vectorialdata.com**?
-2. ✅ Am I using **Vercel Project ID: prj_pQLaGTCD6fgF8JDWxWUWpAPPBZB4**?
-3. ✅ Am I using **Supabase Project: fjxbuyxephlfoivcpckd**?
+2. ✅ Am I using **Vercel Project ID: prj_TjGvYSYOj2pCoE7Q8amrBf7wZ8CP**?
+3. ✅ Am I using **Supabase Project: xkrkqntnpzkwzqkbfyex**?
 
 If the answer to ANY of these is NO, STOP and check this file again.
 

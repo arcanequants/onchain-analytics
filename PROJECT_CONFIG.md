@@ -13,7 +13,7 @@
 | **Production URL** | https://www.vectorialdata.com |
 | **Vercel Project ID** | prj_pQLaGTCD6fgF8JDWxWUWpAPPBZB4 |
 | **Vercel Project Name** | app |
-| **Database** | Supabase (fjxbuyxephlfoivcpckd) |
+| **Database** | Supabase (xkrkqntnpzkwzqkbfyex) |
 
 ---
 
@@ -84,12 +84,12 @@ curl "https://www.vectorialdata.com/api/prices?limit=10"
 
 | Property | Value |
 |----------|-------|
-| **Project ID** | fjxbuyxephlfoivcpckd |
-| **Dashboard** | https://supabase.com/dashboard/project/fjxbuyxephlfoivcpckd |
-| **Database Host** | aws-0-us-west-1.pooler.supabase.com |
-| **Database Port** | 6543 |
-| **Database User** | postgres.fjxbuyxephlfoivcpckd |
-| **Database Password** | Cryptolotto2025! |
+| **Project ID** | xkrkqntnpzkwzqkbfyex |
+| **Dashboard** | https://supabase.com/dashboard/project/xkrkqntnpzkwzqkbfyex |
+| **Database Host** | db.xkrkqntnpzkwzqkbfyex.supabase.co |
+| **Database Port** | 5432 |
+| **Database User** | postgres |
+| **Database Password** | muxmos-toxqoq-8dyCfi |
 
 ---
 
@@ -108,9 +108,9 @@ curl "https://www.vectorialdata.com/api/prices?limit=10"
 
 ```bash
 # Supabase
-NEXT_PUBLIC_SUPABASE_URL=https://fjxbuyxephlfoivcpckd.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZqeGJ1eXhlcGhsZm9pdmNwY2tkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA4ODk5ODUsImV4cCI6MjA3NjQ2NTk4NX0.gNHdV0M5OFPamPvH5NZXGIoFz6p7SJ0p5Ev0Hp0FjNQ
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZqeGJ1eXhlcGhsZm9pdmNwY2tkIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MDg4OTk4NSwiZXhwIjoyMDc2NDY1OTg1fQ.UlwSxQS5o_9-mPFtwi6ItJQ4j6EZBDUEu6qSrvFwYpU
+NEXT_PUBLIC_SUPABASE_URL=https://xkrkqntnpzkwzqkbfyex.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhrcmtxbnRucHprd3pxa2JmeWV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzNDgzNzMsImV4cCI6MjA3ODkyNDM3M30.szioW9K48P4KKw_BmhmH-Kj7mNGZekEB2WFv1bM317M
+SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhrcmtxbnRucHprd3pxa2JmeWV4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MzM0ODM3MywiZXhwIjoyMDc4OTI0MzczfQ.MP3KudtKW2fiIOM0TxR-bhxtihi3k4z0vnyf7_NS_4c
 
 # CRON
 CRON_SECRET=L+e90h3WQtfGF0I/P/dTuKAVA0S9q5IZ7Nb3hiu9rsI=

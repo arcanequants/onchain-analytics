@@ -58,7 +58,7 @@ export const DEFAULT_PROTOCOLS = [
   'uniswap-v3',     // DEX - $2.3B TVL
   'curve-dex',      // DEX (stablecoins) - $2.0B TVL
   'lido',           // Liquid Staking - $25B TVL
-  'makerdao',       // CDP
+  'sky-lending',    // CDP (formerly MakerDAO) - $5.6B TVL
   'compound-v3',    // Lending - $1.6B TVL
   'justlend',       // Lending - $3.7B TVL
   'pancakeswap-amm',// DEX - $2.0B TVL

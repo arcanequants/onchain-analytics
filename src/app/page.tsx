@@ -12,6 +12,7 @@ import PriceAlerts from '@/components/PriceAlerts'
 import WalletSummaryWidget from '@/components/WalletSummaryWidget'
 import DEXVolumeChart from '@/components/DEXVolumeChart'
 import TVLChart from '@/components/TVLChart'
+import UserMenu from '@/components/UserMenu'
 import Link from 'next/link'
 import { usePerformanceMode } from '@/hooks/usePerformanceMode'
 import '@/components/DEXVolumeChart.css'
@@ -286,6 +287,8 @@ export default function Home() {
           </div>
 
           <div className="top-time">{currentTime}</div>
+
+          <UserMenu />
         </div>
 
         {/* Main Terminal Grid */}

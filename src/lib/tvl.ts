@@ -52,22 +52,23 @@ export interface ChainTVL {
 const DEFILLAMA_BASE_URL = 'https://api.llama.fi'
 
 // Default protocols to track (top DeFi protocols)
+// Using specific version slugs from DeFiLlama API
 export const DEFAULT_PROTOCOLS = [
-  'aave',           // Lending
-  'uniswap',        // DEX
-  'curve',          // DEX (stablecoins)
-  'lido',           // Liquid Staking
+  'aave-v3',        // Lending - $31B TVL
+  'uniswap-v3',     // DEX - $2.3B TVL
+  'curve-dex',      // DEX (stablecoins) - $2.0B TVL
+  'lido',           // Liquid Staking - $25B TVL
   'makerdao',       // CDP
-  'compound',       // Lending
-  'justlend',       // Lending
-  'pancakeswap',    // DEX
-  'convex-finance', // Yield
-  'rocket-pool',    // Liquid Staking
-  'eigenlayer',     // Restaking
-  'balancer',       // DEX
-  'sushi',          // DEX
-  'gmx',            // Derivatives
-  'synthetix',      // Derivatives
+  'compound-v3',    // Lending - $1.6B TVL
+  'justlend',       // Lending - $3.7B TVL
+  'pancakeswap-amm',// DEX - $2.0B TVL
+  'convex-finance', // Yield - $954M TVL
+  'rocket-pool',    // Liquid Staking - $1.8B TVL
+  'eigenlayer',     // Restaking - $12.5B TVL
+  'balancer-v2',    // DEX - $160M TVL
+  'sushiswap',      // DEX - $110M TVL
+  'gmx-v2-perps',   // Derivatives - $380M TVL
+  'synthetix-v3',   // Derivatives - $80M TVL
 ]
 
 // Supported chains for TVL tracking (reduced for performance)

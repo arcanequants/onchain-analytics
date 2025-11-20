@@ -44,6 +44,7 @@ export default function Home() {
   const [currentTime, setCurrentTime] = useState('')
   const [gasData, setGasData] = useState<GasData[]>([])
   const [priceData, setPriceData] = useState<PriceData[]>([])
+  const [interpolatedPrices, setInterpolatedPrices] = useState<Map<string, number>>(new Map())
   const [loading, setLoading] = useState(true)
   const [pricesLoading, setPricesLoading] = useState(true)
   const performanceMode = usePerformanceMode()
@@ -112,76 +113,64 @@ export default function Home() {
     }
   }, [])
 
-  // Intelligent price micro-interpolation
+  // Initialize interpolated prices when real data arrives
+  useEffect(() => {
+    if (priceData.length === 0) return
+
+    // Initialize interpolated prices with real prices
+    const newInterpolatedPrices = new Map<string, number>()
+    priceData.forEach(coin => {
+      newInterpolatedPrices.set(coin.coingecko_id, coin.current_price)
+    })
+    setInterpolatedPrices(newInterpolatedPrices)
+  }, [priceData])
+
+  // Intelligent price micro-interpolation using React state
   // Simulates smooth price movements between real API updates
   useEffect(() => {
     // Only run price animations on high-performance hardware
     if (performanceMode !== 'high') return
     if (priceData.length === 0) return
-
-    // Store interpolated prices (separate from real prices)
-    let interpolatedPrices = new Map<string, number>()
-
-    // Initialize with real prices
-    priceData.forEach(coin => {
-      interpolatedPrices.set(coin.coingecko_id, coin.current_price)
-    })
+    if (interpolatedPrices.size === 0) return
 
     // Micro-interpolation every 5 seconds
     priceIntervalRef.current = setInterval(() => {
-      priceData.forEach(coin => {
-        // Calculate realistic volatility based on 24h change
-        const volatility24h = Math.abs(coin.price_change_percentage_24h || 0) / 100
+      setInterpolatedPrices(prevPrices => {
+        const newPrices = new Map(prevPrices)
 
-        // Max change per tick: 1% of the 24h volatility (very conservative)
-        // Example: If BTC moved 2% in 24h, max micro-change is 0.02% per 5 seconds
-        const maxChangePercent = volatility24h * 0.01
+        priceData.forEach(coin => {
+          // Calculate realistic volatility based on 24h change
+          const volatility24h = Math.abs(coin.price_change_percentage_24h || 0) / 100
 
-        // Generate random change within realistic bounds
-        const changePercent = (Math.random() - 0.5) * 2 * maxChangePercent
-        const currentInterpolated = interpolatedPrices.get(coin.coingecko_id) || coin.current_price
-        const newPrice = currentInterpolated * (1 + changePercent)
+          // Max change per tick: 1% of the 24h volatility (very conservative)
+          // Example: If BTC moved 2% in 24h, max micro-change is 0.02% per 5 seconds
+          const maxChangePercent = volatility24h * 0.01
 
-        // Update interpolated price
-        interpolatedPrices.set(coin.coingecko_id, newPrice)
+          // Generate random change within realistic bounds
+          const changePercent = (Math.random() - 0.5) * 2 * maxChangePercent
+          const currentInterpolated = prevPrices.get(coin.coingecko_id) || coin.current_price
+          const newPrice = currentInterpolated * (1 + changePercent)
 
-        // Update DOM with flash animation
-        const priceElements = document.querySelectorAll(`[data-coin-id="${coin.coingecko_id}"]`)
-        priceElements.forEach(el => {
-          // Handle Top Bar and Watchlist prices (price-value class)
-          if (el.classList.contains('price-value')) {
-            el.classList.add('flash')
-            setTimeout(() => el.classList.remove('flash'), 500)
-            el.textContent = newPrice.toLocaleString(undefined, {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2
-            })
-          }
-          // Handle PriceTable prices (data-table-price attribute)
-          else if (el.hasAttribute('data-table-price')) {
-            el.classList.add('flash')
-            setTimeout(() => el.classList.remove('flash'), 500)
-
-            // Format price based on value (same as PriceTable formatPrice)
-            let formattedPrice = ''
-            if (newPrice >= 1) {
-              formattedPrice = `$${newPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-            } else if (newPrice >= 0.01) {
-              formattedPrice = `$${newPrice.toFixed(4)}`
-            } else {
-              formattedPrice = `$${newPrice.toFixed(8)}`
-            }
-
-            el.textContent = formattedPrice
-          }
+          // Update interpolated price in the new Map
+          newPrices.set(coin.coingecko_id, newPrice)
         })
+
+        return newPrices
       })
     }, 5000) // Every 5 seconds
 
     return () => {
       if (priceIntervalRef.current) clearInterval(priceIntervalRef.current)
     }
-  }, [performanceMode, priceData])
+  }, [performanceMode, priceData, interpolatedPrices.size])
+
+  // Helper to get interpolated or real price
+  const getDisplayPrice = (coinId: string): number => {
+    if (performanceMode === 'high' && interpolatedPrices.has(coinId)) {
+      return interpolatedPrices.get(coinId)!
+    }
+    return getCoinPrice(coinId)?.current_price || 0
+  }
 
   // Helper to get gas data for a specific chain
   const getChainGas = (chainName: string) => {
@@ -247,7 +236,7 @@ export default function Home() {
             <div className="ticker-item">
               <span className="ticker-symbol">BTC</span>
               <span className="ticker-price price-value" data-coin-id="bitcoin">
-                {pricesLoading ? '...' : getCoinPrice('bitcoin')?.current_price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) || '...'}
+                {pricesLoading ? '...' : getDisplayPrice('bitcoin') ? getDisplayPrice('bitcoin').toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) : '...'}
               </span>
               <span className={`ticker-change ${
                 pricesLoading ? '' : (getCoinPrice('bitcoin')?.price_change_percentage_24h || 0) >= 0 ? 'up' : 'down'
@@ -260,7 +249,7 @@ export default function Home() {
             <div className="ticker-item">
               <span className="ticker-symbol">ETH</span>
               <span className="ticker-price price-value" data-coin-id="ethereum">
-                {pricesLoading ? '...' : getCoinPrice('ethereum')?.current_price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) || '...'}
+                {pricesLoading ? '...' : getDisplayPrice('ethereum') ? getDisplayPrice('ethereum').toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) : '...'}
               </span>
               <span className={`ticker-change ${
                 pricesLoading ? '' : (getCoinPrice('ethereum')?.price_change_percentage_24h || 0) >= 0 ? 'up' : 'down'
@@ -273,7 +262,7 @@ export default function Home() {
             <div className="ticker-item">
               <span className="ticker-symbol">SOL</span>
               <span className="ticker-price price-value" data-coin-id="solana">
-                {pricesLoading ? '...' : getCoinPrice('solana')?.current_price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) || '...'}
+                {pricesLoading ? '...' : getDisplayPrice('solana') ? getDisplayPrice('solana').toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) : '...'}
               </span>
               <span className={`ticker-change ${
                 pricesLoading ? '' : (getCoinPrice('solana')?.price_change_percentage_24h || 0) >= 0 ? 'up' : 'down'
@@ -312,7 +301,7 @@ export default function Home() {
               </div>
               <div style={{ textAlign: 'right' }}>
                 <div className="watchlist-price price-value" data-coin-id="ethereum">
-                  {pricesLoading ? '...' : getCoinPrice('ethereum')?.current_price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) || '...'}
+                  {pricesLoading ? '...' : getDisplayPrice('ethereum') ? getDisplayPrice('ethereum').toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) : '...'}
                 </div>
                 <div className="watchlist-change" style={{
                   color: pricesLoading ? 'var(--text-tertiary)' : (getCoinPrice('ethereum')?.price_change_percentage_24h || 0) >= 0 ? 'var(--success)' : 'var(--danger)'
@@ -331,7 +320,7 @@ export default function Home() {
               </div>
               <div style={{ textAlign: 'right' }}>
                 <div className="watchlist-price price-value" data-coin-id="bitcoin">
-                  {pricesLoading ? '...' : getCoinPrice('bitcoin')?.current_price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) || '...'}
+                  {pricesLoading ? '...' : getDisplayPrice('bitcoin') ? getDisplayPrice('bitcoin').toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) : '...'}
                 </div>
                 <div className="watchlist-change" style={{
                   color: pricesLoading ? 'var(--text-tertiary)' : (getCoinPrice('bitcoin')?.price_change_percentage_24h || 0) >= 0 ? 'var(--success)' : 'var(--danger)'
@@ -350,7 +339,7 @@ export default function Home() {
               </div>
               <div style={{ textAlign: 'right' }}>
                 <div className="watchlist-price price-value" data-coin-id="solana">
-                  {pricesLoading ? '...' : getCoinPrice('solana')?.current_price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) || '...'}
+                  {pricesLoading ? '...' : getDisplayPrice('solana') ? getDisplayPrice('solana').toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) : '...'}
                 </div>
                 <div className="watchlist-change" style={{
                   color: pricesLoading ? 'var(--text-tertiary)' : (getCoinPrice('solana')?.price_change_percentage_24h || 0) >= 0 ? 'var(--success)' : 'var(--danger)'
@@ -369,7 +358,7 @@ export default function Home() {
               </div>
               <div style={{ textAlign: 'right' }}>
                 <div className="watchlist-price price-value" data-coin-id="arbitrum">
-                  {pricesLoading ? '...' : getCoinPrice('arbitrum')?.current_price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) || '...'}
+                  {pricesLoading ? '...' : getDisplayPrice('arbitrum') ? getDisplayPrice('arbitrum').toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) : '...'}
                 </div>
                 <div className="watchlist-change" style={{
                   color: pricesLoading ? 'var(--text-tertiary)' : (getCoinPrice('arbitrum')?.price_change_percentage_24h || 0) >= 0 ? 'var(--success)' : 'var(--danger)'
@@ -388,7 +377,7 @@ export default function Home() {
               </div>
               <div style={{ textAlign: 'right' }}>
                 <div className="watchlist-price price-value" data-coin-id="optimism">
-                  {pricesLoading ? '...' : getCoinPrice('optimism')?.current_price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) || '...'}
+                  {pricesLoading ? '...' : getDisplayPrice('optimism') ? getDisplayPrice('optimism').toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) : '...'}
                 </div>
                 <div className="watchlist-change" style={{
                   color: pricesLoading ? 'var(--text-tertiary)' : (getCoinPrice('optimism')?.price_change_percentage_24h || 0) >= 0 ? 'var(--success)' : 'var(--danger)'
@@ -577,7 +566,7 @@ export default function Home() {
             </div>
 
             {/* Top Cryptocurrencies - Real-time from CoinGecko */}
-            <PriceTable limit={10} showHeader={true} externalPrices={priceData} externalLoading={pricesLoading} />
+            <PriceTable limit={10} showHeader={true} externalPrices={priceData} externalLoading={pricesLoading} interpolatedPrices={interpolatedPrices} performanceMode={performanceMode} />
 
             {/* Price Charts - Historical Data */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '12px', marginBottom: '12px' }}>

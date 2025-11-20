@@ -20,9 +20,11 @@ interface PriceTableProps {
   showHeader?: boolean
   externalPrices?: TokenPrice[]
   externalLoading?: boolean
+  interpolatedPrices?: Map<string, number>
+  performanceMode?: 'high' | 'medium' | 'low' | 'detecting'
 }
 
-export default function PriceTable({ limit = 10, showHeader = true, externalPrices, externalLoading }: PriceTableProps) {
+export default function PriceTable({ limit = 10, showHeader = true, externalPrices, externalLoading, interpolatedPrices, performanceMode }: PriceTableProps) {
   const [internalPrices, setInternalPrices] = useState<TokenPrice[]>([])
   const [internalLoading, setInternalLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -93,6 +95,14 @@ export default function PriceTable({ limit = 10, showHeader = true, externalPric
     }
   }
 
+  // Helper to get interpolated or real price
+  const getDisplayPrice = (coinId: string, realPrice: number): number => {
+    if (performanceMode === 'high' && interpolatedPrices?.has(coinId)) {
+      return interpolatedPrices.get(coinId)!
+    }
+    return realPrice
+  }
+
   if (loading) {
     return (
       <div className="data-table">
@@ -159,7 +169,7 @@ export default function PriceTable({ limit = 10, showHeader = true, externalPric
                   </div>
                 </td>
                 <td className="table-value" data-coin-id={token.coingecko_id} data-table-price>
-                  {formatPrice(token.current_price)}
+                  {formatPrice(getDisplayPrice(token.coingecko_id, token.current_price))}
                 </td>
                 <td style={{
                   color: token.price_change_percentage_24h >= 0 ? 'var(--success)' : 'var(--danger)',

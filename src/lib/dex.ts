@@ -128,13 +128,32 @@ export interface DEXSummaryResponse {
 const DEFILLAMA_BASE_URL = 'https://api.llama.fi'
 
 /**
+ * Chain name mapping: Our normalized names → DeFiLlama API names
+ * DeFiLlama uses inconsistent naming (e.g., "Hyperliquid L1", "BSC" vs "Binance")
+ */
+const CHAIN_API_MAPPING: Record<string, string> = {
+  'solana': 'Solana',
+  'base': 'Base',
+  'ethereum': 'Ethereum',
+  'arbitrum': 'Arbitrum',
+  'bsc': 'BSC',
+  'hyperliquid': 'Hyperliquid L1',  // DeFiLlama uses "Hyperliquid L1"
+  'avalanche': 'Avalanche',
+  'polygon': 'Polygon',
+  'sui': 'Sui',
+}
+
+/**
  * Fetch overview of all DEX volumes
  * GET /overview/dexs or /overview/dexs/{chain}
  */
 export async function getDEXOverview(chain?: ChainName): Promise<DEXOverviewResponse> {
   try {
-    const endpoint = chain && chain !== 'all'
-      ? `${DEFILLAMA_BASE_URL}/overview/dexs/${chain}`
+    // Map our chain name to DeFiLlama's API name
+    const apiChainName = chain && chain !== 'all' ? CHAIN_API_MAPPING[chain] : null
+
+    const endpoint = apiChainName
+      ? `${DEFILLAMA_BASE_URL}/overview/dexs/${apiChainName}`
       : `${DEFILLAMA_BASE_URL}/overview/dexs`
 
     const params = new URLSearchParams({

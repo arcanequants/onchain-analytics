@@ -77,14 +77,15 @@ export default function PriceChart({ coinId, coinName, coinSymbol, hours = 24 }:
   const maxPrice = Math.max(...prices)
   const priceRange = maxPrice - minPrice
 
-  // Generate SVG path
+  // Generate SVG points for polyline
   const points = history.map((point, index) => {
     const x = (index / (history.length - 1)) * 100
     const y = ((maxPrice - point.price) / priceRange) * 100
     return `${x},${y}`
-  })
+  }).join(' ')
 
-  const pathData = `M ${points.join(' L ')}`
+  // Generate polygon points for gradient fill (add bottom corners)
+  const fillPoints = `${points} 100,100 0,100`
 
   // Calculate price change
   const firstPrice = history[0]?.price || 0
@@ -131,25 +132,26 @@ export default function PriceChart({ coinId, coinName, coinSymbol, hours = 24 }:
           <line x1="0" y1="50" x2="100" y2="50" stroke="var(--border)" strokeWidth="0.2" opacity="0.3" />
           <line x1="0" y1="75" x2="100" y2="75" stroke="var(--border)" strokeWidth="0.2" opacity="0.3" />
           
-          {/* Price line */}
-          <polyline
-            points={pathData.replace('M ', '')}
-            fill="none"
-            stroke={isPositive ? 'var(--success)' : 'var(--danger)'}
-            strokeWidth="2"
-            vectorEffect="non-scaling-stroke"
-          />
-          
-          {/* Gradient fill */}
+          {/* Gradient fill (behind the line) */}
           <defs>
             <linearGradient id={`gradient-${coinId}`} x1="0%" y1="0%" x2="0%" y2="100%">
               <stop offset="0%" stopColor={isPositive ? 'var(--success)' : 'var(--danger)'} stopOpacity="0.3" />
               <stop offset="100%" stopColor={isPositive ? 'var(--success)' : 'var(--danger)'} stopOpacity="0" />
             </linearGradient>
           </defs>
-          <polyline
-            points={`${pathData.replace('M ', '')} 100,100 0,100`}
+          <polygon
+            points={fillPoints}
             fill={`url(#gradient-${coinId})`}
+            stroke="none"
+          />
+
+          {/* Price line */}
+          <polyline
+            points={points}
+            fill="none"
+            stroke={isPositive ? 'var(--success)' : 'var(--danger)'}
+            strokeWidth="2"
+            vectorEffect="non-scaling-stroke"
           />
         </svg>
 

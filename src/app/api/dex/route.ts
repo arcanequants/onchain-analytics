@@ -46,8 +46,8 @@ export async function GET(request: NextRequest) {
     const protocol = searchParams.get('protocol')
     const refresh = searchParams.get('refresh') === 'true'
 
-    // Validate chain parameter
-    const validChains: ChainName[] = ['ethereum', 'base', 'arbitrum', 'optimism', 'polygon', 'all']
+    // Validate chain parameter - Top 9 by DEX volume
+    const validChains: ChainName[] = ['solana', 'base', 'ethereum', 'arbitrum', 'bsc', 'hyperliquid', 'avalanche', 'polygon', 'sui', 'all']
     if (!validChains.includes(chain)) {
       return NextResponse.json(
         {

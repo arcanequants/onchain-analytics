@@ -7,7 +7,17 @@
  * Base URL: https://api.llama.fi
  */
 
-export type ChainName = 'ethereum' | 'base' | 'arbitrum' | 'optimism' | 'polygon' | 'all'
+export type ChainName =
+  | 'solana'           // #1 - $2.72B (20.1%)
+  | 'base'             // #2 - $1.41B (10.5%)
+  | 'ethereum'         // #3 - $0.75B (5.6%)
+  | 'arbitrum'         // #4 - $0.71B (5.3%)
+  | 'bsc'              // #5 - $0.71B (5.3%)
+  | 'hyperliquid'      // #6 - $0.61B (4.6%)
+  | 'avalanche'        // #7 - $0.55B (4.1%)
+  | 'polygon'          // #8 - $0.46B (3.4%)
+  | 'sui'              // #9 - $0.33B (2.4%)
+  | 'all'
 
 export interface DEXVolume {
   protocol_slug: string

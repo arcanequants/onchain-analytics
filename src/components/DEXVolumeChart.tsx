@@ -17,7 +17,7 @@ interface DEXVolume {
 }
 
 interface DEXVolumeChartProps {
-  chain?: 'ethereum' | 'base' | 'arbitrum' | 'optimism' | 'polygon' | 'all'
+  chain?: 'solana' | 'base' | 'ethereum' | 'arbitrum' | 'bsc' | 'hyperliquid' | 'avalanche' | 'polygon' | 'sui' | 'all'
   limit?: number
   showChainFilter?: boolean
 }
@@ -35,11 +35,15 @@ export default function DEXVolumeChart({
 
   const chains = [
     { id: 'all', name: 'All Chains', icon: '🌐' },
-    { id: 'ethereum', name: 'Ethereum', icon: '⟠' },
+    { id: 'solana', name: 'Solana', icon: '◎' },
     { id: 'base', name: 'Base', icon: '🔵' },
+    { id: 'ethereum', name: 'Ethereum', icon: '⟠' },
     { id: 'arbitrum', name: 'Arbitrum', icon: '🔷' },
-    { id: 'optimism', name: 'Optimism', icon: '🔴' },
+    { id: 'bsc', name: 'BSC', icon: '🟡' },
+    { id: 'hyperliquid', name: 'Hyperliquid', icon: '💧' },
+    { id: 'avalanche', name: 'Avalanche', icon: '🔺' },
     { id: 'polygon', name: 'Polygon', icon: '🟣' },
+    { id: 'sui', name: 'Sui', icon: '💠' },
   ]
 
   useEffect(() => {
@@ -77,14 +81,18 @@ export default function DEXVolumeChart({
     if (!chains || chains.length === 0) return '🌐'
     if (chains.length === 1) {
       const chain = chains[0].toLowerCase()
-      const chainInfo = {
-        ethereum: '⟠',
+      const chainInfo: Record<string, string> = {
+        solana: '◎',
         base: '🔵',
+        ethereum: '⟠',
         arbitrum: '🔷',
-        optimism: '🔴',
+        bsc: '🟡',
+        hyperliquid: '💧',
+        avalanche: '🔺',
         polygon: '🟣',
-      }[chain]
-      return chainInfo || '🔗'
+        sui: '💠',
+      }
+      return chainInfo[chain] || '🔗'
     }
     return `🌐 ${chains.length}`
   }

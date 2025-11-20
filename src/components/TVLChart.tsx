@@ -26,7 +26,7 @@ interface ProtocolTVL {
 }
 
 interface TVLChartProps {
-  chain?: 'ethereum' | 'solana' | 'tron' | 'bsc' | 'arbitrum' | 'base' | 'polygon' | 'all'
+  chain?: 'solana' | 'base' | 'ethereum' | 'arbitrum' | 'bsc' | 'hyperliquid' | 'avalanche' | 'polygon' | 'sui' | 'all'
   category?: string | null
   limit?: number
   showChainFilter?: boolean
@@ -48,16 +48,18 @@ export default function TVLChart({
   const [lastUpdated, setLastUpdated] = useState<string | null>(null)
   const [totalTVL, setTotalTVL] = useState(0)
 
-  // Top 7 chains by TVL + All option
+  // Top 9 chains by DEX volume + All option
   const chains = [
     { id: 'all', name: 'All Chains', icon: '🌐' },
-    { id: 'ethereum', name: 'Ethereum', icon: '⟠' },
     { id: 'solana', name: 'Solana', icon: '◎' },
-    { id: 'tron', name: 'Tron', icon: '🔺' },
-    { id: 'bsc', name: 'BSC', icon: '🟡' },
-    { id: 'arbitrum', name: 'Arbitrum', icon: '🔷' },
     { id: 'base', name: 'Base', icon: '🔵' },
+    { id: 'ethereum', name: 'Ethereum', icon: '⟠' },
+    { id: 'arbitrum', name: 'Arbitrum', icon: '🔷' },
+    { id: 'bsc', name: 'BSC', icon: '🟡' },
+    { id: 'hyperliquid', name: 'Hyperliquid', icon: '💧' },
+    { id: 'avalanche', name: 'Avalanche', icon: '🔺' },
     { id: 'polygon', name: 'Polygon', icon: '🟣' },
+    { id: 'sui', name: 'Sui', icon: '💠' },
   ]
 
   const categories = [

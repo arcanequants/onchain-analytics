@@ -61,8 +61,8 @@ export async function GET(request: NextRequest) {
 
     console.log('[CRON DEX] Starting DEX volume collection...')
 
-    // Chains to track
-    const chains: ChainName[] = ['ethereum', 'base', 'arbitrum', 'optimism', 'polygon']
+    // Chains to track - Top 9 by DEX volume
+    const chains: ChainName[] = ['solana', 'base', 'ethereum', 'arbitrum', 'bsc', 'hyperliquid', 'avalanche', 'polygon', 'sui']
     const allDEXData: DEXVolume[] = []
 
     // 1. Collect top 20 DEXes across all chains

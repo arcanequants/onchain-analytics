@@ -71,30 +71,33 @@ export const DEFAULT_PROTOCOLS = [
   'synthetix-v3',   // Derivatives - $80M TVL
 ]
 
-// Supported chains for TVL tracking (Top 7 by TVL)
-// Based on DeFiLlama data: Ethereum ($70B), Solana ($9B), Tron ($4.5B),
-// BSC ($7B), Arbitrum ($2.8B), Base ($4.3B), Polygon ($1.2B)
+// Supported chains for TVL tracking (Top 9 by DEX Volume + TVL)
+// Based on combined DeFiLlama data - prioritizing DEX volume for better coverage
 export const SUPPORTED_CHAINS = [
-  'ethereum',
-  'solana',
-  'tron',
-  'bsc',
-  'arbitrum',
-  'base',
-  'polygon',
+  'solana',        // #1 DEX volume ($2.72B), Top 3 TVL
+  'base',          // #2 DEX volume ($1.41B), Strong L2
+  'ethereum',      // #3 DEX volume ($0.75B), #1 TVL
+  'arbitrum',      // #4 DEX volume ($0.71B), Top L2
+  'bsc',           // #5 DEX volume ($0.71B), Major ecosystem
+  'hyperliquid',   // #6 DEX volume ($0.61B), Emerging L1
+  'avalanche',     // #7 DEX volume ($0.55B), Major L1
+  'polygon',       // #8 DEX volume ($0.46B), Popular L2
+  'sui',           // #9 DEX volume ($0.33B), Fast-growing L1
 ]
 
 // Chain name mapping: Our normalized name → DeFiLlama API variants
 // Approach: Principal + Staking (95-98% data certainty)
 // Excludes: borrowed, pool2 (to avoid double counting)
 export const CHAIN_NAME_MAPPING: Record<string, string[]> = {
-  'ethereum': ['Ethereum', 'Ethereum-staking'],
   'solana': ['Solana', 'Solana-staking'],
-  'tron': ['Tron'], // Tron doesn't commonly use -staking suffix
-  'bsc': ['Binance', 'Binance-staking'], // DeFiLlama uses "Binance", not "BSC"
-  'arbitrum': ['Arbitrum', 'Arbitrum-staking'],
   'base': ['Base', 'Base-staking'],
+  'ethereum': ['Ethereum', 'Ethereum-staking'],
+  'arbitrum': ['Arbitrum', 'Arbitrum-staking'],
+  'bsc': ['Binance', 'Binance-staking'], // DeFiLlama uses "Binance", not "BSC"
+  'hyperliquid': ['Hyperliquid'],
+  'avalanche': ['Avalanche', 'Avalanche-staking'],
   'polygon': ['Polygon', 'Polygon-staking'],
+  'sui': ['Sui'],
 }
 
 // Reverse mapping: DeFiLlama variant → our normalized chain name

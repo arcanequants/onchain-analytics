@@ -135,10 +135,12 @@ export async function GET(request: NextRequest) {
 
     await supabase.from('cron_executions').insert({
       job_name: 'cleanup-old-data',
+      execution_time: new Date().toISOString(),
       status: 'success',
-      records_affected: totalDeleted,
       duration_ms: duration,
+      error_message: null,
       metadata: {
+        records_deleted: totalDeleted,
         cutoff_date: cutoffISO,
         token_price_history_deleted: pricesCount || 0,
         gas_prices_deleted: gasCount || 0,
@@ -171,7 +173,8 @@ export async function GET(request: NextRequest) {
     // Log failure to database
     await supabase.from('cron_executions').insert({
       job_name: 'cleanup-old-data',
-      status: 'error',
+      execution_time: new Date().toISOString(),
+      status: 'failed',
       duration_ms: duration,
       error_message: error.message,
       metadata: {

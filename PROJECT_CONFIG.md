@@ -57,6 +57,10 @@ curl -X GET "https://www.vectorialdata.com/api/cron/collect-fear-greed" \
 # Events Collection
 curl -X GET "https://www.vectorialdata.com/api/cron/collect-events" \
   -H "Authorization: Bearer L+e90h3WQtfGF0I/P/dTuKAVA0S9q5IZ7Nb3hiu9rsI="
+
+# Cleanup Old Data (runs daily at 2 AM)
+curl -X GET "https://www.vectorialdata.com/api/cron/cleanup-old-data" \
+  -H "Authorization: Bearer L+e90h3WQtfGF0I/P/dTuKAVA0S9q5IZ7Nb3hiu9rsI="
 ```
 
 ### Public API Endpoints:

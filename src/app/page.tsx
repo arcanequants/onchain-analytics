@@ -27,16 +27,54 @@ interface GasData {
   priorityFee?: number
 }
 
+interface PriceData {
+  coingecko_id: string
+  symbol: string
+  name: string
+  current_price: number
+  price_change_percentage_24h: number
+  market_cap: number
+  total_volume: number
+  image: string
+  market_cap_rank: number
+  last_updated: string
+}
+
 export default function Home() {
   const [currentTime, setCurrentTime] = useState('')
   const [gasData, setGasData] = useState<GasData[]>([])
+  const [priceData, setPriceData] = useState<PriceData[]>([])
   const [loading, setLoading] = useState(true)
+  const [pricesLoading, setPricesLoading] = useState(true)
   const performanceMode = usePerformanceMode()
 
   // Refs to store interval IDs for cleanup
   const gasIntervalRef = useRef<NodeJS.Timeout | undefined>(undefined)
   const timeIntervalRef = useRef<NodeJS.Timeout | undefined>(undefined)
   const priceIntervalRef = useRef<NodeJS.Timeout | undefined>(undefined)
+  const priceDataIntervalRef = useRef<NodeJS.Timeout | undefined>(undefined)
+
+  // Fetch real price data
+  useEffect(() => {
+    const fetchPriceData = async () => {
+      try {
+        const response = await fetch('/api/prices?limit=10')
+        const result = await response.json()
+        setPriceData(result.prices || [])
+        setPricesLoading(false)
+      } catch (error) {
+        console.error('Error fetching price data:', error)
+        setPricesLoading(false)
+      }
+    }
+
+    fetchPriceData()
+    // Refresh price data every 30 seconds (same as PriceTable)
+    priceDataIntervalRef.current = setInterval(fetchPriceData, 30000)
+    return () => {
+      if (priceDataIntervalRef.current) clearInterval(priceDataIntervalRef.current)
+    }
+  }, [])
 
   // Fetch real gas price data
   useEffect(() => {
@@ -100,6 +138,11 @@ export default function Home() {
     return gasData.find(g => g.chain.toLowerCase() === chainName.toLowerCase())
   }
 
+  // Helper to get price data for a specific coin
+  const getCoinPrice = (coinId: string) => {
+    return priceData.find(p => p.coingecko_id === coinId)
+  }
+
   // Helper to format time ago
   const getTimeAgo = (timestamp: string) => {
     const seconds = Math.floor((Date.now() - new Date(timestamp).getTime()) / 1000)
@@ -114,6 +157,7 @@ export default function Home() {
     if (gasIntervalRef.current) clearInterval(gasIntervalRef.current)
     if (timeIntervalRef.current) clearInterval(timeIntervalRef.current)
     if (priceIntervalRef.current) clearInterval(priceIntervalRef.current)
+    if (priceDataIntervalRef.current) clearInterval(priceDataIntervalRef.current)
   }
 
   // Listen for pause event from other components (like WalletSummaryWidget)
@@ -152,18 +196,42 @@ export default function Home() {
           <div className="top-tickers">
             <div className="ticker-item">
               <span className="ticker-symbol">BTC</span>
-              <span className="ticker-price">94280</span>
-              <span className="ticker-change up">+4.2%</span>
+              <span className="ticker-price">
+                {pricesLoading ? '...' : getCoinPrice('bitcoin')?.current_price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) || '...'}
+              </span>
+              <span className={`ticker-change ${
+                pricesLoading ? '' : (getCoinPrice('bitcoin')?.price_change_percentage_24h || 0) >= 0 ? 'up' : 'down'
+              }`}>
+                {pricesLoading ? '...' : getCoinPrice('bitcoin') ?
+                  `${(getCoinPrice('bitcoin')!.price_change_percentage_24h || 0) >= 0 ? '+' : ''}${(getCoinPrice('bitcoin')!.price_change_percentage_24h || 0).toFixed(1)}%`
+                  : '...'}
+              </span>
             </div>
             <div className="ticker-item">
               <span className="ticker-symbol">ETH</span>
-              <span className="ticker-price">3150</span>
-              <span className="ticker-change up">+6.8%</span>
+              <span className="ticker-price">
+                {pricesLoading ? '...' : getCoinPrice('ethereum')?.current_price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) || '...'}
+              </span>
+              <span className={`ticker-change ${
+                pricesLoading ? '' : (getCoinPrice('ethereum')?.price_change_percentage_24h || 0) >= 0 ? 'up' : 'down'
+              }`}>
+                {pricesLoading ? '...' : getCoinPrice('ethereum') ?
+                  `${(getCoinPrice('ethereum')!.price_change_percentage_24h || 0) >= 0 ? '+' : ''}${(getCoinPrice('ethereum')!.price_change_percentage_24h || 0).toFixed(1)}%`
+                  : '...'}
+              </span>
             </div>
             <div className="ticker-item">
               <span className="ticker-symbol">SOL</span>
-              <span className="ticker-price">238</span>
-              <span className="ticker-change down">-2.1%</span>
+              <span className="ticker-price">
+                {pricesLoading ? '...' : getCoinPrice('solana')?.current_price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) || '...'}
+              </span>
+              <span className={`ticker-change ${
+                pricesLoading ? '' : (getCoinPrice('solana')?.price_change_percentage_24h || 0) >= 0 ? 'up' : 'down'
+              }`}>
+                {pricesLoading ? '...' : getCoinPrice('solana') ?
+                  `${(getCoinPrice('solana')!.price_change_percentage_24h || 0) >= 0 ? '+' : ''}${(getCoinPrice('solana')!.price_change_percentage_24h || 0).toFixed(1)}%`
+                  : '...'}
+              </span>
             </div>
             <div className="ticker-item">
               <span className="ticker-symbol">GAS</span>
@@ -193,8 +261,16 @@ export default function Home() {
                 <div style={{ fontSize: '10px', color: 'var(--text-tertiary)' }}>Ethereum</div>
               </div>
               <div style={{ textAlign: 'right' }}>
-                <div className="watchlist-price">3,150.42</div>
-                <div className="watchlist-change" style={{ color: 'var(--success)' }}>+6.8%</div>
+                <div className="watchlist-price">
+                  {pricesLoading ? '...' : getCoinPrice('ethereum')?.current_price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) || '...'}
+                </div>
+                <div className="watchlist-change" style={{
+                  color: pricesLoading ? 'var(--text-tertiary)' : (getCoinPrice('ethereum')?.price_change_percentage_24h || 0) >= 0 ? 'var(--success)' : 'var(--danger)'
+                }}>
+                  {pricesLoading ? '...' : getCoinPrice('ethereum') ?
+                    `${(getCoinPrice('ethereum')!.price_change_percentage_24h || 0) >= 0 ? '+' : ''}${(getCoinPrice('ethereum')!.price_change_percentage_24h || 0).toFixed(1)}%`
+                    : '...'}
+                </div>
               </div>
             </div>
 
@@ -204,8 +280,16 @@ export default function Home() {
                 <div style={{ fontSize: '10px', color: 'var(--text-tertiary)' }}>Bitcoin</div>
               </div>
               <div style={{ textAlign: 'right' }}>
-                <div className="watchlist-price">94,280.15</div>
-                <div className="watchlist-change" style={{ color: 'var(--success)' }}>+4.2%</div>
+                <div className="watchlist-price">
+                  {pricesLoading ? '...' : getCoinPrice('bitcoin')?.current_price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) || '...'}
+                </div>
+                <div className="watchlist-change" style={{
+                  color: pricesLoading ? 'var(--text-tertiary)' : (getCoinPrice('bitcoin')?.price_change_percentage_24h || 0) >= 0 ? 'var(--success)' : 'var(--danger)'
+                }}>
+                  {pricesLoading ? '...' : getCoinPrice('bitcoin') ?
+                    `${(getCoinPrice('bitcoin')!.price_change_percentage_24h || 0) >= 0 ? '+' : ''}${(getCoinPrice('bitcoin')!.price_change_percentage_24h || 0).toFixed(1)}%`
+                    : '...'}
+                </div>
               </div>
             </div>
 
@@ -215,8 +299,16 @@ export default function Home() {
                 <div style={{ fontSize: '10px', color: 'var(--text-tertiary)' }}>Solana</div>
               </div>
               <div style={{ textAlign: 'right' }}>
-                <div className="watchlist-price">238.67</div>
-                <div className="watchlist-change" style={{ color: 'var(--danger)' }}>-2.1%</div>
+                <div className="watchlist-price">
+                  {pricesLoading ? '...' : getCoinPrice('solana')?.current_price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) || '...'}
+                </div>
+                <div className="watchlist-change" style={{
+                  color: pricesLoading ? 'var(--text-tertiary)' : (getCoinPrice('solana')?.price_change_percentage_24h || 0) >= 0 ? 'var(--success)' : 'var(--danger)'
+                }}>
+                  {pricesLoading ? '...' : getCoinPrice('solana') ?
+                    `${(getCoinPrice('solana')!.price_change_percentage_24h || 0) >= 0 ? '+' : ''}${(getCoinPrice('solana')!.price_change_percentage_24h || 0).toFixed(1)}%`
+                    : '...'}
+                </div>
               </div>
             </div>
 
@@ -226,8 +318,16 @@ export default function Home() {
                 <div style={{ fontSize: '10px', color: 'var(--text-tertiary)' }}>Arbitrum</div>
               </div>
               <div style={{ textAlign: 'right' }}>
-                <div className="watchlist-price">1.24</div>
-                <div className="watchlist-change" style={{ color: 'var(--success)' }}>+4.8%</div>
+                <div className="watchlist-price">
+                  {pricesLoading ? '...' : getCoinPrice('arbitrum')?.current_price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) || '...'}
+                </div>
+                <div className="watchlist-change" style={{
+                  color: pricesLoading ? 'var(--text-tertiary)' : (getCoinPrice('arbitrum')?.price_change_percentage_24h || 0) >= 0 ? 'var(--success)' : 'var(--danger)'
+                }}>
+                  {pricesLoading ? '...' : getCoinPrice('arbitrum') ?
+                    `${(getCoinPrice('arbitrum')!.price_change_percentage_24h || 0) >= 0 ? '+' : ''}${(getCoinPrice('arbitrum')!.price_change_percentage_24h || 0).toFixed(1)}%`
+                    : '...'}
+                </div>
               </div>
             </div>
 
@@ -237,8 +337,16 @@ export default function Home() {
                 <div style={{ fontSize: '10px', color: 'var(--text-tertiary)' }}>Optimism</div>
               </div>
               <div style={{ textAlign: 'right' }}>
-                <div className="watchlist-price">2.85</div>
-                <div className="watchlist-change" style={{ color: 'var(--danger)' }}>-2.9%</div>
+                <div className="watchlist-price">
+                  {pricesLoading ? '...' : getCoinPrice('optimism')?.current_price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) || '...'}
+                </div>
+                <div className="watchlist-change" style={{
+                  color: pricesLoading ? 'var(--text-tertiary)' : (getCoinPrice('optimism')?.price_change_percentage_24h || 0) >= 0 ? 'var(--success)' : 'var(--danger)'
+                }}>
+                  {pricesLoading ? '...' : getCoinPrice('optimism') ?
+                    `${(getCoinPrice('optimism')!.price_change_percentage_24h || 0) >= 0 ? '+' : ''}${(getCoinPrice('optimism')!.price_change_percentage_24h || 0).toFixed(1)}%`
+                    : '...'}
+                </div>
               </div>
             </div>
 

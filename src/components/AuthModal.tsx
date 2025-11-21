@@ -88,19 +88,58 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'login' }: Au
   }
 
   return (
-    <div className="auth-modal-overlay" onClick={onClose}>
-      <div className="auth-modal" style={{ maxHeight: '90vh', overflowY: 'auto' }} onClick={(e) => e.stopPropagation()}>
+    <div
+      className="auth-modal-overlay"
+      onClick={onClose}
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: 99999,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'rgba(0, 0, 0, 0.85)',
+        padding: '20px'
+      }}
+    >
+      <div
+        className="auth-modal"
+        style={{
+          maxHeight: '90vh',
+          overflowY: 'auto',
+          width: '100%',
+          maxWidth: '450px',
+          background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+          borderRadius: '16px',
+          padding: '32px',
+          position: 'relative',
+          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5)'
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
         <button className="auth-modal-close" onClick={onClose}>
           ✕
         </button>
 
-        <div className="auth-modal-header">
-          <h2>
+        <div className="auth-modal-header" style={{ textAlign: 'center', marginBottom: '32px' }}>
+          <h2 style={{
+            fontSize: '28px',
+            fontWeight: '700',
+            color: '#fff',
+            margin: '0 0 8px 0',
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text'
+          }}>
             {mode === 'login' && 'Welcome Back'}
             {mode === 'signup' && 'Create Account'}
             {mode === 'reset' && 'Reset Password'}
           </h2>
-          <p>
+          <p style={{ fontSize: '14px', color: '#888', margin: 0 }}>
             {mode === 'login' && 'Sign in to access your dashboard'}
             {mode === 'signup' && 'Get started with Onchain Analytics'}
             {mode === 'reset' && 'Enter your email to reset password'}
@@ -119,10 +158,10 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'login' }: Au
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="auth-form">
+        <form onSubmit={handleSubmit} className="auth-form" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           {mode === 'signup' && (
-            <div className="auth-form-group">
-              <label htmlFor="fullName">Full Name</label>
+            <div className="auth-form-group" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <label htmlFor="fullName" style={{ fontSize: '14px', fontWeight: '500', color: '#aaa' }}>Full Name</label>
               <input
                 id="fullName"
                 type="text"
@@ -130,12 +169,20 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'login' }: Au
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder="John Doe"
                 disabled={loading}
+                style={{
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '8px',
+                  padding: '12px 16px',
+                  fontSize: '15px',
+                  color: '#fff'
+                }}
               />
             </div>
           )}
 
-          <div className="auth-form-group">
-            <label htmlFor="email">Email</label>
+          <div className="auth-form-group" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <label htmlFor="email" style={{ fontSize: '14px', fontWeight: '500', color: '#aaa' }}>Email</label>
             <input
               id="email"
               type="email"
@@ -144,12 +191,20 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'login' }: Au
               placeholder="you@example.com"
               required
               disabled={loading}
+              style={{
+                background: 'rgba(255, 255, 255, 0.05)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '8px',
+                padding: '12px 16px',
+                fontSize: '15px',
+                color: '#fff'
+              }}
             />
           </div>
 
           {mode !== 'reset' && (
-            <div className="auth-form-group">
-              <label htmlFor="password">Password</label>
+            <div className="auth-form-group" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <label htmlFor="password" style={{ fontSize: '14px', fontWeight: '500', color: '#aaa' }}>Password</label>
               <input
                 id="password"
                 type="password"
@@ -159,26 +214,80 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'login' }: Au
                 required
                 minLength={6}
                 disabled={loading}
+                style={{
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '8px',
+                  padding: '12px 16px',
+                  fontSize: '15px',
+                  color: '#fff'
+                }}
               />
             </div>
           )}
 
-          <button type="submit" className="auth-btn auth-btn-primary" disabled={loading}>
+          <button
+            type="submit"
+            className="auth-btn auth-btn-primary"
+            disabled={loading}
+            style={{
+              padding: '12px 24px',
+              borderRadius: '8px',
+              fontSize: '15px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              border: 'none',
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              color: '#fff',
+              boxShadow: '0 4px 12px rgba(102, 126, 234, 0.3)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
             {loading ? 'Loading...' : mode === 'login' ? 'Sign In' : mode === 'signup' ? 'Sign Up' : 'Send Reset Link'}
           </button>
         </form>
 
         {mode === 'login' && (
           <>
-            <div className="auth-divider">
-              <span>or continue with</span>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              textAlign: 'center',
+              margin: '24px 0',
+              color: '#666',
+              fontSize: '13px',
+              width: '100%'
+            }}>
+              <div style={{ flex: 1, borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }} />
+              <span style={{ padding: '0 12px' }}>or continue with</span>
+              <div style={{ flex: 1, borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }} />
             </div>
 
-            <div className="auth-social-btns">
+            <div className="auth-social-btns" style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: '12px'
+            }}>
               <button
                 onClick={handleGoogleSignIn}
                 className="auth-btn auth-btn-social"
                 disabled={loading}
+                style={{
+                  padding: '12px 24px',
+                  borderRadius: '8px',
+                  fontSize: '15px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  color: '#fff',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px'
+                }}
               >
                 <svg width="20" height="20" viewBox="0 0 20 20">
                   <path fill="#4285F4" d="M19.6 10.23c0-.82-.1-1.42-.25-2.05H10v3.72h5.5c-.15.96-.74 2.31-2.04 3.22v2.45h3.16c1.89-1.73 2.98-4.3 2.98-7.34z"/>
@@ -193,6 +302,20 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'login' }: Au
                 onClick={handleGitHubSignIn}
                 className="auth-btn auth-btn-social"
                 disabled={loading}
+                style={{
+                  padding: '12px 24px',
+                  borderRadius: '8px',
+                  fontSize: '15px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  color: '#fff',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px'
+                }}
               >
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
                   <path d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z"/>
@@ -203,13 +326,30 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'login' }: Au
           </>
         )}
 
-        <div className="auth-footer">
+        <div className="auth-footer" style={{
+          marginTop: '24px',
+          textAlign: 'center',
+          fontSize: '14px',
+          color: '#888',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '12px'
+        }}>
           {mode === 'login' && (
             <>
               <button
                 type="button"
                 className="auth-link"
                 onClick={() => setMode('reset')}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#667eea',
+                  cursor: 'pointer',
+                  padding: 0,
+                  fontSize: 'inherit',
+                  fontWeight: '500'
+                }}
               >
                 Forgot password?
               </button>
@@ -219,6 +359,15 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'login' }: Au
                   type="button"
                   className="auth-link"
                   onClick={() => setMode('signup')}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: '#667eea',
+                    cursor: 'pointer',
+                    padding: 0,
+                    fontSize: 'inherit',
+                    fontWeight: '500'
+                  }}
                 >
                   Sign up
                 </button>
@@ -233,6 +382,15 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'login' }: Au
                 type="button"
                 className="auth-link"
                 onClick={() => setMode('login')}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#667eea',
+                  cursor: 'pointer',
+                  padding: 0,
+                  fontSize: 'inherit',
+                  fontWeight: '500'
+                }}
               >
                 Sign in
               </button>
@@ -246,6 +404,15 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'login' }: Au
                 type="button"
                 className="auth-link"
                 onClick={() => setMode('login')}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#667eea',
+                  cursor: 'pointer',
+                  padding: 0,
+                  fontSize: 'inherit',
+                  fontWeight: '500'
+                }}
               >
                 Sign in
               </button>

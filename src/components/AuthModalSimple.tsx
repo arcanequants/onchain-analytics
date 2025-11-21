@@ -1,6 +1,6 @@
 /**
  * ULTRA SIMPLE Authentication Modal
- * NO hooks, NO dependencies, just pure rendering test
+ * Fixed: Changed from flexbox center to scrollable layout
  */
 
 'use client'
@@ -23,11 +23,9 @@ export default function AuthModalSimple({ isOpen, onClose }: AuthModalProps) {
         right: 0,
         bottom: 0,
         zIndex: 999999,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
         background: 'rgba(0, 0, 0, 0.9)',
-        padding: '20px'
+        overflowY: 'auto',
+        padding: '40px 20px'
       }}
     >
       <div
@@ -39,7 +37,8 @@ export default function AuthModalSimple({ isOpen, onClose }: AuthModalProps) {
           borderRadius: '16px',
           padding: '40px',
           position: 'relative',
-          border: '2px solid #667eea'
+          border: '2px solid #667eea',
+          margin: '0 auto'
         }}
       >
         {/* Close Button */}
@@ -62,11 +61,11 @@ export default function AuthModalSimple({ isOpen, onClose }: AuthModalProps) {
         {/* TEST CONTENT */}
         <div style={{ color: '#fff', textAlign: 'center' }}>
           <h2 style={{ fontSize: '32px', marginBottom: '20px', color: '#667eea' }}>
-            🔍 MODAL TEST
+            🔍 MODAL TEST - TOP
           </h2>
 
-          <p style={{ fontSize: '18px', marginBottom: '30px' }}>
-            If you can see this entire message, the modal is rendering correctly!
+          <p style={{ fontSize: '18px', marginBottom: '30px', background: '#ff0000', padding: '10px' }}>
+            ⬆️ YOU SHOULD SEE THIS AT THE TOP ⬆️
           </p>
 
           <div style={{
@@ -132,9 +131,9 @@ export default function AuthModalSimple({ isOpen, onClose }: AuthModalProps) {
             🔍 GITHUB TEST
           </button>
 
-          <div style={{ marginTop: '30px', fontSize: '14px', color: '#888' }}>
-            <p>If you see ALL the content above, React rendering is working.</p>
-            <p>If you only see part of it, there's a layout/CSS issue.</p>
+          <div style={{ marginTop: '30px', fontSize: '14px', color: '#888', background: '#00ff00', padding: '10px' }}>
+            <p>⬇️ YOU SHOULD SEE THIS AT THE BOTTOM ⬇️</p>
+            <p>If you see BOTH red box (top) and green box (bottom), scrolling works!</p>
           </div>
         </div>
       </div>

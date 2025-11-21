@@ -8,12 +8,12 @@
 
 import { useState } from 'react'
 import { useAuth } from '@/hooks/useAuth'
-import AuthModalSimple from './AuthModalSimple'
+import { useRouter } from 'next/navigation'
 import './UserMenu.css'
 
 export default function UserMenu() {
+  const router = useRouter()
   const { user, profile, loading, signOut } = useAuth()
-  const [showAuthModal, setShowAuthModal] = useState(false)
   const [showUserMenu, setShowUserMenu] = useState(false)
 
   const handleSignOut = async () => {
@@ -31,22 +31,15 @@ export default function UserMenu() {
 
   if (!user) {
     return (
-      <>
-        <button
-          className="user-menu-login-btn"
-          onClick={() => setShowAuthModal(true)}
-        >
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M8 8a3 3 0 100-6 3 3 0 000 6zm2 2H6c-2.21 0-4 1.79-4 4v1h12v-1c0-2.21-1.79-4-4-4z"/>
-          </svg>
-          Sign In
-        </button>
-
-        <AuthModalSimple
-          isOpen={showAuthModal}
-          onClose={() => setShowAuthModal(false)}
-        />
-      </>
+      <button
+        className="user-menu-login-btn"
+        onClick={() => router.push('/login')}
+      >
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M8 8a3 3 0 100-6 3 3 0 000 6zm2 2H6c-2.21 0-4 1.79-4 4v1h12v-1c0-2.21-1.79-4-4-4z"/>
+        </svg>
+        Sign In
+      </button>
     )
   }
 

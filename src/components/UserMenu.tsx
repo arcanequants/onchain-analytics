@@ -8,7 +8,7 @@
 
 import { useState } from 'react'
 import { useAuth } from '@/hooks/useAuth'
-import AuthModal from './AuthModal'
+import AuthModalDebug from './AuthModalDebug'
 import './UserMenu.css'
 
 export default function UserMenu() {
@@ -42,7 +42,7 @@ export default function UserMenu() {
           Sign In
         </button>
 
-        <AuthModal
+        <AuthModalDebug
           isOpen={showAuthModal}
           onClose={() => setShowAuthModal(false)}
           defaultMode="login"

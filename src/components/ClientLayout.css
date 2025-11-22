@@ -11,7 +11,9 @@
   min-height: 100vh;
 }
 
-/* Ensure children can grow to take available space */
+/* Ensure main content grows to take available space, pushing footer to bottom */
 .app-layout > main {
   flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
 }

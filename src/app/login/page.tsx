@@ -133,7 +133,7 @@ function LoginForm() {
               margin: '0 0 8px 0',
               fontFamily: 'IBM Plex Mono, monospace'
             }}>
-              OnChain Analytics
+              Vectorial Data
             </h1>
           </Link>
           <h2 style={{

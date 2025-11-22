@@ -153,12 +153,45 @@ export default function PrivacyPage() {
           <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#9ca3af', marginBottom: '12px', marginTop: '16px' }}>
             3.3 Information from Third-Party Sources
           </h3>
-          <ul style={{ fontSize: '15px', lineHeight: '1.8', color: '#d1d5db', marginLeft: '24px', listStyle: 'disc' }}>
+          <ul style={{ fontSize: '15px', lineHeight: '1.8', color: '#d1d5db', marginLeft: '24px', marginBottom: '20px', listStyle: 'disc' }}>
             <li><strong>OAuth Providers:</strong> Google (name, email, profile photo), GitHub (username, email, avatar)</li>
             <li><strong>Blockchain Data Providers:</strong> Public on-chain data from Ethereum, Base, Arbitrum, Optimism, Polygon via Alchemy, DeFiLlama, CoinGecko APIs</li>
             <li><strong>Payment Processor:</strong> Payment status, subscription status, billing failures from Stripe</li>
             <li><strong>Analytics Services:</strong> Aggregated behavioral data from Google Analytics 4</li>
           </ul>
+
+          <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#9ca3af', marginBottom: '12px', marginTop: '16px' }}>
+            3.4 Sports Betting Analytics Data
+          </h3>
+          <div style={{
+            background: 'rgba(102, 126, 234, 0.1)',
+            border: '1px solid rgba(102, 126, 234, 0.3)',
+            borderRadius: '8px',
+            padding: '16px',
+            marginBottom: '16px'
+          }}>
+            <p style={{ fontSize: '15px', lineHeight: '1.8', color: '#fbbf24', fontWeight: '600', marginBottom: '12px' }}>
+              ⚽ IMPORTANT: Vectorial Data is an INFORMATION PROVIDER ONLY. We are NOT a gambling operator, sportsbook, or betting platform.
+            </p>
+          </div>
+          <p style={{ fontSize: '15px', lineHeight: '1.8', color: '#d1d5db', marginBottom: '12px' }}>
+            We collect and process sports-related data from third-party sources for informational and analytical purposes only:
+          </p>
+          <ul style={{ fontSize: '15px', lineHeight: '1.8', color: '#d1d5db', marginLeft: '24px', marginBottom: '16px', listStyle: 'disc' }}>
+            <li><strong>Live Sports Statistics:</strong> Real-time game data, player stats, team performance metrics, historical records</li>
+            <li><strong>Betting Odds & Lines:</strong> Odds data from third-party sportsbooks (we do NOT set odds or accept bets)</li>
+            <li><strong>Game Predictions & Forecasts:</strong> Statistical models, AI-generated predictions, probability calculations (for informational purposes only)</li>
+            <li><strong>Historical Sports Data:</strong> Past game results, seasonal statistics, trend analysis</li>
+            <li><strong>User Interaction Data:</strong> Sports watchlists, saved predictions, favorited teams/leagues</li>
+          </ul>
+          <p style={{ fontSize: '15px', lineHeight: '1.8', color: '#d1d5db', marginBottom: '16px' }}>
+            <strong>Data Sources:</strong> We aggregate sports data from publicly available APIs, third-party sports data providers, and licensed sports statistics services.
+            We do NOT collect data directly from gambling operators, sportsbooks, or betting platforms.
+          </p>
+          <p style={{ fontSize: '15px', lineHeight: '1.8', color: '#d1d5db' }}>
+            <strong>No Gambling Activity:</strong> We do NOT process bets, handle gambling transactions, facilitate betting, or custody gambling funds.
+            See Section 5 (How We Use Your Information) for details on how sports data is used.
+          </p>
         </section>
 
         {/* Section 4: Legal Basis for Processing (GDPR Art. 6) */}

@@ -1,0 +1,328 @@
+/**
+ * Cookie Banner Styles
+ *
+ * Design:
+ * - Bottom-right corner (non-blocking)
+ * - Dark theme with glassmorphism
+ * - Mobile responsive
+ * - WCAG AA accessible
+ */
+
+/* ========================================
+   COOKIE BANNER CONTAINER
+   ======================================== */
+
+.cookie-banner {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  max-width: 420px;
+  width: calc(100% - 48px);
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(102, 126, 234, 0.3);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(102, 126, 234, 0.1);
+  padding: 24px;
+  z-index: 9999;
+  animation: slideInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.cookie-banner-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ========================================
+   COOKIE BANNER TEXT
+   ======================================== */
+
+.cookie-banner-icon {
+  font-size: 32px;
+  text-align: center;
+  margin-bottom: 8px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.cookie-banner-text {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cookie-banner-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cookie-banner-description {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #d1d5db;
+  margin: 0;
+}
+
+.cookie-banner-links {
+  font-size: 12px;
+  color: #9ca3af;
+  margin: 0;
+}
+
+.cookie-banner-link {
+  color: #667eea;
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.cookie-banner-link:hover {
+  color: #764ba2;
+}
+
+/* ========================================
+   COOKIE BANNER ACTIONS
+   ======================================== */
+
+.cookie-banner-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cookie-btn {
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  text-align: center;
+  min-height: 44px; /* Touch target */
+}
+
+/* Primary Button: Accept All */
+.cookie-btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+}
+
+.cookie-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.6);
+}
+
+.cookie-btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Secondary Button: Manage Preferences */
+.cookie-btn-secondary {
+  background: rgba(102, 126, 234, 0.1);
+  color: #667eea;
+  border: 1px solid rgba(102, 126, 234, 0.3);
+}
+
+.cookie-btn-secondary:hover {
+  background: rgba(102, 126, 234, 0.2);
+  border-color: rgba(102, 126, 234, 0.5);
+}
+
+/* Text Button: Reject All / Back */
+.cookie-btn-text {
+  background: transparent;
+  color: #9ca3af;
+  padding: 8px 16px;
+}
+
+.cookie-btn-text:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+/* Focus states for accessibility */
+.cookie-btn:focus-visible {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+}
+
+/* ========================================
+   COOKIE PREFERENCES (Detailed View)
+   ======================================== */
+
+.cookie-preferences {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cookie-preference-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  background: rgba(102, 126, 234, 0.05);
+  border: 1px solid rgba(102, 126, 234, 0.15);
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.cookie-preference-item:hover {
+  background: rgba(102, 126, 234, 0.08);
+}
+
+.cookie-preference-label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.cookie-checkbox {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #667eea;
+  position: absolute;
+  left: 16px;
+  top: 18px;
+}
+
+.cookie-preference-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 32px; /* Space for checkbox */
+}
+
+.cookie-badge-required {
+  font-size: 10px;
+  font-weight: 700;
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.1);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  border-radius: 4px;
+  padding: 2px 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cookie-preference-desc {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #9ca3af;
+  padding-left: 32px; /* Align with name */
+}
+
+/* ========================================
+   MOBILE RESPONSIVE
+   ======================================== */
+
+@media (max-width: 480px) {
+  .cookie-banner {
+    bottom: 16px;
+    right: 16px;
+    left: 16px;
+    width: auto;
+    max-width: none;
+    padding: 20px;
+  }
+
+  .cookie-banner-title {
+    font-size: 16px;
+  }
+
+  .cookie-banner-description {
+    font-size: 13px;
+  }
+
+  .cookie-btn {
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+}
+
+/* Tablet landscape: Move to bottom center */
+@media (max-width: 768px) and (orientation: landscape) {
+  .cookie-banner {
+    bottom: 16px;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    max-width: 90%;
+  }
+}
+
+/* ========================================
+   ACCESSIBILITY
+   ======================================== */
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .cookie-banner {
+    background: #000000;
+    border: 2px solid #667eea;
+  }
+
+  .cookie-btn-primary {
+    background: #667eea;
+  }
+
+  .cookie-btn-secondary {
+    background: transparent;
+    border: 2px solid #667eea;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .cookie-banner {
+    animation: none;
+  }
+
+  .cookie-btn {
+    transition: none;
+  }
+
+  .cookie-btn-primary:hover {
+    transform: none;
+  }
+}
+
+/* Keyboard focus improvements */
+.cookie-checkbox:focus-visible {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+}
+
+/* ========================================
+   PRINT STYLES
+   ======================================== */
+
+@media print {
+  .cookie-banner {
+    display: none;
+  }
+}

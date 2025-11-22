@@ -123,6 +123,28 @@ export default function UserMenu() {
 
               <div className="user-menu-divider" />
 
+              {/* Legal & Privacy Section */}
+              <div className="user-menu-section-label">Legal & Privacy</div>
+              <div className="user-menu-items">
+                <a href="/privacy" className="user-menu-item">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M8 0L2 3v5c0 3.5 2.4 6.8 6 7.5 3.6-.7 6-4 6-7.5V3l-6-3zm0 2.2l4 2v3.3c0 2.6-1.7 5-4 5.5-2.3-.5-4-2.9-4-5.5V4.2l4-2z"/>
+                    <path d="M7 6h2v5H7z"/>
+                  </svg>
+                  Privacy Policy
+                </a>
+
+                <a href="/terms" className="user-menu-item">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M4 2h8a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V4a2 2 0 012-2zm0 2v8h8V4H4z"/>
+                    <path d="M6 6h4v1H6zm0 2h4v1H6zm0 2h3v1H6z"/>
+                  </svg>
+                  Terms of Service
+                </a>
+              </div>
+
+              <div className="user-menu-divider" />
+
               <button
                 className="user-menu-item user-menu-item-signout"
                 onClick={handleSignOut}

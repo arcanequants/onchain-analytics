@@ -1,0 +1,294 @@
+/**
+ * Global Footer Styles
+ *
+ * Design System:
+ * - Dark theme matching site aesthetics
+ * - Mobile-first responsive design
+ * - WCAG AA accessibility (4.5:1 contrast)
+ * - Touch-friendly targets (44px minimum)
+ */
+
+/* ========================================
+   FOOTER CONTAINER
+   ======================================== */
+
+.global-footer {
+  background: linear-gradient(135deg, #0a0e1a 0%, #1a1a2e 100%);
+  border-top: 1px solid rgba(102, 126, 234, 0.2);
+  color: #d1d5db;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  padding: 48px 24px 24px;
+  margin-top: auto; /* Push footer to bottom */
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 48px;
+}
+
+/* ========================================
+   FOOTER COLUMNS
+   ======================================== */
+
+.footer-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Column 1: Brand */
+.footer-brand {
+  max-width: 320px;
+}
+
+.footer-logo {
+  margin-bottom: 12px;
+}
+
+.logo-text {
+  font-size: 20px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transition: opacity 0.2s ease;
+}
+
+.logo-text:hover {
+  opacity: 0.8;
+}
+
+.footer-tagline {
+  font-size: 14px;
+  color: #9ca3af;
+  margin: 0 0 8px 0;
+  line-height: 1.5;
+}
+
+.footer-mission {
+  font-size: 13px;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Columns 2 & 3: Links */
+.footer-heading {
+  font-size: 14px;
+  font-weight: 600;
+  color: #667eea;
+  margin: 0 0 12px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-links li {
+  margin: 0;
+}
+
+.footer-links a,
+.footer-link-button {
+  color: #9ca3af;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.2s ease, padding-left 0.2s ease;
+  display: inline-block;
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-family: inherit;
+  text-align: left;
+}
+
+.footer-links a:hover,
+.footer-link-button:hover {
+  color: #667eea;
+  padding-left: 4px;
+}
+
+.footer-links a:focus,
+.footer-link-button:focus {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ========================================
+   FOOTER BOTTOM BAR
+   ======================================== */
+
+.footer-bottom {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+.footer-bottom-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.footer-copyright {
+  font-size: 13px;
+  color: #6b7280;
+  margin: 0;
+}
+
+.footer-disclaimers {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.footer-disclaimer-badge {
+  font-size: 11px;
+  font-weight: 600;
+  color: #9ca3af;
+  background: rgba(102, 126, 234, 0.1);
+  border: 1px solid rgba(102, 126, 234, 0.2);
+  border-radius: 12px;
+  padding: 4px 12px;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.footer-disclaimer-badge:hover {
+  background: rgba(102, 126, 234, 0.15);
+  border-color: rgba(102, 126, 234, 0.3);
+  color: #667eea;
+}
+
+/* ========================================
+   MOBILE RESPONSIVE
+   ======================================== */
+
+/* Tablet (768px and below) */
+@media (max-width: 768px) {
+  .footer-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+  }
+
+  .footer-brand {
+    grid-column: 1 / -1; /* Span full width */
+    max-width: 100%;
+  }
+
+  .footer-bottom-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+}
+
+/* Mobile (480px and below) */
+@media (max-width: 480px) {
+  .global-footer {
+    padding: 32px 16px 16px;
+  }
+
+  .footer-container {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .footer-bottom {
+    margin-top: 32px;
+    padding-top: 16px;
+  }
+
+  .footer-disclaimers {
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .footer-disclaimer-badge {
+    display: block;
+    text-align: center;
+  }
+}
+
+/* ========================================
+   ACCESSIBILITY
+   ======================================== */
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .footer-links a,
+  .footer-link-button {
+    color: #e5e7eb;
+  }
+
+  .footer-links a:hover,
+  .footer-link-button:hover {
+    color: #ffffff;
+    text-decoration: underline;
+  }
+
+  .footer-disclaimer-badge {
+    border-color: #667eea;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .footer-links a,
+  .footer-link-button,
+  .logo-text,
+  .footer-disclaimer-badge {
+    transition: none;
+  }
+}
+
+/* Focus visible for keyboard navigation */
+.footer-links a:focus-visible,
+.footer-link-button:focus-visible {
+  outline: 2px solid #667eea;
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+/* ========================================
+   PRINT STYLES
+   ======================================== */
+
+@media print {
+  .global-footer {
+    background: white;
+    color: black;
+    border-top: 1px solid #000;
+  }
+
+  .footer-disclaimers,
+  .footer-link-button {
+    display: none;
+  }
+
+  .footer-links a {
+    color: #000;
+    text-decoration: underline;
+  }
+}

@@ -173,6 +173,16 @@
   margin: 0 8px;
 }
 
+.user-menu-section-label {
+  padding: 8px 16px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #667eea;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 4px;
+}
+
 .user-menu-items {
   padding: 8px;
 }

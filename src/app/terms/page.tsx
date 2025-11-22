@@ -362,6 +362,80 @@ export default function TermsPage() {
               CRYPTOCURRENCY-RELATED LOSSES. YOU ASSUME ALL RISK.
             </p>
           </div>
+
+          <h3 style={{ fontSize: '16px', fontWeight: '600', color: '#fca5a5', marginBottom: '12px', marginTop: '24px' }}>
+            7.5 Sports Betting Information Disclaimers
+          </h3>
+          <div style={{
+            background: 'rgba(234, 179, 8, 0.1)',
+            border: '2px solid rgba(234, 179, 8, 0.4)',
+            borderRadius: '8px',
+            padding: '20px',
+            marginBottom: '16px'
+          }}>
+            <p style={{ fontSize: '15px', lineHeight: '1.8', color: '#fbbf24', fontWeight: '700', marginBottom: '12px' }}>
+              ⚽ CRITICAL: WE ARE NOT A GAMBLING OPERATOR, SPORTSBOOK, OR BETTING PLATFORM
+            </p>
+            <p style={{ fontSize: '15px', lineHeight: '1.8', color: '#d1d5db', marginBottom: '16px' }}>
+              <strong>NO GAMBLING SERVICES:</strong> Vectorial Data provides sports statistics, betting odds data, and game predictions for
+              <strong> INFORMATIONAL AND ANALYTICAL PURPOSES ONLY</strong>. We do NOT:
+            </p>
+            <ul style={{ fontSize: '15px', lineHeight: '1.8', color: '#d1d5db', marginLeft: '24px', marginBottom: '16px' }}>
+              <li style={{ marginBottom: '8px' }}>Accept, place, facilitate, or process sports bets or wagers</li>
+              <li style={{ marginBottom: '8px' }}>Operate as a licensed gambling operator, sportsbook, or betting exchange</li>
+              <li style={{ marginBottom: '8px' }}>Custody gambling funds, hold player balances, or handle betting transactions</li>
+              <li style={{ marginBottom: '8px' }}>Set betting odds, lines, or spreads (we display data from third parties only)</li>
+              <li style={{ marginBottom: '8px' }}>Provide gambling advice, betting recommendations, or encourage gambling activities</li>
+              <li style={{ marginBottom: '8px' }}>Guarantee the accuracy of sports predictions, odds data, or game forecasts</li>
+            </ul>
+
+            <h4 style={{ fontSize: '14px', fontWeight: '600', color: '#fbbf24', marginBottom: '8px', marginTop: '16px' }}>
+              Age Verification and Jurisdictional Compliance
+            </h4>
+            <p style={{ fontSize: '15px', lineHeight: '1.8', color: '#d1d5db', marginBottom: '12px' }}>
+              You must be at least <strong>18 years of age</strong> (or the legal gambling age in your jurisdiction, whichever is greater) to access
+              sports betting information. By accessing sports betting analytics, you represent and warrant that:
+            </p>
+            <ul style={{ fontSize: '15px', lineHeight: '1.8', color: '#d1d5db', marginLeft: '24px', marginBottom: '16px' }}>
+              <li style={{ marginBottom: '8px' }}>You are of legal age to view sports betting information in your jurisdiction</li>
+              <li style={{ marginBottom: '8px' }}>Accessing sports betting data is legal in your jurisdiction</li>
+              <li style={{ marginBottom: '8px' }}>You are solely responsible for ensuring compliance with local gambling laws</li>
+              <li style={{ marginBottom: '8px' }}>You will not use our sports data to violate any gambling regulations or restrictions</li>
+            </ul>
+
+            <h4 style={{ fontSize: '14px', fontWeight: '600', color: '#fbbf24', marginBottom: '8px', marginTop: '16px' }}>
+              Gambling Risks and Disclaimers
+            </h4>
+            <p style={{ fontSize: '15px', lineHeight: '1.8', color: '#d1d5db', marginBottom: '12px' }}>
+              <strong>WARNING:</strong> Gambling involves substantial risk of financial loss. Sports betting predictions, odds data, and statistical
+              models provided through our Services are for informational purposes only and do NOT constitute gambling advice. We disclaim all liability
+              for:
+            </p>
+            <ul style={{ fontSize: '15px', lineHeight: '1.8', color: '#d1d5db', marginLeft: '24px', marginBottom: '16px' }}>
+              <li style={{ marginBottom: '8px' }}>Gambling losses, betting decisions, or wagers placed based on our data</li>
+              <li style={{ marginBottom: '8px' }}>Inaccuracies in odds data, game predictions, or sports statistics</li>
+              <li style={{ marginBottom: '8px' }}>Third-party sportsbook operations, policies, or betting platforms</li>
+              <li style={{ marginBottom: '8px' }}>Changes in betting lines, odds, or game outcomes</li>
+              <li style={{ marginBottom: '8px' }}>Problem gambling, gambling addiction, or compulsive gambling behavior</li>
+            </ul>
+
+            <h4 style={{ fontSize: '14px', fontWeight: '600', color: '#fbbf24', marginBottom: '8px', marginTop: '16px' }}>
+              Responsible Gambling Resources
+            </h4>
+            <p style={{ fontSize: '15px', lineHeight: '1.8', color: '#d1d5db', marginBottom: '8px' }}>
+              If you or someone you know has a gambling problem, seek help immediately:
+            </p>
+            <ul style={{ fontSize: '15px', lineHeight: '1.8', color: '#d1d5db', marginLeft: '24px', marginBottom: '12px' }}>
+              <li style={{ marginBottom: '8px' }}><strong>National Council on Problem Gambling (US):</strong> 1-800-522-4700 | <a href="https://www.ncpgambling.org" target="_blank" rel="noopener noreferrer" style={{ color: '#667eea', textDecoration: 'underline' }}>ncpgambling.org</a></li>
+              <li style={{ marginBottom: '8px' }}><strong>GamCare (UK):</strong> 0808-8020-133 | <a href="https://www.gamcare.org.uk" target="_blank" rel="noopener noreferrer" style={{ color: '#667eea', textDecoration: 'underline' }}>gamcare.org.uk</a></li>
+              <li style={{ marginBottom: '8px' }}><strong>Gamblers Anonymous:</strong> <a href="https://www.gamblersanonymous.org" target="_blank" rel="noopener noreferrer" style={{ color: '#667eea', textDecoration: 'underline' }}>gamblersanonymous.org</a></li>
+            </ul>
+
+            <p style={{ fontSize: '15px', lineHeight: '1.8', color: '#fca5a5', fontWeight: '700', marginTop: '16px' }}>
+              YOU ACKNOWLEDGE THAT VECTORIAL DATA IS NOT A GAMBLING OPERATOR AND YOU ASSUME ALL RISK FOR ANY GAMBLING ACTIVITIES.
+              WE ARE NOT LIABLE FOR GAMBLING LOSSES, ADDICTION, OR ILLEGAL GAMBLING.
+            </p>
+          </div>
         </section>
 
         {/* Section 8: Intellectual Property Rights */}

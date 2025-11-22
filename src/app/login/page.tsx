@@ -462,8 +462,51 @@ function LoginForm() {
           )}
         </div>
 
+        {/* Legal Consent Links - Required for OAuth Approval */}
+        <div style={{
+          marginTop: '20px',
+          textAlign: 'center',
+          fontSize: '12px',
+          color: '#666',
+          lineHeight: '1.6',
+          padding: '12px 16px',
+          background: 'rgba(102, 126, 234, 0.05)',
+          border: '1px solid rgba(102, 126, 234, 0.1)',
+          borderRadius: '8px'
+        }}>
+          By signing in, you agree to our{' '}
+          <Link
+            href="/terms"
+            style={{
+              color: '#667eea',
+              textDecoration: 'underline',
+              fontWeight: '500',
+              transition: 'color 0.2s'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.color = '#764ba2'}
+            onMouseLeave={(e) => e.currentTarget.style.color = '#667eea'}
+          >
+            Terms of Service
+          </Link>
+          {' '}and{' '}
+          <Link
+            href="/privacy"
+            style={{
+              color: '#667eea',
+              textDecoration: 'underline',
+              fontWeight: '500',
+              transition: 'color 0.2s'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.color = '#764ba2'}
+            onMouseLeave={(e) => e.currentTarget.style.color = '#667eea'}
+          >
+            Privacy Policy
+          </Link>
+          .
+        </div>
+
         {/* Back to Home */}
-        <div style={{ marginTop: '24px', textAlign: 'center' }}>
+        <div style={{ marginTop: '20px', textAlign: 'center' }}>
           <Link
             href="/"
             style={{

@@ -26,7 +26,7 @@ export default function ContactPage() {
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="cyber-text text-2xl font-bold">
-              [ ONCHAIN ANALYTICS ]
+              [ VECTORIAL DATA ]
             </Link>
             <nav className="flex items-center space-x-6">
               <Link href="/" className="cyber-text hover:text-cyber-green transition-colors">
@@ -119,15 +119,15 @@ export default function ContactPage() {
               <div className="space-y-6">
                 <div className="cyber-border bg-black/30 p-6">
                   <div className="text-cyber-green font-bold mb-2">EMAIL</div>
-                  <a href="mailto:hello@onchainanalytics.io" className="text-cyber-cyan hover:text-cyber-green transition-colors">
-                    hello@onchainanalytics.io
+                  <a href="mailto:hello@vectorialdata.com" className="text-cyber-cyan hover:text-cyber-green transition-colors">
+                    hello@vectorialdata.com
                   </a>
                 </div>
 
                 <div className="cyber-border bg-black/30 p-6">
                   <div className="text-cyber-green font-bold mb-2">SUPPORT</div>
-                  <a href="mailto:support@onchainanalytics.io" className="text-cyber-cyan hover:text-cyber-green transition-colors">
-                    support@onchainanalytics.io
+                  <a href="mailto:support@vectorialdata.com" className="text-cyber-cyan hover:text-cyber-green transition-colors">
+                    support@vectorialdata.com
                   </a>
                   <div className="text-cyber-cyan/60 text-sm mt-2">
                     Response time: {'<'} 2 hours
@@ -136,8 +136,8 @@ export default function ContactPage() {
 
                 <div className="cyber-border bg-black/30 p-6">
                   <div className="text-cyber-green font-bold mb-2">PARTNERSHIPS</div>
-                  <a href="mailto:partnerships@onchainanalytics.io" className="text-cyber-cyan hover:text-cyber-green transition-colors">
-                    partnerships@onchainanalytics.io
+                  <a href="mailto:partnerships@vectorialdata.com" className="text-cyber-cyan hover:text-cyber-green transition-colors">
+                    partnerships@vectorialdata.com
                   </a>
                 </div>
 
@@ -215,7 +215,7 @@ export default function ContactPage() {
                   Do you offer custom enterprise solutions?
                 </summary>
                 <p className="mt-4 text-cyber-cyan/80">
-                  Yes! Contact us at partnerships@onchainanalytics.io for custom data feeds, white-label solutions, and dedicated infrastructure.
+                  Yes! Contact us at partnerships@vectorialdata.com for custom data feeds, white-label solutions, and dedicated infrastructure.
                 </p>
               </details>
             </div>

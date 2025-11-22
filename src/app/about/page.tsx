@@ -10,7 +10,7 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="cyber-text text-2xl font-bold">
-              [ ONCHAIN ANALYTICS ]
+              [ VECTORIAL DATA ]
             </Link>
             <nav className="flex items-center space-x-6">
               <Link href="/" className="cyber-text hover:text-cyber-green transition-colors">
@@ -43,7 +43,7 @@ export default function AboutPage() {
             <section>
               <h2 className="cyber-text text-2xl font-bold mb-4">What We Do</h2>
               <p className="mb-4">
-                OnChain Analytics provides real-time data and analytics across multiple domains:
+                Vectorial Data provides real-time data and analytics across multiple domains:
               </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
                 <div className="cyber-border bg-black/30 p-6">

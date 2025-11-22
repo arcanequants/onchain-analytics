@@ -207,7 +207,7 @@ export default function Home() {
   }, [])
 
   return (
-    <>
+    <main>
       {/* Animated Background Grid - only on high-performance hardware */}
       {performanceMode === 'high' && <div className="bg-grid"></div>}
 
@@ -760,6 +760,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-    </>
+    </main>
   )
 }

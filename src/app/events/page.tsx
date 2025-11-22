@@ -10,7 +10,7 @@ export default function EventsPage() {
   const [activeTab, setActiveTab] = useState<'calendar' | 'analytics'>('calendar')
 
   return (
-    <>
+    <main>
       {/* Animated Background Grid */}
       <div className="bg-grid"></div>
 
@@ -167,6 +167,6 @@ export default function EventsPage() {
           )}
         </div>
       </div>
-    </>
+    </main>
   )
 }

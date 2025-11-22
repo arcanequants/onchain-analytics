@@ -29,12 +29,12 @@ export default function DashboardPage() {
 
   if (!mounted || loading) {
     return (
-      <div className="dashboard-container">
+      <main className="dashboard-container">
         <div className="dashboard-loading">
           <div className="spinner"></div>
           <div>Loading your dashboard...</div>
         </div>
-      </div>
+      </main>
     )
   }
 
@@ -47,7 +47,7 @@ export default function DashboardPage() {
   const dailyUsagePercentage = (profile.api_calls_today / planLimits.api_calls_daily) * 100
 
   return (
-    <div className="dashboard-container">
+    <main className="dashboard-container">
       {/* Header */}
       <div className="dashboard-header">
         <div>
@@ -190,6 +190,6 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   )
 }

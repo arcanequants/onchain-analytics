@@ -9,6 +9,11 @@ export interface UserProfile {
   avatar_url: string | null
   plan_tier: 'free' | 'pro' | 'enterprise'
 
+  // Email verification
+  email_verified: boolean
+  verification_token: string | null
+  verification_token_expires_at: string | null
+
   // API usage
   api_key: string | null
   api_calls_today: number

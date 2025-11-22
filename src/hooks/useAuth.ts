@@ -81,10 +81,26 @@ export function useAuth() {
           data: {
             full_name: fullName || null,
           },
+          emailRedirectTo: `${window.location.origin}/auth/verify-email`,
         },
       })
 
       if (error) throw error
+
+      // Send verification email via our API
+      if (data.user) {
+        try {
+          await fetch('/api/auth/resend-verification', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email }),
+          })
+        } catch (emailError) {
+          console.error('[useAuth] Failed to send verification email:', emailError)
+          // Don't fail signup if email fails
+        }
+      }
+
       return { data, error: null }
     } catch (error: any) {
       console.error('[useAuth] Sign up error:', error)
@@ -201,6 +217,27 @@ export function useAuth() {
     }
   }
 
+  const resendVerificationEmail = async (email: string) => {
+    try {
+      const response = await fetch('/api/auth/resend-verification', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to send verification email')
+      }
+
+      return { data, error: null }
+    } catch (error: any) {
+      console.error('[useAuth] Resend verification error:', error)
+      return { data: null, error }
+    }
+  }
+
   return {
     user,
     session,
@@ -208,11 +245,10 @@ export function useAuth() {
     loading,
     signUp,
     signIn,
-    signInWithGoogle,
-    signInWithGitHub,
     signOut,
     resetPassword,
     updatePassword,
     updateProfile,
+    resendVerificationEmail,
   }
 }

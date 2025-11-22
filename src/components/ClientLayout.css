@@ -17,3 +17,9 @@
   display: flex;
   flex-direction: column;
 }
+
+/* Override fixed height in terminal-grid for proper footer positioning */
+.app-layout > main .terminal-grid {
+  height: auto !important;
+  min-height: calc(100vh - 56px); /* top-bar height */
+}

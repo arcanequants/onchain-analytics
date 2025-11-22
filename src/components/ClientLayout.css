@@ -1,0 +1,17 @@
+/**
+ * Client Layout Styles
+ *
+ * Purpose: Ensure footer stays at bottom of page naturally
+ * Using flexbox with min-height: 100vh to push footer down
+ */
+
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Ensure children can grow to take available space */
+.app-layout > main {
+  flex: 1 0 auto;
+}

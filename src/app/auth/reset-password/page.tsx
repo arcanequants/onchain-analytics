@@ -6,18 +6,17 @@
  * This page handles password reset after user clicks link in email
  * URL format: /auth/reset-password?token=ABC123
  *
- * Supabase automatically handles the token from URL
- * We just need to provide the UI for updating password
+ * Uses our custom reset flow with Resend emails
  */
 
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { useAuth } from '@/hooks/useAuth'
+import { useState, useEffect, Suspense } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 
-export default function ResetPasswordPage() {
+function ResetPasswordContent() {
   const router = useRouter()
-  const { updatePassword } = useAuth()
+  const searchParams = useSearchParams()
+  const token = searchParams.get('token')
 
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -25,9 +24,21 @@ export default function ResetPasswordPage() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
 
+  // Check if we have a token
+  useEffect(() => {
+    if (!token) {
+      setError('No reset token found. Please request a new password reset link.')
+    }
+  }, [token])
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+
+    if (!token) {
+      setError('No reset token found. Please request a new password reset link.')
+      return
+    }
 
     // Validation
     if (password.length < 8) {
@@ -43,7 +54,18 @@ export default function ResetPasswordPage() {
     setLoading(true)
 
     try {
-      await updatePassword(password)
+      const response = await fetch('/api/auth/process-reset', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token, password }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to reset password')
+      }
+
       setSuccess(true)
 
       // Redirect to login after 3 seconds
@@ -113,6 +135,78 @@ export default function ResetPasswordPage() {
           <p style={{ color: '#888', fontSize: '13px' }}>
             Redirecting to login in 3 seconds...
           </p>
+        </div>
+      </div>
+    )
+  }
+
+  // Show error if no token
+  if (!token) {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minHeight: '100vh',
+          background: 'linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%)',
+          padding: '20px',
+        }}
+      >
+        <div
+          style={{
+            maxWidth: '500px',
+            width: '100%',
+            background: 'rgba(255, 255, 255, 0.05)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            borderRadius: '12px',
+            padding: '40px',
+            textAlign: 'center',
+          }}
+        >
+          <div
+            style={{
+              width: '80px',
+              height: '80px',
+              background: '#ff6b6b',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 20px',
+              fontSize: '40px',
+              color: 'white',
+            }}
+          >
+            ✗
+          </div>
+          <h1
+            style={{
+              color: '#ff6b6b',
+              marginBottom: '10px',
+              fontSize: '24px',
+              fontWeight: 'bold',
+            }}
+          >
+            Invalid Link
+          </h1>
+          <p style={{ color: '#aaa', marginBottom: '20px', fontSize: '14px' }}>
+            This password reset link is invalid or has expired.
+          </p>
+          <Link
+            href="/"
+            style={{
+              display: 'inline-block',
+              padding: '12px 30px',
+              background: '#0099ff',
+              color: 'white',
+              borderRadius: '6px',
+              textDecoration: 'none',
+              fontWeight: 'bold',
+            }}
+          >
+            Request New Link
+          </Link>
         </div>
       </div>
     )
@@ -190,6 +284,7 @@ export default function ResetPasswordPage() {
                 color: '#fff',
                 fontSize: '14px',
                 outline: 'none',
+                boxSizing: 'border-box',
               }}
             />
           </div>
@@ -222,6 +317,7 @@ export default function ResetPasswordPage() {
                 color: '#fff',
                 fontSize: '14px',
                 outline: 'none',
+                boxSizing: 'border-box',
               }}
             />
           </div>
@@ -277,5 +373,30 @@ export default function ResetPasswordPage() {
         </form>
       </div>
     </div>
+  )
+}
+
+// Loading component for Suspense
+function LoadingState() {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100vh',
+        background: 'linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%)',
+      }}
+    >
+      <div style={{ color: '#fff', fontSize: '16px' }}>Loading...</div>
+    </div>
+  )
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={<LoadingState />}>
+      <ResetPasswordContent />
+    </Suspense>
   )
 }

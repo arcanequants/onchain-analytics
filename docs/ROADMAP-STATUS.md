@@ -1,7 +1,8 @@
 # 📊 ROADMAP STATUS - Live Progress Tracker
-**Last Updated:** 2025-01-24 19:58 GMT-6
+**Last Updated:** 2025-01-24 21:30 GMT-6
 **Overall Progress:** 83% (197/237 tasks)
-**Current Phase:** Week 4 - User Authentication COMPLETE! ✅
+**Current Phase:** Month 3 - User Dashboard & API Keys
+**Next Milestone:** User Dashboard MVP
 
 ---
 
@@ -424,74 +425,154 @@
 **Status:** ✅ Done (43/43 - 100%)
 **Completed:** 2025-01-20
 
-#### Week 2-3: Data Expansion ✅ COMPLETE
-- [x] Token price tracking (CoinGecko/CoinMarketCap) ✅ COMPLETE
-  - [x] Real-time price data (every 5 min)
-  - [x] Historical data (24h-7d)
-  - [x] Trending coins
-  - [x] Price charts (SVG) - **Fixed rendering bug!** ✨
-  - [x] Search functionality
-  - [x] Price alerts
-  - [x] Mobile responsive
-- [x] Wallet balance tracking ✅ COMPLETE
-  - [x] Multi-chain support (ETH, Base, Arbitrum, Optimism, Polygon)
-  - [x] Token balance tracking (20+ ERC-20 tokens)
-  - [x] Portfolio value calculation (USD)
-  - [x] Historical balance tracking (database)
-  - [x] 15-minute caching strategy
-  - [x] API endpoint with refresh/save options
-  - [x] WalletTracker UI component
-  - [x] PortfolioDashboard analytics
-- [x] NFT balance tracking ✅ COMPLETE
-  - [x] ERC-721 support
-  - [x] ERC-1155 support
-  - [x] NFT metadata & images display
-  - [x] Floor price integration (Ethereum)
-  - [x] Spam filtering
-  - [x] Multi-chain support (5 chains)
-  - [x] Gallery component with modal
-  - [x] Alchemy API integration
-- [x] DEX volume tracking (DeFiLlama API) ✅ COMPLETE
-  - [x] Database schema (dex_volumes table)
-  - [x] DeFiLlama API integration
-  - [x] CRON job (hourly data collection)
-  - [x] API endpoint (/api/dex)
-  - [x] DEXVolumeChart component
-  - [x] Multi-chain support (Ethereum, Base, Arbitrum, Optimism, Polygon)
-  - [x] Chain filtering UI
-  - [x] Homepage integration
-- [x] TVL tracking (DeFiLlama) ✅ COMPLETE
-  - [x] Database schema (protocol_tvl table)
-  - [x] DeFiLlama API integration
-  - [x] CRON job (hourly data collection)
-  - [x] API endpoint (/api/tvl)
-  - [x] TVLChart component
-  - [x] Multi-chain support (7 chains: ETH, SOL, TRON, BSC, ARB, BASE, POLY)
-  - [x] Chain filtering UI
-  - [x] Category filtering (8 categories)
-  - [x] Homepage integration
-  - [x] Advanced optimizations (Enfoque 2)
-  - [x] Per-chain TVL breakdown
-  - [x] Principal + Staking aggregation
-- [x] Data maintenance (Cleanup CRON) ✅ COMPLETE
-  - [x] Daily cleanup job (2 AM)
-  - [x] Historical data retention (30 days)
-  - [x] Automatic database optimization
+*(Detalles movidos a sección COMPLETED FEATURES arriba)*
 
-#### Week 4: User System ✅ COMPLETE
-- [x] User authentication (Supabase Auth) ✅
-- [x] Email verification system ✅
-- [ ] User dashboard (next priority)
-- [ ] API key generation
-- [ ] API key management
-- [ ] Rate limiting per API key
+---
 
-#### Week 5-6: Monetization
-- [ ] Pricing tiers (Free/Pro/Enterprise)
-- [ ] Stripe integration
-- [ ] Payment flows
-- [ ] Subscription management
-- [ ] Usage tracking
+## 📋 MONTH 3-6: DESGLOSE DETALLADO (106 tasks pending)
+
+### Month 3: User Dashboard & API Keys (Week 5-8) - 28 tasks
+**Priority:** HIGH - Foundation for monetization
+
+#### User Dashboard (12 tasks)
+- [ ] Dashboard layout & navigation
+- [ ] Personalized analytics view (gas, prices, TVL)
+- [ ] Saved wallets functionality
+  - [ ] Add/remove wallets
+  - [ ] Wallet nicknames/labels
+  - [ ] Quick wallet switcher
+- [ ] Token watchlists
+  - [ ] Add/remove tokens
+  - [ ] Custom price alerts per token
+  - [ ] Watchlist export/import
+- [ ] Recent activity feed
+- [ ] Dashboard settings (preferences)
+- [ ] Dashboard responsive design (mobile)
+
+#### API Key Management (10 tasks)
+- [ ] API key generation endpoint
+- [ ] API key display & copy UI
+- [ ] API key list view (multiple keys)
+- [ ] Key usage tracking per endpoint
+- [ ] Key regeneration functionality
+- [ ] Key deletion with confirmation
+- [ ] Key naming/labeling
+- [ ] Last used timestamp tracking
+- [ ] Usage statistics per key
+- [ ] API key documentation page
+
+#### Rate Limiting per API Key (6 tasks)
+- [ ] Tier-based rate limits (Free: 100/day, Pro: 10K/day, Enterprise: 100K/day)
+- [ ] Rate limit headers in responses
+- [ ] Rate limit exceeded handling (429 status)
+- [ ] Usage analytics dashboard
+- [ ] Overage alerts (email notifications)
+- [ ] Soft/hard limit configuration
+
+### Month 4: Monetization & Payments (Week 9-12) - 26 tasks
+**Priority:** HIGH - Revenue generation
+
+#### Stripe Integration (10 tasks)
+- [ ] Stripe account setup & configuration
+- [ ] Stripe SDK integration
+- [ ] Customer creation on signup
+- [ ] Payment intent creation
+- [ ] Webhook handling (payment events)
+- [ ] Payment success/failure handling
+- [ ] Refund processing
+- [ ] Invoice generation
+- [ ] Payment method management
+- [ ] Billing portal integration
+
+#### Subscription Management (8 tasks)
+- [ ] Subscription plans database schema
+- [ ] Subscription creation flow
+- [ ] Subscription cancellation flow
+- [ ] Subscription upgrade/downgrade
+- [ ] Prorated billing
+- [ ] Trial period handling (14-day free trial)
+- [ ] Grace period for failed payments
+- [ ] Subscription status tracking
+
+#### Pricing Tiers (8 tasks)
+- [ ] Free tier implementation (100 API calls/day)
+- [ ] Pro tier implementation ($29/month - 10K calls/day)
+- [ ] Enterprise tier implementation ($199/month - 100K calls/day)
+- [ ] Pricing page design & UI
+- [ ] Feature comparison table
+- [ ] Plan selection flow
+- [ ] Checkout page
+- [ ] Plan upgrade/downgrade UI
+
+### Month 5: Advanced Features (Week 13-16) - 28 tasks
+**Priority:** MEDIUM - Feature expansion
+
+#### Advanced Analytics (10 tasks)
+- [ ] Portfolio performance over time (daily/weekly/monthly)
+- [ ] Profit/Loss calculations
+- [ ] Transaction history tracking
+- [ ] Gas cost analysis (historical)
+- [ ] DeFi position tracking (LP tokens)
+- [ ] Yield farming analytics
+- [ ] Impermanent loss calculator
+- [ ] Multi-wallet aggregation
+- [ ] Portfolio export (CSV/PDF)
+- [ ] Custom date range analytics
+
+#### Notifications System (8 tasks)
+- [ ] In-app notifications
+- [ ] Email notifications (Resend integration)
+- [ ] Push notifications (web)
+- [ ] Price alert notifications
+- [ ] Gas price alerts
+- [ ] Whale movement alerts
+- [ ] Portfolio value alerts
+- [ ] Notification preferences UI
+
+#### Social Features (10 tasks)
+- [ ] Public wallet profiles (opt-in)
+- [ ] Portfolio sharing links
+- [ ] Leaderboards (top performers)
+- [ ] Community watchlists
+- [ ] Social login (optional)
+- [ ] User profile customization
+- [ ] Avatar/profile picture
+- [ ] Bio/description
+- [ ] Connected social accounts
+- [ ] Activity visibility settings
+
+### Month 6: Enterprise & Scale (Week 17-20) - 24 tasks
+**Priority:** LOW - Growth phase
+
+#### Enterprise Features (10 tasks)
+- [ ] Team accounts
+- [ ] Role-based access control
+- [ ] Admin dashboard
+- [ ] Team member management
+- [ ] Shared API keys
+- [ ] Team billing
+- [ ] Usage reports per team member
+- [ ] Audit logs
+- [ ] SSO integration (SAML/OAuth)
+- [ ] Custom branding (white-label)
+
+#### Performance & Scale (8 tasks)
+- [ ] Database optimization (indexes, partitioning)
+- [ ] CDN integration (static assets)
+- [ ] API response caching (Redis)
+- [ ] Database read replicas
+- [ ] Load balancing
+- [ ] Auto-scaling configuration
+- [ ] Performance monitoring dashboard
+- [ ] Capacity planning
+
+#### Documentation & Support (6 tasks)
+- [ ] API documentation (OpenAPI/Swagger)
+- [ ] Developer guides
+- [ ] SDK development (JavaScript)
+- [ ] Integration examples
+- [ ] FAQ/Help center
+- [ ] Support ticketing system
 
 ---
 
@@ -659,634 +740,130 @@
 
 ---
 
-## 📝 RECENT UPDATES
+## 📝 CHANGELOG (Resumen por Sesión)
 
-### 2025-01-21 (Night - EMAIL VERIFICATION DEPLOYED! 📧🎉):
-- ✅ **Implemented Complete Email Verification System (19/20 - 95%)**
-  - **Database Layer:**
-    - Applied 20250120_auth_users.sql migration (user_profiles table)
-    - Applied 20250121_add_email_verification.sql migration
-      - Added email_verified column (boolean, default FALSE)
-      - Added verification_token column (text, 32 bytes base64)
-      - Added verification_token_expires_at column (24h expiration)
-      - Created generate_verification_token() function
-      - Created handle_new_user_verification() trigger
-      - Created regenerate_verification_token(email) function
-      - Created verify_email_with_token(token) function
-      - Added indexes for performance (email_verified, verification_token)
-      - Updated RLS policies for service role
-  - **Email Service Layer (src/lib/resend.ts - 280 lines):**
-    - Resend.com integration
-    - sendEmail(options) - Core email sender
-    - sendVerificationEmail(email, token) - Sends verification link
-    - sendPasswordResetEmail(email, token) - Sends reset link
-    - sendWelcomeEmail(email, name) - Sends after verification
-    - Professional HTML templates with responsive design
-    - Plain text fallback
-    - Development mode support (no API key required locally)
-  - **API Routes:**
-    - /api/auth/verify-email - POST endpoint
-      - Validates verification token
-      - Marks email_verified = true
-      - Sends welcome email
-      - Clears verification token
-      - Error handling (expired token, invalid token, already verified)
-    - /api/auth/resend-verification - POST endpoint
-      - Rate limited (100 req/15min per IP)
-      - Generates new token
-      - Sends new verification email
-      - Security: Doesn't reveal if email exists
-  - **Frontend Pages:**
-    - src/app/auth/verify-email/page.tsx
-      - Added Suspense boundary for useSearchParams()
-      - Handles token from URL
-      - Shows loading/success/error states
-      - Auto-redirects to dashboard on success
-      - Beautiful UI with animations
-    - src/app/auth/reset-password/page.tsx
-      - Password update form
-      - Validation (min 8 chars, passwords match)
-      - Auto-redirects after success
-      - Uses Supabase auth.updateUser()
-  - **Authentication Updates:**
-    - Updated src/hooks/useAuth.ts
-      - REMOVED: signInWithGoogle() function
-      - REMOVED: signInWithGitHub() function
-      - Updated signUp() to send verification email
-      - Added resendVerificationEmail() function
-      - Reason: OAuth shows Supabase URL instead of vectorialdata.com
-    - Updated src/components/AuthModal.tsx
-      - REMOVED: OAuth buttons (Google, GitHub)
-      - REMOVED: "or continue with" section
-      - Cleaner UI with only email/password
-      - Shows "Check your email" message after signup
-    - Updated src/app/login/page.tsx
-      - REMOVED: OAuth buttons and handlers
-      - REMOVED: signInWithGoogle and signInWithGitHub references
-      - Simplified to email/password only
-    - Updated src/components/AuthModalDebug.tsx
-      - REMOVED: OAuth functionality
-      - Consistent with main AuthModal
-    - Updated src/types/auth.ts
-      - Added email_verified: boolean
-      - Added verification_token: string | null
-      - Added verification_token_expires_at: string | null
-- ✅ **Resend.com Setup (95% complete)**
-  - Created Resend.com account
-  - Generated API key (re_SsUkhbW5_AYrFVRAMZFptGAvTjMEpEUbT)
-  - Added API key to .env.local
-  - Added API key to Vercel environment variables (via dashboard)
-  - Added domain vectorialdata.com to Resend
-  - Configured DNS records in Porkbun:
-    - DKIM: resend._domainkey.vectorialdata.com (TXT)
-    - SPF: send.vectorialdata.com (TXT)
-    - MX: send.vectorialdata.com (Priority 10)
-    - DMARC: _dmarc.vectorialdata.com (TXT)
-  - DNS propagation verified (all records live)
-  - Installed @react-email/render dependency
-  - ⏸️ **Pending:** Domain verification in Resend (status: "Pending")
-    - DNS records propagated and confirmed
-    - Resend auto-verification in progress
-    - Estimated time: 10-30 minutes
-- ✅ **Production Deployment**
-  - Fixed build errors:
-    - Removed OAuth references from login page
-    - Removed OAuth references from AuthModalDebug
-    - Added Suspense boundary to verify-email page
-    - Installed @react-email/render dependency
-  - Cleaned up OAuth credential files:
-    - Removed .google-oauth-credentials.txt
-    - Removed .github-oauth-credentials.txt
-    - Removed .oauth-config.txt
-    - Added all to .gitignore
-  - Git commits:
-    - feat: implement email verification with Resend.com
-    - fix: remove OAuth from login page and add @react-email/render
-    - fix: remove OAuth from AuthModalDebug component
-    - fix: wrap useSearchParams in Suspense boundary for verify-email
-  - Deployed to production (commit: e9609e8)
-  - Build successful (no errors)
-  - Site live at: https://vectorialdata.com
-- ✅ **Security Improvements**
-  - Fixed npm vulnerability (glob package updated)
-  - Rate limiting on verification endpoints (100 req/15min)
-  - Token expiration (24 hours)
-  - Secure token generation (32 bytes random)
-  - Input validation with Zod schemas
-  - RLS policies for email_verified column
-  - No email enumeration (security through obscurity)
-- ✅ **Documentation**
-  - Created EMAIL-VERIFICATION-SETUP.md (542 lines)
-    - Complete deployment guide
-    - Resend.com setup instructions
-    - DNS configuration guide
-    - Testing procedures
-    - Troubleshooting section
-    - Monitoring instructions
-  - Created RESEND-IMPLEMENTATION-PLAN.md
-    - Technical implementation details
-    - Architecture decisions
-    - API integration guide
-  - Created SECURITY-AUDIT-REPORT.md
-    - Security score improvement: 84/100 → 95/100
-    - Vulnerability analysis
-    - Mitigation strategies
-  - Created SESSION-2025-01-21-EMAIL-VERIFICATION.md (467 lines)
-    - Complete session summary
-    - All completed tasks documented
-    - Pending items noted
-    - Implementation metrics
-    - Issues resolved
-    - Next session priorities
-- 🎉 **Code Statistics:**
-  - New Files Created: 8
-  - Files Modified: 7
-  - Lines of Code: ~2,100 lines
-    - Migration SQL: ~310 lines
-    - Email service: ~280 lines
-    - API routes: ~340 lines
-    - Frontend pages: ~450 lines
-    - Hook updates: ~30 lines
-    - Type definitions: ~10 lines
-    - Documentation: ~1,200 lines
-- ✅ **Email Verification: 95% COMPLETE (19/20 tasks)** +5 new tasks
-- ✅ **Overall Progress: 79% → 81% (192/237 tasks)** +5 tasks completed
-- ⏸️ **Next Session:** Domain verification (5 min) + end-to-end testing (30 min)
-- 🎉 **MAJOR MILESTONE:** Email verification system deployed to production!
+### 2025-01-24: User Authentication Complete 🔐
+- ✅ Fixed "Database error saving new user" bug
+- ✅ Implemented manual profile creation (/api/auth/signup)
+- ✅ Email verification 100% working (mail.vectorialdata.com)
+- ✅ First user registered successfully!
+- **Progress:** 81% → 83% (+5 tasks)
 
-### 2025-01-20 (Late Night - PRICE SYNCHRONIZATION BUG FIXED! ✅):
-- ✅ **RESOLVED: Price Synchronization Bug**
-  - **Problem:** Prices showing $5-7 discrepancies between Top Bar, Watchlist, and PriceTable
-  - **Root Cause:** Direct DOM manipulation conflicts with React's rendering cycle
-    - Interpolation modified DOM directly using `querySelectorAll`
-    - React re-renders overwrote interpolated values with original state values
-    - React's virtual DOM didn't track manual DOM changes
-  - **Solution:** Moved interpolation into React state management
-    - Added `interpolatedPrices` state: `Map<string, number>`
-    - Refactored interpolation to update state instead of DOM
-    - Created `getDisplayPrice()` helper to return interpolated or real prices
-    - Updated all display components to use helper function
-  - **Implementation Details:**
-    - ✅ Added interpolatedPrices state (Map<string, number>) to page.tsx
-    - ✅ Created initialization useEffect (sets initial values from priceData)
-    - ✅ Refactored interpolation useEffect to use functional state updates
-    - ✅ Added getDisplayPrice() helper (returns interpolated price if available)
-    - ✅ Updated Top Bar ticker (BTC, ETH, SOL) to use getDisplayPrice()
-    - ✅ Updated Watchlist (ETH, BTC, SOL, ARB, OP) to use getDisplayPrice()
-    - ✅ Passed interpolatedPrices & performanceMode props to PriceTable
-    - ✅ Updated PriceTable to use interpolated prices
-    - ✅ Fixed TypeScript error (added 'detecting' to performanceMode type)
-  - **Files Modified:**
-    - src/app/page.tsx (65 insertions, 66 deletions)
-    - src/components/PriceTable.tsx (10 insertions, 2 deletions)
-  - **Result:**
-    - ✅ All prices now perfectly synchronized across all sections
-    - ✅ Single source of truth (interpolatedPrices state)
-    - ✅ Smooth interpolation animation preserved
-    - ✅ No more React/DOM conflicts
-  - **Commit:**
-    - a1a29c1: "Fix price synchronization bug using React state"
-- 🎉 **BUG FIXED!** Prices now synchronized across Top Bar, Watchlist, and Table!
+### 2025-01-21: Email Verification Deployed 📧
+- ✅ Complete email verification system (Resend.com)
+- ✅ Database migrations (user_profiles, verification tokens)
+- ✅ Removed OAuth (Google, GitHub) for cleaner flow
+- ✅ DNS configured (DKIM, SPF, MX, DMARC)
+- **Progress:** 79% → 81% (+5 tasks)
 
-### 2025-01-20 (Late Night - PRICE SYNCHRONIZATION ATTEMPT ⚠️) [SUPERSEDED]:
-- 🟡 **Attempted Price Synchronization Fix (INCOMPLETE)**
-  - **Goal:** Synchronize prices across Top Bar, Watchlist, and PriceTable
-  - **Problem Identified:**
-    - Prices showing different values ($5-7 difference)
-    - Example: Top Bar BTC 92,267.91 vs Table BTC $92,273.98
-    - Three separate price displays not synchronized
-  - **Work Completed:**
-    - ✅ Unified price data source (single API call in page.tsx)
-    - ✅ Modified PriceTable to accept external prices as props
-    - ✅ Removed duplicate interpolation from PriceTable component
-    - ✅ Updated page.tsx interpolation to handle table prices
-    - ✅ Added proper $ formatting for table prices
-    - ✅ Fixed OP/USD missing data-coin-id attribute
-    - ✅ Removed useRef and usePerformanceMode imports from PriceTable
-    - ✅ Removed entire interpolation useEffect from PriceTable
-  - **Implementation Details:**
-    - Created externalPrices and externalLoading props in PriceTable
-    - PriceTable now uses: `const prices = externalPrices || internalPrices`
-    - Updated page.tsx to pass: `<PriceTable externalPrices={priceData} externalLoading={pricesLoading} />`
-    - Enhanced interpolation logic with two handlers:
-      - `price-value` class → Top Bar/Watchlist (X,XXX.XX format)
-      - `data-table-price` attribute → PriceTable ($X,XXX.XX format)
-  - **Issue Still Present:**
-    - ❌ Prices STILL not synchronized after all changes
-    - ❌ Small discrepancies remain despite single data source
-    - ❌ Need deeper investigation into React rendering cycle
-  - **Commits:**
-    - 79bb901: "Synchronize price data across all components"
-    - dbaef8f: "Remove duplicate interpolation from PriceTable"
-  - **Next Steps:**
-    - Debug with console logs to trace interpolation execution
-    - Verify DOM queries are finding all elements
-    - Check if React is overwriting interpolated values
-    - Consider React-based interpolation (useState) instead of DOM manipulation
-- ⏸️ **Paused for next session - bug still present**
+### 2025-01-20: Month 2 Complete + Bug Fixes 🎉
+- ✅ TVL Tracking system (12/12 tasks)
+- ✅ Data Cleanup CRON job (daily 2 AM)
+- ✅ Fixed PriceChart SVG rendering
+- ✅ Fixed price synchronization bug (React state)
+- **Progress:** 75% → 79% (+14 tasks)
 
-### 2025-01-20 (Night - MONTH 2 COMPLETE! TVL + CLEANUP 🎉🚀):
-- ✅ **Implemented Complete TVL Tracking System (12/12 - 100%)**
-  - **Database Schema:**
-    - Created protocol_tvl table (20+ columns)
-    - Support for multi-chain + per-chain data
-    - 6 indexes for performance optimization
-    - RLS policies (public read, service role full access)
-    - 4 helper functions (get_latest_tvl, get_tvl_by_chain, etc.)
-  - **TVL Service Layer (src/lib/tvl.ts - 409 lines):**
-    - DeFiLlama API integration
-    - getAllProtocols() - fetch all protocols
-    - getTopProtocolsByTVL() - get top protocols
-    - getProtocolsTVL() - get specific protocols
-    - extractChainTvls() - **Optimized chain extraction (O(1) lookups)**
-    - Helper functions: formatTVL(), formatChange(), getChangeColor()
-    - Default protocols: aave-v3, uniswap-v3, lido, curve-dex, etc. (15 total)
-    - **7 Supported Chains:** Ethereum, Solana, Tron, BSC, Arbitrum, Base, Polygon
-    - **CHAIN_NAME_MAPPING:** Handles DeFiLlama inconsistencies ("Binance" vs "BSC")
-    - **REVERSE_CHAIN_MAPPING:** Auto-generated for O(1) lookups
-  - **API Endpoint (/api/tvl - 180+ lines):**
-    - 1-hour database caching
-    - Force refresh option
-    - Chain filtering support (7 chains)
-    - Category filtering support (8 categories)
-    - Protocol lookup
-    - Edge runtime for performance
-    - Error handling and validation
-  - **CRON Job (/api/cron/collect-tvl - 197 lines):**
-    - Runs every hour (schedule: "0 * * * *")
-    - Collects 15 default protocols
-    - **All-chains combined records** (chain=null)
-    - **Per-chain breakdown records** using extractChainTvls()
-    - Principal + Staking aggregation (95-98% accuracy)
-    - $10K minimum TVL threshold
-    - Logs to cron_executions table
-    - Node.js runtime (60s timeout)
-  - **Frontend Component (TVLChart.tsx + CSS - 450+ lines):**
-    - Responsive grid layout with hover effects
-    - **Chain filter buttons** (7 chains: 🌐⟠◎🔺🟡🔷🔵🟣)
-    - **Category filter buttons** (8 categories: DEXes, Lending, Liquid Staking, etc.)
-    - Protocol cards with rank, name, logo, TVL, change %, MC/TVL ratio
-    - Total TVL summary
-    - Loading, error, and empty states
-    - Dark/light mode support
-    - Mobile-responsive design
-  - **Homepage Integration:**
-    - Added TVL component to main page
-    - Props: chain="all", limit={10}, showChainFilter={true}, showCategoryFilter={true}
-    - Imported CSS styles
-  - **Advanced Optimizations - Enfoque 2 (Principal + Staking):**
-    - **Problem:** Need to extract per-chain TVL from DeFiLlama's chainTvls object
-    - **Solution:** Reverse mapping + O(1) lookups
-    - **Performance:** O(315) → O(40) operations (8x improvement)
-    - **Accuracy:** 95-98% data certainty (same as CoinGecko, Bloomberg)
-    - **Handles:** Chain name variants (Binance/BSC, Ethereum/Ethereum-staking)
-- ✅ **Implemented Data Cleanup CRON Job (4/4 - 100%)**
-  - **Cleanup Endpoint (/api/cron/cleanup-old-data - 196 lines):**
-    - Runs daily at 2:00 AM (schedule: "0 2 * * *")
-    - Deletes token_price_history older than 30 days
-    - Deletes gas_prices older than 30 days (if exists)
-    - Deletes fear_greed_index older than 30 days (if exists)
-    - Keeps last 1000 cron_executions (deletes older)
-    - Logs execution to cron_executions table
-    - Node.js runtime (60s timeout)
-  - **Benefits:**
-    - Prevents database growth (~172K records/month → ~5K maintained)
-    - ~97% reduction in historical data storage
-    - Automatic optimization (no manual intervention)
-    - Performance improvement with smaller datasets
-- ✅ **Fixed PriceChart SVG Rendering Bug**
-  - **Problem:** Charts not displaying (polyline using wrong coordinate format)
-  - **Root Cause:** SVG polyline expects "x,y x,y" format, not path "M x,y L x,y"
-  - **Solution:**
-    - Changed from pathData to points format
-    - Proper space-separated coordinate pairs
-    - Used polygon for gradient fill (not polyline)
-    - Moved gradient fill before line (z-index)
-  - **Result:** BTC, ETH, SOL charts now display perfectly with gradients
-- ✅ **Category Typo Fixes**
-  - Fixed "Dexes" → "Dexs" (DeFiLlama correct spelling)
-  - Added "Restaking" category (for EigenLayer)
-  - DEXs category now shows 5 protocols ($6.55B TVL)
-- ✅ Updated vercel.json (added TVL + cleanup CRON schedules)
-- ✅ Updated PROJECT_CONFIG.md (added cleanup endpoint documentation)
-- ✅ Build successful (all TypeScript types validated)
-- ✅ Committed to Git (multiple commits, ~2,700 lines)
-- ✅ Pushed to production (GitHub + Vercel)
-- ✅ **TVL Tracking: 100% COMPLETE (12/12 tasks)** +12 new tasks
-- ✅ **Data Maintenance: 100% COMPLETE (4/4 tasks)** +4 new tasks
-- ✅ **PriceChart: Fixed rendering** +2 tasks
-- ✅ **Month 2: 100% COMPLETE (43/43 tasks)** 🎉
-- ✅ **Overall Progress: 79% (187/237 tasks)** +14 tasks completed
-- 🎉 **MAJOR MILESTONE:** MONTH 2 COMPLETE! Ready for User System (Month 3)
+### 2025-01-19: DEX Volume + NFT Deployed 📊
+- ✅ DEX Volume Tracking (DeFiLlama API)
+- ✅ NFT Tracking deployed to production
+- ✅ Alchemy API key configured
+- **Progress:** 70% → 75% (+8 tasks)
 
-### 2025-01-19 (Night - DEX VOLUME TRACKING COMPLETE! 📊🎉):
-- ✅ **Implemented Complete DEX Volume Tracking System (10/10 - 100%)**
-  - **Database Schema:**
-    - Created dex_volumes table (15+ columns)
-    - Support for multi-chain data (protocol + chain + timestamp)
-    - 5 indexes for performance optimization
-    - RLS policies (public read, service role full access)
-    - 3 helper functions (get_latest_dex_volumes, get_top_dexes, cleanup_old_dex_volumes)
-  - **DEX Service Layer (src/lib/dex.ts - 400+ lines):**
-    - DeFiLlama API integration
-    - getDEXOverview() - fetch all DEX volumes
-    - getTopDEXes() - get top DEXes by volume
-    - getDEXProtocolsVolume() - get specific protocols
-    - getDEXProtocolSummary() - get protocol details
-    - Helper functions: formatVolume(), formatChange(), getChangeColor()
-    - Default protocols: uniswap, pancakeswap, curve, balancer, etc. (10 total)
-  - **API Endpoint (/api/dex - 200+ lines):**
-    - 1-hour database caching
-    - Force refresh option
-    - Chain filtering support
-    - Protocol lookup
-    - Edge runtime for performance
-    - Error handling and validation
-  - **CRON Job (/api/cron/collect-dex - 230+ lines):**
-    - Runs every hour (schedule: "0 * * * *")
-    - Collects top 20 DEXes (all chains)
-    - Collects top 10 per chain (Ethereum, Base, Arbitrum, Optimism, Polygon)
-    - Tracks 10 default protocols with chain breakdown
-    - Deduplication logic (keep most recent)
-    - Logs to cron_executions table
-    - Rate limiting (500ms delay between chains)
-  - **Frontend Component (DEXVolumeChart.tsx + CSS - 500+ lines):**
-    - Responsive grid layout with hover effects
-    - Chain filter buttons with icons (🌐⟠🔵🔷🔴🟣)
-    - DEX cards with rank, name, chains, volume, change %
-    - Total volume summary
-    - Loading, error, and empty states
-    - Dark/light mode support
-    - Mobile-responsive design
-  - **Homepage Integration:**
-    - Added DEX component after price charts
-    - Props: chain="all", limit={10}, showChainFilter={true}
-    - Imported CSS styles
-- ✅ Updated vercel.json (added DEX CRON schedule)
-- ✅ Build successful (all TypeScript types validated)
-- ✅ Committed to Git (1,667 insertions, 9 files)
-- ✅ Pushed to production (GitHub + Vercel)
-- ✅ Created migration instructions (APPLY_DEX_MIGRATION.md)
-- ⏸️ **Pending:** Apply database migration via Supabase dashboard
-- ✅ **DEX Volume Tracking: 100% COMPLETE (10/10 tasks)** +8 new tasks
-- ✅ **Overall Progress: 75% (173/231 tasks)** +8 tasks completed
-- 🎉 **MAJOR MILESTONE:** DEX tracking fully implemented!
+### 2025-01-18: Performance + Wallet Redesign 🚀
+- ✅ All Performance Optimizations (11/11)
+- ✅ NFT Balance Tracking system
+- ✅ Wallet redesign (Proposal #3 - Minimalist)
+- ✅ Theme System V2 (date-based override)
+- **Progress:** 54% → 70% (+16 tasks)
 
-### 2025-01-19 (Early Morning - NFT TRACKING DEPLOYED + WEEK 4 KICKOFF! 🚀):
-- ✅ **NFT Tracking 100% Deployed to Production**
-  - ✅ Database migration applied (wallet_nfts table)
-  - ✅ Alchemy API key configured in Vercel
-  - ✅ Token icons fixed using jsDelivr CDN
-  - ✅ Chain selection with auto-refresh (useEffect hook)
-  - ✅ NFT Gallery displaying correctly
-  - ✅ All features tested and verified in production
-- ✅ **Roadmap Updated**
-  - Marked NFT tracking tasks as complete (10/10)
-  - Updated progress: 70% → 72% (165/231 tasks)
-  - Added Week 4 priorities
-- 🎯 **Started Week 4: DEX & TVL Analytics**
+### 2025-01-17: Week 0 + Core Features ✅
+- ✅ Week 0 Infrastructure (32/32)
+- ✅ Token Price Tracking (CoinGecko)
+- ✅ Light/Dark mode theme
+- ✅ CI/CD pipeline (GitHub Actions)
+- ✅ E2E tests (Playwright)
+- **Progress:** 0% → 54%
 
-### 2025-01-18 (Late Night - NFT BALANCE TRACKING COMPLETE! 🖼️🎉):
-- ✅ **Implemented Complete NFT Tracking System (8/8 - 100%)**
-  - **Database Schema:**
-    - Created wallet_nfts table (20+ fields)
-    - Support for ERC-721 and ERC-1155 standards
-    - Floor price storage (ETH + USD)
-    - Spam detection fields
-    - Migration script ready
-  - **NFT Service Layer (src/lib/nft.ts - 282 lines):**
-    - Alchemy NFT API integration
-    - Multi-chain support (Ethereum, Base, Arbitrum, Optimism, Polygon)
-    - getNFTsForChain() - fetches NFTs from Alchemy
-    - getFloorPrice() - fetches floor prices (Ethereum only)
-    - getWalletNFTs() - aggregates NFTs across all chains
-    - Pagination support (max 5 pages, 500 NFTs per chain)
-    - Automatic spam filtering
-  - **API Endpoint (/api/wallet/[address]/nfts - 170 lines):**
-    - 1-hour caching strategy
-    - Force refresh option
-    - Save to database option
-    - Chain filtering support
-    - Error handling and validation
-    - Edge runtime for performance
-  - **NFT Gallery Component (NFTGallery.tsx + CSS - 650 lines):**
-    - Responsive grid layout (auto-fill, 180px min)
-    - NFT cards with images and metadata
-    - Chain badges and balance badges (ERC-1155)
-    - Floor price display (ETH + USD)
-    - Click to view detailed modal
-    - Lazy image loading with fallbacks
-    - Empty and loading states
-    - Mobile-responsive design
-  - **Integration with Wallet Tracker:**
-    - Automatic NFT fetching after balance lookup
-    - State management for NFT data
-    - Seamless UI integration below token holdings
-    - TypeScript type support
-  - **Documentation:**
-    - Comprehensive implementation guide (NFT-TRACKING-IMPLEMENTATION.md - 278 lines)
-    - API usage examples
-    - Database migration instructions
-    - Testing recommendations
-- ✅ Build successful (NFT endpoint visible in build output)
-- ✅ Committed to Git (1,692 insertions, 9 files)
-- ✅ Pushed to GitHub
-- ⏸️ **Pending:** Database migration + Alchemy API key configuration
-- ✅ **NFT Balance Tracking: 100% COMPLETE (8/8 tasks)** +8 new tasks
-- ✅ **Overall Progress: 70% (161/231 tasks)** +8 tasks completed
-- 🎉 **MAJOR MILESTONE:** NFT tracking fully implemented!
+---
 
-### 2025-01-18 (Night - ALL PERFORMANCE OPTIMIZATIONS COMPLETE! 🎉🚀):
-- ✅ **Completed ALL Performance Optimization Phases (11/11 - 100%)**
-  - **Phase 2 - React Optimizations (4 new tasks):**
-    - **React Memoization for WalletTrackerMinimal**
-      - Added useMemo for groupedBalances (prevents O(n) reduce on every render)
-      - Added useMemo for chainDistribution (prevents O(n*m) map operations)
-      - Added useMemo for topHoldings (prevents O(n log n) sorting)
-      - Added useMemo for stats (prevents aggregate recalculation)
-      - Added useCallback for fetchWalletBalances (prevents function recreation)
-    - **Automatic Hardware Detection (usePerformanceMode hook)**
-      - New hook: /src/hooks/usePerformanceMode.ts
-      - Detects CPU cores (navigator.hardwareConcurrency)
-      - Detects RAM (navigator.deviceMemory)
-      - Measures page load time (performance.timing)
-      - Checks connection type (navigator.connection.effectiveType)
-      - Calculates performance score (0-9+)
-      - Returns 'high' (score >= 5) or 'low' (score < 5)
-      - Caches result in sessionStorage
-    - **Conditional Animations Based on Hardware**
-      - Background grid: only rendered on high-performance hardware
-      - Floating particles: only rendered on high-performance hardware
-      - Price ticker interval: only runs on high-performance hardware
-      - Modern hardware: full visual experience maintained
-      - Old hardware: smooth performance without GPU-heavy animations
-    - **Pause Intervals on Navigation (CRITICAL FIX)**
-      - **Problem:** Navigation time was highly variable (1s to 60s random)
-      - **Root Cause:** 3 intervals competing for CPU with Next.js navigation
-        - fetchGasData() every 12s (heavy - API fetch)
-        - updateTime() every 1s (light - setState)
-        - priceInterval every 3s (heavy - DOM manipulation)
-      - **Solution:** Pause ALL intervals when user clicks WALLET
-        - Created useRef hooks for interval IDs
-        - Created pauseIntervals() function to clear all intervals
-        - Added onClick handler to WALLET navigation link
-        - Cross-component event system for WalletSummaryWidget
-        - Frees CPU 100% for Next.js navigation
-      - **Result:** Navigation time now CONSISTENT (5-10s on old hardware)
-  - **Phase 3 - Advanced Optimizations (4 new tasks):**
-    - Root cause analysis → Identified interval competition
-    - Performance monitoring → Console logging in usePerformanceMode
-    - Variability elimination → Pause intervals solves random delays
-    - Consistent user experience → Predictable navigation on all hardware
-- ✅ **Results Achieved:**
-  - Navigation time: 1-60s (variable) → 5-10s (consistent) on old hardware
-  - GPU usage: 60-80% reduction on legacy browsers
-  - CPU freed: 100% when user clicks navigation
-  - Features: Zero removal, all functionality intact
-  - Modern hardware: Full visual quality maintained
-  - Old hardware: Smooth, fast, predictable experience
-- ✅ Build successful (83.4 kB wallet route)
-- ✅ Deployed to production (https://vectorialdata.com)
-- ✅ **Performance Optimization: 100% COMPLETE (11/11 tasks)** +8 new tasks
-- ✅ **Overall Progress: 68% (153/231 tasks)** +8 tasks completed
-- 🎉 **MAJOR MILESTONE:** All performance issues resolved!
+*Para detalles completos de implementación, ver documentación en /docs/*
 
-### 2025-01-18 (Late Afternoon - PHASE 1 PERFORMANCE OPTIMIZATIONS COMPLETE! 🚀):
-- ✅ **Implemented Phase 1 Performance Optimizations for Legacy Browsers**
-  - **Progressive Enhancement for backdrop-filter**
-    - Added @supports fallbacks in globals.css
-    - Replaces expensive blur(10px) with solid backgrounds on unsupported browsers
-    - Affects .top-bar, .left-panel, .center-panel, .right-panel
-    - Reduces GPU strain by 60-80% on older Safari versions
-  - **Prefers-reduced-motion Support**
-    - Added @media (prefers-reduced-motion: reduce) to both globals.css and wallet.css
-    - Disables all animations (duration: 0.01ms)
-    - Disables expensive transforms on hover
-    - Improves accessibility for users with motion sensitivity
-  - **Lazy Loading for WalletTrackerMinimal**
-    - Converted wallet/page.tsx to use next/dynamic
-    - Code splitting reduces initial bundle parse time
-    - Added loading state for better UX
-- ✅ Build successful (83.4 kB wallet route, 299 kB first load)
-- ⚠️ **Deployment Pending:** Changes committed locally, GitHub connectivity issue preventing push
-- 📊 **Expected Impact:**
-  - 30-40% performance improvement on older Safari browsers (pre-2020)
-  - 60-80% reduction in GPU usage for backdrop-filter on legacy hardware
-  - Better accessibility compliance (WCAG 2.1 Level AA)
-  - Faster initial page load for all users
-- ✅ **Performance Optimization: 60% COMPLETE (3/5 tasks)**
-- ✅ **Overall Progress: 65% (145/227 tasks)** +3 tasks completed
+---
 
-### 2025-01-18 (Afternoon - WALLET REDESIGN + THEME SYSTEM V2 COMPLETE! 🎨):
-- ✅ **Implemented Proposal #3 - Minimalist Elegance Design**
-  - Complete wallet page redesign with Apple/Notion aesthetics
-  - Created WalletTrackerMinimal component (replacing old WalletTracker)
-  - Custom wallet.css with minimalist styling (470+ lines)
-  - 4-column stats grid: Total Value, Assets, Largest Position, Last Updated
-  - 2-column content grid: Holdings list + Chain Distribution
-  - Token cards with gradient avatars and hover effects
-  - Animated progress bars for chain distribution
-  - Mobile-responsive (3 breakpoints: 1200px, 768px, 480px)
-  - Full dark/light theme support via CSS variables
-- ✅ **Improved Theme System - Date-based Override**
-  - Replaced 3-state system (Auto/Dark/Light) with smarter 2-state (Dark/Light)
-  - Default behavior: AUTO (time-based 6 AM-6 PM = light, 6 PM-6 AM = dark)
-  - Manual override persists for entire day (localStorage with date)
-  - Automatic reset after midnight (fresh start daily)
-  - Simple toggle button (no confusing "Auto" option in UI)
-  - Updated ThemeContext with date comparison logic
-  - Updated ThemeToggle to simple Dark ↔ Light toggle
-  - Updated layout.tsx inline script for zero flash
-  - Better UX: "Set it and forget it for the day"
-- ✅ Deployed to production (https://vectorialdata.com/wallet)
-- 🚨 **IDENTIFIED: Performance issue on older Safari + older computers**
-  - Wallet page loads slowly on pre-2020 hardware
-  - Priority task: Performance optimization for legacy browsers
-- ✅ **UI/UX Enhancements: 100% COMPLETE (8/8 tasks)** +5 new tasks
-- ✅ **Wallet Tracking: 100% COMPLETE (8/8 tasks)** +1 new task
-- ✅ **Month 2 Progress: 68% (25/37 tasks)** +5 tasks completed
+## 🧪 TESTING PENDIENTE
 
-### 2025-01-18 (Early Morning - WALLET TRACKING 87.5% COMPLETE! 💼):
-- ✅ Created database schema (4 tables: wallet_balances, wallet_nfts, wallet_history, tracked_wallets)
-- ✅ Applied migration to Supabase production
-- ✅ Built multi-chain RPC utilities (src/lib/wallet.ts)
-  - getNativeBalance (ETH, MATIC)
-  - getTokenBalance (20+ ERC-20 tokens)
-  - getChainBalances (per chain)
-  - getWalletBalances (multi-chain aggregation)
-- ✅ Created /api/wallet/[address] endpoint
-  - 15-minute caching
-  - Force refresh option
-  - Save to database option
-  - USD price calculation
-- ✅ Built WalletTracker component
-  - Address input with validation
-  - Multi-chain selection
-  - Real-time balance display
-  - Grouped by chain
-  - Refresh functionality
-- ✅ Built PortfolioDashboard component
-  - Total portfolio value
-  - Top holdings breakdown
-  - Chain distribution charts
-  - Token statistics
-- ✅ Created /wallet page
-- ✅ Deployed to production
-- ✅ Created comprehensive documentation (WALLET-TRACKING-GUIDE.md)
-- ⏸️ **Navigation integration pending for next session**
-- ✅ **Wallet Tracking: 87.5% COMPLETE (7/8 tasks)**
-- ✅ **Month 2 Progress: 54% (20/37 tasks)**
+### Unit Tests (Priority: HIGH)
+- [ ] Test /api/auth/signup endpoint (success, duplicate email, invalid data)
+- [ ] Test /api/auth/verify-email endpoint (valid token, expired, invalid)
+- [ ] Test /api/auth/resend-verification endpoint (rate limiting, security)
+- [ ] Test email verification token generation (randomness, expiration)
+- [ ] Test user profile creation (manual insertion, RLS policies)
 
-### 2025-01-17 (Late Night - TOKEN PRICE TRACKING COMPLETE! 💰):
-- ✅ Implemented CoinGecko API integration
-- ✅ Created 3 database tables (token_prices, token_price_history, trending_coins)
-- ✅ Built CRON job for price collection (every 5 minutes)
-- ✅ Created 3 API endpoints (/prices, /prices/history, /trending)
-- ✅ Fixed critical deduplication bug (only 1 coin showing → 10 coins)
-- ✅ Built 4 new components:
-  - PriceChart (SVG visualization with gradients)
-  - CoinSearch (autocomplete with 100 coins)
-  - PriceAlerts (localStorage + browser notifications)
-  - Updated PriceTable and TrendingCoins
-- ✅ Added mobile responsive design (3 breakpoints)
-- ✅ Deployed to production (vectorialdata.com)
-- ✅ **Token Price Tracking: 100% COMPLETE (13/13 tasks)**
+### Integration Tests (Priority: HIGH)
+- [ ] Full signup → verification → login flow
+- [ ] Password reset flow end-to-end
+- [ ] Token expiration handling (24h boundary)
+- [ ] Database rollback on partial failures
+- [ ] Email delivery verification (Resend webhooks)
 
-### 2025-01-17 (Night - LIGHT MODE COMPLETE! 🌙):
-- ✅ Implemented Arctic Clarity light mode theme
-- ✅ Created ThemeContext and ThemeToggle components
-- ✅ Converted all hardcoded colors to CSS variables (page.tsx)
-- ✅ Added 246 lines of light mode CSS overrides (globals.css)
-- ✅ Fixed theme switching for all UI elements
-- ✅ Deployed to production (vectorialdata.com)
-- ✅ **UI/UX Enhancements: 100% COMPLETE (3/3 tasks)**
+### E2E Tests (Priority: MEDIUM)
+- [ ] User registration journey (Playwright)
+- [ ] Email verification UI states (loading, success, error)
+- [ ] Login page behavior (authenticated redirect)
+- [ ] Dashboard access control (authenticated vs anonymous)
+- [ ] Mobile responsive auth flows
 
-### 2025-01-17 (Evening - WEEK 0 COMPLETE! 🎉):
-- ✅ Created CI/CD pipeline (3 GitHub Actions workflows)
-- ✅ Added integration tests (4 suites, 25+ cases)
-- ✅ Added E2E tests (Playwright, 20+ scenarios)
-- ✅ Added load testing (k6, 3 scenarios)
-- ✅ Added security audit scripts (OWASP ZAP + tools)
-- ✅ Created comprehensive testing guide
-- ✅ **Week 0: 100% COMPLETE (32/32 tasks)**
+### API Tests (Priority: MEDIUM)
+- [ ] Rate limiting validation (100 req/15min)
+- [ ] CORS headers on auth endpoints
+- [ ] Error response formats consistency
+- [ ] API key authentication (when implemented)
+- [ ] Subscription tier limits (when implemented)
 
-### 2025-01-17 (Earlier):
-- ✅ Completed Typography System (Option B)
-- ✅ Created typography comparison page
-- ✅ Deployed all typography changes
-- ✅ Completed ROADMAP audit
-- ✅ Created this status tracker
+### Performance Tests (Priority: LOW)
+- [ ] Auth endpoint latency (<500ms target)
+- [ ] Database query performance (user_profiles)
+- [ ] Email sending latency (Resend API)
+- [ ] Concurrent user registration handling
 
-### 2025-01-17 (Earlier):
-- ✅ Completed Event Calendar (ALL 3 phases)
-- ✅ Integrated Defillama and CoinGecko APIs
-- ✅ Created `/events` page
-- ✅ Added AI-powered event analytics
+---
 
-### 2025-01-17 (Morning):
-- ✅ Completed Fear & Greed Index
-- ✅ Created FearGreedGauge component
-- ✅ Set up CRON job for hourly updates
+## 🔒 SEGURIDAD PENDIENTE
+
+### Authentication Security (Priority: CRITICAL)
+- [ ] Implement brute force protection (max login attempts)
+- [ ] Add CAPTCHA for registration (reCAPTCHA v3)
+- [ ] Session timeout configuration (idle timeout)
+- [ ] Secure cookie settings (httpOnly, secure, sameSite)
+- [ ] JWT token refresh mechanism
+
+### API Security (Priority: HIGH)
+- [ ] API key hashing in database (SHA-256)
+- [ ] API key rotation policy
+- [ ] Rate limiting per API key (not just IP)
+- [ ] Request signing for sensitive endpoints
+- [ ] API versioning strategy
+
+### Data Security (Priority: HIGH)
+- [ ] PII encryption at rest (user emails)
+- [ ] Database backup encryption
+- [ ] Audit logging for sensitive operations
+- [ ] Data retention policy implementation
+- [ ] GDPR compliance (data export, deletion)
+
+### Infrastructure Security (Priority: MEDIUM)
+- [ ] Security headers audit (CSP, HSTS, etc.)
+- [ ] Dependency vulnerability scanning (npm audit CI)
+- [ ] Secrets rotation policy (API keys, database)
+- [ ] Error message sanitization (no stack traces)
+- [ ] Logging sensitive data review
+
+### Monitoring & Incident Response (Priority: MEDIUM)
+- [ ] Security event alerting (failed logins spike)
+- [ ] Anomaly detection (unusual API usage)
+- [ ] Incident response runbook
+- [ ] Security contact page
+- [ ] Bug bounty program (future)
 
 ---
 
@@ -1305,38 +882,33 @@
 
 ## 🚀 NEXT ACTIONS
 
-**Immediate (Testing & Deployment):**
-- [ ] Apply NFT database migration (wallet_nfts table)
-  - Install PostgreSQL client: `brew install postgresql`
-  - Run: `./scripts/apply-nft-migration.sh`
-  - OR: Apply manually via Supabase SQL editor
-- [ ] Configure real Alchemy API key
-  - Get key from: https://www.alchemy.com/
-  - Update `.env.local`: `NEXT_PUBLIC_ALCHEMY_API_KEY=your_key`
-  - Deploy to Vercel with updated env variable
-- [ ] Test NFT tracking with real wallets
-  - Test ERC-721 NFTs
-  - Test ERC-1155 NFTs
-  - Test multi-chain NFTs
-  - Verify floor prices (Ethereum)
-  - Check spam filtering
+**Immediate (This Week):**
+- [ ] **User Dashboard** - Start development
+  - Create dashboard layout
+  - Implement saved wallets functionality
+  - Add token watchlist feature
+- [ ] **Testing** - Write auth tests
+  - Unit tests for /api/auth/signup
+  - Integration tests for signup flow
+  - E2E tests with Playwright
 
 **Priority 1 (Next 1-2 Weeks):**
-- [ ] DEX volume tracking (Uniswap, PancakeSwap)
-  - Volume data collection
-  - Historical tracking
-  - Chart visualization
-- [ ] TVL tracking (DeFiLlama)
-  - Protocol TVL data
-  - Chain distribution
-  - Historical trends
+- [ ] **API Key Management**
+  - API key generation endpoint
+  - Key display & copy UI
+  - Usage tracking per key
+- [ ] **Rate Limiting per API Key**
+  - Tier-based limits
+  - Rate limit headers
 
-**Priority 2 (Next 2-3 Weeks):**
-- [ ] User authentication (Supabase Auth)
-- [ ] User dashboard
-- [ ] API key generation & management
-- [ ] Stripe integration
-- [ ] Usage tracking & billing
+**Priority 2 (Next 2-4 Weeks):**
+- [ ] **Stripe Integration**
+  - Account setup
+  - Payment flows
+  - Subscription management
+- [ ] **Pricing Tiers**
+  - Free/Pro/Enterprise
+  - Pricing page design
 
 ---
 

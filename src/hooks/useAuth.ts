@@ -74,34 +74,20 @@ export function useAuth() {
 
   const signUp = async (email: string, password: string, fullName?: string) => {
     try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            full_name: fullName || null,
-          },
-          emailRedirectTo: `${window.location.origin}/auth/verify-email`,
-        },
+      // Use our custom signup API that handles profile creation
+      const response = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, fullName }),
       })
 
-      if (error) throw error
+      const result = await response.json()
 
-      // Send verification email via our API
-      if (data.user) {
-        try {
-          await fetch('/api/auth/resend-verification', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email }),
-          })
-        } catch (emailError) {
-          console.error('[useAuth] Failed to send verification email:', emailError)
-          // Don't fail signup if email fails
-        }
+      if (!response.ok) {
+        throw new Error(result.error || 'Signup failed')
       }
 
-      return { data, error: null }
+      return { data: result, error: null }
     } catch (error: any) {
       console.error('[useAuth] Sign up error:', error)
       return { data: null, error }
@@ -119,40 +105,6 @@ export function useAuth() {
       return { data, error: null }
     } catch (error: any) {
       console.error('[useAuth] Sign in error:', error)
-      return { data: null, error }
-    }
-  }
-
-  const signInWithGoogle = async () => {
-    try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
-        },
-      })
-
-      if (error) throw error
-      return { data, error: null }
-    } catch (error: any) {
-      console.error('[useAuth] Google sign in error:', error)
-      return { data: null, error }
-    }
-  }
-
-  const signInWithGitHub = async () => {
-    try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'github',
-        options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
-        },
-      })
-
-      if (error) throw error
-      return { data, error: null }
-    } catch (error: any) {
-      console.error('[useAuth] GitHub sign in error:', error)
       return { data: null, error }
     }
   }

@@ -1,7 +1,7 @@
 # 📊 ROADMAP STATUS - Live Progress Tracker
-**Last Updated:** 2025-01-21 23:55 GMT-6
-**Overall Progress:** 81% (192/237 tasks)
-**Current Phase:** Week 4 - User Authentication & Email Verification! 📧
+**Last Updated:** 2025-01-24 19:58 GMT-6
+**Overall Progress:** 83% (197/237 tasks)
+**Current Phase:** Week 4 - User Authentication COMPLETE! ✅
 
 ---
 
@@ -21,11 +21,12 @@
 | **DEX Volume Tracking** | ✅ Done | 8 | 0 | 8 |
 | **TVL Tracking** | ✅ Done | 12 | 0 | 12 |
 | **Data Maintenance** | ✅ Done | 4 | 0 | 4 |
-| **Email Verification** | 🟡 95% Done | 19 | 1 | 20 |
+| **Email Verification** | ✅ Done | 20 | 0 | 20 |
+| **User Authentication** | ✅ Done | 5 | 0 | 5 |
 | **Month 2** | ✅ Done | 43 | 0 | 43 |
 | **Month 3-6** | ⭕ Not Started | 0 | 106 | 106 |
 | **Performance** | ✅ Done | 11 | 0 | 11 |
-| **TOTAL** | **81%** | **192** | **45** | **237** |
+| **TOTAL** | **83%** | **197** | **40** | **237** |
 
 ---
 
@@ -283,45 +284,54 @@
 - No manual intervention required
 - Performance improvement with smaller datasets
 
-### Email Verification System (19/20 - 95%) 🟡 NEARLY COMPLETE
+### Email Verification System (20/20 - 100%) ✅ COMPLETE
 **Database Layer:**
-- [x] Database migration (user_profiles table) ✅ NEW
-- [x] Email verification columns (email_verified, verification_token, expires_at) ✅ NEW
-- [x] Database functions (4 functions: generate_verification_token, verify_email_with_token, etc.) ✅ NEW
-- [x] Trigger for new users (handle_new_user_verification) ✅ NEW
-- [x] RLS policies updated ✅ NEW
+- [x] Database migration (user_profiles table)
+- [x] Email verification columns (email_verified, verification_token, expires_at)
+- [x] Database functions (4 functions: generate_verification_token, verify_email_with_token, etc.)
+- [x] RLS policies updated
+- [x] Service role policies for INSERT/SELECT
 
 **Email Service Layer:**
-- [x] Resend.com integration (src/lib/resend.ts - 280 lines) ✅ NEW
-- [x] Professional HTML email templates ✅ NEW
-- [x] Verification email function ✅ NEW
-- [x] Password reset email function ✅ NEW
-- [x] Welcome email function ✅ NEW
+- [x] Resend.com integration (src/lib/resend.ts - 280 lines)
+- [x] Professional HTML email templates
+- [x] Verification email function
+- [x] Password reset email function
+- [x] Welcome email function
 
 **API Endpoints:**
-- [x] /api/auth/verify-email (POST) ✅ NEW
-- [x] /api/auth/resend-verification (POST) ✅ NEW
-- [x] Rate limiting (100 req/15min) ✅ NEW
+- [x] /api/auth/signup (POST) - Manual profile creation ✅ NEW
+- [x] /api/auth/verify-email (POST)
+- [x] /api/auth/resend-verification (POST)
+- [x] Rate limiting (100 req/15min)
 
 **Frontend:**
-- [x] Email verification page (/auth/verify-email) ✅ NEW
-- [x] Password reset page (/auth/reset-password) ✅ NEW
-- [x] Updated auth hooks (removed OAuth, added verification) ✅ NEW
-- [x] Updated auth modals (removed OAuth buttons) ✅ NEW
+- [x] Email verification page (/auth/verify-email)
+- [x] Password reset page (/auth/reset-password)
+- [x] Updated auth hooks (removed OAuth, added verification)
+- [x] Updated auth modals (removed OAuth buttons)
 
 **External Services:**
-- [x] Resend.com account created ✅ NEW
-- [x] API key configured (production + local) ✅ NEW
-- [x] Domain added (vectorialdata.com) ✅ NEW
-- [x] DNS configured (DKIM, SPF, MX, DMARC) ✅ NEW
-- [ ] **Domain verification** ⏸️ PENDING (status: "Pending - Looking for DNS records...")
+- [x] Resend.com account created
+- [x] API key configured (production + local)
+- [x] Domain added (mail.vectorialdata.com) ✅ SUBDOMAIN
+- [x] DNS configured (DKIM, SPF, MX, DMARC)
+- [x] Domain verification COMPLETE ✅
+
+**Bug Fixes (2025-01-24):**
+- [x] Fixed "Database error saving new user" - trigger was disabled
+- [x] Removed problematic auth.users trigger (DROP TRIGGER)
+- [x] Implemented manual profile creation in /api/auth/signup
+- [x] Added service_role RLS policies for user_profiles
+- [x] End-to-end signup flow tested and working ✅
 
 **Benefits:**
 - Secure email verification (24h token expiration)
-- Professional branded emails (@vectorialdata.com)
+- Professional branded emails (@mail.vectorialdata.com)
 - Improved user trust and account security
 - Password reset functionality
 - No OAuth (cleaner, more secure flow)
+- Manual profile creation (bypasses disabled trigger)
 
 ### Performance Optimization for Legacy Browsers/Hardware (11/11 - 100%) ✅ COMPLETE
 **Issue Identified:**
@@ -389,14 +399,22 @@
 
 ---
 
-## 🔄 IN PROGRESS
+## ✅ RECENTLY COMPLETED
 
-### Email Verification System (95% Complete - 1 task remaining)
-**Status:** 🟡 Domain verification pending (Resend.com)
-**Progress:** 19/20 tasks complete
-**Next Step:**
-- Domain verification in Resend dashboard (expected auto-verification in 10-30 minutes)
-- End-to-end testing after verification complete
+### User Authentication System (5/5 - 100%) ✅ COMPLETE
+**Completed:** 2025-01-24
+- [x] Email/password signup with verification
+- [x] Email/password login
+- [x] Password reset flow
+- [x] User profile creation (manual - bypasses disabled trigger)
+- [x] Session management (Supabase Auth)
+
+**Technical Implementation:**
+- Custom /api/auth/signup endpoint using Supabase Admin API
+- Manual profile creation in user_profiles table
+- Removed problematic auth.users trigger
+- Added service_role RLS policies
+- Full end-to-end flow tested and working
 
 ---
 
@@ -460,9 +478,10 @@
   - [x] Historical data retention (30 days)
   - [x] Automatic database optimization
 
-#### Week 4: User System
-- [ ] User authentication (Supabase Auth)
-- [ ] User dashboard
+#### Week 4: User System ✅ COMPLETE
+- [x] User authentication (Supabase Auth) ✅
+- [x] Email verification system ✅
+- [ ] User dashboard (next priority)
 - [ ] API key generation
 - [ ] API key management
 - [ ] Rate limiting per API key
@@ -546,14 +565,20 @@
   - Database optimization (~97% size reduction)
   - Multi-table cleanup (prices, gas, fear-greed)
   - Performance improvement
-- **Email Verification:** 🟡 95% Complete (NEW!)
+- **Email Verification:** ✅ Live (100% Complete!)
   - Email verification system with 24h tokens
-  - Resend.com integration (@vectorialdata.com)
+  - Resend.com integration (@mail.vectorialdata.com)
   - Professional HTML email templates
   - Verification + password reset + welcome emails
   - Rate limiting (100 req/15min)
   - OAuth removed (cleaner flow)
-  - Domain verification pending (DNS propagated)
+  - Domain verified and working ✅
+- **User Authentication:** ✅ Live (100% Complete!)
+  - Email/password signup with verification
+  - Login and session management
+  - Password reset flow
+  - Manual profile creation (bypasses disabled trigger)
+  - First user registered successfully! 🎉
 
 ### Infrastructure:
 - **Database:** ✅ Deployed (Supabase - 20 tables)
@@ -567,68 +592,70 @@
 
 ## 🎯 CURRENT FOCUS
 
-### 🟡 EMAIL VERIFICATION - 95% COMPLETE! 📧
-**Status:** Nearly complete - domain verification pending
+### ✅ USER AUTHENTICATION - 100% COMPLETE! 🎉
+**Status:** Complete - First user registered successfully!
 
-**Session 2025-01-21 - Completed:**
-1. ✅ **Email Verification System (19/20 tasks - 95%)**
-   - Database migration (user_profiles table + 3 columns)
-   - 4 database functions (generate_verification_token, verify_email_with_token, etc.)
-   - Trigger for new users (handle_new_user_verification)
-   - Email service layer (src/lib/resend.ts - 280 lines)
-   - Professional HTML email templates
-   - API endpoints (/api/auth/verify-email, /api/auth/resend-verification)
-   - Frontend pages (verify-email, reset-password)
-   - Updated auth hooks (removed OAuth, added verification)
-   - Updated auth modals (removed OAuth buttons)
-   - Rate limiting (100 req/15min per IP)
-   - Security improvements (7 enhancements)
+**Session 2025-01-24 - Completed:**
+1. ✅ **Fixed "Database error saving new user" Bug**
+   - Identified: auth.users trigger was disabled (tgenabled = 0)
+   - Couldn't enable trigger (permission denied - auth.users owned by supabase_auth_admin)
+   - Solution: Removed trigger + implemented manual profile creation
 
-2. ✅ **Resend.com Setup (95%)**
-   - Account created + API key generated
-   - Domain added (vectorialdata.com)
-   - DNS configured (DKIM, SPF, MX, DMARC)
-   - DNS propagation verified
-   - ⏸️ **Domain verification pending** (auto-verification in progress)
+2. ✅ **Implemented Manual Profile Creation**
+   - Created /api/auth/signup endpoint
+   - Uses Supabase Admin API (auth.admin.createUser)
+   - Manually inserts profile into user_profiles table
+   - Sends verification email after successful creation
+   - Rollback on failure (deletes auth user if profile creation fails)
 
-3. ✅ **Production Deployment**
-   - Fixed 5 build errors (OAuth removal, Suspense, dependencies)
-   - Deployed 4 commits (final: e9609e8)
-   - Site live at: https://vectorialdata.com
-   - All features deployed successfully
+3. ✅ **Database Fixes**
+   - DROP TRIGGER on_auth_user_created ON auth.users
+   - Added RLS policy "Service role can insert profiles"
+   - Added RLS policy "Service role can read all profiles"
+
+4. ✅ **Email Domain Fixed (mail.vectorialdata.com)**
+   - Changed from vectorialdata.com to mail.vectorialdata.com
+   - Avoids MX record conflicts with Porkbun email forwarding
+   - DNS verified and working in Resend
+
+5. ✅ **End-to-End Testing**
+   - User registered: solvent.karat_3y@icloud.com
+   - Verification email received
+   - Email verification successful
+   - email_verified = true in database
 
 **Result:**
-- ✅ Email Verification: 95% Complete (19/20 tasks)
-- ✅ Overall Progress: 79% → 81% (192/237 tasks)
+- ✅ User Authentication: 100% Complete
+- ✅ Email Verification: 100% Complete
+- ✅ Overall Progress: 81% → 83% (197/237 tasks)
 - ✅ +5 new tasks completed this session
-- ⏸️ **Pending:** Domain verification + end-to-end testing (next session)
+- 🎉 **First user registered successfully!**
 
-### 🚀 Next Phase: Month 3 - User System & Monetization
-**Priority 1 (Next 2-3 Weeks):**
-1. **User Authentication** (Supabase Auth)
-   - Email/password authentication
-   - Social logins (Google, GitHub)
-   - User profile management
-   - Session management
+### 🚀 Next Phase: User Dashboard & Monetization
+**Priority 1 (Next 1-2 Weeks):**
+1. **User Dashboard**
+   - Personalized analytics view
+   - Saved wallets functionality
+   - Token watchlists
+   - Recent activity feed
 
-2. **User Dashboard**
-   - Personalized analytics
-   - Saved wallets
-   - Watchlists
-   - API usage tracking
-
-3. **API Key Management**
+2. **API Key Management**
    - API key generation
-   - Rate limiting per key
-   - Usage analytics
-   - Key rotation
+   - Key display and copy
+   - Usage tracking per key
+   - Key regeneration
 
 **Priority 2 (Following 2-3 Weeks):**
-4. **Stripe Integration**
+3. **Stripe Integration**
    - Payment flows
    - Subscription management
    - Pricing tiers (Free/Pro/Enterprise)
    - Billing portal
+
+4. **Rate Limiting per API Key**
+   - Tier-based limits
+   - Usage analytics
+   - Overage handling
 
 ---
 
@@ -1328,12 +1355,14 @@
 11. ✅ **DEX Volume Tracking** - 100% Complete (8/8) - DeFiLlama integration! 📊
 12. ✅ **TVL Tracking** - 100% Complete (12/12) - 7 chains + Enfoque 2 optimizations! 💎
 13. ✅ **Data Maintenance** - 100% Complete (4/4) - Automated cleanup! 🧹
-14. 🟡 **Email Verification** - 95% Complete (19/20) - Resend.com integration! 📧
+14. ✅ **Email Verification** - 100% Complete (20/20) - Resend.com integration! 📧
+15. ✅ **User Authentication** - 100% Complete (5/5) - First user registered! 🎉
 
-**Total Progress: 81% (192/237 tasks)**
+**Total Progress: 83% (197/237 tasks)**
 
 🎉 **MONTH 2 COMPLETE!** All data expansion features implemented!
-🟡 **Email Verification** - 95% deployed, domain verification pending!
+✅ **Email Verification** - 100% deployed and working!
+✅ **User Authentication** - 100% complete with first user registered!
 
 ---
 

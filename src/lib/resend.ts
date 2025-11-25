@@ -2,7 +2,7 @@
  * Resend Email Service
  *
  * Professional email sending using Resend.com
- * Emails sent from: noreply@vectorialdata.com
+ * Emails sent from: noreply@mail.vectorialdata.com
  *
  * Features:
  * - Email verification
@@ -22,7 +22,7 @@ import { Resend } from 'resend'
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 // Email configuration
-const FROM_EMAIL = 'VectorialData <noreply@vectorialdata.com>'
+const FROM_EMAIL = 'VectorialData <noreply@mail.vectorialdata.com>'
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://vectorialdata.com'
 
 export interface EmailOptions {

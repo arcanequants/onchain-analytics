@@ -10,6 +10,8 @@
  * - GDPR/CCPA compliant legal links
  * - Mobile-responsive 3-column layout
  * - WCAG AA accessibility (4.5:1 contrast)
+ *
+ * Updated for AI Perception Engineering Agency
  */
 
 'use client'
@@ -23,34 +25,33 @@ export default function Footer() {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "name": "Vectorial Data",
-    "alternateName": "Arcane Quants",
-    "applicationCategory": "FinanceApplication",
+    "name": "AI Perception",
+    "alternateName": "AI Perception Engineering Agency",
+    "applicationCategory": "BusinessApplication",
     "operatingSystem": "Web",
-    "description": "On-chain metrics, traditional finance data, and sports betting analytics oracle for humans, AI agents, and bots worldwide.",
+    "description": "Discover how AI models like ChatGPT, Claude, Gemini and Perplexity perceive and recommend your brand. Get your AI Perception Score and actionable recommendations.",
     "offers": {
       "@type": "Offer",
       "price": "0",
       "priceCurrency": "USD",
-      "description": "Free tier available with paid upgrades"
+      "description": "Free analysis available with paid upgrades for monitoring"
     },
     "termsOfService": "https://www.vectorialdata.com/terms",
     "privacyPolicy": "https://www.vectorialdata.com/privacy",
     "provider": {
       "@type": "Organization",
-      "name": "Vectorial Data",
-      "legalName": "Vectorial Data (operating as Arcane Quants)",
+      "name": "AI Perception",
+      "legalName": "AI Perception Engineering Agency",
       "url": "https://www.vectorialdata.com",
-      "logo": "https://www.vectorialdata.com/logo.png",
       "foundingDate": "2025",
-      "description": "Global oracle for blockchain analytics, TradFi data, and sports betting information"
+      "description": "AI Perception Engineering - helping businesses understand and improve how AI models perceive them"
     },
     "serviceType": [
-      "Blockchain Analytics",
-      "Cryptocurrency Market Data",
-      "DeFi Protocol Analytics",
-      "Sports Betting Information",
-      "Financial Data API"
+      "AI Brand Analysis",
+      "GEO - Generative Engine Optimization",
+      "AI Recommendation Monitoring",
+      "Brand Perception Intelligence",
+      "Competitor AI Analysis"
     ]
   }
 
@@ -68,15 +69,15 @@ export default function Footer() {
           {/* Column 1: Brand & Description */}
           <div className="footer-column footer-brand">
             <div className="footer-logo">
-              <Link href="/" aria-label="Vectorial Data home">
-                <span className="logo-text">Vectorial Data</span>
+              <Link href="/" aria-label="AI Perception home">
+                <span className="logo-text">AI Perception</span>
               </Link>
             </div>
             <p className="footer-tagline">
-              Global oracle for on-chain metrics, TradFi data, and sports betting analytics.
+              Discover how AI models perceive and recommend your brand.
             </p>
             <p className="footer-mission">
-              Serving humans, AI agents, and bots worldwide with verifiable, real-time financial intelligence.
+              Helping businesses understand their visibility in AI recommendations from ChatGPT, Claude, Gemini and Perplexity.
             </p>
           </div>
 
@@ -128,13 +129,8 @@ export default function Footer() {
             <nav aria-label="Product navigation">
               <ul className="footer-links">
                 <li>
-                  <Link href="/about" aria-label="About Vectorial Data">
-                    About
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/dashboard" aria-label="User dashboard">
-                    Dashboard
+                  <Link href="/" aria-label="Analyze your brand">
+                    Free Analysis
                   </Link>
                 </li>
                 <li>
@@ -144,10 +140,10 @@ export default function Footer() {
                 </li>
                 <li>
                   <a
-                    href="mailto:support@vectorialdata.com"
+                    href="mailto:hello@vectorialdata.com"
                     aria-label="Contact support via email"
                   >
-                    Support
+                    Contact
                   </a>
                 </li>
               </ul>
@@ -159,17 +155,11 @@ export default function Footer() {
         <div className="footer-bottom">
           <div className="footer-bottom-content">
             <p className="footer-copyright">
-              © {new Date().getFullYear()} Vectorial Data. All rights reserved.
+              © {new Date().getFullYear()} AI Perception. All rights reserved.
             </p>
             <div className="footer-disclaimers">
-              <span className="footer-disclaimer-badge" title="Not investment advice">
-                ⚠️ Not Financial Advice
-              </span>
-              <span className="footer-disclaimer-badge" title="Not a gambling operator">
-                ⚽ Not a Sportsbook
-              </span>
               <span className="footer-disclaimer-badge" title="GDPR compliant">
-                🇪🇺 GDPR Compliant
+                GDPR Compliant
               </span>
             </div>
           </div>

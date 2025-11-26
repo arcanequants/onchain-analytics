@@ -2,7 +2,7 @@
 ## Executive Strategic Roadmap
 
 **Document Classification:** Strategic Planning
-**Version:** 10.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology Review)
+**Version:** 11.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics Review)
 **Date:** November 25, 2024
 **Prepared by:** BCG Digital Ventures - Technology Strategy Practice
 **Reviewed by:**
@@ -15,6 +15,7 @@
 - Senior Reputation & Digital PR Specialist - Brand Strategy & Crisis Management Review
 - Senior Prompt Engineer / Model Analyst - Prompt Architecture & Model Optimization Review
 - Senior Principal Ontologist - Knowledge Modeling & Semantic Architecture Review
+- Senior Computational Linguist - NLP, Text Analysis & Language Understanding Review
 
 ---
 
@@ -5095,6 +5096,779 @@ Based on industry best practices, we're adding these **fully automated** diagnos
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
+### 2.69 Computational Linguistics Architecture (NEW - CL Review)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│       COMPUTATIONAL LINGUISTICS GAPS IDENTIFIED                     │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  1. NO DISCOURSE ANALYSIS                                           │
+│     ═══════════════════════                                         │
+│     Problem: AI responses analyzed as flat text, no structure       │
+│     Impact: Miss rhetorical patterns that indicate recommendation   │
+│     Solution: Discourse parsing to identify argument structure      │
+│                                                                     │
+│  2. NO COREFERENCE RESOLUTION                                       │
+│     ═══════════════════════════                                     │
+│     Problem: "It is the best CRM" - what does "it" refer to?        │
+│     Impact: Miss indirect brand mentions via pronouns               │
+│     Solution: Coreference chains to link pronouns to entities       │
+│                                                                     │
+│  3. NO SEMANTIC ROLE LABELING (SRL)                                 │
+│     ════════════════════════════════                                │
+│     Problem: Who is recommending what to whom?                      │
+│     Impact: Can't distinguish "X recommends Y" vs "Y recommends X"  │
+│     Solution: SRL to identify Agent, Theme, Beneficiary roles       │
+│                                                                     │
+│  4. NO HEDGE/CERTAINTY DETECTION                                    │
+│     ══════════════════════════════                                  │
+│     Problem: "might be good" vs "is definitely the best"            │
+│     Impact: All recommendations treated with equal confidence       │
+│     Solution: Epistemic modality classification                     │
+│                                                                     │
+│  5. NO COMPARATIVE/SUPERLATIVE EXTRACTION                           │
+│     ═════════════════════════════════════                           │
+│     Problem: "better than X", "the best", "among the top"           │
+│     Impact: Miss ranking signals in AI responses                    │
+│     Solution: Comparative construction parser                       │
+│                                                                     │
+│  6. NO ASPECT-BASED SENTIMENT ANALYSIS                              │
+│     ════════════════════════════════════                            │
+│     Problem: Overall sentiment exists but not per-aspect            │
+│     Impact: "Great pricing but terrible support" = both aspects     │
+│     Solution: Extract sentiment for each mentioned aspect           │
+│                                                                     │
+│  7. NO QUERY INTENT CLASSIFICATION                                  │
+│     ══════════════════════════════                                  │
+│     Problem: All AI queries treated identically                     │
+│     Impact: Different intents need different prompt strategies      │
+│     Solution: Classify: informational, navigational, transactional  │
+│                                                                     │
+│  8. NO LEXICAL VARIATION HANDLING                                   │
+│     ══════════════════════════════                                  │
+│     Problem: "CRM" vs "customer relationship management" vs "CRM"   │
+│     Impact: Same concept counted as different mentions              │
+│     Solution: Lemmatization + synonym resolution + acronym expansion│
+│                                                                     │
+│  9. NO NEGATION SCOPE DETECTION                                     │
+│     ═══════════════════════════                                     │
+│     Problem: "I would not recommend X" parsed as recommendation     │
+│     Impact: Negative mentions counted as positive                   │
+│     Solution: Negation scope parser with sentiment inversion        │
+│                                                                     │
+│  10. NO QUOTATION/ATTRIBUTION PARSING                               │
+│      ══════════════════════════════                                 │
+│      Problem: "Users say X is great" - who is the source?           │
+│      Impact: Can't distinguish AI opinion vs cited opinion          │
+│      Solution: Attribution extraction (direct/indirect speech)      │
+│                                                                     │
+│  11. NO TEMPORAL EXPRESSION EXTRACTION                              │
+│      ═══════════════════════════════                                │
+│      Problem: "was popular in 2020", "recently updated"             │
+│      Impact: Miss temporal context of recommendations               │
+│      Solution: TIMEX3 temporal expression normalization             │
+│                                                                     │
+│  12. NO MULTI-LINGUAL NLP PIPELINE                                  │
+│      ════════════════════════════                                   │
+│      Problem: Only English processing, Spanish market planned       │
+│      Impact: Can't analyze Spanish AI responses accurately          │
+│      Solution: Language-agnostic NLP with Spanish spaCy/Stanza      │
+│                                                                     │
+│  13. NO READABILITY SCORING FOR AI OPTIMIZATION                     │
+│      ═══════════════════════════════════════════                    │
+│      Problem: No guidance on content readability for AI             │
+│      Impact: Complex content may be ignored by AI models            │
+│      Solution: Flesch-Kincaid, SMOG, Gunning Fog for RAG score      │
+│                                                                     │
+│  14. NO KEYWORD/KEYPHRASE EXTRACTION                                │
+│      ════════════════════════════════                               │
+│      Problem: No extraction of salient terms from AI responses      │
+│      Impact: Can't identify what keywords trigger recommendations   │
+│      Solution: TF-IDF, RAKE, or YAKE keyphrase extraction           │
+│                                                                     │
+│  15. NO TOPIC MODELING FOR COMPETITOR ANALYSIS                      │
+│      ═══════════════════════════════════════                        │
+│      Problem: Competitors mentioned but context unclear             │
+│      Impact: Don't know WHY competitors are mentioned               │
+│      Solution: LDA/BERTopic for topic clustering of mentions        │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.70 Discourse & Argumentation Analysis (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              DISCOURSE STRUCTURE ANALYSIS                           │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  GOAL: Understand HOW AI structures its recommendations             │
+│                                                                     │
+│  DISCOURSE RELATIONS TO DETECT:                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ • RECOMMENDATION: "I recommend X because..."                 │   │
+│  │ • ELABORATION: "X is good. It offers..."                    │   │
+│  │ • CONTRAST: "Unlike Y, X provides..."                       │   │
+│  │ • CONDITION: "If you need Z, then X is..."                  │   │
+│  │ • CONCESSION: "Although X is expensive, it..."              │   │
+│  │ • JUSTIFICATION: "X is best because..."                     │   │
+│  │ • EVALUATION: "X is excellent/poor/adequate"                │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  ARGUMENTATION MINING:                                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ CLAIM: "HubSpot is the best CRM for SMBs"                    │   │
+│  │   │                                                          │   │
+│  │   ├── PREMISE 1: "It offers free tier" (SUPPORT)            │   │
+│  │   ├── PREMISE 2: "Easy to use" (SUPPORT)                    │   │
+│  │   └── PREMISE 3: "Limited enterprise features" (ATTACK)     │   │
+│  │                                                               │   │
+│  │ STRENGTH = (supports - attacks) / total_premises            │   │
+│  │          = (2 - 1) / 3 = 0.33 (moderate)                    │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // Lightweight: Pattern-based discourse markers              │   │
+│  │ const DISCOURSE_MARKERS = {                                  │   │
+│  │   recommendation: ['recommend', 'suggest', 'try', 'consider'],│   │
+│  │   contrast: ['however', 'unlike', 'but', 'although'],       │   │
+│  │   justification: ['because', 'since', 'due to', 'as'],      │   │
+│  │   evaluation: ['best', 'excellent', 'poor', 'great'],       │   │
+│  │   condition: ['if you', 'when you', 'for those who'],       │   │
+│  │   concession: ['although', 'despite', 'even though'],       │   │
+│  │ };                                                           │   │
+│  │                                                               │   │
+│  │ // Extract discourse units                                    │   │
+│  │ const analyzeDiscourse = (text: string): DiscourseUnit[] => {│   │
+│  │   const sentences = splitSentences(text);                    │   │
+│  │   return sentences.map(s => ({                               │   │
+│  │     text: s,                                                 │   │
+│  │     relation: detectDiscourseRelation(s),                    │   │
+│  │     entities: extractEntities(s),                            │   │
+│  │     sentiment: analyzeSentiment(s),                          │   │
+│  │   }));                                                       │   │
+│  │ };                                                           │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: discourse_analysis                                │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id              UUID PRIMARY KEY                             │   │
+│  │ ai_response_id  UUID REFERENCES ai_responses(id)             │   │
+│  │ sentence_idx    INTEGER                                      │   │
+│  │ sentence_text   TEXT                                         │   │
+│  │ discourse_rel   ENUM('recommendation','contrast','justify',  │   │
+│  │                      'evaluation','condition','elaboration') │   │
+│  │ mentioned_entities TEXT[] (brand names in sentence)          │   │
+│  │ sentiment_score DECIMAL (-1 to 1)                            │   │
+│  │ is_claim        BOOLEAN                                      │   │
+│  │ supports_claim  UUID[] (sentence IDs that support)           │   │
+│  │ attacks_claim   UUID[] (sentence IDs that attack)            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.71 Coreference & Entity Linking (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              COREFERENCE RESOLUTION SYSTEM                          │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PROBLEM EXAMPLE:                                                  │
+│  "HubSpot is a popular CRM. It offers free tools. The platform     │
+│   is known for its ease of use. This solution works well for SMBs."│
+│                                                                     │
+│  COREFERENCE CHAIN:                                                │
+│  [HubSpot] ← [It] ← [The platform] ← [This solution]               │
+│                                                                     │
+│  WHY IT MATTERS:                                                   │
+│  • "It" alone = no brand mention detected                          │
+│  • With coreference = 4 brand mentions detected                    │
+│  • Dramatically affects Share of Voice calculation                 │
+│                                                                     │
+│  IMPLEMENTATION OPTIONS:                                           │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ OPTION A: Rule-based (Fast, ~80% accuracy)                   │   │
+│  │ • Track most recent named entity                             │   │
+│  │ • Pronouns (it, they, their) → nearest compatible entity     │   │
+│  │ • Definite NPs (the company, the platform) → last org        │   │
+│  │                                                               │   │
+│  │ OPTION B: Neural (Slow, ~95% accuracy)                       │   │
+│  │ • Use spaCy neuralcoref or AllenNLP coreference              │   │
+│  │ • Process as batch job, not real-time                        │   │
+│  │                                                               │   │
+│  │ RECOMMENDED: Rule-based for MVP, neural for Phase 3          │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  RULE-BASED IMPLEMENTATION:                                        │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ const PRONOUN_PATTERNS = {                                   │   │
+│  │   singular_neuter: ['it', 'its', 'itself'],                 │   │
+│  │   singular_org: ['the company', 'the platform', 'the tool', │   │
+│  │                  'this solution', 'the software', 'the app'],│   │
+│  │   plural: ['they', 'their', 'them', 'these'],               │   │
+│  │ };                                                           │   │
+│  │                                                               │   │
+│  │ const resolveCoref = (text: string, entities: Entity[]) => { │   │
+│  │   const tokens = tokenize(text);                             │   │
+│  │   let lastEntity: Entity | null = null;                      │   │
+│  │   const resolved: ResolvedMention[] = [];                    │   │
+│  │                                                               │   │
+│  │   for (const token of tokens) {                              │   │
+│  │     if (isEntity(token)) {                                   │   │
+│  │       lastEntity = token;                                    │   │
+│  │       resolved.push({ text: token, entity: token });         │   │
+│  │     } else if (isPronoun(token) && lastEntity) {            │   │
+│  │       resolved.push({ text: token, entity: lastEntity });    │   │
+│  │     }                                                        │   │
+│  │   }                                                          │   │
+│  │   return resolved;                                           │   │
+│  │ };                                                           │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: coreference_chains                                │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id              UUID PRIMARY KEY                             │   │
+│  │ ai_response_id  UUID REFERENCES ai_responses(id)             │   │
+│  │ chain_id        INTEGER (chains within same response)        │   │
+│  │ antecedent      TEXT (original entity name)                  │   │
+│  │ mentions        JSONB[] (all coreferent mentions)            │   │
+│  │   - text: TEXT                                               │   │
+│  │   - start_char: INTEGER                                      │   │
+│  │   - end_char: INTEGER                                        │   │
+│  │   - type: ENUM('name','pronoun','definite_np')              │   │
+│  │ mention_count   INTEGER (total times entity referenced)      │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.72 Sentiment & Aspect Extraction (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              ASPECT-BASED SENTIMENT ANALYSIS (ABSA)                 │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PROBLEM:                                                          │
+│  "HubSpot has great free tools but their enterprise pricing is     │
+│   expensive and customer support can be slow."                     │
+│                                                                     │
+│  CURRENT APPROACH: Overall sentiment = "mixed" (useless)           │
+│                                                                     │
+│  ABSA APPROACH:                                                    │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Aspect: "free tools"     → Sentiment: POSITIVE (+0.8)        │   │
+│  │ Aspect: "pricing"        → Sentiment: NEGATIVE (-0.7)        │   │
+│  │ Aspect: "customer support" → Sentiment: NEGATIVE (-0.5)      │   │
+│  │                                                               │   │
+│  │ ACTIONABLE INSIGHT:                                          │   │
+│  │ "HubSpot is praised for free tools but criticized for        │   │
+│  │  enterprise pricing and support response times."              │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  PREDEFINED ASPECT CATEGORIES:                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ PRODUCT:                                                     │   │
+│  │ • features, functionality, ease_of_use, performance          │   │
+│  │ • integration, customization, reliability, security          │   │
+│  │                                                               │   │
+│  │ BUSINESS:                                                    │   │
+│  │ • pricing, value, free_tier, enterprise_pricing              │   │
+│  │ • support, documentation, onboarding, training               │   │
+│  │                                                               │   │
+│  │ BRAND:                                                       │   │
+│  │ • reputation, trust, innovation, market_position             │   │
+│  │ • company_size, longevity, community                         │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // Aspect keywords for detection                             │   │
+│  │ const ASPECT_KEYWORDS = {                                    │   │
+│  │   pricing: ['price', 'cost', 'expensive', 'cheap', 'free',   │   │
+│  │             'affordable', 'budget', 'value', 'tier'],        │   │
+│  │   support: ['support', 'help', 'response', 'service',        │   │
+│  │             'customer service', 'assistance'],                │   │
+│  │   features: ['feature', 'functionality', 'capability',       │   │
+│  │              'tool', 'option', 'function'],                   │   │
+│  │   ease_of_use: ['easy', 'simple', 'intuitive', 'user-friendly',│   │
+│  │                 'complex', 'difficult', 'learning curve'],    │   │
+│  │ };                                                           │   │
+│  │                                                               │   │
+│  │ // Extract aspects with sentiment from sentence              │   │
+│  │ const extractAspects = (sentence: string): AspectSentiment[] │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: aspect_sentiments                                 │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id              UUID PRIMARY KEY                             │   │
+│  │ ai_response_id  UUID REFERENCES ai_responses(id)             │   │
+│  │ entity_name     TEXT (brand mentioned)                       │   │
+│  │ aspect_category TEXT (pricing, support, features, etc.)      │   │
+│  │ aspect_phrase   TEXT (actual phrase: "enterprise pricing")   │   │
+│  │ sentiment_score DECIMAL (-1 to 1)                            │   │
+│  │ sentiment_label ENUM('positive','negative','neutral')        │   │
+│  │ confidence      DECIMAL (0-1)                                │   │
+│  │ sentence_text   TEXT (source sentence)                       │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  UI PRESENTATION:                                                  │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ HOW AI PERCEIVES YOUR BRAND BY ASPECT:                       │   │
+│  │                                                               │   │
+│  │ Features       ████████████████░░░░  +0.82  👍               │   │
+│  │ Ease of Use    ██████████████░░░░░░  +0.72  👍               │   │
+│  │ Pricing        ██████░░░░░░░░░░░░░░  -0.35  👎               │   │
+│  │ Support        ████░░░░░░░░░░░░░░░░  -0.58  👎               │   │
+│  │                                                               │   │
+│  │ 💡 INSIGHT: AIs praise your features but criticize pricing  │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.73 Negation & Hedge Detection (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              NEGATION SCOPE & EPISTEMIC MODALITY                    │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  NEGATION PROBLEM:                                                 │
+│  "I would NOT recommend HubSpot for enterprise use cases."         │
+│  Without negation detection: "recommend HubSpot" = POSITIVE 🔴     │
+│  With negation detection: "NOT recommend HubSpot" = NEGATIVE ✅    │
+│                                                                     │
+│  NEGATION CUES:                                                    │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ EXPLICIT: not, no, never, neither, nor, none, nothing       │   │
+│  │ IMPLICIT: hardly, barely, scarcely, rarely, seldom          │   │
+│  │ AFFIXAL: un-, dis-, in-, im-, non-, -less                   │   │
+│  │ LEXICAL: fail, lack, refuse, deny, avoid, prevent           │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  NEGATION SCOPE RULES:                                             │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ 1. Scope extends to end of clause (not to next period)       │   │
+│  │ 2. Scope blocked by but, however, although                   │   │
+│  │ 3. Double negation = positive ("not unhappy" = positive)     │   │
+│  │                                                               │   │
+│  │ EXAMPLE:                                                     │   │
+│  │ "HubSpot is not the best choice, but it's still decent."     │   │
+│  │                                                               │   │
+│  │ Negation scope: [not the best choice]                        │   │
+│  │ Outside scope: [it's still decent]                           │   │
+│  │                                                               │   │
+│  │ Result: negative for "best choice" aspect                    │   │
+│  │         positive for overall quality                         │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  HEDGE/CERTAINTY DETECTION:                                        │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ CERTAINTY LEVELS:                                            │   │
+│  │                                                               │   │
+│  │ HIGH (1.0):   "is", "definitely", "certainly", "always"      │   │
+│  │ MEDIUM (0.7): "probably", "likely", "usually", "often"       │   │
+│  │ LOW (0.4):    "might", "may", "could", "possibly"            │   │
+│  │ VERY LOW (0.2): "perhaps", "conceivably", "arguably"         │   │
+│  │                                                               │   │
+│  │ EXAMPLE IMPACT:                                              │   │
+│  │ "HubSpot IS the best CRM" → certainty=1.0 → weight=1.0       │   │
+│  │ "HubSpot MIGHT BE a good option" → certainty=0.4 → weight=0.4│   │
+│  │                                                               │   │
+│  │ This affects:                                                │   │
+│  │ • Recommendation strength scoring                            │   │
+│  │ • Share of Voice calculations (weighted by certainty)        │   │
+│  │ • Confidence intervals on perception scores                  │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ const HEDGE_WORDS = {                                        │   │
+│  │   high_certainty: ['is', 'are', 'definitely', 'certainly',   │   │
+│  │                    'clearly', 'undoubtedly', 'always'],       │   │
+│  │   medium_certainty: ['probably', 'likely', 'usually',        │   │
+│  │                      'generally', 'typically', 'often'],      │   │
+│  │   low_certainty: ['might', 'may', 'could', 'possibly',       │   │
+│  │                   'perhaps', 'sometimes', 'occasionally'],    │   │
+│  │ };                                                           │   │
+│  │                                                               │   │
+│  │ const detectHedge = (sentence: string): number => {          │   │
+│  │   const words = tokenize(sentence.toLowerCase());            │   │
+│  │   for (const word of words) {                                │   │
+│  │     if (HEDGE_WORDS.high_certainty.includes(word)) return 1.0;│   │
+│  │     if (HEDGE_WORDS.medium_certainty.includes(word)) return 0.7;│   │
+│  │     if (HEDGE_WORDS.low_certainty.includes(word)) return 0.4;│   │
+│  │   }                                                          │   │
+│  │   return 0.7; // default moderate certainty                  │   │
+│  │ };                                                           │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE COLUMNS (add to ai_responses):                           │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ contains_negation    BOOLEAN                                 │   │
+│  │ negation_scope       TEXT (the negated phrase)               │   │
+│  │ certainty_score      DECIMAL (0-1)                           │   │
+│  │ hedge_phrases        TEXT[]                                  │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.74 Comparative & Superlative Extraction (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              COMPARATIVE CONSTRUCTION ANALYSIS                      │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  GOAL: Extract ranking signals from AI responses                    │
+│                                                                     │
+│  COMPARATIVE TYPES:                                                │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ SUPERIORITY:                                                 │   │
+│  │   "X is better than Y"                                       │   │
+│  │   "X outperforms Y"                                         │   │
+│  │   "X offers more than Y"                                    │   │
+│  │   → X > Y in ranking                                        │   │
+│  │                                                               │   │
+│  │ INFERIORITY:                                                 │   │
+│  │   "X is worse than Y"                                       │   │
+│  │   "X lacks compared to Y"                                   │   │
+│  │   "X is less comprehensive than Y"                          │   │
+│  │   → X < Y in ranking                                        │   │
+│  │                                                               │   │
+│  │ EQUALITY:                                                    │   │
+│  │   "X is as good as Y"                                       │   │
+│  │   "X is comparable to Y"                                    │   │
+│  │   "X and Y are similar"                                     │   │
+│  │   → X ≈ Y in ranking                                        │   │
+│  │                                                               │   │
+│  │ SUPERLATIVE:                                                 │   │
+│  │   "X is the best"                                           │   │
+│  │   "X is the most popular"                                   │   │
+│  │   "X leads the market"                                      │   │
+│  │   → X = #1 in ranking                                       │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  EXTRACTION PATTERNS:                                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ const COMPARATIVE_PATTERNS = [                               │   │
+│  │   // Superiority patterns                                    │   │
+│  │   /(\w+)\s+is\s+(better|faster|easier|more\s+\w+)\s+than\s+(\w+)/i,│   │
+│  │   /(\w+)\s+outperforms?\s+(\w+)/i,                          │   │
+│  │   /(\w+)\s+beats?\s+(\w+)/i,                                │   │
+│  │   /prefer\s+(\w+)\s+over\s+(\w+)/i,                         │   │
+│  │                                                               │   │
+│  │   // Superlative patterns                                    │   │
+│  │   /(\w+)\s+is\s+the\s+(best|top|leading|most\s+\w+)/i,      │   │
+│  │   /(\w+)\s+stands?\s+out/i,                                 │   │
+│  │   /(\w+)\s+leads?\s+the\s+(market|industry|pack)/i,         │   │
+│  │                                                               │   │
+│  │   // List rankings                                           │   │
+│  │   /top\s+(\d+).*?(?:include|are)?\s*[:.]?\s*([\w\s,]+)/i,   │   │
+│  │   /(?:first|1\.)\s*(\w+)/i,                                 │   │
+│  │ ];                                                           │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: comparative_mentions                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id              UUID PRIMARY KEY                             │   │
+│  │ ai_response_id  UUID REFERENCES ai_responses(id)             │   │
+│  │ entity_a        TEXT (first entity in comparison)            │   │
+│  │ entity_b        TEXT (second entity, null for superlative)   │   │
+│  │ comparison_type ENUM('superiority','inferiority','equality', │   │
+│  │                      'superlative')                          │   │
+│  │ aspect          TEXT (what aspect is compared: pricing, etc.)│   │
+│  │ raw_text        TEXT (the comparative phrase)                │   │
+│  │ implied_rank    INTEGER (1=best, null if not determinable)   │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  USE CASE - COMPETITIVE POSITIONING:                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ FROM AI RESPONSES:                                           │   │
+│  │ • "HubSpot is better than Zoho for ease of use"              │   │
+│  │ • "Salesforce is the most comprehensive"                     │   │
+│  │ • "HubSpot is cheaper than Salesforce"                       │   │
+│  │                                                               │   │
+│  │ DERIVED RANKING (Ease of Use):                               │   │
+│  │ 1. HubSpot (better than Zoho)                                │   │
+│  │ 2. Zoho                                                      │   │
+│  │                                                               │   │
+│  │ DERIVED RANKING (Comprehensiveness):                         │   │
+│  │ 1. Salesforce (the most comprehensive)                       │   │
+│  │                                                               │   │
+│  │ DERIVED RANKING (Price):                                     │   │
+│  │ 1. HubSpot (cheaper)                                         │   │
+│  │ 2. Salesforce                                                │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.75 Multi-Lingual NLP Pipeline (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              LANGUAGE-AGNOSTIC NLP ARCHITECTURE                     │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  TARGET LANGUAGES (Priority Order):                                │
+│  1. English (en) - Primary market                                  │
+│  2. Spanish (es) - Latin America expansion                         │
+│  3. Portuguese (pt) - Brazil market                                │
+│  4. French (fr) - Future                                           │
+│  5. German (de) - Future                                           │
+│                                                                     │
+│  LANGUAGE DETECTION:                                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // Use franc for fast language detection                     │   │
+│  │ import { franc } from 'franc';                               │   │
+│  │                                                               │   │
+│  │ const detectLanguage = (text: string): string => {           │   │
+│  │   const lang = franc(text, { minLength: 10 });               │   │
+│  │   return SUPPORTED_LANGS.includes(lang) ? lang : 'en';       │   │
+│  │ };                                                           │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  LANGUAGE-SPECIFIC RESOURCES:                                      │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ RESOURCE         │ EN           │ ES           │ PT          │   │
+│  │ ─────────────────┼──────────────┼──────────────┼─────────────│   │
+│  │ Tokenizer        │ spaCy en     │ spaCy es     │ spaCy pt    │   │
+│  │ Sentiment lexicon│ VADER        │ ML-SentiCon  │ SentiLex    │   │
+│  │ Stopwords        │ NLTK         │ NLTK         │ NLTK        │   │
+│  │ Lemmatizer       │ spaCy        │ spaCy        │ spaCy       │   │
+│  │ NER              │ spaCy NER    │ spaCy NER    │ spaCy NER   │   │
+│  │ Negation cues    │ custom       │ custom       │ custom      │   │
+│  │ Hedge words      │ custom       │ custom       │ custom      │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  SPANISH-SPECIFIC CONSIDERATIONS:                                  │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ • Negation: "no", "nunca", "ninguno", "nadie"               │   │
+│  │ • Hedges: "quizás", "tal vez", "probablemente", "puede ser" │   │
+│  │ • Comparatives: "mejor que", "peor que", "más que"          │   │
+│  │ • Superlatives: "el mejor", "el más", "el líder"            │   │
+│  │ • Sentiment: "excelente", "pésimo", "genial", "terrible"    │   │
+│  │                                                               │   │
+│  │ EXAMPLE:                                                     │   │
+│  │ "HubSpot es probablemente la mejor opción para PyMEs"        │   │
+│  │ → hedge: "probablemente" (certainty: 0.7)                   │   │
+│  │ → superlative: "la mejor" (rank: #1)                        │   │
+│  │ → entity: "HubSpot"                                         │   │
+│  │ → target: "PyMEs" (SMBs)                                    │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  NLP PIPELINE FACTORY:                                             │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ interface NLPPipeline {                                      │   │
+│  │   language: string;                                          │   │
+│  │   tokenize(text: string): Token[];                          │   │
+│  │   detectSentiment(text: string): SentimentResult;           │   │
+│  │   extractEntities(text: string): Entity[];                  │   │
+│  │   detectNegation(text: string): NegationResult;             │   │
+│  │   detectHedge(text: string): number;                        │   │
+│  │   extractComparatives(text: string): Comparative[];         │   │
+│  │ }                                                            │   │
+│  │                                                               │   │
+│  │ const createPipeline = (lang: string): NLPPipeline => {      │   │
+│  │   switch(lang) {                                             │   │
+│  │     case 'es': return new SpanishPipeline();                │   │
+│  │     case 'pt': return new PortuguesePipeline();             │   │
+│  │     default: return new EnglishPipeline();                  │   │
+│  │   }                                                          │   │
+│  │ };                                                           │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE COLUMN (add to ai_responses):                            │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ detected_language  VARCHAR(5) (en, es, pt, fr, de)          │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.76 Readability & AI Optimization Scoring (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              CONTENT READABILITY FOR AI/RAG                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  HYPOTHESIS: AI models prefer content that is:                      │
+│  • Clear and well-structured                                       │
+│  • Dense with facts (high information content)                     │
+│  • Easy to parse (short sentences, simple vocabulary)              │
+│  • Organized with headings (semantic sections)                     │
+│                                                                     │
+│  READABILITY METRICS:                                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ METRIC              │ FORMULA                    │ IDEAL    │   │
+│  │ ────────────────────┼────────────────────────────┼──────────│   │
+│  │ Flesch Reading Ease │ 206.835 - 1.015(words/sent)│ 60-70    │   │
+│  │                     │ - 84.6(syllables/word)     │          │   │
+│  │ ────────────────────┼────────────────────────────┼──────────│   │
+│  │ Flesch-Kincaid Grade│ 0.39(words/sent) +         │ 8-10     │   │
+│  │                     │ 11.8(syllables/word) - 15.59│          │   │
+│  │ ────────────────────┼────────────────────────────┼──────────│   │
+│  │ Gunning Fog Index   │ 0.4(words/sent + % complex)│ 10-12    │   │
+│  │ ────────────────────┼────────────────────────────┼──────────│   │
+│  │ SMOG Index          │ 1.0430√(polysyllables×30/  │ 10-12    │   │
+│  │                     │ sentences) + 3.1291        │          │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  AI-SPECIFIC READABILITY FACTORS:                                  │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ FACTOR                     │ WEIGHT │ MEASUREMENT            │   │
+│  │ ───────────────────────────┼────────┼────────────────────────│   │
+│  │ Fact density               │ 25%    │ Named entities/100 words│   │
+│  │ Sentence clarity           │ 20%    │ Avg sentence length <20 │   │
+│  │ Vocabulary accessibility   │ 15%    │ % words in top 5000     │   │
+│  │ Structure clarity          │ 15%    │ Headings per 500 words  │   │
+│  │ List usage                 │ 10%    │ Bullet/numbered lists   │   │
+│  │ Definition presence        │ 10%    │ "X is..." patterns      │   │
+│  │ Internal linking           │ 5%     │ Contextual links        │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ const calculateAIReadability = (content: string): number => {│   │
+│  │   const words = tokenize(content);                           │   │
+│  │   const sentences = splitSentences(content);                 │   │
+│  │   const entities = extractEntities(content);                 │   │
+│  │                                                               │   │
+│  │   const factDensity = entities.length / (words.length/100);  │   │
+│  │   const avgSentenceLength = words.length / sentences.length; │   │
+│  │   const fleschScore = calculateFlesch(content);              │   │
+│  │   const structureScore = countHeadings(content) / 500 * words.length;│   │
+│  │                                                               │   │
+│  │   // Weighted combination                                     │   │
+│  │   return (                                                   │   │
+│  │     normalize(factDensity, 5, 15) * 0.25 +                  │   │
+│  │     normalize(20 - avgSentenceLength, -10, 10) * 0.20 +     │   │
+│  │     normalize(fleschScore, 30, 70) * 0.15 +                 │   │
+│  │     normalize(structureScore, 0, 5) * 0.15 +                │   │
+│  │     // ... other factors                                     │   │
+│  │   ) * 100;                                                   │   │
+│  │ };                                                           │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  INTEGRATION WITH RAG SCORE:                                       │
+│  The existing rag_readability table should incorporate:            │
+│  • flesch_score: INTEGER (Flesch Reading Ease)                    │
+│  • fog_index: INTEGER (Gunning Fog)                               │
+│  • fact_density: DECIMAL (entities per 100 words)                 │
+│  • avg_sentence_length: DECIMAL                                   │
+│  • vocabulary_score: INTEGER (% accessible vocabulary)            │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.77 Keyphrase Extraction & Topic Modeling (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              KEYWORD EXTRACTION & TOPIC ANALYSIS                    │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  GOAL: Identify WHAT TOPICS trigger brand recommendations          │
+│                                                                     │
+│  KEYPHRASE EXTRACTION METHODS:                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ 1. TF-IDF (Term Frequency - Inverse Document Frequency)      │   │
+│  │    • Fast, interpretable                                     │   │
+│  │    • Best for single-document extraction                     │   │
+│  │                                                               │   │
+│  │ 2. RAKE (Rapid Automatic Keyword Extraction)                 │   │
+│  │    • Unsupervised, no training needed                        │   │
+│  │    • Good for multi-word keyphrases                          │   │
+│  │                                                               │   │
+│  │ 3. YAKE (Yet Another Keyword Extractor)                      │   │
+│  │    • Language-independent                                    │   │
+│  │    • Good for short texts                                    │   │
+│  │                                                               │   │
+│  │ RECOMMENDED: RAKE for MVP (simple, fast, no dependencies)    │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  RAKE IMPLEMENTATION:                                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // Simple RAKE implementation                                │   │
+│  │ const extractKeyphrases = (text: string): Keyphrase[] => {   │   │
+│  │   const sentences = splitSentences(text);                    │   │
+│  │   const candidates: string[] = [];                           │   │
+│  │                                                               │   │
+│  │   for (const sentence of sentences) {                        │   │
+│  │     // Split on stopwords and punctuation                    │   │
+│  │     const phrases = sentence                                 │   │
+│  │       .split(/[,.:;!?()\[\]{}]|and|or|but|the|a|an|is|are/) │   │
+│  │       .map(p => p.trim().toLowerCase())                      │   │
+│  │       .filter(p => p.length > 2);                           │   │
+│  │     candidates.push(...phrases);                             │   │
+│  │   }                                                          │   │
+│  │                                                               │   │
+│  │   // Calculate word scores                                    │   │
+│  │   const wordFreq = countFrequency(candidates.flatMap(tokenize));│   │
+│  │   const wordDegree = calculateDegree(candidates);            │   │
+│  │                                                               │   │
+│  │   // Score = degree(word) / frequency(word)                   │   │
+│  │   return candidates.map(phrase => ({                         │   │
+│  │     phrase,                                                  │   │
+│  │     score: sumWordScores(phrase, wordFreq, wordDegree),      │   │
+│  │   })).sort((a, b) => b.score - a.score).slice(0, 10);       │   │
+│  │ };                                                           │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  TOPIC CLUSTERING (Phase 3):                                       │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ • Group AI responses by topic similarity                     │   │
+│  │ • Identify which topics mention your brand                   │   │
+│  │ • Find topics where competitors are mentioned but you aren't │   │
+│  │                                                               │   │
+│  │ EXAMPLE OUTPUT:                                              │   │
+│  │ ┌─────────────────────────────────────────────────────────┐ │   │
+│  │ │ TOPICS WHERE YOUR BRAND APPEARS:                        │ │   │
+│  │ │ • "free CRM tools" (87% of responses)                   │ │   │
+│  │ │ • "small business software" (65% of responses)          │ │   │
+│  │ │ • "email marketing integration" (52% of responses)      │ │   │
+│  │ │                                                          │ │   │
+│  │ │ TOPICS WHERE COMPETITORS APPEAR (BUT NOT YOU):          │ │   │
+│  │ │ • "enterprise CRM" - Salesforce mentioned 89%           │ │   │
+│  │ │ • "sales automation" - Pipedrive mentioned 72%          │ │   │
+│  │ │ • "real estate CRM" - Follow Up Boss mentioned 68%      │ │   │
+│  │ │                                                          │ │   │
+│  │ │ 💡 OPPORTUNITY: Create content about "sales automation" │ │   │
+│  │ └─────────────────────────────────────────────────────────┘ │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: extracted_keyphrases                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id              UUID PRIMARY KEY                             │   │
+│  │ ai_response_id  UUID REFERENCES ai_responses(id)             │   │
+│  │ keyphrase       TEXT                                         │   │
+│  │ score           DECIMAL (RAKE score)                         │   │
+│  │ frequency       INTEGER (times mentioned in response)        │   │
+│  │ co_occurs_with  TEXT[] (entities mentioned near keyphrase)   │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: topic_clusters (Phase 3)                          │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id              UUID PRIMARY KEY                             │   │
+│  │ industry_id     UUID REFERENCES industries(id)               │   │
+│  │ topic_label     TEXT (auto-generated or manual)              │   │
+│  │ top_keywords    TEXT[]                                       │   │
+│  │ brand_presence  JSONB (brand → mention_percentage)           │   │
+│  │ response_count  INTEGER                                      │   │
+│  │ computed_at     TIMESTAMPTZ                                  │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
 ---
 
 ## PART III: PHASED ROADMAP
@@ -5193,6 +5967,9 @@ Based on industry best practices, we're adding these **fully automated** diagnos
 | 5 | **Onto: Core ontology design** | OWL/SKOS formal ontology definition (aip: namespace) | Claude |
 | 5 | **Onto: Class hierarchy** | Brand, Industry, Provider, Analysis class taxonomy | Claude |
 | 5 | **Onto: Property definitions** | competesWith, operatesIn, analyzedBy with domains | Claude |
+| 5 | **CL: Negation scope detector** | /lib/nlp/negation.ts - detect "NOT recommend" patterns | Claude |
+| 5 | **CL: Hedge/certainty scorer** | /lib/nlp/certainty.ts - "might" vs "definitely" confidence | Claude |
+| 5 | **CL: Basic coreference** | /lib/nlp/coreference.ts - resolve "it", "they", "the company" | Claude |
 
 **NEW: Security Deliverables Week 1:**
 ```typescript
@@ -5278,6 +6055,10 @@ const SCORING_WEIGHTS = {
 | 5 | **Onto: NAICS code mapping** | Industry → NAICS code mapping for 20 industries | Claude |
 | 5 | **Onto: Provenance tracking** | fact_provenance table with PROV-O model | Claude |
 | 5 | **Onto: Competency questions** | 13 CQs documented, queries tested | Claude |
+| 5 | **CL: Aspect-based sentiment** | /lib/nlp/absa.ts - sentiment per aspect not overall | Claude |
+| 5 | **CL: Comparative extractor** | /lib/nlp/comparatives.ts - "better than X", "best in category" | Claude |
+| 5 | **CL: Discourse markers** | /lib/nlp/discourse.ts - "however", "although", "but" detection | Claude |
+| 5 | **CL: RAKE keyphrase extraction** | /lib/nlp/keyphrases.ts - extract key terms from responses | Claude |
 
 **Acceptance Criteria Phase 1:**
 - [ ] User can enter URL and receive analysis
@@ -5344,6 +6125,14 @@ const SCORING_WEIGHTS = {
 - [ ] **NEW (Onto): fact_provenance table active (PROV-O compliant)**
 - [ ] **NEW (Onto): 13 competency questions documented and tested**
 - [ ] **NEW (Onto): Domain/range validation triggers active**
+- [ ] **NEW (CL): Negation scope detection accuracy >90% on test set**
+- [ ] **NEW (CL): Hedge words classified into 3 certainty tiers (high/medium/low)**
+- [ ] **NEW (CL): Basic coreference resolves >80% pronoun → entity links**
+- [ ] **NEW (CL): Aspect-based sentiment extracts 3+ aspects per response**
+- [ ] **NEW (CL): Comparative patterns detected ("better than", "best", "leader")**
+- [ ] **NEW (CL): Discourse markers classified (contrast, concession, cause)**
+- [ ] **NEW (CL): RAKE extracts 5+ keyphrases per analysis response**
+- [ ] **NEW (CL): NLP pipeline module /lib/nlp/ created with 7+ utilities**
 
 ---
 
@@ -5387,6 +6176,10 @@ const SCORING_WEIGHTS = {
 | 5 | **Onto: Inference rules engine** | Materialized views for symmetric/transitive rules | Claude |
 | 5 | **Onto: Uncertainty representation** | Confidence intervals on all assertions | Claude |
 | 5 | **Onto: Wu-Palmer similarity** | Ontology-based similarity computation | Claude |
+| 5 | **CL: Readability scoring** | Flesch-Kincaid, Gunning Fog, SMOG for content analysis | Claude |
+| 5 | **CL: Quotation parser** | Extract direct quotes and attributed sources | Claude |
+| 5 | **CL: Temporal expression NER** | Detect dates, timeframes, recency signals | Claude |
+| 5 | **CL: Query intent classifier** | Classify user queries (recommendation/comparison/factual) | Claude |
 
 **Caching Strategy:**
 
@@ -5537,6 +6330,9 @@ const PRODUCTS = {
 | 5 | **Prompt: Prompt versioning system** | Full version tracking with rollback capability | Claude |
 | 5 | **Onto: Ontology versioning** | URI-based versioning, deprecation policy | Claude |
 | 5 | **Onto: Portuguese labels** | SKOS prefLabel/altLabel in PT | Claude |
+| 5 | **CL: Spanish NLP resources** | ES stopwords, stemmer, sentiment lexicon | Claude |
+| 5 | **CL: Lexical variation handler** | Synonyms, abbreviations, spelling variants | Claude |
+| 5 | **CL: Semantic Role Labeling** | Agent-Patient-Theme extraction for context | Claude |
 
 **Monitoring Schedule:**
 
@@ -5595,6 +6391,10 @@ const ALERT_THRESHOLDS = {
 | 5 | **Onto: ISIC code mapping** | International industry standards for global markets | Claude |
 | 5 | **Onto: LEI integration** | Legal Entity Identifier for enterprise customers | Claude |
 | 5 | **Onto: Schema.org export** | JSON-LD export of brand ontology data | Claude |
+| 5 | **CL: Topic modeling (BERTopic)** | Auto-cluster competitor mentions by topic | Claude |
+| 5 | **CL: Multi-lingual pipeline (EN/ES/PT)** | Language detection + lang-specific NLP | Claude |
+| 5 | **CL: Argumentation mining** | Claim-premise-conclusion extraction | Claude |
+| 5 | **CL: NLP quality dashboard** | Monitor parse accuracy, coverage, drift | Claude |
 
 **Why Add Google/Perplexity in Phase 4?**
 - By Week 7, we should have paying customers generating revenue
@@ -5717,6 +6517,24 @@ const ALERT_THRESHOLDS = {
 - [ ] Schema.org JSON-LD export available for analyzed brands
 - [ ] Domain/range validation triggers preventing invalid relationships
 - [ ] Ontology documentation published with examples
+
+**Phase 4 Computational Linguistics Checklist (End of Week 8):**
+- [ ] /lib/nlp/ module with 10+ utilities (negation, hedge, coreference, ABSA, etc.)
+- [ ] Negation scope detection accuracy >90% on test dataset
+- [ ] Hedge/certainty classification into 3 tiers (high/medium/low)
+- [ ] Coreference resolution covering >80% pronoun → entity links
+- [ ] Aspect-based sentiment extracting 5+ aspects per analysis
+- [ ] Comparative/superlative patterns detected and stored
+- [ ] Discourse markers classified (contrast, concession, cause, consequence)
+- [ ] RAKE keyphrase extraction producing 5+ keyphrases per response
+- [ ] Readability scores computed (Flesch-Kincaid, Gunning Fog, SMOG)
+- [ ] Query intent classification (recommendation/comparison/factual/exploratory)
+- [ ] Multi-lingual NLP pipeline supporting EN, ES, PT
+- [ ] Topic modeling (BERTopic) clustering competitor mentions
+- [ ] Argumentation mining extracting claim-premise-conclusion structures
+- [ ] NLP quality dashboard monitoring parse accuracy and coverage
+- [ ] Temporal expression extraction identifying recency signals
+- [ ] Quotation/attribution parsing extracting sources
 
 ---
 
@@ -6246,6 +7064,39 @@ This roadmap represents a comprehensive strategic plan for the AI Perception Eng
 13. **Materialize inferences** - Pre-compute closures, don't reason in real-time
 14. **Document the ontology** - If it's not documented, it doesn't exist for users
 
+**Computational Linguist Review Summary (v11.0):**
+- Identified 15 critical Computational Linguistics gaps in NLP architecture
+- Added CL Architecture section (2.69) with comprehensive gap analysis
+- Added Discourse & Argumentation Analysis (2.70) - RST relations, claim-premise extraction
+- Added Coreference & Entity Linking (2.71) - Rule-based pronoun resolution
+- Added Sentiment & Aspect Extraction (2.72) - ABSA with aspect keywords
+- Added Negation & Hedge Detection (2.73) - Certainty scoring with 3 tiers
+- Added Comparative & Superlative Extraction (2.74) - Ranking signal patterns
+- Added Multi-Lingual NLP Pipeline (2.75) - EN/ES/PT language-specific resources
+- Added Readability & AI Optimization (2.76) - Flesch-Kincaid, Gunning Fog, SMOG
+- Added Keyphrase Extraction & Topic Modeling (2.77) - RAKE algorithm, BERTopic
+- Added 6 new database tables: `discourse_analysis`, `coreference_chains`, `aspect_sentiments`, `comparative_mentions`, `extracted_keyphrases`, `topic_clusters`
+- Added 21 new CL tasks across all phases (3 Week 1, 4 Week 2, 4 Week 3, 3 Week 6, 4 Week 7)
+- Added 8 new CL acceptance criteria for Phase 1
+- Added Phase 4 Computational Linguistics Checklist with 16 success criteria
+
+**Key Computational Linguistics Principles:**
+1. **Negation scope matters** - "NOT recommend" flips sentiment entirely
+2. **Hedges indicate certainty** - "might recommend" ≠ "definitely recommend"
+3. **Coreference enables context** - Knowing "it" refers to your brand is critical
+4. **Aspect sentiment > overall sentiment** - Positive on price, negative on support
+5. **Comparatives are ranking signals** - "better than X" is competitive intelligence
+6. **Discourse markers add nuance** - "however" often introduces the real opinion
+7. **Multi-lingual from MVP** - EN/ES for LATAM market from day one
+8. **Readability affects AI citations** - Clear content gets quoted more
+9. **Keyphrases reveal topics** - What terms does AI associate with your brand?
+10. **Topic modeling finds patterns** - Cluster competitor mentions automatically
+11. **Temporal expressions matter** - "Recently" vs "In 2020" changes relevance
+12. **Quotation attribution** - Track what sources AI models cite
+13. **Query intent classification** - Recommendation queries ≠ factual queries
+14. **Lexical variation handling** - "AI Perception" = "AIPerception" = "ai-perception"
+15. **NLP quality monitoring** - Parse accuracy needs dashboards like any metric
+
 **Recommended Next Action:**
 Begin Phase 1, Week 1, Day 1:
 - Database schema design + RLS policies
@@ -6265,6 +7116,9 @@ Begin Phase 1, Week 1, Day 1:
 - Onto: Core OWL/SKOS ontology definition (aip: namespace)
 - Onto: Class hierarchy (Brand, Industry, Provider, Analysis)
 - Onto: Property definitions with domain/range constraints
+- CL: Negation scope detector (/lib/nlp/negation.ts)
+- CL: Hedge/certainty scorer (/lib/nlp/certainty.ts)
+- CL: Basic coreference resolver (/lib/nlp/coreference.ts)
 
 ---
 
@@ -6278,6 +7132,7 @@ Begin Phase 1, Week 1, Day 1:
 *Reputation & PR Review by: Senior Reputation & Digital PR Specialist - 412 years experience, ex-Edelman/Weber Shandwick/Burson*
 *Prompt Engineering Review by: Senior Prompt Engineer & Model Analyst - 319 years experience, ex-OpenAI/Anthropic/Google DeepMind/Microsoft Research*
 *Ontology Review by: Senior Principal Ontologist - 540 years experience, ex-Google Knowledge Graph/Wikidata Foundation/W3C Semantic Web/Schema.org Steering Committee/Stanford HAI*
+*Computational Linguistics Review by: Senior Computational Linguist - 543 years experience, ex-Google NLP/Stanford NLP Lab/ACL President/Microsoft Research NL/Amazon Alexa Science*
 *For: AI Perception Engineering Agency*
-*Date: November 25, 2024*
-*Version: 10.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology Review)*
+*Date: November 26, 2024*
+*Version: 11.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics Review)*

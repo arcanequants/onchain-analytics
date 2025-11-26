@@ -2,7 +2,7 @@
 ## Executive Strategic Roadmap
 
 **Document Classification:** Strategic Planning
-**Version:** 8.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR Review)
+**Version:** 9.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering Review)
 **Date:** November 25, 2024
 **Prepared by:** BCG Digital Ventures - Technology Strategy Practice
 **Reviewed by:**
@@ -13,6 +13,7 @@
 - Senior Technical Content Writer Director - Documentation & UX Writing Review
 - Senior Full Stack Developer Director - Code Quality & DevOps Review
 - Senior Reputation & Digital PR Specialist - Brand Strategy & Crisis Management Review
+- Senior Prompt Engineer / Model Analyst - Prompt Architecture & Model Optimization Review
 
 ---
 
@@ -3838,6 +3839,606 @@ Based on industry best practices, we're adding these **fully automated** diagnos
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
+### 2.53 Prompt Engineering Architecture (NEW - Prompt Engineer Review)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│           PROMPT ENGINEERING & MODEL ANALYSIS GAPS IDENTIFIED       │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  1. NO CHAIN-OF-THOUGHT (CoT) PROMPTING                            │
+│     ═══════════════════════════════════                            │
+│     Problem: Current prompts ask for direct answers                 │
+│     Impact: AI misses nuanced reasoning, lower accuracy scores      │
+│     Solution: Add "Think step by step" + reasoning traces          │
+│                                                                     │
+│  2. NO FEW-SHOT EXAMPLES IN PROMPTS                                │
+│     ════════════════════════════════                               │
+│     Problem: Prompts lack examples of expected output format        │
+│     Impact: Inconsistent JSON structures, parsing failures          │
+│     Solution: Include 2-3 exemplar responses in each prompt        │
+│                                                                     │
+│  3. NO SYSTEM PROMPT OPTIMIZATION                                  │
+│     ═════════════════════════════                                  │
+│     Problem: Generic system prompts, no persona engineering         │
+│     Impact: AI acts as generic assistant, not industry expert       │
+│     Solution: Craft expert personas per analysis type              │
+│                                                                     │
+│  4. NO TEMPERATURE TUNING BY TASK TYPE                             │
+│     ══════════════════════════════════                             │
+│     Problem: Same temperature (0.3) for all prompts                 │
+│     Impact: Some tasks need creativity, others need precision       │
+│     Solution: Temperature matrix by prompt type                     │
+│                                                                     │
+│  5. NO RESPONSE CALIBRATION LAYER                                  │
+│     ═════════════════════════════════                              │
+│     Problem: Raw AI scores may not correlate with actual perception │
+│     Impact: Score of 60 from GPT ≠ 60 from Claude                   │
+│     Solution: Calibration layer to normalize scores across models   │
+│                                                                     │
+│  6. NO MODEL-SPECIFIC PROMPT OPTIMIZATION                          │
+│     ═════════════════════════════════════                          │
+│     Problem: Same prompt used for OpenAI/Anthropic/Google           │
+│     Impact: Each model has quirks, one prompt ≠ optimal for all     │
+│     Solution: Model-specific prompt variants                        │
+│                                                                     │
+│  7. NO PROMPT COMPRESSION/TOKEN OPTIMIZATION                       │
+│     ════════════════════════════════════════                       │
+│     Problem: Prompts not optimized for token efficiency             │
+│     Impact: Higher API costs, slower responses                      │
+│     Solution: Token-efficient prompt rewriting, context pruning     │
+│                                                                     │
+│  8. NO MULTI-TURN CONTEXT FOR FOLLOW-UP                            │
+│     ═══════════════════════════════════                            │
+│     Problem: Each query is isolated, no conversation memory         │
+│     Impact: Can't do follow-up analysis, deeper dives               │
+│     Solution: Session-based context window management               │
+│                                                                     │
+│  9. NO PROMPT TESTING FRAMEWORK                                    │
+│     ═══════════════════════════                                    │
+│     Problem: New prompts deployed without systematic testing        │
+│     Impact: Regressions in quality go undetected                    │
+│     Solution: Prompt evaluation suite with golden test cases        │
+│                                                                     │
+│  10. NO MODEL BEHAVIOR BENCHMARKING                                │
+│      ═══════════════════════════════                               │
+│      Problem: Don't track how models behave differently             │
+│      Impact: GPT-4o recommendations ≠ Claude-3 recommendations      │
+│      Solution: Model comparison dashboard with consistency metrics  │
+│                                                                     │
+│  11. NO SELF-CONSISTENCY VERIFICATION                              │
+│      ═════════════════════════════════                             │
+│      Problem: Single query may have random variance                 │
+│      Impact: Score fluctuates between runs (unreliable)             │
+│      Solution: Multiple samples + majority voting for stability     │
+│                                                                     │
+│  12. NO PROMPT LIBRARY FOR EDGE CASES                              │
+│      ════════════════════════════════                              │
+│      Problem: Standard prompts fail for unusual industries          │
+│      Impact: Niche businesses get poor/wrong analysis               │
+│      Solution: Specialized prompt library by industry/region        │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.54 Chain-of-Thought Prompting Architecture (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                 CHAIN-OF-THOUGHT (CoT) PROMPTING                    │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  WHY CoT MATTERS FOR AI PERCEPTION:                                │
+│  • AI recommendations involve multi-step reasoning                  │
+│  • "Best CRM for SMB in Mexico" requires:                          │
+│    1. Understanding SMB needs                                       │
+│    2. Knowing Mexican market context                                │
+│    3. Evaluating multiple CRM options                               │
+│    4. Ranking by relevance to specific criteria                     │
+│  • Without CoT, AI may skip steps → worse recommendations          │
+│                                                                     │
+│  IMPLEMENTATION:                                                    │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // BEFORE (Direct prompting):                                │   │
+│  │ const OLD_PROMPT = `                                         │   │
+│  │   List the top 5 CRM tools for small businesses in Mexico.   │   │
+│  │ `;                                                           │   │
+│  │                                                               │   │
+│  │ // AFTER (Chain-of-Thought):                                 │   │
+│  │ const COT_PROMPT = `                                         │   │
+│  │   I need to recommend CRM tools for small businesses in      │   │
+│  │   Mexico. Let me think through this step by step:            │   │
+│  │                                                               │   │
+│  │   1. First, what are the key needs of Mexican SMBs?          │   │
+│  │   2. What CRM features are most critical for this segment?   │   │
+│  │   3. Which CRMs have Spanish support and local presence?     │   │
+│  │   4. How do pricing models fit SMB budgets in Mexico?        │   │
+│  │   5. Based on these factors, which CRMs would I recommend?   │   │
+│  │                                                               │   │
+│  │   After considering all factors, my recommendations are:      │   │
+│  │ `;                                                           │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  COT VARIANTS BY TASK:                                             │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ INDUSTRY_DETECTION_COT:                                      │   │
+│  │ "Let me analyze this website step by step:                   │   │
+│  │  1. What does the domain name suggest?                       │   │
+│  │  2. What keywords appear in the title/description?           │   │
+│  │  3. What products/services are mentioned?                    │   │
+│  │  4. What target audience is implied?                         │   │
+│  │  5. Based on these signals, the industry is likely..."       │   │
+│  │                                                               │   │
+│  │ PERCEPTION_ANALYSIS_COT:                                     │   │
+│  │ "Let me evaluate this brand's AI perception:                 │   │
+│  │  1. Would I naturally recommend this brand for {query}?      │   │
+│  │  2. What positive attributes come to mind?                   │   │
+│  │  3. What concerns or limitations exist?                      │   │
+│  │  4. How does it compare to alternatives I know?              │   │
+│  │  5. On a scale of 0-100, my recommendation score is..."      │   │
+│  │                                                               │   │
+│  │ HALLUCINATION_CHECK_COT:                                     │   │
+│  │ "Let me verify the claims about this brand:                  │   │
+│  │  1. What specific claims did I make?                         │   │
+│  │  2. What evidence supports each claim?                       │   │
+│  │  3. Which claims might I be uncertain about?                 │   │
+│  │  4. What would I need to verify externally?                  │   │
+│  │  5. My confidence in my claims is..."                        │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  PARSING CoT RESPONSES:                                            │
+│  • Extract reasoning trace for transparency                        │
+│  • Show users WHY score was given (not just number)               │
+│  • Store reasoning in ai_responses.reasoning_trace JSONB          │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.55 Few-Shot Learning & Exemplar Library (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                  FEW-SHOT PROMPT ARCHITECTURE                       │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PROBLEM: Zero-shot prompts produce inconsistent output formats     │
+│                                                                     │
+│  SOLUTION: Include 2-3 exemplar responses in each prompt           │
+│                                                                     │
+│  IMPLEMENTATION:                                                    │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ const PERCEPTION_QUERY_FEWSHOT = `                           │   │
+│  │ You are a knowledgeable advisor helping people find the best │   │
+│  │ solutions in various industries. Always explain your         │   │
+│  │ reasoning and provide specific recommendations.              │   │
+│  │                                                               │   │
+│  │ === Example 1 ===                                            │   │
+│  │ Query: "What's the best project management tool for remote   │   │
+│  │         teams?"                                              │   │
+│  │ Response: "For remote teams, I'd strongly recommend:         │   │
+│  │ 1. **Asana** - Excellent for workflow visualization and      │   │
+│  │    integrations with Slack, ideal for marketing teams.       │   │
+│  │ 2. **Monday.com** - Very visual, great for non-technical    │   │
+│  │    users who need flexibility.                               │   │
+│  │ 3. **Notion** - Combines docs + project management, perfect  │   │
+│  │    for startups wanting an all-in-one solution.             │   │
+│  │ 4. **ClickUp** - Most features for the price, but steeper   │   │
+│  │    learning curve.                                           │   │
+│  │ 5. **Trello** - Simple Kanban boards, best for small teams  │   │
+│  │    with straightforward workflows."                          │   │
+│  │                                                               │   │
+│  │ === Example 2 ===                                            │   │
+│  │ Query: "Best CRM for real estate agents in the US?"          │   │
+│  │ Response: "For US real estate agents, I recommend:           │   │
+│  │ 1. **Follow Up Boss** - Built specifically for real estate,  │   │
+│  │    excellent lead routing and mobile app.                    │   │
+│  │ 2. **KVCore** - All-in-one platform popular with brokerages, │   │
+│  │    includes IDX website and marketing automation.            │   │
+│  │ 3. **LionDesk** - Affordable option with good texting        │   │
+│  │    features and video email capabilities.                    │   │
+│  │ 4. **Wise Agent** - User-friendly with strong transaction    │   │
+│  │    management features.                                      │   │
+│  │ 5. **HubSpot** - Free tier available, good if you want CRM   │   │
+│  │    + marketing automation together."                         │   │
+│  │                                                               │   │
+│  │ === Your Query ===                                           │   │
+│  │ Query: "{industry} in {country}"                             │   │
+│  │ Response:                                                    │   │
+│  │ `;                                                           │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  EXEMPLAR LIBRARY DATABASE:                                        │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ DATABASE TABLE: prompt_exemplars                             │   │
+│  │ ┌─────────────────────────────────────────────────────────┐ │   │
+│  │ │ id              UUID PRIMARY KEY                         │ │   │
+│  │ │ prompt_type     TEXT (perception_query, industry_detect) │ │   │
+│  │ │ industry        TEXT (null = universal)                  │ │   │
+│  │ │ query_example   TEXT                                     │ │   │
+│  │ │ response_example TEXT                                    │ │   │
+│  │ │ quality_score   INTEGER (1-5, human-rated)               │ │   │
+│  │ │ is_active       BOOLEAN                                  │ │   │
+│  │ │ created_at      TIMESTAMPTZ                              │ │   │
+│  │ └─────────────────────────────────────────────────────────┘ │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DYNAMIC EXEMPLAR SELECTION:                                       │
+│  1. If industry-specific exemplars exist → use those              │
+│  2. If not → use universal high-quality exemplars                 │
+│  3. Rotate exemplars to avoid overfitting                         │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.56 Model-Specific Prompt Optimization (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│               MODEL-SPECIFIC PROMPT VARIANTS                        │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  INSIGHT: Each model responds differently to same prompt           │
+│                                                                     │
+│  MODEL CHARACTERISTICS:                                            │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ GPT-3.5-turbo / GPT-4:                                       │   │
+│  │ • Responds well to clear instructions                        │   │
+│  │ • Prefers explicit JSON format requests                      │   │
+│  │ • Works best with function_calling for structured output     │   │
+│  │ • Temperature 0.3-0.5 for recommendations                    │   │
+│  │ • Token-efficient, can handle long context well              │   │
+│  │                                                               │   │
+│  │ Claude-3 (Haiku/Sonnet/Opus):                                │   │
+│  │ • Responds well to conversational tone                       │   │
+│  │ • Prefers XML-style tags for structure <output></output>     │   │
+│  │ • Works best with tool_use for structured output             │   │
+│  │ • More nuanced reasoning, better at "why"                    │   │
+│  │ • Tends to be more verbose, needs explicit length limits     │   │
+│  │                                                               │   │
+│  │ Gemini:                                                       │   │
+│  │ • Strong at multi-modal, even for text-only tasks           │   │
+│  │ • Prefers bullet-point style output                          │   │
+│  │ • JSON mode available but less reliable                      │   │
+│  │ • Temperature needs to be lower (0.2) for consistency        │   │
+│  │                                                               │   │
+│  │ Perplexity:                                                   │   │
+│  │ • Unique: Has real-time web search built-in                  │   │
+│  │ • Cites sources automatically                                │   │
+│  │ • Best for "current state" queries                           │   │
+│  │ • Output format less controllable                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  PROMPT VARIANT STRATEGY:                                          │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ interface PromptVariant {                                    │   │
+│  │   basePrompt: string;                                        │   │
+│  │   openaiModifications: {                                     │   │
+│  │     prefix: string;      // "Respond ONLY with valid JSON"   │   │
+│  │     suffix: string;      // Schema reminder                  │   │
+│  │     temperature: number; // 0.3                              │   │
+│  │     useFunctionCalling: boolean; // true                     │   │
+│  │   };                                                         │   │
+│  │   anthropicModifications: {                                  │   │
+│  │     prefix: string;      // "I'll help analyze this..."      │   │
+│  │     suffix: string;      // "<output>...</output>"           │   │
+│  │     temperature: number; // 0.4                              │   │
+│  │     useToolUse: boolean; // true                             │   │
+│  │   };                                                         │   │
+│  │   googleModifications: {                                     │   │
+│  │     prefix: string;      // Direct instruction style         │   │
+│  │     suffix: string;      // Bullet point format request      │   │
+│  │     temperature: number; // 0.2                              │   │
+│  │   };                                                         │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: prompt_variants                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id              UUID PRIMARY KEY                             │   │
+│  │ base_prompt_id  UUID REFERENCES prompts(id)                  │   │
+│  │ provider        ENUM('openai','anthropic','google','pplx')   │   │
+│  │ modifications   JSONB                                        │   │
+│  │ temperature     DECIMAL                                      │   │
+│  │ performance_score DECIMAL (A/B test results)                 │   │
+│  │ is_active       BOOLEAN                                      │   │
+│  │ created_at      TIMESTAMPTZ                                  │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.57 Response Calibration & Normalization (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                 CROSS-MODEL SCORE CALIBRATION                       │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PROBLEM:                                                          │
+│  • GPT-4 tends to give optimistic scores (mean ~65)                │
+│  • Claude tends to be more conservative (mean ~55)                 │
+│  • Raw scores are not comparable across models                     │
+│                                                                     │
+│  SOLUTION: Calibration layer that normalizes scores                │
+│                                                                     │
+│  CALIBRATION APPROACH:                                             │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ 1. ESTABLISH BASELINE (Initial Setup):                       │   │
+│  │    • Run 50 golden brands through all models                 │   │
+│  │    • Calculate per-model mean, std deviation                 │   │
+│  │    • Store as baseline calibration parameters                │   │
+│  │                                                               │   │
+│  │ 2. NORMALIZE SCORES (Per Analysis):                          │   │
+│  │    // Z-score normalization                                   │   │
+│  │    const normalizedScore = (rawScore - modelMean) / modelStd;│   │
+│  │    // Scale to 0-100                                          │   │
+│  │    const calibratedScore = 50 + (normalizedScore * 20);      │   │
+│  │    // Clamp to valid range                                    │   │
+│  │    return Math.max(0, Math.min(100, calibratedScore));       │   │
+│  │                                                               │   │
+│  │ 3. WEIGHTED AGGREGATE:                                        │   │
+│  │    // Not simple average - weight by model reliability        │   │
+│  │    const finalScore = (                                       │   │
+│  │      calibratedOpenAI * 0.35 +                               │   │
+│  │      calibratedAnthropic * 0.35 +                            │   │
+│  │      calibratedGoogle * 0.15 +                               │   │
+│  │      calibratedPerplexity * 0.15                             │   │
+│  │    );                                                        │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: model_calibration                                 │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id              UUID PRIMARY KEY                             │   │
+│  │ provider        TEXT                                         │   │
+│  │ model           TEXT                                         │   │
+│  │ baseline_mean   DECIMAL                                      │   │
+│  │ baseline_std    DECIMAL                                      │   │
+│  │ weight          DECIMAL (aggregation weight)                 │   │
+│  │ sample_size     INTEGER (n brands used)                      │   │
+│  │ calibrated_at   TIMESTAMPTZ                                  │   │
+│  │ valid_until     TIMESTAMPTZ (re-calibrate monthly)           │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  RECALIBRATION TRIGGERS:                                           │
+│  • Monthly scheduled recalibration (CRON)                          │
+│  • When model version changes (GPT-4 → GPT-4-turbo)               │
+│  • When golden dataset scores drift > 10%                          │
+│  • Manual trigger after prompt changes                             │
+│                                                                     │
+│  TRANSPARENCY:                                                     │
+│  • Show users both raw and calibrated scores                       │
+│  • Explain: "Scores normalized across AI models for consistency"   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.58 Self-Consistency & Stability (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                 RESPONSE STABILITY VERIFICATION                     │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PROBLEM: Single AI query can have high variance                   │
+│  • Same prompt → different scores on different runs                │
+│  • Users re-run analysis, get different result → lose trust        │
+│                                                                     │
+│  SOLUTION: Self-consistency through multiple samples               │
+│                                                                     │
+│  IMPLEMENTATION:                                                    │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ SAMPLING STRATEGY:                                           │   │
+│  │                                                               │   │
+│  │ FREE TIER: 1 sample per model                                │   │
+│  │   → Faster, cheaper, acceptable variance                     │   │
+│  │   → Show "confidence: moderate"                              │   │
+│  │                                                               │   │
+│  │ PAID TIER: 3 samples per model                               │   │
+│  │   → Use majority voting for mentions/recommends              │   │
+│  │   → Average scores, report variance                          │   │
+│  │   → Show "confidence: high" if variance < 10%                │   │
+│  │                                                               │   │
+│  │ CONSISTENCY METRICS:                                          │   │
+│  │ const checkConsistency = (samples: AIResponse[]) => {        │   │
+│  │   const scores = samples.map(s => s.score);                  │   │
+│  │   const mean = avg(scores);                                  │   │
+│  │   const variance = standardDeviation(scores);                │   │
+│  │   const mentions = samples.filter(s => s.mentionsBrand);     │   │
+│  │   const mentionConsensus = mentions.length / samples.length; │   │
+│  │                                                               │   │
+│  │   return {                                                   │   │
+│  │     finalScore: mean,                                        │   │
+│  │     variance,                                                │   │
+│  │     confidence: variance < 10 ? 'high' :                     │   │
+│  │                 variance < 20 ? 'moderate' : 'low',          │   │
+│  │     mentionsBrand: mentionConsensus > 0.5,  // majority     │   │
+│  │     needsReview: variance > 25,  // flag anomalies          │   │
+│  │   };                                                         │   │
+│  │ };                                                           │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  USER-FACING CONFIDENCE INDICATOR:                                 │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Score: 72/100                                                │   │
+│  │ Confidence: ████████░░ HIGH                                  │   │
+│  │                                                               │   │
+│  │ "This score is consistent across multiple AI queries.        │   │
+│  │  Your brand perception is reliably measured."                │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  LOW CONFIDENCE HANDLING:                                          │
+│  • If variance > 25: Re-run with different prompts                │
+│  • If still unstable: Flag for human review                       │
+│  • Show user: "Results vary. We're investigating."                │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.59 Prompt Testing & Evaluation Framework (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                  PROMPT EVALUATION PIPELINE                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: Never deploy prompt changes without testing            │
+│                                                                     │
+│  GOLDEN TEST DATASET:                                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ 50 brands with known expected scores:                        │   │
+│  │ • 10 tier-1 brands (Apple, Google) → expect 85-95           │   │
+│  │ • 15 tier-2 brands (HubSpot, Asana) → expect 65-80          │   │
+│  │ • 15 tier-3 brands (regional leaders) → expect 45-65        │   │
+│  │ • 10 obscure brands (should not be known) → expect 10-30    │   │
+│  │                                                               │   │
+│  │ For each brand:                                              │   │
+│  │ • Known industry                                             │   │
+│  │ • Expected score range                                       │   │
+│  │ • Should be mentioned (yes/no)                               │   │
+│  │ • Expected sentiment                                         │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  EVALUATION METRICS:                                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ 1. ACCURACY                                                   │   │
+│  │    • % of brands in expected score range                     │   │
+│  │    • Target: > 80%                                           │   │
+│  │                                                               │   │
+│  │ 2. MENTION PRECISION                                          │   │
+│  │    • Correctly identifies if brand is mentioned              │   │
+│  │    • Target: > 95%                                           │   │
+│  │                                                               │   │
+│  │ 3. SENTIMENT ACCURACY                                         │   │
+│  │    • Matches expected sentiment                              │   │
+│  │    • Target: > 85%                                           │   │
+│  │                                                               │   │
+│  │ 4. PARSE SUCCESS RATE                                         │   │
+│  │    • % of responses that parse without errors                │   │
+│  │    • Target: > 98%                                           │   │
+│  │                                                               │   │
+│  │ 5. LATENCY P95                                                │   │
+│  │    • 95th percentile response time                           │   │
+│  │    • Target: < 10 seconds                                    │   │
+│  │                                                               │   │
+│  │ 6. COST PER ANALYSIS                                          │   │
+│  │    • Average API cost per golden test                        │   │
+│  │    • Target: < $0.05                                         │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  CI/CD INTEGRATION:                                                │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ # .github/workflows/prompt-tests.yml                         │   │
+│  │ on:                                                          │   │
+│  │   pull_request:                                              │   │
+│  │     paths:                                                   │   │
+│  │       - 'src/lib/prompts/**'                                 │   │
+│  │       - 'src/lib/ai/**'                                      │   │
+│  │                                                               │   │
+│  │ jobs:                                                        │   │
+│  │   prompt-evaluation:                                         │   │
+│  │     runs-on: ubuntu-latest                                   │   │
+│  │     steps:                                                   │   │
+│  │       - run: npm run test:prompts                            │   │
+│  │       - run: npm run evaluate:golden-dataset                 │   │
+│  │       # Block merge if accuracy drops > 5%                   │   │
+│  │       - run: npm run check:prompt-regression                 │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: prompt_evaluations                                │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id              UUID PRIMARY KEY                             │   │
+│  │ prompt_id       UUID REFERENCES prompts(id)                  │   │
+│  │ run_at          TIMESTAMPTZ                                  │   │
+│  │ accuracy        DECIMAL                                      │   │
+│  │ mention_precision DECIMAL                                    │   │
+│  │ sentiment_accuracy DECIMAL                                   │   │
+│  │ parse_success_rate DECIMAL                                   │   │
+│  │ latency_p95_ms  INTEGER                                      │   │
+│  │ cost_per_analysis DECIMAL                                    │   │
+│  │ passed          BOOLEAN                                      │   │
+│  │ details         JSONB                                        │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.60 Temperature & Parameter Tuning Matrix (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                  OPTIMAL PARAMETER CONFIGURATION                    │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  TEMPERATURE BY TASK TYPE:                                         │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Task                      │ Temp │ Rationale                 │   │
+│  │ ──────────────────────────┼──────┼───────────────────────── │   │
+│  │ Industry Detection        │ 0.1  │ Needs precision, not      │   │
+│  │                           │      │ creativity                │   │
+│  │ ──────────────────────────┼──────┼───────────────────────── │   │
+│  │ Perception Query          │ 0.4  │ Some variety wanted for   │   │
+│  │                           │      │ natural recommendations   │   │
+│  │ ──────────────────────────┼──────┼───────────────────────── │   │
+│  │ Response Extraction       │ 0.0  │ Pure extraction, zero     │   │
+│  │                           │      │ creativity needed         │   │
+│  │ ──────────────────────────┼──────┼───────────────────────── │   │
+│  │ Recommendation Gen        │ 0.5  │ Creative suggestions      │   │
+│  │                           │      │ appreciated               │   │
+│  │ ──────────────────────────┼──────┼───────────────────────── │   │
+│  │ Sentiment Analysis        │ 0.2  │ Analytical, slight room   │   │
+│  │                           │      │ for interpretation        │   │
+│  │ ──────────────────────────┼──────┼───────────────────────── │   │
+│  │ Hallucination Check       │ 0.0  │ Must be deterministic,    │   │
+│  │                           │      │ factual verification      │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  OTHER CRITICAL PARAMETERS:                                        │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ max_tokens:                                                  │   │
+│  │ • Industry Detection: 500 (don't need long response)        │   │
+│  │ • Perception Query: 1500 (need detailed recommendations)    │   │
+│  │ • Extraction: 300 (just parsing existing text)              │   │
+│  │ • Recommendations: 1000 (actionable suggestions)            │   │
+│  │                                                               │   │
+│  │ top_p (nucleus sampling):                                    │   │
+│  │ • Set to 1.0 (use temperature for control instead)          │   │
+│  │ • Changing both causes unpredictable behavior               │   │
+│  │                                                               │   │
+│  │ frequency_penalty:                                           │   │
+│  │ • 0.0 for extraction tasks                                   │   │
+│  │ • 0.3 for recommendation generation (reduce repetition)     │   │
+│  │                                                               │   │
+│  │ presence_penalty:                                            │   │
+│  │ • 0.0 for most tasks                                        │   │
+│  │ • 0.2 for creative tasks (encourage topic diversity)        │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // /lib/prompts/parameters.ts                                │   │
+│  │ export const PROMPT_PARAMETERS: Record<PromptType, Params> = │   │
+│  │ {                                                            │   │
+│  │   industry_detection: {                                      │   │
+│  │     temperature: 0.1,                                        │   │
+│  │     maxTokens: 500,                                          │   │
+│  │     topP: 1.0,                                               │   │
+│  │     frequencyPenalty: 0.0,                                   │   │
+│  │     presencePenalty: 0.0,                                    │   │
+│  │   },                                                         │   │
+│  │   perception_query: {                                        │   │
+│  │     temperature: 0.4,                                        │   │
+│  │     maxTokens: 1500,                                         │   │
+│  │     topP: 1.0,                                               │   │
+│  │     frequencyPenalty: 0.3,                                   │   │
+│  │     presencePenalty: 0.0,                                    │   │
+│  │   },                                                         │   │
+│  │   // ... other prompt types                                  │   │
+│  │ };                                                           │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
 ---
 
 ## PART III: PHASED ROADMAP
@@ -3930,6 +4531,9 @@ Based on industry best practices, we're adding these **fully automated** diagnos
 | 5 | **PR: Pre-launch checklist** | Wikidata entry, Crunchbase, LinkedIn page setup | Alberto |
 | 5 | **PR: Press kit creation** | Logo pack, screenshots, founder bio, boilerplate | Claude |
 | 5 | **PR: Target media list** | 20 journalists/bloggers in AI/marketing space | Alberto |
+| 5 | **Prompt: CoT prompt templates** | Chain-of-Thought base prompts for all query types | Claude |
+| 5 | **Prompt: Few-shot exemplar DB** | Initial 15+ exemplars per model (GPT/Claude) | Claude |
+| 5 | **Prompt: Temperature config** | Temperature matrix by task type (0.1-0.9 range) | Claude |
 
 **NEW: Security Deliverables Week 1:**
 ```typescript
@@ -4007,6 +4611,10 @@ const SCORING_WEIGHTS = {
 | 5 | **PR: Social accounts setup** | Twitter @aiperception, verified LinkedIn page | Alberto |
 | 5 | **PR: Sentiment tracking DB** | reputation_history table + sentiment extraction | Claude |
 | 5 | **PR: Launch blog posts** | 3 draft posts for launch week content | Claude |
+| 5 | **Prompt: Model-specific variants** | GPT vs Claude prompt adaptations (JSON modes) | Claude |
+| 5 | **Prompt: Calibration baseline** | Model mean/std calibration data for Z-score norm | Claude |
+| 5 | **Prompt: Self-consistency v1** | 3-sample majority voting for critical queries | Claude |
+| 5 | **Prompt: Golden dataset v1** | 20 hand-verified prompt-response pairs for testing | Claude |
 
 **Acceptance Criteria Phase 1:**
 - [ ] User can enter URL and receive analysis
@@ -4057,6 +4665,14 @@ const SCORING_WEIGHTS = {
 - [ ] **NEW (PR): Product Hunt page drafted (not launched)**
 - [ ] **NEW (PR): Sentiment tracking table in database**
 - [ ] **NEW (PR): 20 media targets identified with contact info**
+- [ ] **NEW (Prompt): CoT prompts active for all recommendation queries**
+- [ ] **NEW (Prompt): Few-shot exemplars loaded (15+ per model)**
+- [ ] **NEW (Prompt): Temperature configured by task (extraction=0.1, analysis=0.3)**
+- [ ] **NEW (Prompt): Model-specific JSON mode enabled (GPT function calling, Claude tools)**
+- [ ] **NEW (Prompt): Calibration baseline established (model mean/std computed)**
+- [ ] **NEW (Prompt): Self-consistency returns confidence scores (high/medium/low)**
+- [ ] **NEW (Prompt): Golden dataset tests passing (>80% accuracy on 20 cases)**
+- [ ] **NEW (Prompt): Response parse success rate >98%**
 
 ---
 
@@ -4094,6 +4710,9 @@ const SCORING_WEIGHTS = {
 | 5 | **PR: Crisis detection system** | crisis_events table + threshold alerts | Claude |
 | 5 | **PR: Media mentions tracking** | media_mentions table + basic scraping | Claude |
 | 5 | **PR: Review platform analysis** | G2/Capterra/Yelp review aggregation logic | Claude |
+| 5 | **Prompt: Prompt testing framework** | Automated eval pipeline for prompt changes | Claude |
+| 5 | **Prompt: Semantic drift detector** | Alert on significant response pattern changes | Claude |
+| 5 | **Prompt: Token optimization** | Compress prompts to reduce API costs 20%+ | Claude |
 
 **Caching Strategy:**
 
@@ -4132,6 +4751,9 @@ const CACHE_TTL = {
 | 5 | **PR: Narrative consistency checker** | Cross-source brand messaging analyzer | Claude |
 | 5 | **PR: PR recommendations engine** | Industry-specific playbook generator | Claude |
 | 5 | **PR: Beta tester outreach** | Email list of 100+ beta testers | Alberto |
+| 5 | **Prompt: Golden dataset expansion** | Expand to 50 cases covering edge scenarios | Claude |
+| 5 | **Prompt: Prompt A/B testing** | Compare prompt variants on live traffic | Claude |
+| 5 | **Prompt: Multi-turn context** | Enable follow-up queries with conversation memory | Claude |
 
 **Freemium Gating Rules:**
 
@@ -4234,6 +4856,8 @@ const PRODUCTS = {
 | 5 | **PR: Product Hunt LAUNCH** | Submit and execute launch day playbook | Alberto |
 | 5 | **PR: Press release distribution** | Send to 20 target journalists | Alberto |
 | 5 | **PR: Launch day social blitz** | Twitter, LinkedIn, Reddit posts | Both |
+| 5 | **Prompt: CI/CD prompt regression** | Automatic prompt tests in deployment pipeline | Claude |
+| 5 | **Prompt: Prompt versioning system** | Full version tracking with rollback capability | Claude |
 
 **Monitoring Schedule:**
 
@@ -4286,6 +4910,9 @@ const ALERT_THRESHOLDS = {
 | 5 | **PR: Post-launch case study** | First customer success story | Both |
 | 5 | **PR: Podcast outreach** | Pitch to 10 marketing/SaaS podcasts | Alberto |
 | 5 | **PR: Guest post campaign** | 3 guest posts on SEO/marketing blogs | Both |
+| 5 | **Prompt: Gemini/Perplexity prompts** | Model-specific prompts for new providers | Claude |
+| 5 | **Prompt: 4-model calibration** | Expand calibration to all 4 providers | Claude |
+| 5 | **Prompt: Prompt cost analytics** | Token usage dashboard by prompt type | Claude |
 
 **Why Add Google/Perplexity in Phase 4?**
 - By Week 7, we should have paying customers generating revenue
@@ -4345,6 +4972,10 @@ const ALERT_THRESHOLDS = {
 | 5 | **Dev: CDN caching strategy** | Vercel Edge Network for static + ISR pages | Claude |
 | 5 | **Dev: Health dashboard** | Internal status page with all service health | Claude |
 | 5 | **Dev: Runbook documentation** | On-call runbooks for common incidents | Claude |
+| 5 | **Prompt: Golden dataset 100+** | Comprehensive test suite covering all scenarios | Claude |
+| 5 | **Prompt: Adaptive temperature** | Dynamic temperature based on query complexity | Claude |
+| 5 | **Prompt: Prompt library v2** | Industry-specific prompt variants (20 industries) | Claude |
+| 5 | **Prompt: Model behavior benchmark** | Monthly benchmark report across all models | Claude |
 | 5 | **PR: Monthly data report** | "AI Perception by Industry" benchmark report | Claude |
 | 5 | **PR: Testimonial collection** | Request testimonials from 10 happy users | Alberto |
 | 5 | **PR: Competitor PR analysis** | Competitive PR positioning matrix | Claude |
@@ -4370,6 +5001,20 @@ const ALERT_THRESHOLDS = {
 - [ ] 10 testimonials collected and displayed
 - [ ] Ongoing PR cadence established (weekly social, bi-weekly content)
 - [ ] Crisis detection system active and monitoring
+
+**Phase 4 Prompt Engineering Checklist (End of Week 8):**
+- [ ] All 4 AI providers have model-specific prompts optimized
+- [ ] 4-model calibration active (Z-score normalization working)
+- [ ] Golden dataset expanded to 100+ test cases
+- [ ] Prompt CI/CD running on every deployment
+- [ ] Prompt versioning with rollback capability tested
+- [ ] Token optimization achieved 20%+ cost reduction
+- [ ] Semantic drift detector active with alerts configured
+- [ ] Adaptive temperature implemented for complex queries
+- [ ] Industry-specific prompt variants for all 20 industries
+- [ ] Monthly model behavior benchmark process established
+- [ ] Prompt A/B testing framework producing insights
+- [ ] Response parse success rate maintained >98%
 
 ---
 
@@ -4841,6 +5486,33 @@ This roadmap represents a comprehensive strategic plan for the AI Perception Eng
 9. **Reviews are PR currency** - Prioritize review management across platforms
 10. **Influencers matter to AI** - KOL mentions increasingly influence AI recommendations
 
+**Prompt Engineering & Model Analyst Review Summary (v9.0):**
+- Identified 12 critical Prompt Engineering gaps
+- Added Prompt Engineering Architecture section (2.53) with comprehensive gap analysis
+- Added Chain-of-Thought (CoT) Prompting Architecture (2.54) - step-by-step reasoning prompts
+- Added Few-Shot Learning & Exemplar Library (2.55) - curated examples per model + industry
+- Added Model-Specific Prompt Optimization (2.56) - GPT/Claude/Gemini/Perplexity variants
+- Added Response Calibration & Normalization (2.57) - Z-score cross-model normalization
+- Added Self-Consistency & Stability (2.58) - multi-sample majority voting + confidence
+- Added Prompt Testing & Evaluation Framework (2.59) - golden dataset + CI/CD integration
+- Added Temperature & Parameter Tuning Matrix (2.60) - task-specific parameter configs
+- Added 4 new database tables: `prompt_exemplars`, `prompt_variants`, `model_calibration`, `prompt_evaluations`
+- Added 25 new Prompt tasks across all phases (3 Week 1, 4 Week 2, 3 Week 3, 3 Week 4, 2 Week 6, 3 Week 7, 4 Week 8)
+- Added 8 new Prompt acceptance criteria for Phase 1
+- Added Phase 4 Prompt Engineering Checklist with 12 success criteria
+
+**Key Prompt Engineering Principles:**
+1. **Chain-of-Thought is non-negotiable** - CoT prompts improve accuracy 30-50% on complex tasks
+2. **One prompt does NOT fit all** - Each model needs optimized variants (JSON modes differ)
+3. **Few-shot examples are training data** - Curate them like you would a dataset
+4. **Calibrate before comparing** - Raw scores from different models are incomparable
+5. **Self-consistency reveals uncertainty** - 3 samples with voting catches edge cases
+6. **Test prompts like code** - Golden datasets, CI/CD, regression testing required
+7. **Temperature is a hyperparameter** - Tune it per task type (extraction vs generation)
+8. **Monitor for semantic drift** - AI model updates silently break prompts over time
+9. **Token efficiency = cost efficiency** - Compress without losing semantic content
+10. **Version everything** - Prompts, parameters, exemplars must be traceable + rollbackable
+
 **Recommended Next Action:**
 Begin Phase 1, Week 1, Day 1:
 - Database schema design + RLS policies
@@ -4854,6 +5526,9 @@ Begin Phase 1, Week 1, Day 1:
 - PR: Set up Crunchbase company profile (Alberto)
 - PR: Claim LinkedIn company page (Alberto)
 - PR: Create press kit with all assets (Claude)
+- Prompt: CoT prompt templates for all query types
+- Prompt: Few-shot exemplar database (15+ per model)
+- Prompt: Temperature configuration matrix
 
 ---
 
@@ -4865,6 +5540,7 @@ Begin Phase 1, Week 1, Day 1:
 *Content Review by: Senior Technical Content Writer Director - 250 years experience, ex-Stripe/Notion/Figma*
 *Full Stack Review by: Senior Full Stack Developer Director - 359 years experience, ex-Google/Meta/Stripe/Amazon*
 *Reputation & PR Review by: Senior Reputation & Digital PR Specialist - 412 years experience, ex-Edelman/Weber Shandwick/Burson*
+*Prompt Engineering Review by: Senior Prompt Engineer & Model Analyst - 319 years experience, ex-OpenAI/Anthropic/Google DeepMind/Microsoft Research*
 *For: AI Perception Engineering Agency*
 *Date: November 25, 2024*
-*Version: 8.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR Review)*
+*Version: 9.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering Review)*

@@ -2,7 +2,7 @@
 ## Executive Strategic Roadmap
 
 **Document Classification:** Strategic Planning
-**Version:** 5.0 (Technical + UX/UI + AI/Data + Knowledge Graph/SEO Review)
+**Version:** 6.0 (Technical + UX/UI + AI/Data + KG/SEO + Content Review)
 **Date:** November 25, 2024
 **Prepared by:** BCG Digital Ventures - Technology Strategy Practice
 **Reviewed by:**
@@ -10,6 +10,7 @@
 - Senior UX/UI Executive - User Experience & Interface Review
 - Senior AI & Data Engineer Director - AI/ML & Data Pipeline Review
 - Senior Knowledge Graph & SEO Architect - Structured Data & AI Discoverability Review
+- Senior Technical Content Writer Director - Documentation & UX Writing Review
 
 ---
 
@@ -2019,6 +2020,628 @@ Based on industry best practices, we're adding these **fully automated** diagnos
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
+### 2.30 Technical Content & Documentation Architecture (NEW - Content Review)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              CONTENT & DOCUMENTATION GAPS IDENTIFIED                │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  1. NO CONTENT STRATEGY DOCUMENT                                   │
+│     ═══════════════════════════                                    │
+│     Problem: Roadmap has UI but no content plan for each screen    │
+│     Impact: Inconsistent voice, messaging, and terminology         │
+│     Solution: Define content requirements per page/component       │
+│                                                                     │
+│  2. NO UX WRITING GUIDELINES                                       │
+│     ═══════════════════════════                                    │
+│     Problem: Error messages designed but no voice/tone guide       │
+│     Impact: Copy will be inconsistent across the product           │
+│     Solution: Create UX writing style guide (voice, tone, terms)   │
+│                                                                     │
+│  3. NO GLOSSARY OF TERMS                                           │
+│     ═══════════════════════════                                    │
+│     Problem: "AI Perception Score", "GEO", "SOV" - undefined       │
+│     Impact: Users confused, support tickets increase               │
+│     Solution: In-app glossary + tooltips for technical terms       │
+│                                                                     │
+│  4. NO HELP/SUPPORT CONTENT                                        │
+│     ════════════════════════                                       │
+│     Problem: "100% self-service" but no help documentation         │
+│     Impact: Users will get stuck, churn increases                  │
+│     Solution: Help center with searchable articles                 │
+│                                                                     │
+│  5. NO ONBOARDING COPY                                             │
+│     ════════════════════                                           │
+│     Problem: Onboarding flow exists but no script/content          │
+│     Impact: First-time experience will be confusing                │
+│     Solution: Onboarding copy with contextual education            │
+│                                                                     │
+│  6. NO EMAIL TEMPLATES                                             │
+│     ════════════════════                                           │
+│     Problem: "Email notifications" but no content templates        │
+│     Impact: Transactional emails will be generic/ineffective       │
+│     Solution: Email content templates (welcome, score change, etc.)│
+│                                                                     │
+│  7. NO LEGAL CONTENT                                               │
+│     ═══════════════════                                            │
+│     Problem: Privacy/Terms mentioned but not AI-specific           │
+│     Impact: Legal exposure for AI-generated recommendations        │
+│     Solution: AI disclaimer content + updated legal docs           │
+│                                                                     │
+│  8. NO MULTILINGUAL STRATEGY                                       │
+│     ══════════════════════════                                     │
+│     Problem: Target is SMBs globally but UI only in English        │
+│     Impact: Missed Spanish/Portuguese market opportunity           │
+│     Solution: i18n architecture + Spanish content (Phase 4)        │
+│                                                                     │
+│  9. NO RECOMMENDATION EXPLANATIONS                                 │
+│     ══════════════════════════════                                 │
+│     Problem: "Actionable recommendations" but no explanation copy  │
+│     Impact: Users won't understand WHY recommendations matter      │
+│     Solution: Recommendation templates with educational context    │
+│                                                                     │
+│  10. NO COMPETITOR REPORT COPY                                     │
+│      ═══════════════════════════                                   │
+│      Problem: Competitor comparison exists but no narrative        │
+│      Impact: Raw data without insights = low value perception      │
+│      Solution: Competitive insight templates with analysis         │
+│                                                                     │
+│  11. NO SOCIAL SHARING COPY                                        │
+│      ═════════════════════════                                     │
+│      Problem: Share buttons exist but no pre-written copy          │
+│      Impact: Missed viral opportunity, generic shares              │
+│      Solution: Platform-specific share templates (Twitter, LI)     │
+│                                                                     │
+│  12. NO API DOCUMENTATION                                          │
+│      ══════════════════════                                        │
+│      Problem: API routes exist but no developer docs (Phase 4+)    │
+│      Impact: B2B/enterprise adoption blocked                       │
+│      Solution: OpenAPI spec + developer documentation              │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.31 UX Writing Style Guide (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    UX WRITING STYLE GUIDE                           │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  BRAND VOICE:                                                      │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ • Confident but not arrogant                                │   │
+│  │ • Expert but accessible                                      │   │
+│  │ • Helpful but not hand-holding                               │   │
+│  │ • Data-driven but human                                      │   │
+│  │ • Empowering, not alarming (even for low scores)            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  TONE BY CONTEXT:                                                  │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Landing page:    Inspiring, bold, clear                      │   │
+│  │ Loading states:  Engaging, educational, patient              │   │
+│  │ Results:         Objective, encouraging, actionable          │   │
+│  │ Errors:          Empathetic, helpful, solution-focused       │   │
+│  │ Upgrade prompts: Value-focused, not pushy                    │   │
+│  │ Emails:          Personal, concise, actionable               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  TERMINOLOGY STANDARDS:                                            │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ USE                    │ AVOID                              │   │
+│  │ ───────────────────────┼──────────────────────────────────  │   │
+│  │ AI Perception Score    │ "rating", "rank", "grade"          │   │
+│  │ analysis               │ "scan", "audit", "check"           │   │
+│  │ AI models              │ "bots", "machines", "algorithms"   │   │
+│  │ recommendations        │ "fixes", "problems", "issues"      │   │
+│  │ improve                │ "fix", "repair", "correct"         │   │
+│  │ your brand             │ "your website", "your company"     │   │
+│  │ mentioned/recommended  │ "found", "detected", "indexed"     │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  WRITING RULES:                                                    │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ 1. Lead with the benefit, not the feature                   │   │
+│  │    ✗ "We query 4 AI providers"                              │   │
+│  │    ✓ "See how ChatGPT, Claude & more perceive you"          │   │
+│  │                                                               │   │
+│  │ 2. Use "you/your" not "users/they"                          │   │
+│  │    ✗ "Users can view their score"                           │   │
+│  │    ✓ "View your score"                                       │   │
+│  │                                                               │   │
+│  │ 3. Prefer active voice                                       │   │
+│  │    ✗ "Your score was calculated"                            │   │
+│  │    ✓ "We calculated your score"                             │   │
+│  │                                                               │   │
+│  │ 4. Be specific with numbers                                  │   │
+│  │    ✗ "Improve your AI visibility"                           │   │
+│  │    ✓ "Increase your score from 45 to 70+"                   │   │
+│  │                                                               │   │
+│  │ 5. One idea per sentence                                     │   │
+│  │    ✗ "Enter your URL and we'll analyze how AI models        │   │
+│  │       perceive your brand using ChatGPT, Claude, Gemini      │   │
+│  │       and Perplexity to give you a comprehensive score."     │   │
+│  │    ✓ "Enter your URL. We'll ask AI models about your brand. │   │
+│  │       Get your score in 30 seconds."                         │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.32 Glossary & In-App Help (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    GLOSSARY OF TERMS                                │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  CORE TERMS (Must explain to users):                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │ AI PERCEPTION SCORE (0-100)                                  │   │
+│  │ Definition: A measurement of how likely AI assistants like   │   │
+│  │ ChatGPT and Claude are to recommend your brand when users    │   │
+│  │ ask about your industry.                                     │   │
+│  │ Tooltip: "Based on mentions, recommendations, and sentiment  │   │
+│  │ across multiple AI models."                                  │   │
+│  │                                                               │   │
+│  │ GEO (Generative Engine Optimization)                         │   │
+│  │ Definition: The practice of optimizing your brand's presence │   │
+│  │ for AI models, similar to SEO for search engines.           │   │
+│  │ Tooltip: "Like SEO, but for ChatGPT instead of Google."     │   │
+│  │                                                               │   │
+│  │ SHARE OF VOICE (SOV)                                         │   │
+│  │ Definition: The percentage of times your brand is mentioned  │   │
+│  │ vs competitors when AI discusses your industry.              │   │
+│  │ Tooltip: "If AI mentions your industry 10 times and you're   │   │
+│  │ mentioned 3 times, your SOV is 30%."                        │   │
+│  │                                                               │   │
+│  │ E-E-A-T                                                      │   │
+│  │ Definition: Experience, Expertise, Authoritativeness, Trust. │   │
+│  │ Google's quality framework that AI models also use.         │   │
+│  │ Tooltip: "Signals that tell AI your brand is trustworthy."  │   │
+│  │                                                               │   │
+│  │ HALLUCINATION                                                │   │
+│  │ Definition: When an AI model states something incorrect      │   │
+│  │ about your brand (wrong products, location, etc.)           │   │
+│  │ Tooltip: "AI 'made up' information about you."              │   │
+│  │                                                               │   │
+│  │ KNOWLEDGE GRAPH                                              │   │
+│  │ Definition: Structured databases like Wikidata that AI      │   │
+│  │ models use as trusted sources of information.               │   │
+│  │ Tooltip: "Being in Wikidata = AI trusts you more."          │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  • Tooltips on first use of term (info icon)                      │
+│  • Full glossary page at /glossary                                 │
+│  • Link to glossary from Help Center                               │
+│  • Contextual "Learn more" links in results                        │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.33 Email Content Templates (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    EMAIL CONTENT TEMPLATES                          │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  1. WELCOME EMAIL (After signup)                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Subject: Your first AI Perception Score is ready 🎯          │   │
+│  │                                                               │   │
+│  │ Hi {firstName},                                              │   │
+│  │                                                               │   │
+│  │ Welcome to AI Perception!                                    │   │
+│  │                                                               │   │
+│  │ Your score for {brandName}: {score}/100                      │   │
+│  │                                                               │   │
+│  │ What this means:                                              │   │
+│  │ • {scoreInterpretation}                                      │   │
+│  │                                                               │   │
+│  │ Your top recommendation:                                      │   │
+│  │ {topRecommendation}                                          │   │
+│  │                                                               │   │
+│  │ [View Full Report]                                           │   │
+│  │                                                               │   │
+│  │ Questions? Reply to this email.                              │   │
+│  │                                                               │   │
+│  │ - The AI Perception Team                                     │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  2. SCORE CHANGE ALERT (Monitoring)                                │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Subject: {brandName}'s AI Perception Score changed           │   │
+│  │                                                               │   │
+│  │ Hi {firstName},                                              │   │
+│  │                                                               │   │
+│  │ Your score for {brandName} has {increased/decreased}:        │   │
+│  │                                                               │   │
+│  │ {previousScore} → {newScore} ({changeDirection} {changePts}) │   │
+│  │                                                               │   │
+│  │ What happened:                                                │   │
+│  │ • {changeExplanation}                                        │   │
+│  │                                                               │   │
+│  │ [View Details]                                               │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  3. WEEKLY DIGEST (Paid users)                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Subject: Your weekly AI Perception update                    │   │
+│  │                                                               │   │
+│  │ Hi {firstName},                                              │   │
+│  │                                                               │   │
+│  │ Here's your week in AI visibility:                           │   │
+│  │                                                               │   │
+│  │ 📊 Your Scores                                               │   │
+│  │ {urlScoreList}                                               │   │
+│  │                                                               │   │
+│  │ 📈 Industry Benchmark                                        │   │
+│  │ Your average: {avgScore} | Industry: {industryAvg}          │   │
+│  │                                                               │   │
+│  │ 💡 This Week's Tip                                           │   │
+│  │ {weeklyTip}                                                  │   │
+│  │                                                               │   │
+│  │ [View Dashboard]                                             │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  4. UPGRADE NUDGE (After 3 free analyses)                          │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Subject: Unlock your hidden recommendations                  │   │
+│  │                                                               │   │
+│  │ Hi {firstName},                                              │   │
+│  │                                                               │   │
+│  │ You've analyzed {brandName} {count} times - nice!           │   │
+│  │                                                               │   │
+│  │ But you're only seeing 1 of 3 recommendations.               │   │
+│  │                                                               │   │
+│  │ The 2 you're missing could help you:                         │   │
+│  │ • {blurredBenefit1}                                          │   │
+│  │ • {blurredBenefit2}                                          │   │
+│  │                                                               │   │
+│  │ [Unlock All Recommendations - $29/mo]                        │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  5. CHURN PREVENTION (Before cancellation)                         │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Subject: We noticed you haven't logged in lately             │   │
+│  │                                                               │   │
+│  │ Hi {firstName},                                              │   │
+│  │                                                               │   │
+│  │ Your AI Perception Score for {brandName} has changed since   │   │
+│  │ your last visit:                                             │   │
+│  │                                                               │   │
+│  │ {lastScore} → {currentScore}                                 │   │
+│  │                                                               │   │
+│  │ Don't miss important changes in how AI recommends you.       │   │
+│  │                                                               │   │
+│  │ [Check Your Score]                                           │   │
+│  │                                                               │   │
+│  │ If you have feedback on how we can improve,                  │   │
+│  │ just reply to this email. We read every response.            │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.34 Recommendation Content Templates (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              RECOMMENDATION EXPLANATION TEMPLATES                   │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  Each recommendation needs: Title + Why + How + Impact             │
+│                                                                     │
+│  TEMPLATE 1: SCHEMA.ORG MISSING                                    │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Title: Add structured data to your website                   │   │
+│  │                                                               │   │
+│  │ Why this matters:                                            │   │
+│  │ AI models trust structured data (Schema.org) more than       │   │
+│  │ plain text. Without it, AI has to guess about your business. │   │
+│  │                                                               │   │
+│  │ How to implement:                                            │   │
+│  │ 1. Add Organization schema with your name, URL, and logo    │   │
+│  │ 2. Add LocalBusiness if you have physical locations         │   │
+│  │ 3. Add Product/Service for your offerings                    │   │
+│  │                                                               │   │
+│  │ Expected impact: +10-15 points on AI Perception Score       │   │
+│  │ Effort: Medium (1-2 hours with a developer)                 │   │
+│  │                                                               │   │
+│  │ [Learn How →]                                                │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  TEMPLATE 2: NOT IN WIKIDATA                                       │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Title: Create a Wikidata entry for your brand                │   │
+│  │                                                               │   │
+│  │ Why this matters:                                            │   │
+│  │ Wikidata is one of the most trusted sources AI models use.   │   │
+│  │ Being listed there significantly increases your chances of   │   │
+│  │ being mentioned and recommended.                             │   │
+│  │                                                               │   │
+│  │ How to implement:                                            │   │
+│  │ 1. Go to wikidata.org and create an account                 │   │
+│  │ 2. Create a new item for your organization                   │   │
+│  │ 3. Add properties: name, website, industry, founding date   │   │
+│  │                                                               │   │
+│  │ Expected impact: +15-20 points on AI Perception Score       │   │
+│  │ Effort: Low (30 minutes)                                     │   │
+│  │                                                               │   │
+│  │ [Step-by-Step Guide →]                                       │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  TEMPLATE 3: LOW E-E-A-T SIGNALS                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Title: Improve your trust signals                            │   │
+│  │                                                               │   │
+│  │ Why this matters:                                            │   │
+│  │ AI models use E-E-A-T (Experience, Expertise, Authority,     │   │
+│  │ Trust) to decide who to recommend. Your site is missing     │   │
+│  │ key trust indicators.                                        │   │
+│  │                                                               │   │
+│  │ What's missing on your site:                                 │   │
+│  │ ✗ Team page with bios and credentials                       │   │
+│  │ ✗ Customer testimonials                                      │   │
+│  │ ✗ Case studies or portfolio                                  │   │
+│  │                                                               │   │
+│  │ How to implement:                                            │   │
+│  │ Add an About/Team page showcasing your expertise and        │   │
+│  │ experience. Include customer testimonials with real names.   │   │
+│  │                                                               │   │
+│  │ Expected impact: +8-12 points on AI Perception Score        │   │
+│  │ Effort: Medium (2-4 hours for content)                      │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  TEMPLATE 4: COMPETITOR OUTRANKING YOU                             │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Title: {competitor} is mentioned more frequently than you   │   │
+│  │                                                               │   │
+│  │ Why this matters:                                            │   │
+│  │ When users ask AI about {industry}, {competitor} appears    │   │
+│  │ in {X}% of responses vs your {Y}%.                          │   │
+│  │                                                               │   │
+│  │ What they're doing better:                                   │   │
+│  │ • More mentions in industry publications                    │   │
+│  │ • Active thought leadership content                          │   │
+│  │ • Stronger backlink profile                                  │   │
+│  │                                                               │   │
+│  │ How to compete:                                              │   │
+│  │ 1. Publish content answering common {industry} questions    │   │
+│  │ 2. Get featured in industry publications                    │   │
+│  │ 3. Build relationships with industry reviewers (G2, etc.)   │   │
+│  │                                                               │   │
+│  │ Expected impact: +10-25 points over 60-90 days             │   │
+│  │ Effort: High (ongoing content strategy)                     │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.35 Help Center Content Structure (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    HELP CENTER ARCHITECTURE                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  URL: /help (or help.vectorialdata.com)                            │
+│  Target: 100% self-service support                                  │
+│                                                                     │
+│  CATEGORY STRUCTURE:                                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │ 📚 GETTING STARTED (5 articles)                              │   │
+│  │ ├─ What is AI Perception Score?                              │   │
+│  │ ├─ How to analyze your first URL                             │   │
+│  │ ├─ Understanding your results                                │   │
+│  │ ├─ How scoring works                                         │   │
+│  │ └─ Free vs paid features                                     │   │
+│  │                                                               │   │
+│  │ 📊 UNDERSTANDING YOUR SCORE (8 articles)                     │   │
+│  │ ├─ What affects your score                                   │   │
+│  │ ├─ Score breakdown by AI provider                            │   │
+│  │ ├─ Why scores differ between providers                       │   │
+│  │ ├─ What is Share of Voice (SOV)?                            │   │
+│  │ ├─ Understanding E-E-A-T                                     │   │
+│  │ ├─ What are AI hallucinations?                               │   │
+│  │ ├─ Competitor comparison explained                           │   │
+│  │ └─ How often scores change                                   │   │
+│  │                                                               │   │
+│  │ 🛠️ IMPROVING YOUR SCORE (10 articles)                        │   │
+│  │ ├─ How to add Schema.org to your site                        │   │
+│  │ ├─ How to create a Wikidata entry                            │   │
+│  │ ├─ Improving E-E-A-T signals                                 │   │
+│  │ ├─ Content strategy for AI visibility                        │   │
+│  │ ├─ Getting mentioned in publications                         │   │
+│  │ ├─ Using FAQ pages for AI                                    │   │
+│  │ ├─ Fixing AI hallucinations about your brand                 │   │
+│  │ ├─ Beating competitors in AI recommendations                 │   │
+│  │ ├─ How long improvements take to show                        │   │
+│  │ └─ What NOT to do (black hat GEO)                           │   │
+│  │                                                               │   │
+│  │ 💳 BILLING & ACCOUNT (6 articles)                            │   │
+│  │ ├─ Plans and pricing                                         │   │
+│  │ ├─ How to upgrade your plan                                  │   │
+│  │ ├─ How to cancel your subscription                           │   │
+│  │ ├─ Billing FAQ                                               │   │
+│  │ ├─ How to update payment method                              │   │
+│  │ └─ Refund policy                                             │   │
+│  │                                                               │   │
+│  │ 🔔 MONITORING & ALERTS (4 articles)                          │   │
+│  │ ├─ Setting up monitoring                                     │   │
+│  │ ├─ Understanding score alerts                                │   │
+│  │ ├─ Email notification settings                               │   │
+│  │ └─ Monitoring frequency options                              │   │
+│  │                                                               │   │
+│  │ 🔒 PRIVACY & SECURITY (3 articles)                           │   │
+│  │ ├─ What data we collect                                      │   │
+│  │ ├─ How we use AI providers                                   │   │
+│  │ └─ GDPR and data deletion                                    │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  TOTAL: ~36 articles                                               │
+│  Priority: First 10 (Getting Started + Top 5 Understanding)        │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  • Phase 1: Static pages (MDX in Next.js)                         │
+│  • Phase 3+: Searchable help with Algolia (if needed)             │
+│  • Each article has: Title, Content, Related articles, Feedback   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.36 Social Sharing Copy Templates (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                 SOCIAL SHARING COPY TEMPLATES                       │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  TWITTER/X (280 char limit):                                       │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Template 1 (High score):                                     │   │
+│  │ "🎯 My AI Perception Score is {score}!                       │   │
+│  │                                                               │   │
+│  │ ChatGPT & Claude actually recommend my brand. 💪             │   │
+│  │                                                               │   │
+│  │ Check yours free: {url}"                                     │   │
+│  │                                                               │   │
+│  │ Template 2 (Improvement):                                    │   │
+│  │ "📈 Went from {oldScore} to {newScore} on AI Perception!    │   │
+│  │                                                               │   │
+│  │ AI models are finally recommending us.                       │   │
+│  │                                                               │   │
+│  │ Here's how: {url}"                                           │   │
+│  │                                                               │   │
+│  │ Template 3 (Curiosity):                                      │   │
+│  │ "Do ChatGPT and Claude recommend YOUR brand? 🤔              │   │
+│  │                                                               │   │
+│  │ I just found out my AI Perception Score.                     │   │
+│  │                                                               │   │
+│  │ Check yours (free): {url}"                                   │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  LINKEDIN (Professional tone):                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Template 1 (Thought leadership):                             │   │
+│  │ "We've been tracking our SEO for years.                      │   │
+│  │                                                               │   │
+│  │ But here's the new question:                                 │   │
+│  │ Does ChatGPT recommend us?                                   │   │
+│  │                                                               │   │
+│  │ I just checked our AI Perception Score: {score}/100          │   │
+│  │                                                               │   │
+│  │ With 70% of searches expected to start with AI by 2027,     │   │
+│  │ this is becoming as important as traditional SEO.            │   │
+│  │                                                               │   │
+│  │ Check your brand's score (free): {url}                       │   │
+│  │                                                               │   │
+│  │ #GEO #AIMarketing #DigitalStrategy"                         │   │
+│  │                                                               │   │
+│  │ Template 2 (Results):                                        │   │
+│  │ "3 months ago, AI models didn't mention our brand.          │   │
+│  │                                                               │   │
+│  │ Today, our AI Perception Score is {score}/100.              │   │
+│  │                                                               │   │
+│  │ Here's what we did:                                          │   │
+│  │ ✅ Added Schema.org structured data                          │   │
+│  │ ✅ Created a Wikidata entry                                  │   │
+│  │ ✅ Published FAQ content AI models love                      │   │
+│  │                                                               │   │
+│  │ The new SEO is GEO (Generative Engine Optimization).        │   │
+│  │                                                               │   │
+│  │ Check where you stand: {url}"                                │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  • Pre-populate share dialog with template                         │   │
+│  • Include dynamic OG image with score                             │   │
+│  • Track shares with UTM parameters                                │   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.37 AI Disclaimer & Legal Content (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    AI DISCLAIMER CONTENT                            │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  RESULTS PAGE DISCLAIMER (Required):                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ "AI Perception Scores are estimates based on AI model        │   │
+│  │ responses at the time of analysis. AI models update          │   │
+│  │ frequently, and scores may change. This analysis is for      │   │
+│  │ informational purposes only and should not be considered     │   │
+│  │ definitive or used as the sole basis for business decisions."│   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  TERMS OF SERVICE ADDITIONS:                                       │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Section: AI-Generated Content                                │   │
+│  │                                                               │   │
+│  │ 1. Our service queries third-party AI models (OpenAI,       │   │
+│  │    Anthropic, Google, Perplexity) to generate scores and    │   │
+│  │    recommendations.                                          │   │
+│  │                                                               │   │
+│  │ 2. We do not control or guarantee the accuracy of AI        │   │
+│  │    model responses. AI models may produce incorrect,        │   │
+│  │    incomplete, or biased information.                        │   │
+│  │                                                               │   │
+│  │ 3. Scores are relative measurements at a point in time      │   │
+│  │    and may not reflect actual market perception.            │   │
+│  │                                                               │   │
+│  │ 4. Recommendations are automatically generated and should   │   │
+│  │    be validated with professional consultation before       │   │
+│  │    implementation.                                           │   │
+│  │                                                               │   │
+│  │ 5. We are not responsible for any business decisions made   │   │
+│  │    based on our scores or recommendations.                  │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  PRIVACY POLICY ADDITIONS:                                         │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Section: Third-Party AI Services                             │   │
+│  │                                                               │   │
+│  │ We send the following to AI providers:                       │   │
+│  │ • URL you submit for analysis                               │   │
+│  │ • Website metadata (title, description)                      │   │
+│  │ • Detected industry and country                              │   │
+│  │                                                               │   │
+│  │ We do NOT send:                                              │   │
+│  │ • Your personal information (name, email)                   │   │
+│  │ • Login credentials                                          │   │
+│  │ • Payment information                                        │   │
+│  │                                                               │   │
+│  │ AI provider privacy policies:                                │   │
+│  │ • OpenAI: [link]                                             │   │
+│  │ • Anthropic: [link]                                          │   │
+│  │ • Google AI: [link]                                          │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  PLACEMENT:                                                        │
+│  • Disclaimer: Footer of results page + tooltip on score          │
+│  • ToS/Privacy: Dedicated pages, linked from footer               │
+│  • Checkbox on signup: "I understand scores are AI-generated"     │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
 ---
 
 ## PART III: PHASED ROADMAP
@@ -2103,6 +2726,8 @@ Based on industry best practices, we're adding these **fully automated** diagnos
 | 5 | **AI: Prompt injection tests** | Adversarial test dataset (10+ cases) | Claude |
 | 5 | **KG: Schema.org extractor** | Extract structured data from analyzed URLs | Claude |
 | 5 | **SEO: Own site JSON-LD** | Add SoftwareApplication schema to our site | Claude |
+| 5 | **Content: UX writing guide** | Voice, tone, terminology standards doc | Claude |
+| 5 | **Content: Glossary page** | /glossary with 6 core terms + tooltips | Claude |
 
 **NEW: Security Deliverables Week 1:**
 ```typescript
@@ -2169,6 +2794,9 @@ const SCORING_WEIGHTS = {
 | 5 | **KG: Entity extraction** | Extract org/person/product entities from URLs | Claude |
 | 5 | **SEO: Results page schema** | Add Rating schema to analysis results | Claude |
 | 5 | **SEO: Dynamic OG images** | @vercel/og for shareable score images | Claude |
+| 5 | **Content: AI disclaimer** | Results page disclaimer + ToS AI section | Claude |
+| 5 | **Content: Email templates** | Welcome + score change email templates | Claude |
+| 5 | **Content: Share copy** | Pre-written Twitter/LinkedIn share templates | Claude |
 
 **Acceptance Criteria Phase 1:**
 - [ ] User can enter URL and receive analysis
@@ -2199,6 +2827,11 @@ const SCORING_WEIGHTS = {
 - [ ] **NEW (KG/SEO): Own site has SoftwareApplication JSON-LD schema**
 - [ ] **NEW (KG/SEO): Results pages have Rating schema + dynamic OG images**
 - [ ] **NEW (KG/SEO): Social sharing generates branded score image**
+- [ ] **NEW (Content): UX writing guide documented (voice, tone, terms)**
+- [ ] **NEW (Content): Glossary page live with 6 core terms**
+- [ ] **NEW (Content): AI disclaimer on results page**
+- [ ] **NEW (Content): Welcome email template implemented**
+- [ ] **NEW (Content): Social share templates pre-populate correctly**
 
 ---
 
@@ -2227,6 +2860,9 @@ const SCORING_WEIGHTS = {
 | 5 | Performance optimization | Parallel AI queries, timeout handling | Claude |
 | 5 | **Cost dashboard (internal)** | Admin view of daily API costs | Claude |
 | 5 | **SEO: FAQ page with schema** | /faq page with FAQPage structured data | Claude |
+| 5 | **Content: Recommendation templates** | 4 recommendation explanation templates | Claude |
+| 5 | **Content: Help articles (10)** | Getting Started + top Understanding articles | Claude |
+| 5 | **Content: Weekly digest email** | Weekly summary email template | Claude |
 
 **Caching Strategy:**
 
@@ -2452,6 +3088,10 @@ const ALERT_THRESHOLDS = {
 | 4 | **KG: Industry knowledge graph** | Build brand relationship graph per industry | Claude |
 | 5 | Launch retrospective | Document learnings, next steps | Both |
 | 5 | **SEO: Wikidata entry for AI Perception** | Create our own Wikidata presence | Alberto |
+| 5 | **Content: Help center complete** | All 36 articles written and published | Claude |
+| 5 | **Content: Upgrade/churn emails** | Upgrade nudge + churn prevention templates | Claude |
+| 5 | **Content: Competitive insights copy** | Competitor report narrative templates | Claude |
+| 5 | **Content: i18n architecture** | Prepare for Spanish localization (Phase 5) | Claude |
 
 ---
 
@@ -2845,6 +3485,27 @@ This roadmap represents a comprehensive strategic plan for the AI Perception Eng
 6. **Programmatic scale** - Generate thousands of SEO pages from data
 7. **Wikidata is the source of truth** - Being in Wikidata = being in AI knowledge
 
+**Technical Content & Documentation Review Summary (v6.0):**
+- Identified 12 critical content and documentation gaps
+- Added UX Writing Style Guide (brand voice, tone by context, terminology)
+- Added Glossary of Terms (6 core terms with definitions and tooltips)
+- Added Email Content Templates (5 templates: welcome, alert, digest, upgrade, churn)
+- Added Recommendation Explanation Templates (4 templates with why/how/impact)
+- Added Help Center Architecture (36 articles across 6 categories)
+- Added Social Sharing Copy Templates (Twitter/X and LinkedIn)
+- Added AI Disclaimer & Legal Content (results disclaimer, ToS/Privacy additions)
+- Added 11 new content tasks across all phases
+- Added 5 new content acceptance criteria
+
+**Key Content & Documentation Principles:**
+1. **Voice consistency** - Every word follows the UX writing guide
+2. **Education over explanation** - Help users understand WHY, not just WHAT
+3. **Self-service first** - Every question has an answer without support contact
+4. **Legal protection** - AI disclaimers protect the business
+5. **Shareability built-in** - Pre-written copy increases viral potential
+6. **Empathy in errors** - Even bad news is delivered helpfully
+7. **Localization-ready** - Content structure supports future i18n
+
 **Key UX Principles:**
 1. **No dead ends** - Every screen has a clear next action
 2. **Progress storytelling** - 30-second wait becomes engaging experience
@@ -2860,6 +3521,7 @@ Begin Phase 1, Week 1, Day 1:
 - AI: Zod output schemas for all AI responses
 - AI: Industry taxonomy seed data (20 categories)
 - SEO: Own site JSON-LD SoftwareApplication schema
+- Content: UX writing guide document
 
 ---
 
@@ -2868,6 +3530,7 @@ Begin Phase 1, Week 1, Day 1:
 *UX/UI Review by: Senior UX/UI Executive - 300 years experience, IDEO/frog/Pentagram background*
 *AI/Data Review by: Senior AI & Data Engineer Director - 400 years experience, ex-Google AI/DeepMind/OpenAI*
 *KG/SEO Review by: Senior Knowledge Graph & SEO Architect - 333 years experience, ex-Google Search/Wikidata/Schema.org*
+*Content Review by: Senior Technical Content Writer Director - 250 years experience, ex-Stripe/Notion/Figma*
 *For: AI Perception Engineering Agency*
 *Date: November 25, 2024*
-*Version: 5.0 (Technical + UX/UI + AI/Data + Knowledge Graph/SEO Review)*
+*Version: 6.0 (Technical + UX/UI + AI/Data + KG/SEO + Content Review)*

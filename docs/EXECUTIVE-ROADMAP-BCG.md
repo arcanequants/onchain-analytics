@@ -2,10 +2,12 @@
 ## Executive Strategic Roadmap
 
 **Document Classification:** Strategic Planning
-**Version:** 2.0 (Technical Review)
+**Version:** 3.0 (Technical + UX/UI Review)
 **Date:** November 25, 2024
 **Prepared by:** BCG Digital Ventures - Technology Strategy Practice
-**Reviewed by:** Senior Software Director - Technical Architecture Review
+**Reviewed by:**
+- Senior Software Director - Technical Architecture Review
+- Senior UX/UI Executive - User Experience & Interface Review
 
 ---
 
@@ -563,7 +565,393 @@ Based on industry best practices, we're adding these **fully automated** diagnos
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-### 2.7 API Cost Optimization Strategy
+### 2.7 UX/UI Architecture (NEW - User Experience Review)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    UX GAPS IDENTIFIED & SOLUTIONS                    │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  1. NO USER JOURNEY MAP                                             │
+│     ═══════════════════                                             │
+│     Problem: Roadmap has features but no defined user paths         │
+│     Solution: Define 3 primary journeys with touchpoints            │
+│                                                                     │
+│  2. NO DESIGN SYSTEM                                                │
+│     ════════════════════                                            │
+│     Problem: Components listed but no visual consistency plan       │
+│     Solution: Create design tokens + component library first        │
+│                                                                     │
+│  3. NO EMPTY STATES                                                 │
+│     ═══════════════════                                             │
+│     Problem: What does user see with 0 analyses? 0 history?         │
+│     Solution: Design helpful empty states that guide to action      │
+│                                                                     │
+│  4. NO ERROR UX                                                     │
+│     ════════════════                                                │
+│     Problem: "Graceful degradation" but no error message design     │
+│     Solution: Human-friendly error messages + recovery actions      │
+│                                                                     │
+│  5. NO LOADING EXPERIENCE                                           │
+│     ══════════════════════                                          │
+│     Problem: 30-45 second wait with no engagement                   │
+│     Solution: Progress storytelling ("Asking ChatGPT...", etc.)     │
+│                                                                     │
+│  6. NO MOBILE CONSIDERATION                                         │
+│     ═══════════════════════                                         │
+│     Problem: SaaS targets SMBs, many check on mobile                │
+│     Solution: Mobile-first responsive design                        │
+│                                                                     │
+│  7. NO ONBOARDING FLOW                                              │
+│     ══════════════════════                                          │
+│     Problem: User lands, enters URL... then what?                   │
+│     Solution: First-run experience with value demonstration         │
+│                                                                     │
+│  8. NO SOCIAL PROOF PLACEMENT                                       │
+│     ═══════════════════════════                                     │
+│     Problem: Landing page has no trust elements                     │
+│     Solution: Early wins section, testimonials placeholder          │
+│                                                                     │
+│  9. NO FREEMIUM FRICTION DESIGN                                     │
+│     ═════════════════════════════                                   │
+│     Problem: "Show partial results" but no strategic blur/tease     │
+│     Solution: Visible but locked content that creates desire        │
+│                                                                     │
+│  10. NO CELEBRATION/DELIGHT MOMENTS                                 │
+│      ════════════════════════════                                   │
+│      Problem: Score delivered with no emotional response            │
+│      Solution: Score reveal animation, achievement moments          │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.8 User Journey Maps (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│           JOURNEY 1: FIRST-TIME FREE USER (Critical Path)           │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ┌─────────┐    ┌─────────┐    ┌─────────┐    ┌─────────┐          │
+│  │ Landing │───▶│  Enter  │───▶│ Loading │───▶│ Results │          │
+│  │  Page   │    │   URL   │    │ (30sec) │    │  Page   │          │
+│  └─────────┘    └─────────┘    └─────────┘    └─────────┘          │
+│       │              │              │              │                │
+│       ▼              ▼              ▼              ▼                │
+│  • Clear value   • Single      • Progress     • Score with       │
+│    proposition     input         storytelling   celebration       │
+│  • Trust          • Instant     • AI provider  • Partial         │
+│    elements        validation    status         recommendations   │
+│  • "30 seconds"  • No signup   • Fun facts    • Upgrade CTA      │
+│    promise         required      while wait     (strategic)       │
+│                                                                     │
+│  CONVERSION GOAL: Sign up to save results & get full report        │
+│                                                                     │
+│  EMOTION ARC: Curious → Engaged → Delighted → Wanting More        │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────┐
+│              JOURNEY 2: FREE → PAID CONVERSION                      │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ┌─────────┐    ┌─────────┐    ┌─────────┐    ┌─────────┐          │
+│  │ Results │───▶│  Blur/  │───▶│ Pricing │───▶│Checkout │          │
+│  │  (Free) │    │  Lock   │    │  Modal  │    │ (Stripe)│          │
+│  └─────────┘    └─────────┘    └─────────┘    └─────────┘          │
+│       │              │              │              │                │
+│       ▼              ▼              ▼              ▼                │
+│  • Show score    • "See 2     • Value        • Pre-filled       │
+│    (exciting)      more recs"   comparison     info              │
+│  • 1 of 3        • Competitor • Social proof • Instant access   │
+│    recommendations blur         • Money-back   promise           │
+│                  • "Unlock"                                        │
+│                                                                     │
+│  FRICTION POINTS TO DESIGN:                                        │
+│  • What's blurred must be VISIBLE but unreadable (FOMO)           │
+│  • Competitor scores tease without full reveal                     │
+│  • "Others in your industry score 72 avg" → social comparison     │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────┐
+│              JOURNEY 3: RETURNING PAID USER                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ┌─────────┐    ┌─────────┐    ┌─────────┐    ┌─────────┐          │
+│  │Dashboard│───▶│  Score  │───▶│ Compare │───▶│  Share  │          │
+│  │  Home   │    │ History │    │   vs    │    │ Results │          │
+│  └─────────┘    └─────────┘    └─────────┘    └─────────┘          │
+│       │              │              │              │                │
+│       ▼              ▼              ▼              ▼                │
+│  • Score        • Trend       • Side-by-    • Badge embed       │
+│    at-a-glance    visualization  side          code              │
+│  • Alerts       • "Improved!" • Beat        • Social share      │
+│    (if any)       celebration   competitors   buttons            │
+│  • Quick                                                           │
+│    re-analyze                                                      │
+│                                                                     │
+│  RETENTION HOOKS:                                                  │
+│  • Weekly email: "Your score changed!"                            │
+│  • Dashboard gamification: "Beat 73% of your industry"            │
+│  • Streaks: "3 weeks of improvement!"                             │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.9 Design System Requirements (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    DESIGN SYSTEM FOUNDATION                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  1. DESIGN TOKENS (CSS Variables)                                  │
+│     ═══════════════════════════                                    │
+│     Already have: dark/light theme variables                       │
+│     Need to add:                                                   │
+│     • --score-excellent: #22c55e (green, 80-100)                  │
+│     • --score-good: #84cc16 (lime, 60-79)                         │
+│     • --score-average: #eab308 (yellow, 40-59)                    │
+│     • --score-poor: #f97316 (orange, 20-39)                       │
+│     • --score-critical: #ef4444 (red, 0-19)                       │
+│     • --provider-openai: #10a37f                                  │
+│     • --provider-anthropic: #d4a574                               │
+│     • --provider-google: #4285f4                                  │
+│     • --provider-perplexity: #20808d                              │
+│                                                                     │
+│  2. TYPOGRAPHY SCALE                                               │
+│     ══════════════════                                             │
+│     • Display: 48px (score number)                                │
+│     • H1: 36px (page titles)                                      │
+│     • H2: 24px (section headers)                                  │
+│     • Body: 16px (content)                                        │
+│     • Small: 14px (labels, captions)                              │
+│     • Micro: 12px (badges, metadata)                              │
+│                                                                     │
+│  3. SPACING SYSTEM                                                 │
+│     ════════════════                                               │
+│     Base: 4px                                                      │
+│     Scale: 4, 8, 12, 16, 24, 32, 48, 64, 96                       │
+│                                                                     │
+│  4. COMPONENT LIBRARY (Priority Order)                            │
+│     ═══════════════════════════════════                           │
+│     Phase 1:                                                       │
+│     • ScoreCircle (animated, color-coded)                         │
+│     • ProviderBadge (with logo + status)                          │
+│     • ProgressBar (multi-step with labels)                        │
+│     • AlertBanner (success/warning/error/info)                    │
+│     • EmptyState (illustration + CTA)                             │
+│     • SkeletonLoader (for loading states)                         │
+│                                                                     │
+│     Phase 2:                                                       │
+│     • BlurredContent (for freemium gating)                        │
+│     • ComparisonTable (side-by-side)                              │
+│     • TrendChart (simple line graph)                              │
+│     • NotificationBell (with badge count)                         │
+│                                                                     │
+│     Phase 3:                                                       │
+│     • PricingCard (with feature list)                             │
+│     • TestimonialCard (photo + quote)                             │
+│     • BadgeEmbed (for external sites)                             │
+│                                                                     │
+│  5. ANIMATION LIBRARY                                              │
+│     ═══════════════════                                            │
+│     • scoreReveal: count-up animation for score                   │
+│     • fadeInUp: standard content reveal                           │
+│     • pulse: for loading indicators                               │
+│     • confetti: for celebration moments (score > 80)              │
+│     • shake: for error states                                     │
+│     Tool: Framer Motion (already common in Next.js)               │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.10 Loading Experience Design (NEW - Critical for 30s Wait)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              ANALYSIS LOADING EXPERIENCE (30-45 seconds)            │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PROBLEM: 30-45 seconds feels like FOREVER without engagement       │
+│                                                                     │
+│  SOLUTION: Progress Storytelling with Value Demonstration          │
+│                                                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                             │   │
+│  │     Analyzing your AI perception...                         │   │
+│  │                                                             │   │
+│  │     [████████░░░░░░░░░░░░░░░░░░░░░░] 25%                   │   │
+│  │                                                             │   │
+│  │     ✓ Extracted website metadata                           │   │
+│  │     ✓ Detected industry: "CRM Software"                    │   │
+│  │     ⏳ Asking ChatGPT about CRM recommendations...          │   │
+│  │     ○ Asking Claude about CRM recommendations...           │   │
+│  │     ○ Calculating your perception score                    │   │
+│  │                                                             │   │
+│  │     ─────────────────────────────────────────────          │   │
+│  │     💡 Did you know?                                        │   │
+│  │     "67% of B2B buyers ask AI assistants for              │   │
+│  │      product recommendations before contacting sales"      │   │
+│  │                                                             │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  STEP-BY-STEP PROGRESSION:                                         │
+│  1. "Extracting website information..." (0-10%)                    │
+│  2. "Detecting your industry..." (10-20%)                          │
+│  3. "Asking ChatGPT..." with spinner (20-40%)                      │
+│  4. "Asking Claude..." with spinner (40-60%)                       │
+│  5. "Analyzing responses..." (60-80%)                              │
+│  6. "Calculating your score..." (80-95%)                           │
+│  7. "Ready!" with celebration (95-100%)                            │
+│                                                                     │
+│  ROTATING FACTS (change every 8 seconds):                          │
+│  • "67% of B2B buyers ask AI for recommendations"                  │
+│  • "ChatGPT has 200M+ weekly active users"                        │
+│  • "By 2027, 70% of searches will start with AI"                  │
+│  • "Your competitors might already be optimizing for AI"          │
+│                                                                     │
+│  IMPLEMENTATION: Use Server-Sent Events (SSE) for real-time        │
+│  progress updates from backend to frontend                         │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.11 Empty States & Error States (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    EMPTY STATE DESIGNS                              │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  1. DASHBOARD - NO ANALYSES YET                                    │
+│     ┌─────────────────────────────────────────────────────────┐    │
+│     │                                                         │    │
+│     │        [Illustration: magnifying glass + AI]            │    │
+│     │                                                         │    │
+│     │     You haven't analyzed any URLs yet                   │    │
+│     │                                                         │    │
+│     │     Discover how AI models perceive your brand          │    │
+│     │     in just 30 seconds.                                 │    │
+│     │                                                         │    │
+│     │     [  Analyze Your First URL  ]                        │    │
+│     │                                                         │    │
+│     └─────────────────────────────────────────────────────────┘    │
+│                                                                     │
+│  2. RESULTS - NO MENTIONS FOUND                                    │
+│     ┌─────────────────────────────────────────────────────────┐    │
+│     │                                                         │    │
+│     │     Your AI Perception Score: 12                        │    │
+│     │     (displayed with empathy, not alarm)                 │    │
+│     │                                                         │    │
+│     │     AI models don't mention your brand yet.             │    │
+│     │     This is common - 78% of SMBs aren't visible to AI.  │    │
+│     │                                                         │    │
+│     │     The good news? You can improve.                     │    │
+│     │     Here's where to start:                              │    │
+│     │                                                         │    │
+│     │     [3 actionable recommendations]                      │    │
+│     │                                                         │    │
+│     └─────────────────────────────────────────────────────────┘    │
+│                                                                     │
+│  3. SCORE HISTORY - NO HISTORICAL DATA                             │
+│     ┌─────────────────────────────────────────────────────────┐    │
+│     │                                                         │    │
+│     │     [Placeholder chart with dotted line]                │    │
+│     │                                                         │    │
+│     │     Track your progress over time                       │    │
+│     │                                                         │    │
+│     │     Your score history will appear here after           │    │
+│     │     your second analysis.                               │    │
+│     │                                                         │    │
+│     │     💡 Tip: Enable weekly monitoring to track changes   │    │
+│     │                                                         │    │
+│     └─────────────────────────────────────────────────────────┘    │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────┐
+│                    ERROR STATE DESIGNS                              │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  1. URL INVALID                                                    │
+│     Message: "Hmm, that doesn't look like a valid website URL"     │
+│     Help: "Try entering the full address, like https://example.com"│
+│     Tone: Helpful, not accusatory                                  │
+│                                                                     │
+│  2. WEBSITE UNREACHABLE                                            │
+│     Message: "We couldn't reach that website"                      │
+│     Help: "Check if the URL is correct or try again in a minute"   │
+│     Action: [Try Again] button                                     │
+│                                                                     │
+│  3. AI PROVIDER TIMEOUT                                            │
+│     Message: "ChatGPT is taking longer than usual"                 │
+│     Help: "We're still working on it. Results from other AIs      │
+│            will appear shortly."                                   │
+│     Show: Partial results that are ready                           │
+│                                                                     │
+│  4. RATE LIMIT HIT                                                 │
+│     Message: "You've reached your free analysis limit"             │
+│     Help: "Upgrade to get unlimited analyses"                      │
+│     Alternative: "Or come back tomorrow for 1 more free analysis"  │
+│                                                                     │
+│  5. GENERIC ERROR                                                  │
+│     Message: "Something went wrong on our end"                     │
+│     Help: "Our team has been notified. Please try again."          │
+│     Action: [Retry] [Contact Support]                              │
+│                                                                     │
+│  DESIGN PRINCIPLE: Every error has a recovery path                 │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.12 Mobile-First Responsive Strategy (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    MOBILE BREAKPOINTS                               │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  BREAKPOINTS (Tailwind defaults):                                  │
+│  • sm: 640px   (large phones, landscape)                           │
+│  • md: 768px   (tablets)                                           │
+│  • lg: 1024px  (laptops)                                           │
+│  • xl: 1280px  (desktops)                                          │
+│                                                                     │
+│  MOBILE-FIRST PRIORITY SCREENS:                                    │
+│                                                                     │
+│  1. LANDING PAGE (Mobile)                                          │
+│     • Single column layout                                         │
+│     • Large touch-friendly CTA button                              │
+│     • URL input full-width                                         │
+│     • Collapse "How it works" to accordion                        │
+│                                                                     │
+│  2. RESULTS PAGE (Mobile)                                          │
+│     • Score circle takes full width header                         │
+│     • Provider cards stack vertically                              │
+│     • Recommendations as expandable cards                          │
+│     • Sticky "Upgrade" CTA at bottom                              │
+│                                                                     │
+│  3. DASHBOARD (Mobile)                                             │
+│     • Score summary card on top                                    │
+│     • Swipeable analysis history                                   │
+│     • Bottom navigation bar                                        │
+│                                                                     │
+│  TOUCH TARGET MINIMUMS:                                            │
+│  • Buttons: 48x48px minimum (Apple HIG)                           │
+│  • Links in body: 44x44px tap area                                │
+│  • Form inputs: 48px height                                        │
+│                                                                     │
+│  MOBILE-SPECIFIC FEATURES:                                         │
+│  • Pull-to-refresh on dashboard                                    │
+│  • Haptic feedback on score reveal (if supported)                  │
+│  • Share sheet integration for results                             │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.13 API Cost Optimization Strategy
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -654,23 +1042,28 @@ Based on industry best practices, we're adding these **fully automated** diagnos
 
 **Objective:** Build the core analysis infrastructure and enhance landing page
 
-#### Week 1: Core Infrastructure
+#### Week 1: Core Infrastructure + Design System
 
 | Day | Activity | Deliverable | Owner |
 |-----|----------|-------------|-------|
 | 1 | Database schema design | Migration files for new tables + RLS policies | Claude |
 | 1 | Set up AI provider clients | `/lib/ai/` with OpenAI + Anthropic ONLY (budget) | Claude |
 | 1 | **Security: URL validator** | `/lib/security/url-validator.ts` - SSRF prevention | Claude |
+| 1 | **UX: Design tokens** | Score colors, provider colors in globals.css | Claude |
 | 2 | URL analysis service | `/lib/url-analyzer.ts` - extract metadata from URLs | Claude |
 | 2 | Industry detection | `/lib/industry-detector.ts` - classify business type | Claude |
 | 2 | **Security: Rate limiting** | Upstash rate limit middleware | Claude |
+| 2 | **UX: ScoreCircle component** | Animated score display with color coding | Claude |
 | 3 | Prompt engineering | `/lib/prompts/` - optimized prompts for each AI | Claude |
 | 3 | **Security: Prompt sanitizer** | `/lib/ai/prompt-sanitizer.ts` - prevent injection | Claude |
 | 3 | Response parser | `/lib/ai/response-parser.ts` - extract mentions, sentiment | Claude |
+| 3 | **UX: ProgressBar component** | Multi-step progress with labels | Claude |
 | 4 | Scoring algorithm | `/lib/scoring.ts` - calculate 0-100 score | Claude |
 | 4 | **Cost tracking table** | `api_cost_tracking` table + logging | Claude |
+| 4 | **UX: EmptyState component** | Reusable empty state with illustration + CTA | Claude |
 | 5 | **Unit tests setup** | Vitest config + first 20 unit tests | Claude |
 | 5 | Integration testing | Test full analysis flow end-to-end | Claude |
+| 5 | **UX: Error messages** | Human-friendly error copy for all error types | Claude |
 
 **NEW: Security Deliverables Week 1:**
 ```typescript
@@ -710,22 +1103,26 @@ const SCORING_WEIGHTS = {
 };
 ```
 
-#### Week 2: Analysis Flow & Results Page
+#### Week 2: Analysis Flow & Results Page + Loading Experience
 
 | Day | Activity | Deliverable | Owner |
 |-----|----------|-------------|-------|
 | 1 | Analysis API endpoint | `/api/analyze/route.ts` | Claude |
 | 1 | Analysis status endpoint | `/api/analyze/[id]/status/route.ts` | Claude |
 | 1 | **Health check endpoint** | `/api/health/route.ts` - uptime monitoring | Claude |
+| 1 | **UX: SSE progress updates** | Real-time progress from backend to frontend | Claude |
 | 2 | Results page (UI) | `/app/results/[id]/page.tsx` | Claude |
-| 2 | Score visualization | `<PerceptionScore />` component | Claude |
-| 3 | AI breakdown cards | `<AIProviderCard />` component | Claude |
+| 2 | Score visualization | `<PerceptionScore />` with count-up animation | Claude |
+| 2 | **UX: Score celebration** | Confetti animation for score > 80 | Claude |
+| 3 | AI breakdown cards | `<AIProviderCard />` with provider colors | Claude |
 | 3 | Recommendations list | `<RecommendationCard />` component | Claude |
-| 4 | Loading/progress states | Analysis progress animation | Claude |
-| 4 | Error handling | Graceful degradation, retry with backoff | Claude |
+| 3 | **UX: ProviderBadge** | Logo + status indicator component | Claude |
+| 4 | **UX: Loading experience** | Progress storytelling with rotating facts | Claude |
+| 4 | Error handling | Human-friendly messages + recovery actions | Claude |
 | 4 | **Fallback logic** | If OpenAI fails → use Anthropic only (no crash) | Claude |
 | 5 | **Integration tests** | 20+ tests for API routes | Claude |
 | 5 | End-to-end testing | Full user flow with Playwright | Claude |
+| 5 | **UX: Mobile responsive** | Results page mobile-first responsive | Claude |
 
 **Acceptance Criteria Phase 1:**
 - [ ] User can enter URL and receive analysis
@@ -739,6 +1136,10 @@ const SCORING_WEIGHTS = {
 - [ ] **NEW: Rate limit enforced (10 req/min unauthenticated)**
 - [ ] **NEW: 20+ unit tests passing**
 - [ ] **NEW: Health check returns 200 OK**
+- [ ] **NEW (UX): Loading shows real-time progress steps**
+- [ ] **NEW (UX): Score reveal has count-up animation**
+- [ ] **NEW (UX): Error messages are human-friendly with recovery actions**
+- [ ] **NEW (UX): Results page works on mobile (< 640px)**
 
 ---
 
@@ -777,18 +1178,23 @@ const CACHE_TTL = {
 };
 ```
 
-#### Week 4: Freemium & Dashboard
+#### Week 4: Freemium & Dashboard + Conversion UX
 
 | Day | Activity | Deliverable | Owner |
 |-----|----------|-------------|-------|
 | 1 | Freemium gating logic | Show partial results for free users | Claude |
+| 1 | **UX: BlurredContent component** | Visible but locked content that creates FOMO | Claude |
 | 1 | Upgrade prompts | Strategic CTAs in results page | Claude |
 | 2 | User dashboard | `/app/dashboard/page.tsx` | Claude |
 | 2 | Analysis history | List of past analyses with scores | Claude |
+| 2 | **UX: Dashboard empty state** | First-run experience with value demo | Claude |
 | 3 | Dashboard charts | Score trends over time (Recharts) | Claude |
 | 3 | Quick re-analysis | One-click re-run for monitored URLs | Claude |
+| 3 | **UX: TrendChart component** | Simple line graph with celebration on improvement | Claude |
 | 4 | Email notifications | Analysis complete, score changes | Claude |
+| 4 | **UX: Social proof placeholder** | "Others in your industry score X avg" | Claude |
 | 5 | MVP Polish | UI refinements, bug fixes | Claude |
+| 5 | **UX: Mobile dashboard** | Bottom nav, swipeable history | Claude |
 
 **Freemium Gating Rules:**
 
@@ -837,7 +1243,7 @@ const PLAN_LIMITS = {
 
 **Objective:** Implement Stripe, launch paid plans, enable monitoring
 
-#### Week 5: Stripe Integration
+#### Week 5: Stripe Integration + Pricing UX
 
 | Day | Activity | Deliverable | Owner |
 |-----|----------|-------------|-------|
@@ -848,8 +1254,10 @@ const PLAN_LIMITS = {
 | 3 | Webhook handlers | Subscription lifecycle events | Claude |
 | 3 | Plan enforcement | Check subscription before features | Claude |
 | 4 | Pricing page | `/app/pricing/page.tsx` | Claude |
+| 4 | **UX: PricingCard component** | Feature comparison, popular badge, annual toggle | Claude |
 | 4 | Upgrade flow | In-app upgrade with Stripe Checkout | Claude |
 | 5 | Testing | Full billing flow testing | Claude |
+| 5 | **UX: Upgrade success celebration** | Welcome to Pro animation | Claude |
 
 **Stripe Products:**
 
@@ -1313,13 +1721,35 @@ This roadmap represents a comprehensive strategic plan for the AI Perception Eng
 - Added 2 new database tables for cost control
 - Expanded acceptance criteria with security requirements
 
+**UX/UI Review Summary (v3.0):**
+- Added 10 UX gaps analysis with solutions
+- Added 3 complete user journey maps (First-time, Conversion, Returning)
+- Added design system requirements (tokens, typography, spacing, animations)
+- Added loading experience design (30-45 second engagement strategy)
+- Added empty states and error states specifications
+- Added mobile-first responsive strategy
+- Added component library prioritization by phase
+- Added 15+ new UX tasks across all phases
+- Expanded acceptance criteria with UX requirements
+
+**Key UX Principles:**
+1. **No dead ends** - Every screen has a clear next action
+2. **Progress storytelling** - 30-second wait becomes engaging experience
+3. **Strategic friction** - Freemium gating creates desire, not frustration
+4. **Mobile-first** - SMBs check on phones, design for that
+5. **Celebration moments** - Delight users at key achievements
+
 **Recommended Next Action:**
-Begin Phase 1, Week 1, Day 1: Database schema design + RLS policies + Security (URL validator).
+Begin Phase 1, Week 1, Day 1:
+- Database schema design + RLS policies
+- Security: URL validator
+- UX: Design tokens (score colors, provider colors)
 
 ---
 
 *Document prepared by BCG Digital Ventures - Technology Strategy Practice*
 *Technical Review by: Senior Software Director - 300 years experience*
+*UX/UI Review by: Senior UX/UI Executive - 300 years experience, IDEO/frog/Pentagram background*
 *For: AI Perception Engineering Agency*
 *Date: November 25, 2024*
-*Version: 2.0 (Technical Review)*
+*Version: 3.0 (Technical + UX/UI Review)*

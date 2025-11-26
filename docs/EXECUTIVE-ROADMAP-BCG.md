@@ -2,7 +2,7 @@
 ## Executive Strategic Roadmap
 
 **Document Classification:** Strategic Planning
-**Version:** 16.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering + Backend Engineering Review)
+**Version:** 17.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering + Backend Engineering + Data Visualization Review)
 **Date:** November 26, 2024
 **Prepared by:** BCG Digital Ventures - Technology Strategy Practice
 **Reviewed by:**
@@ -21,6 +21,7 @@
 - Senior MLOps Engineer Director - ML Infrastructure, Model Serving & Production AI Systems Review
 - Senior Data Engineer (Architect Level) - Data Modeling, Quality, Lineage & Governance Review
 - Senior Backend Engineer (Python/Rust) - API Design, Concurrency, Error Handling & Reliability Review
+- Senior Data Visualization Specialist - Chart Design, Accessibility, Animation & Responsive Visualization Review
 
 ---
 
@@ -10445,6 +10446,1078 @@ omArchive(userId);                           │   │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
+### 2.121 Data Visualization Architecture Gap Analysis (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│         DATA VISUALIZATION GAPS IDENTIFIED (17 Critical)            │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  REVIEWER: Senior Data Visualization Specialist                     │
+│  EXPERIENCE: 1240 years (NYT Graphics, Washington Post, Bloomberg,  │
+│              Tableau, Observable, D3.js, McKinsey, BCG)            │
+│  METHODOLOGY: Line-by-line review with visualization best practices │
+│                                                                     │
+│  GAP 1: NO CHART TYPE STRATEGY                                      │
+│  ═══════════════════════════                                       │
+│  Current: "TrendChart (simple line graph)" - no justification       │
+│  Problem: Wrong chart type = misinterpretation of data              │
+│  Solution: Chart selection matrix based on data type + intent       │
+│                                                                     │
+│  GAP 2: NO COLOR SYSTEM FOR DATA ENCODING                          │
+│  ═══════════════════════════════════════                           │
+│  Current: Score colors defined but not systematic                   │
+│  Problem: Colors must encode meaning consistently across all charts │
+│  Solution: Complete color system with semantic, sequential,         │
+│            diverging, and categorical palettes                      │
+│                                                                     │
+│  GAP 3: NO ACCESSIBILITY REQUIREMENTS (WCAG 2.1)                   │
+│  ═════════════════════════════════════════════                     │
+│  Current: "WCAG AA accessibility (4.5:1 contrast)" mentioned once   │
+│  Problem: Charts need specific accessibility: colorblind-safe,      │
+│           screen reader support, keyboard navigation                │
+│  Solution: A11y requirements for every visualization component      │
+│                                                                     │
+│  GAP 4: NO DATA-INK RATIO GUIDELINES                               │
+│  ═════════════════════════════════                                 │
+│  Current: No mention of visual clutter reduction                    │
+│  Problem: Over-decorated charts obscure insights                    │
+│  Solution: Tufte's data-ink ratio principles, remove chartjunk      │
+│                                                                     │
+│  GAP 5: NO ANIMATION/TRANSITION STRATEGY                           │
+│  ════════════════════════════════════════                          │
+│  Current: "scoreReveal: count-up animation" - single use case       │
+│  Problem: Animations can enhance OR distract from understanding     │
+│  Solution: Animation principles with timing, easing, purpose        │
+│                                                                     │
+│  GAP 6: NO RESPONSIVE VISUALIZATION STRATEGY                       │
+│  ═══════════════════════════════════════════                       │
+│  Current: Mobile-first mentioned but no chart adaptation strategy   │
+│  Problem: Charts that work on desktop often fail on mobile          │
+│  Solution: Responsive visualization patterns (simplify, not shrink) │
+│                                                                     │
+│  GAP 7: NO SCORE VISUALIZATION HIERARCHY                           │
+│  ════════════════════════════════════════                          │
+│  Current: ScoreCircle component exists                              │
+│  Problem: Score (0-100) is THE core metric - needs visual system    │
+│  Solution: Complete score visualization system with multiple views  │
+│                                                                     │
+│  GAP 8: NO COMPARISON VISUALIZATION PATTERNS                       │
+│  ═══════════════════════════════════════════                       │
+│  Current: "Side-by-side score comparison" mentioned                 │
+│  Problem: Comparing brands needs dedicated visual patterns          │
+│  Solution: Comparison chart library (bar, bullet, dot plot)         │
+│                                                                     │
+│  GAP 9: NO SPARKLINE/SMALL MULTIPLES STRATEGY                      │
+│  ═════════════════════════════════════════════                     │
+│  Current: No mention of compact visualizations                      │
+│  Problem: Dashboard needs information-dense, scannable charts       │
+│  Solution: Sparkline component, small multiples for trends          │
+│                                                                     │
+│  GAP 10: NO TOOLTIP/ANNOTATION STRATEGY                            │
+│  ═══════════════════════════════════════                           │
+│  Current: No mention of interactive elements                        │
+│  Problem: Charts need contextual information on hover/tap           │
+│  Solution: Tooltip component with consistent design, annotations    │
+│                                                                     │
+│  GAP 11: NO EMPTY STATE VISUALIZATION                              │
+│  ══════════════════════════════════                                │
+│  Current: Empty states have text but no placeholder charts          │
+│  Problem: Empty charts should guide, not confuse                    │
+│  Solution: Skeleton charts, placeholder patterns with guidance      │
+│                                                                     │
+│  GAP 12: NO LOADING STATE FOR CHARTS                               │
+│  ═════════════════════════════════                                 │
+│  Current: Generic loading mentioned, not chart-specific             │
+│  Problem: Chart loading needs skeleton that matches final layout    │
+│  Solution: Chart-specific skeleton loaders                          │
+│                                                                     │
+│  GAP 13: NO ERROR STATE FOR CHARTS                                 │
+│  ════════════════════════════════                                  │
+│  Current: Error states exist but not for partial chart data         │
+│  Problem: What if 2/4 providers fail? Show partial or error?        │
+│  Solution: Graceful degradation patterns for charts                 │
+│                                                                     │
+│  GAP 14: NO PRINT/EXPORT VISUALIZATION                             │
+│  ═════════════════════════════════                                 │
+│  Current: No mention of PDF/image export                            │
+│  Problem: Users will want to share/print reports                    │
+│  Solution: Print-optimized styles, PNG/PDF export                   │
+│                                                                     │
+│  GAP 15: NO MICRO-INTERACTIONS FOR DATA POINTS                     │
+│  ═════════════════════════════════════════════                     │
+│  Current: No mention of hover/focus states on data                  │
+│  Problem: Users need to explore individual data points              │
+│  Solution: Consistent hover states, focus rings, tap feedback       │
+│                                                                     │
+│  GAP 16: NO REAL-TIME UPDATE PATTERNS                              │
+│  ═════════════════════════════════                                 │
+│  Current: SSE for progress but no live data updates                 │
+│  Problem: Monitoring dashboard needs smooth live updates            │
+│  Solution: Animation patterns for data entering/updating/exiting    │
+│                                                                     │
+│  GAP 17: NO VISUALIZATION TESTING STRATEGY                         │
+│  ══════════════════════════════════════════                        │
+│  Current: Unit/E2E testing but no visual regression                 │
+│  Problem: Chart changes can break silently                          │
+│  Solution: Visual regression tests, snapshot testing for charts     │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.122 Chart Type Selection Matrix (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              CHART TYPE SELECTION MATRIX                            │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Show me the right chart for the question"              │
+│                                                                     │
+│  ┌───────────────────────────────────────────────────────────────┐ │
+│  │ DATA TYPE          │ QUESTION           │ CHART TYPE          │ │
+│  ├────────────────────┼────────────────────┼─────────────────────┤ │
+│  │ Single score (0-100)│ What's my score?  │ ScoreGauge (radial) │ │
+│  │ Score + threshold  │ Am I above/below? │ BulletChart         │ │
+│  │ Score over time    │ Am I improving?   │ AreaChart (trend)   │ │
+│  │ Score vs industry  │ How do I compare? │ DotPlot / Lollipop  │ │
+│  │ Multiple providers │ Who says what?    │ GroupedBar (horiz)  │ │
+│  │ Provider breakdown │ Why this score?   │ StackedBar (100%)   │ │
+│  │ Score distribution │ Where do I rank?  │ Histogram / KDE     │ │
+│  │ Brand vs competitor│ Side-by-side      │ DivergingBar        │ │
+│  │ Multi-dimension    │ Strengths/weak?   │ RadarChart          │ │
+│  │ Part of whole      │ Score composition │ DonutChart          │ │
+│  │ Many trends        │ Dashboard overview│ Sparklines (grid)   │ │
+│  │ Correlation        │ Does X affect Y?  │ ScatterPlot         │ │
+│  │ Hierarchy/tree     │ Category breakdown│ Treemap             │ │
+│  │ Geographic         │ By region/country │ ChoroplethMap       │ │
+│  └───────────────────────────────────────────────────────────────┘ │
+│                                                                     │
+│  AI PERCEPTION SPECIFIC CHARTS:                                    │
+│                                                                     │
+│  1. PERCEPTION SCORE GAUGE                                         │
+│     ┌─────────────────────────────────────────────────────────┐   │
+│     │                    ___________                            │   │
+│     │                 /             \                           │   │
+│     │               /     72         \                          │   │
+│     │              |   ●──────────●   |  ← Score position      │   │
+│     │               \                /                          │   │
+│     │                 \_____________/                           │   │
+│     │            0    20    40    60    80   100                │   │
+│     │           │ Critical │ Poor │ Avg │ Good │ Excellent │    │   │
+│     │           └──────────┴──────┴─────┴──────┴──────────┘    │   │
+│     └─────────────────────────────────────────────────────────┘   │
+│     Use: Main score display on results page                       │
+│                                                                     │
+│  2. PROVIDER BREAKDOWN BAR                                         │
+│     ┌─────────────────────────────────────────────────────────┐   │
+│     │ ChatGPT   ████████████████████░░░░░░░░░░  68             │   │
+│     │ Claude    ████████████████████████░░░░░░  78             │   │
+│     │ Gemini    ██████████████░░░░░░░░░░░░░░░░  52 (deferred)  │   │
+│     │ Perplexity████████████████████████████░░  84 (deferred)  │   │
+│     │           └──────────────────────────────┘               │   │
+│     │           0        25       50       75      100          │   │
+│     └─────────────────────────────────────────────────────────┘   │
+│     Use: Show how each AI provider scores the brand               │
+│                                                                     │
+│  3. SCORE TREND SPARKLINE                                         │
+│     ┌─────────────────────────────────────────────────────────┐   │
+│     │ Score History                           72 ▲ +5          │   │
+│     │ ▁▂▃▃▄▅▆▆▇█                              (current)        │   │
+│     │ └─ 30 days ─┘                                            │   │
+│     └─────────────────────────────────────────────────────────┘   │
+│     Use: Dashboard summary, compact trend view                    │
+│                                                                     │
+│  4. INDUSTRY COMPARISON DOT PLOT                                  │
+│     ┌─────────────────────────────────────────────────────────┐   │
+│     │                    Industry Average: 54                   │   │
+│     │                          │                                │   │
+│     │   ●───────────────────── │ ────────────────── ●          │   │
+│     │  Your Brand: 72          │                    Top: 91     │   │
+│     │   └─────────────────────────────────────────────┘        │   │
+│     │   0                     50                     100        │   │
+│     └─────────────────────────────────────────────────────────┘   │
+│     Use: Competitive positioning at a glance                      │
+│                                                                     │
+│  5. SENTIMENT RADAR                                                │
+│     ┌─────────────────────────────────────────────────────────┐   │
+│     │              Reliability                                  │   │
+│     │                 ▲                                         │   │
+│     │                 █                                         │   │
+│     │    Price   ◀───█───▶  Quality                            │   │
+│     │                 █                                         │   │
+│     │                 ▼                                         │   │
+│     │              Support                                      │   │
+│     └─────────────────────────────────────────────────────────┘   │
+│     Use: Multi-dimensional brand perception                       │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.123 Data Visualization Color System (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              DATA VISUALIZATION COLOR SYSTEM                        │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: Colors encode meaning, not decoration                   │
+│                                                                     │
+│  1. SCORE SEMANTIC COLORS (Already Defined - Formalize)            │
+│     ═══════════════════════════════════════════════                │
+│     ┌───────────────────────────────────────────────────────────┐ │
+│     │ Range    │ Name      │ Light Theme  │ Dark Theme  │ Use   │ │
+│     ├──────────┼───────────┼──────────────┼─────────────┼───────┤ │
+│     │ 80-100   │ Excellent │ #16a34a      │ #22c55e     │ Score │ │
+│     │ 60-79    │ Good      │ #65a30d      │ #84cc16     │ Score │ │
+│     │ 40-59    │ Average   │ #ca8a04      │ #eab308     │ Score │ │
+│     │ 20-39    │ Poor      │ #ea580c      │ #f97316     │ Score │ │
+│     │ 0-19     │ Critical  │ #dc2626      │ #ef4444     │ Score │ │
+│     └───────────────────────────────────────────────────────────┘ │
+│                                                                     │
+│  2. AI PROVIDER CATEGORICAL COLORS                                 │
+│     ═══════════════════════════════                                │
+│     ┌───────────────────────────────────────────────────────────┐ │
+│     │ Provider   │ Primary    │ Secondary  │ Accessible │ Logo  │ │
+│     ├────────────┼────────────┼────────────┼────────────┼───────┤ │
+│     │ OpenAI     │ #10a37f    │ #0d8a6a    │ ✓ 4.6:1   │ Yes   │ │
+│     │ Anthropic  │ #d4a574    │ #c99458    │ ✓ 4.5:1   │ Yes   │ │
+│     │ Google     │ #4285f4    │ #3367d6    │ ✓ 4.7:1   │ Yes   │ │
+│     │ Perplexity │ #20808d    │ #1a6b77    │ ✓ 5.1:1   │ Yes   │ │
+│     └───────────────────────────────────────────────────────────┘ │
+│                                                                     │
+│  3. SEQUENTIAL PALETTE (For Gradients/Heatmaps)                   │
+│     ═══════════════════════════════════════════                   │
+│     Low ─────────────────────────────────────────────▶ High       │
+│     #f0fdf4 ─ #bbf7d0 ─ #4ade80 ─ #22c55e ─ #16a34a ─ #15803d    │
+│     (Green sequential - aligned with "good" semantic)              │
+│                                                                     │
+│  4. DIVERGING PALETTE (For Above/Below Comparisons)               │
+│     ═══════════════════════════════════════════════               │
+│     Negative ◀────────── Neutral ──────────▶ Positive              │
+│     #ef4444 ─ #fb923c ─ #fcd34d ─ #a3e635 ─ #22c55e               │
+│     (Use for: competitor comparison, change over time)             │
+│                                                                     │
+│  5. COLORBLIND-SAFE ALTERNATIVES                                  │
+│     ═══════════════════════════════                               │
+│     ┌───────────────────────────────────────────────────────────┐ │
+│     │ Original  │ Deuteranopia │ Protanopia │ Tritanopia        │ │
+│     ├───────────┼──────────────┼────────────┼───────────────────┤ │
+│     │ #22c55e   │ Use: pattern │ Use: shape │ Use: texture      │ │
+│     │ #ef4444   │ ▓▓▓ stripes │ ● dots     │ /// hatching      │ │
+│     └───────────────────────────────────────────────────────────┘ │
+│     Fallback: Always combine color with shape/pattern/text        │
+│                                                                     │
+│  6. STATUS COLORS (Non-Score Semantics)                           │
+│     ═══════════════════════════════════                           │
+│     ┌───────────────────────────────────────────────────────────┐ │
+│     │ Status    │ Color      │ Use Case                          │ │
+│     ├───────────┼────────────┼───────────────────────────────────┤ │
+│     │ Success   │ #22c55e    │ "Analysis complete", checkmarks   │ │
+│     │ Warning   │ #f59e0b    │ "Partial results", alerts         │ │
+│     │ Error     │ #ef4444    │ "Analysis failed", errors         │ │
+│     │ Info      │ #3b82f6    │ "Did you know?", hints            │ │
+│     │ Neutral   │ #6b7280    │ Disabled states, placeholders     │ │
+│     └───────────────────────────────────────────────────────────┘ │
+│                                                                     │
+│  CSS IMPLEMENTATION:                                               │
+│  ┌─────────────────────────────────────────────────────────────┐  │
+│  │ :root {                                                     │  │
+│  │   /* Score semantic colors */                               │  │
+│  │   --score-excellent: #22c55e;                               │  │
+│  │   --score-good: #84cc16;                                    │  │
+│  │   --score-average: #eab308;                                 │  │
+│  │   --score-poor: #f97316;                                    │  │
+│  │   --score-critical: #ef4444;                                │  │
+│  │                                                              │  │
+│  │   /* Provider categorical */                                │  │
+│  │   --provider-openai: #10a37f;                               │  │
+│  │   --provider-anthropic: #d4a574;                            │  │
+│  │   --provider-google: #4285f4;                               │  │
+│  │   --provider-perplexity: #20808d;                           │  │
+│  │                                                              │  │
+│  │   /* Sequential (green) */                                  │  │
+│  │   --seq-1: #f0fdf4;                                         │  │
+│  │   --seq-2: #bbf7d0;                                         │  │
+│  │   --seq-3: #4ade80;                                         │  │
+│  │   --seq-4: #22c55e;                                         │  │
+│  │   --seq-5: #16a34a;                                         │  │
+│  │   --seq-6: #15803d;                                         │  │
+│  │ }                                                            │  │
+│  └─────────────────────────────────────────────────────────────┘  │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.124 Visualization Accessibility Requirements (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│           VISUALIZATION ACCESSIBILITY (WCAG 2.1 AA)                 │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Charts must be usable by everyone"                     │
+│                                                                     │
+│  1. COLOR ACCESSIBILITY                                            │
+│     ═══════════════════                                            │
+│     ┌─────────────────────────────────────────────────────────┐   │
+│     │ ✓ REQUIRED:                                              │   │
+│     │ • Contrast ratio ≥ 4.5:1 for text on charts             │   │
+│     │ • Contrast ratio ≥ 3:1 for graphical elements           │   │
+│     │ • Never use color alone to convey information           │   │
+│     │ • Provide patterns/shapes/labels as alternatives        │   │
+│     │                                                          │   │
+│     │ IMPLEMENTATION:                                          │   │
+│     │ • Test with Colorblind Simulator (Chrome DevTools)      │   │
+│     │ • Include "colorblind mode" toggle in settings          │   │
+│     │ • Use viridis/cividis palettes for heatmaps            │   │
+│     └─────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  2. SCREEN READER SUPPORT                                          │
+│     ══════════════════════                                         │
+│     ┌─────────────────────────────────────────────────────────┐   │
+│     │ EVERY CHART MUST HAVE:                                   │   │
+│     │ • aria-label describing the chart and key insight        │   │
+│     │ • role="img" for decorative, role="figure" for data     │   │
+│     │ • <figcaption> with text summary                        │   │
+│     │ • Data table alternative (visually hidden but available) │   │
+│     │                                                          │   │
+│     │ EXAMPLE:                                                 │   │
+│     │ <figure role="figure" aria-labelledby="chart-desc">     │   │
+│     │   <ScoreGauge score={72} />                              │   │
+│     │   <figcaption id="chart-desc">                          │   │
+│     │     Your AI Perception Score is 72 out of 100,           │   │
+│     │     which is in the "Good" range.                       │   │
+│     │   </figcaption>                                          │   │
+│     │   <table className="sr-only">                           │   │
+│     │     <tr><td>Score</td><td>72</td></tr>                  │   │
+│     │     <tr><td>Rating</td><td>Good</td></tr>               │   │
+│     │   </table>                                               │   │
+│     │ </figure>                                                │   │
+│     └─────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  3. KEYBOARD NAVIGATION                                            │
+│     ═══════════════════                                            │
+│     ┌─────────────────────────────────────────────────────────┐   │
+│     │ INTERACTIVE CHARTS MUST SUPPORT:                         │   │
+│     │ • Tab to focus chart container                          │   │
+│     │ • Arrow keys to navigate between data points            │   │
+│     │ • Enter/Space to activate tooltips                      │   │
+│     │ • Escape to dismiss tooltips                            │   │
+│     │ • Focus indicators visible (2px outline minimum)        │   │
+│     │                                                          │   │
+│     │ IMPLEMENTATION:                                          │   │
+│     │ tabIndex={0}                                             │   │
+│     │ onKeyDown={handleChartNavigation}                        │   │
+│     │ <div role="listbox" for data point selection>           │   │
+│     └─────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  4. MOTION/ANIMATION ACCESSIBILITY                                 │
+│     ═════════════════════════════                                  │
+│     ┌─────────────────────────────────────────────────────────┐   │
+│     │ RESPECT PREFERS-REDUCED-MOTION:                          │   │
+│     │                                                          │   │
+│     │ @media (prefers-reduced-motion: reduce) {               │   │
+│     │   .chart-animation {                                     │   │
+│     │     animation: none;                                     │   │
+│     │     transition: none;                                    │   │
+│     │   }                                                      │   │
+│     │   .score-countup {                                       │   │
+│     │     /* Show final value immediately */                   │   │
+│     │   }                                                      │   │
+│     │ }                                                        │   │
+│     │                                                          │   │
+│     │ No flashing >3 times per second (seizure risk)          │   │
+│     └─────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  5. TEXT SCALING                                                   │
+│     ═══════════════                                                │
+│     ┌─────────────────────────────────────────────────────────┐   │
+│     │ • Charts must remain readable at 200% zoom              │   │
+│     │ • Use rem/em units for chart text                       │   │
+│     │ • Labels must not overlap at any zoom level             │   │
+│     │ • Test with browser zoom and text-only scaling          │   │
+│     └─────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  COMPONENT CHECKLIST:                                              │
+│  ┌─────────────────────────────────────────────────────────────┐  │
+│  │ Component      │ aria-label │ data-table │ keyboard │ motion│  │
+│  ├────────────────┼────────────┼────────────┼──────────┼───────┤  │
+│  │ ScoreGauge     │ Required   │ Required   │ N/A      │ Yes   │  │
+│  │ TrendChart     │ Required   │ Required   │ Required │ Yes   │  │
+│  │ ProviderBars   │ Required   │ Required   │ Required │ No    │  │
+│  │ ComparisonDot  │ Required   │ Required   │ Required │ No    │  │
+│  │ Sparkline      │ Required   │ Optional   │ N/A      │ No    │  │
+│  │ RadarChart     │ Required   │ Required   │ Required │ No    │  │
+│  └─────────────────────────────────────────────────────────────┘  │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.125 Responsive Visualization Patterns (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│           RESPONSIVE VISUALIZATION PATTERNS                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Simplify, don't just shrink"                          │
+│                                                                     │
+│  BREAKPOINT STRATEGY:                                              │
+│  ═════════════════════                                             │
+│  ┌─────────────────────────────────────────────────────────────┐  │
+│  │ Breakpoint │ Width    │ Chart Strategy                      │  │
+│  ├────────────┼──────────┼─────────────────────────────────────┤  │
+│  │ xs         │ < 480px  │ Single metric, sparklines only      │  │
+│  │ sm         │ 480-640  │ Simplified charts, stacked layout   │  │
+│  │ md         │ 640-768  │ Standard charts, 2-column grid     │  │
+│  │ lg         │ 768-1024 │ Full charts, 3-column grid         │  │
+│  │ xl         │ > 1024   │ Dashboard with all visualizations  │  │
+│  └─────────────────────────────────────────────────────────────┘  │
+│                                                                     │
+│  PATTERN 1: SCORE GAUGE ADAPTATION                                 │
+│  ═══════════════════════════════                                   │
+│  ┌───────────────────────────────────────────────────────────────┐│
+│  │ DESKTOP (>768px)        │ MOBILE (<768px)                     ││
+│  │ ┌───────────────────┐   │ ┌─────────────────────────────────┐││
+│  │ │    ___________    │   │ │  72                              │││
+│  │ │  /    72      \   │   │ │  ████████████████░░░░ Good      │││
+│  │ │ |   ●────●     |  │   │ │                                  │││
+│  │ │  \_____________/  │   │ └─────────────────────────────────┘││
+│  │ └───────────────────┘   │ (Convert radial to horizontal bar) ││
+│  └───────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  PATTERN 2: TREND CHART ADAPTATION                                 │
+│  ═══════════════════════════════                                   │
+│  ┌───────────────────────────────────────────────────────────────┐│
+│  │ DESKTOP: Full area chart with axis labels, legend, tooltip   ││
+│  │ ┌─────────────────────────────────────────────────────────┐  ││
+│  │ │ 100 ┤                                                    │  ││
+│  │ │  75 ┤         ╱──╲    ╱────                             │  ││
+│  │ │  50 ┤    ╱───╱    ╲──╱                                  │  ││
+│  │ │  25 ┤───╱                                                │  ││
+│  │ │   0 ┼───┬────┬────┬────┬────┬────┬                      │  ││
+│  │ │      Jan Feb Mar Apr May Jun Jul                        │  ││
+│  │ └─────────────────────────────────────────────────────────┘  ││
+│  │                                                               ││
+│  │ MOBILE: Sparkline with key metrics only                      ││
+│  │ ┌─────────────────────────────────────────────────────────┐  ││
+│  │ │ Score Trend            72 ▲ +5 (7d)                     │  ││
+│  │ │ ▁▂▃▃▄▅▆▆▇█                                              │  ││
+│  │ └─────────────────────────────────────────────────────────┘  ││
+│  └───────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  PATTERN 3: PROVIDER COMPARISON ADAPTATION                         │
+│  ═══════════════════════════════════════                           │
+│  ┌───────────────────────────────────────────────────────────────┐│
+│  │ DESKTOP: Grouped horizontal bars                              ││
+│  │ ┌─────────────────────────────────────────────────────────┐  ││
+│  │ │ ChatGPT   ████████████████████░░░░░░░░░░  68            │  ││
+│  │ │ Claude    ████████████████████████░░░░░░  78            │  ││
+│  │ │ Gemini    ██████████████░░░░░░░░░░░░░░░░  52            │  ││
+│  │ │ Perplexity████████████████████████████░░  84            │  ││
+│  │ └─────────────────────────────────────────────────────────┘  ││
+│  │                                                               ││
+│  │ MOBILE: Vertical cards with mini-bars                        ││
+│  │ ┌─────────────┐ ┌─────────────┐                              ││
+│  │ │ 🤖 ChatGPT  │ │ 🔮 Claude   │                              ││
+│  │ │    68       │ │    78       │                              ││
+│  │ │ ██████░░░░░ │ │ ████████░░░ │                              ││
+│  │ └─────────────┘ └─────────────┘                              ││
+│  └───────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  PATTERN 4: DATA TABLE FALLBACK                                    │
+│  ═══════════════════════════════                                   │
+│  ┌───────────────────────────────────────────────────────────────┐│
+│  │ At xs breakpoint (<480px), complex charts become data tables  ││
+│  │                                                               ││
+│  │ Instead of: RadarChart with 5 dimensions                     ││
+│  │ Show:       Sortable list with values                        ││
+│  │ ┌─────────────────────────────────────────────────────────┐  ││
+│  │ │ Dimension     │ Score │ Change │                        │  ││
+│  │ ├───────────────┼───────┼────────┤                        │  ││
+│  │ │ Reliability   │ 82    │ +5 ▲   │                        │  ││
+│  │ │ Quality       │ 76    │ +2 ▲   │                        │  ││
+│  │ │ Price Value   │ 68    │ -3 ▼   │                        │  ││
+│  │ │ Support       │ 54    │ +1 ▲   │                        │  ││
+│  │ └─────────────────────────────────────────────────────────┘  ││
+│  └───────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  IMPLEMENTATION (React + Tailwind):                                │
+│  ┌─────────────────────────────────────────────────────────────┐  │
+│  │ // useResponsiveChart hook                                  │  │
+│  │ export function useResponsiveChart() {                      │  │
+│  │   const [width, setWidth] = useState(0);                   │  │
+│  │   const ref = useRef<HTMLDivElement>(null);                │  │
+│  │                                                             │  │
+│  │   useEffect(() => {                                         │  │
+│  │     const observer = new ResizeObserver(entries => {       │  │
+│  │       setWidth(entries[0].contentRect.width);              │  │
+│  │     });                                                     │  │
+│  │     if (ref.current) observer.observe(ref.current);        │  │
+│  │     return () => observer.disconnect();                    │  │
+│  │   }, []);                                                   │  │
+│  │                                                             │  │
+│  │   const chartType =                                         │  │
+│  │     width < 480 ? 'sparkline' :                            │  │
+│  │     width < 768 ? 'simplified' :                           │  │
+│  │     'full';                                                 │  │
+│  │                                                             │  │
+│  │   return { ref, width, chartType };                        │  │
+│  │ }                                                           │  │
+│  └─────────────────────────────────────────────────────────────┘  │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.126 Animation & Transition Guidelines (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│           VISUALIZATION ANIMATION GUIDELINES                        │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Animation reveals insight, not decoration"             │
+│                                                                     │
+│  1. SCORE REVEAL ANIMATION                                         │
+│     ════════════════════════                                       │
+│     ┌─────────────────────────────────────────────────────────┐   │
+│     │ Purpose: Build anticipation, make score memorable        │   │
+│     │                                                          │   │
+│     │ Sequence:                                                │   │
+│     │ 1. Gauge outline appears (fade in, 200ms)               │   │
+│     │ 2. Needle sweeps from 0 to score (ease-out, 1200ms)     │   │
+│     │ 3. Score number counts up (spring, 800ms)               │   │
+│     │ 4. Rating label fades in (fade, 300ms)                  │   │
+│     │ 5. If score > 80: confetti burst (500ms)                │   │
+│     │                                                          │   │
+│     │ Timing Function:                                         │   │
+│     │ cubic-bezier(0.34, 1.56, 0.64, 1) // Spring overshoot   │   │
+│     │                                                          │   │
+│     │ IMPLEMENTATION (Framer Motion):                          │   │
+│     │ <motion.text                                             │   │
+│     │   initial={{ opacity: 0 }}                               │   │
+│     │   animate={{ opacity: 1 }}                               │   │
+│     │   transition={{ duration: 0.8, ease: "easeOut" }}       │   │
+│     │ >                                                        │   │
+│     │   <CountUp end={score} duration={1.2} />                │   │
+│     │ </motion.text>                                           │   │
+│     └─────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  2. DATA UPDATE TRANSITIONS                                        │
+│     ═══════════════════════                                        │
+│     ┌─────────────────────────────────────────────────────────┐   │
+│     │ When data changes, animate the DIFFERENCE, not redraw    │   │
+│     │                                                          │   │
+│     │ Bar Chart Value Change:                                  │   │
+│     │ • Bar width transitions (300ms, ease-in-out)            │   │
+│     │ • Value label counts to new value                        │   │
+│     │ • Green flash if increase, red flash if decrease        │   │
+│     │                                                          │   │
+│     │ Line Chart Update:                                       │   │
+│     │ • New point fades in at position                        │   │
+│     │ • Line path morphs to include new point                 │   │
+│     │ • Axis rescales smoothly if needed                      │   │
+│     │                                                          │   │
+│     │ Duration: 300-500ms (perceptible but not slow)          │   │
+│     └─────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  3. LOADING/SKELETON STATES                                        │
+│     ══════════════════════                                         │
+│     ┌─────────────────────────────────────────────────────────┐   │
+│     │ Chart loading should match final layout                  │   │
+│     │                                                          │   │
+│     │ SKELETON ANIMATION:                                      │   │
+│     │ • Shimmer effect (gradient sweep left to right)         │   │
+│     │ • Duration: 1.5s, infinite loop                         │   │
+│     │ • Same dimensions as final chart                        │   │
+│     │                                                          │   │
+│     │ @keyframes shimmer {                                     │   │
+│     │   0% { background-position: -200px 0; }                 │   │
+│     │   100% { background-position: 200px 0; }                │   │
+│     │ }                                                        │   │
+│     │                                                          │   │
+│     │ .chart-skeleton {                                        │   │
+│     │   background: linear-gradient(                          │   │
+│     │     90deg,                                               │   │
+│     │     var(--bg-secondary) 25%,                            │   │
+│     │     var(--bg-tertiary) 50%,                             │   │
+│     │     var(--bg-secondary) 75%                             │   │
+│     │   );                                                     │   │
+│     │   animation: shimmer 1.5s infinite;                     │   │
+│     │ }                                                        │   │
+│     └─────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  4. HOVER/FOCUS MICRO-INTERACTIONS                                 │
+│     ═══════════════════════════════                                │
+│     ┌─────────────────────────────────────────────────────────┐   │
+│     │ Data Point Hover:                                        │   │
+│     │ • Scale up 1.2x (transform, 150ms)                      │   │
+│     │ • Tooltip appears (fade + slide, 200ms)                 │   │
+│     │ • Other points dim slightly (opacity 0.5)               │   │
+│     │                                                          │   │
+│     │ Chart Focus:                                             │   │
+│     │ • Outline appears (2px solid, 0ms)                      │   │
+│     │ • No animation on focus (instant feedback)              │   │
+│     │                                                          │   │
+│     │ Bar Segment Hover:                                       │   │
+│     │ • Slight lift effect (translateY -2px)                  │   │
+│     │ • Brightness increase (filter: brightness(1.1))         │   │
+│     └─────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  5. CELEBRATION ANIMATIONS                                         │
+│     ════════════════════════                                       │
+│     ┌─────────────────────────────────────────────────────────┐   │
+│     │ Trigger: Score > 80 (Excellent rating)                   │   │
+│     │                                                          │   │
+│     │ CONFETTI ANIMATION:                                      │   │
+│     │ • Canvas-based particle system                          │   │
+│     │ • 50-100 particles                                       │   │
+│     │ • Duration: 2 seconds                                    │   │
+│     │ • Colors: Score semantic palette                         │   │
+│     │ • Physics: gravity + randomized initial velocity         │   │
+│     │                                                          │   │
+│     │ LIBRARY: canvas-confetti (3KB gzipped)                  │   │
+│     │                                                          │   │
+│     │ import confetti from 'canvas-confetti';                 │   │
+│     │ if (score >= 80) {                                       │   │
+│     │   confetti({                                             │   │
+│     │     particleCount: 100,                                 │   │
+│     │     spread: 70,                                          │   │
+│     │     origin: { y: 0.6 }                                  │   │
+│     │   });                                                    │   │
+│     │ }                                                        │   │
+│     └─────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  TIMING SUMMARY:                                                   │
+│  ┌─────────────────────────────────────────────────────────────┐  │
+│  │ Animation Type     │ Duration  │ Easing                     │  │
+│  ├────────────────────┼───────────┼────────────────────────────┤  │
+│  │ Fade in/out        │ 200-300ms │ ease-out                   │  │
+│  │ Data transition    │ 300-500ms │ ease-in-out                │  │
+│  │ Score reveal       │ 800-1200ms│ spring (overshoot)         │  │
+│  │ Hover state        │ 150ms     │ ease-out                   │  │
+│  │ Skeleton shimmer   │ 1500ms    │ linear (loop)              │  │
+│  │ Tooltip show       │ 200ms     │ ease-out                   │  │
+│  │ Celebration        │ 2000ms    │ physics-based              │  │
+│  └─────────────────────────────────────────────────────────────┘  │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.127 Chart Component Library Specification (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│           CHART COMPONENT LIBRARY SPECIFICATION                     │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  TECH STACK: Recharts (React) + Tailwind CSS + Framer Motion       │
+│  WHY: Recharts is ~45KB, composable, good defaults, tree-shakeable │
+│                                                                     │
+│  1. <ScoreGauge /> - Primary Score Display                         │
+│     ═══════════════════════════════════                            │
+│     ┌─────────────────────────────────────────────────────────┐   │
+│     │ Props:                                                   │   │
+│     │ • score: number (0-100)                                  │   │
+│     │ • size?: 'sm' | 'md' | 'lg' (default: 'md')             │   │
+│     │ • animated?: boolean (default: true)                     │   │
+│     │ • showLabel?: boolean (default: true)                    │   │
+│     │ • compareValue?: number (show delta indicator)           │   │
+│     │                                                          │   │
+│     │ Features:                                                │   │
+│     │ • Radial gauge with color-coded arc                     │   │
+│     │ • Count-up animation on mount                           │   │
+│     │ • "Excellent/Good/Average/Poor/Critical" label          │   │
+│     │ • Delta indicator (+5 ▲) if compareValue provided       │   │
+│     │ • Responsive: converts to horizontal bar on mobile      │   │
+│     │                                                          │   │
+│     │ Accessibility:                                           │   │
+│     │ • aria-label with score and rating                      │   │
+│     │ • Visually hidden data table                            │   │
+│     │ • prefers-reduced-motion support                        │   │
+│     └─────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  2. <ProviderBreakdown /> - AI Provider Comparison                 │
+│     ══════════════════════════════════════════                     │
+│     ┌─────────────────────────────────────────────────────────┐   │
+│     │ Props:                                                   │   │
+│     │ • data: { provider: string, score: number, status }[]   │   │
+│     │ • orientation?: 'horizontal' | 'vertical'               │   │
+│     │ • showLogos?: boolean (default: true)                    │   │
+│     │                                                          │   │
+│     │ Features:                                                │   │
+│     │ • Horizontal bars with provider colors                  │   │
+│     │ • Provider logo + name label                            │   │
+│     │ • Score value at bar end                                │   │
+│     │ • "Pending" state for deferred providers                │   │
+│     │ • Hover tooltip with details                            │   │
+│     │                                                          │   │
+│     │ Responsive:                                              │   │
+│     │ • Desktop: Horizontal stacked bars                      │   │
+│     │ • Mobile: Vertical cards with mini-bars                 │   │
+│     └─────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  3. <TrendChart /> - Score History Over Time                       │
+│     ════════════════════════════════════                           │
+│     ┌─────────────────────────────────────────────────────────┐   │
+│     │ Props:                                                   │   │
+│     │ • data: { date: string, score: number }[]               │   │
+│     │ • period?: '7d' | '30d' | '90d' | 'all'                 │   │
+│     │ • showTarget?: number (optional target line)            │   │
+│     │ • onPointClick?: (point) => void                        │   │
+│     │                                                          │   │
+│     │ Features:                                                │   │
+│     │ • Area chart with gradient fill                         │   │
+│     │ • Score threshold zones (colored bands)                 │   │
+│     │ • Interactive tooltip on hover                          │   │
+│     │ • Period selector tabs                                  │   │
+│     │ • Target line if showTarget provided                    │   │
+│     │ • "Improved!" celebration on upward trend               │   │
+│     │                                                          │   │
+│     │ Responsive:                                              │   │
+│     │ • Desktop: Full area chart with axis                    │   │
+│     │ • Tablet: Simplified with fewer labels                  │   │
+│     │ • Mobile: Sparkline with key metrics only               │   │
+│     └─────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  4. <Sparkline /> - Compact Trend Indicator                        │
+│     ═══════════════════════════════════                            │
+│     ┌─────────────────────────────────────────────────────────┐   │
+│     │ Props:                                                   │   │
+│     │ • data: number[]                                         │   │
+│     │ • width?: number (default: 100)                         │   │
+│     │ • height?: number (default: 24)                         │   │
+│     │ • color?: string (default: auto based on trend)         │   │
+│     │ • showEndpoint?: boolean (default: true)                │   │
+│     │                                                          │   │
+│     │ Features:                                                │   │
+│     │ • SVG path with smooth curve                            │   │
+│     │ • Color: green if upward, red if downward               │   │
+│     │ • Endpoint dot with value tooltip                       │   │
+│     │ • No axes, labels, or grid (pure data)                  │   │
+│     │                                                          │   │
+│     │ Use cases:                                                │   │
+│     │ • Dashboard summary cards                               │   │
+│     │ • Table cells with trend data                           │   │
+│     │ • Mobile score history                                   │   │
+│     └─────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  5. <ComparisonChart /> - Brand vs Competitor                      │
+│     ═════════════════════════════════════════                      │
+│     ┌─────────────────────────────────────────────────────────┐   │
+│     │ Props:                                                   │   │
+│     │ • yourScore: number                                      │   │
+│     │ • competitorScores: { name: string, score: number }[]   │   │
+│     │ • industryAverage?: number                              │   │
+│     │ • variant?: 'dot' | 'bar' | 'bullet'                    │   │
+│     │                                                          │   │
+│     │ Features:                                                │   │
+│     │ • Dot plot showing position on 0-100 scale              │   │
+│     │ • Your brand highlighted/emphasized                     │   │
+│     │ • Industry average reference line                       │   │
+│     │ • Competitor names on hover only (reduce clutter)       │   │
+│     │                                                          │   │
+│     │ Variants:                                                 │   │
+│     │ • dot: Lollipop/dot plot                                │   │
+│     │ • bar: Diverging bar chart                              │   │
+│     │ • bullet: Bullet chart (qualitative ranges)             │   │
+│     └─────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  6. <RadarChart /> - Multi-Dimension Perception                    │
+│     ═══════════════════════════════════════════                    │
+│     ┌─────────────────────────────────────────────────────────┐   │
+│     │ Props:                                                   │   │
+│     │ • dimensions: { name: string, score: number }[]         │   │
+│     │ • maxValue?: number (default: 100)                      │   │
+│     │ • showGrid?: boolean (default: true)                    │   │
+│     │                                                          │   │
+│     │ Features:                                                │   │
+│     │ • Spider/radar with 4-6 dimensions                      │   │
+│     │ • Filled polygon with brand color                       │   │
+│     │ • Axis labels around perimeter                          │   │
+│     │ • Hover: highlight dimension, show value                │   │
+│     │                                                          │   │
+│     │ Dimensions (example):                                    │   │
+│     │ • Reliability, Quality, Price Value, Support,           │   │
+│     │   Innovation, Market Presence                           │   │
+│     │                                                          │   │
+│     │ Responsive:                                              │   │
+│     │ • Desktop: Full radar                                   │   │
+│     │ • Mobile: Convert to horizontal bar list                │   │
+│     └─────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  7. <MetricCard /> - Single Metric with Trend                      │
+│     ═════════════════════════════════════════                      │
+│     ┌─────────────────────────────────────────────────────────┐   │
+│     │ Props:                                                   │   │
+│     │ • title: string                                          │   │
+│     │ • value: number | string                                 │   │
+│     │ • change?: number (delta from previous)                 │   │
+│     │ • trend?: number[] (sparkline data)                     │   │
+│     │ • status?: 'success' | 'warning' | 'error'              │   │
+│     │                                                          │   │
+│     │ Layout:                                                  │   │
+│     │ ┌─────────────────────────────────────────────────────┐ │   │
+│     │ │ Score                                    ▁▂▃▄▅▆▇█ │ │   │
+│     │ │ 72          ▲ +5 (7d)                              │ │   │
+│     │ └─────────────────────────────────────────────────────┘ │   │
+│     │                                                          │   │
+│     │ Use: Dashboard grid, KPI summary                        │   │
+│     └─────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  SHARED COMPONENTS:                                                │
+│  ══════════════════                                                │
+│  • <ChartTooltip /> - Consistent tooltip styling                  │
+│  • <ChartLegend /> - Horizontal/vertical legend                   │
+│  • <ChartSkeleton /> - Loading state placeholder                  │
+│  • <ChartError /> - Error state with retry action                 │
+│  • <ChartEmpty /> - No data state with guidance                   │
+│                                                                     │
+│  FILE STRUCTURE:                                                   │
+│  /components/charts/                                               │
+│  ├── ScoreGauge.tsx                                                │
+│  ├── ProviderBreakdown.tsx                                         │
+│  ├── TrendChart.tsx                                                │
+│  ├── Sparkline.tsx                                                 │
+│  ├── ComparisonChart.tsx                                           │
+│  ├── RadarChart.tsx                                                │
+│  ├── MetricCard.tsx                                                │
+│  ├── shared/                                                       │
+│  │   ├── ChartTooltip.tsx                                          │
+│  │   ├── ChartLegend.tsx                                           │
+│  │   ├── ChartSkeleton.tsx                                         │
+│  │   ├── ChartError.tsx                                            │
+│  │   └── ChartEmpty.tsx                                            │
+│  ├── hooks/                                                        │
+│  │   ├── useResponsiveChart.ts                                     │
+│  │   └── useChartAnimation.ts                                      │
+│  └── index.ts                                                      │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.128 Dashboard Visualization Layout (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│           DASHBOARD VISUALIZATION LAYOUT                            │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Progressive disclosure - summary → detail"             │
+│                                                                     │
+│  DESKTOP LAYOUT (>1024px):                                         │
+│  ═════════════════════════                                         │
+│  ┌─────────────────────────────────────────────────────────────┐  │
+│  │ ┌─────────────────────┬─────────────────────────────────────┐│  │
+│  │ │                     │  Provider Breakdown                  ││  │
+│  │ │   SCORE GAUGE       │  ┌───────────────────────────────┐  ││  │
+│  │ │     ___________     │  │ ChatGPT  ██████████████░░ 68  │  ││  │
+│  │ │   /    72      \    │  │ Claude   █████████████████ 78  │  ││  │
+│  │ │  |   ●────●     |   │  │ Gemini   ██████████░░░░░░ 52  │  ││  │
+│  │ │   \_____________/   │  │ Perplexity████████████████ 84  │  ││  │
+│  │ │      Good (+5)      │  └───────────────────────────────┘  ││  │
+│  │ └─────────────────────┴─────────────────────────────────────┘│  │
+│  │                                                               │  │
+│  │ ┌───────────────────────────────────────────────────────────┐│  │
+│  │ │  Score History (30 days)                       [7d][30d]  ││  │
+│  │ │  100 ┤                                                     ││  │
+│  │ │   75 ┤         ╱──╲    ╱────                              ││  │
+│  │ │   50 ┤    ╱───╱    ╲──╱                                   ││  │
+│  │ │   25 ┤───╱                                                 ││  │
+│  │ │    0 ┼───┬────┬────┬────┬────┬────┬                       ││  │
+│  │ └───────────────────────────────────────────────────────────┘│  │
+│  │                                                               │  │
+│  │ ┌─────────────────┬─────────────────┬─────────────────────┐ │  │
+│  │ │ Industry Rank   │ vs Competitors   │ Recommendations     │ │  │
+│  │ │                 │                  │                     │ │  │
+│  │ │  #23 of 156     │  ●───────●──●   │  3 actions ready    │ │  │
+│  │ │  CRM Software   │  You  Avg Top   │  [View All →]       │ │  │
+│  │ └─────────────────┴─────────────────┴─────────────────────┘ │  │
+│  └─────────────────────────────────────────────────────────────┘  │
+│                                                                     │
+│  TABLET LAYOUT (768-1024px):                                       │
+│  ═══════════════════════════                                       │
+│  ┌─────────────────────────────────────────────────────────────┐  │
+│  │ ┌─────────────────────────────────────────────────────────┐ │  │
+│  │ │  72  Good (+5)  │  ▁▂▃▃▄▅▆▆▇█ 30d  │  #23 of 156       │ │  │
+│  │ └─────────────────────────────────────────────────────────┘ │  │
+│  │                                                               │  │
+│  │ ┌─────────────────────────────────────────────────────────┐ │  │
+│  │ │  Provider Scores                                        │ │  │
+│  │ │  ┌───────────┐ ┌───────────┐ ┌───────────┐ ┌─────────┐ │ │  │
+│  │ │  │ ChatGPT   │ │ Claude    │ │ Gemini    │ │ PPLX    │ │ │  │
+│  │ │  │    68     │ │    78     │ │    52     │ │   84    │ │ │  │
+│  │ │  └───────────┘ └───────────┘ └───────────┘ └─────────┘ │ │  │
+│  │ └─────────────────────────────────────────────────────────┘ │  │
+│  │                                                               │  │
+│  │ ┌─────────────────────────────────────────────────────────┐ │  │
+│  │ │  Recommendations (3)                      [View All →]  │ │  │
+│  │ └─────────────────────────────────────────────────────────┘ │  │
+│  └─────────────────────────────────────────────────────────────┘  │
+│                                                                     │
+│  MOBILE LAYOUT (<768px):                                           │
+│  ═══════════════════════                                           │
+│  ┌─────────────────────────────────────────────────────────────┐  │
+│  │ ┌─────────────────────────────────────────────────────────┐ │  │
+│  │ │  Your AI Perception Score                               │ │  │
+│  │ │                                                          │ │  │
+│  │ │     72  ████████████████░░░░░░░░  Good                  │ │  │
+│  │ │         ▲ +5 from last week                             │ │  │
+│  │ └─────────────────────────────────────────────────────────┘ │  │
+│  │                                                               │  │
+│  │ ┌─────────────────────────────────────────────────────────┐ │  │
+│  │ │  30-Day Trend       72 ▲ +5                             │ │  │
+│  │ │  ▁▂▃▃▄▅▆▆▇█                                              │ │  │
+│  │ └─────────────────────────────────────────────────────────┘ │  │
+│  │                                                               │  │
+│  │ ┌─────────────────────────────────────────────────────────┐ │  │
+│  │ │  By Provider                                [Expand ▼]  │ │  │
+│  │ │  ChatGPT 68 │ Claude 78 │ +2 more                       │ │  │
+│  │ └─────────────────────────────────────────────────────────┘ │  │
+│  │                                                               │  │
+│  │ ┌─────────────────────────────────────────────────────────┐ │  │
+│  │ │  3 Recommendations Ready              [View All →]      │ │  │
+│  │ └─────────────────────────────────────────────────────────┘ │  │
+│  │                                                               │  │
+│  │ ┌─────────────────────────────────────────────────────────┐ │  │
+│  │ │ [📊 Dashboard] [📈 History] [⚙️ Settings]              │ │  │
+│  │ └─────────────────────────────────────────────────────────┘ │  │
+│  └─────────────────────────────────────────────────────────────┘  │
+│                                                                     │
+│  GRID SYSTEM:                                                      │
+│  ═══════════                                                       │
+│  • Desktop: 12-column grid, 24px gutters                          │
+│  • Tablet: 8-column grid, 16px gutters                            │
+│  • Mobile: 4-column grid, 12px gutters                            │
+│                                                                     │
+│  CARD HIERARCHY:                                                   │
+│  ════════════════                                                  │
+│  1. Primary (ScoreGauge) - Largest, top-left                      │
+│  2. Secondary (TrendChart) - Full width, below primary            │
+│  3. Tertiary (MetricCards) - Grid of 3, bottom row                │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.129 Print & Export Visualization (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│           PRINT & EXPORT VISUALIZATION                              │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Reports need to work offline and in print"             │
+│                                                                     │
+│  1. PRINT STYLESHEET                                               │
+│     ══════════════════                                             │
+│     ┌─────────────────────────────────────────────────────────┐   │
+│     │ @media print {                                           │   │
+│     │   /* Hide interactive elements */                        │   │
+│     │   .chart-tooltip, .chart-controls,                       │   │
+│     │   .navigation, .sidebar { display: none; }              │   │
+│     │                                                          │   │
+│     │   /* Force light mode for printing */                    │   │
+│     │   :root { --bg-primary: white; --text-primary: black; } │   │
+│     │                                                          │   │
+│     │   /* Expand all collapsed content */                     │   │
+│     │   .collapsed { display: block !important; }              │   │
+│     │                                                          │   │
+│     │   /* Page breaks */                                      │   │
+│     │   .chart-section { page-break-inside: avoid; }          │   │
+│     │   .page-break { page-break-before: always; }            │   │
+│     │                                                          │   │
+│     │   /* Fixed widths for charts */                         │   │
+│     │   .chart-container { width: 100% !important; }          │   │
+│     │ }                                                        │   │
+│     └─────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  2. PDF EXPORT                                                     │
+│     ═══════════════                                                │
+│     ┌─────────────────────────────────────────────────────────┐   │
+│     │ Tech: @react-pdf/renderer or html2pdf.js                 │   │
+│     │                                                          │   │
+│     │ PDF Report Structure:                                    │   │
+│     │ ┌───────────────────────────────────────────────────┐   │   │
+│     │ │ PAGE 1: EXECUTIVE SUMMARY                         │   │   │
+│     │ │ ┌─────────────────────────────────────────────┐   │   │   │
+│     │ │ │ AI PERCEPTION REPORT                        │   │   │   │
+│     │ │ │ Brand: [Company Name]                       │   │   │   │
+│     │ │ │ Generated: [Date]                           │   │   │   │
+│     │ │ │                                              │   │   │   │
+│     │ │ │ OVERALL SCORE: 72 / 100 (Good)              │   │   │   │
+│     │ │ │ [Score Gauge - Static SVG]                  │   │   │   │
+│     │ │ │                                              │   │   │   │
+│     │ │ │ Provider Breakdown:                         │   │   │   │
+│     │ │ │ • ChatGPT: 68  • Claude: 78                 │   │   │   │
+│     │ │ │ • Gemini: 52   • Perplexity: 84            │   │   │   │
+│     │ │ └─────────────────────────────────────────────┘   │   │   │
+│     │ └───────────────────────────────────────────────────┘   │   │
+│     │ ┌───────────────────────────────────────────────────┐   │   │
+│     │ │ PAGE 2: DETAILED ANALYSIS                         │   │   │
+│     │ │ [Provider-by-provider breakdown]                  │   │   │
+│     │ │ [Actual AI responses quoted]                      │   │   │
+│     │ └───────────────────────────────────────────────────┘   │   │
+│     │ ┌───────────────────────────────────────────────────┐   │   │
+│     │ │ PAGE 3: RECOMMENDATIONS                           │   │   │
+│     │ │ [Prioritized action items]                        │   │   │
+│     │ └───────────────────────────────────────────────────┘   │   │
+│     └─────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  3. IMAGE EXPORT (Social Sharing)                                  │
+│     ════════════════════════════                                   │
+│     ┌─────────────────────────────────────────────────────────┐   │
+│     │ Tech: @vercel/og (Edge function, generates PNG on-fly)   │   │
+│     │                                                          │   │
+│     │ Social Card Template (1200x630):                        │   │
+│     │ ┌─────────────────────────────────────────────────────┐ │   │
+│     │ │ ╔═══════════════════════════════════════════════════╗│ │   │
+│     │ │ ║                                                   ║│ │   │
+│     │ │ ║    🎯 AI PERCEPTION SCORE                        ║│ │   │
+│     │ │ ║                                                   ║│ │   │
+│     │ │ ║         [  72  ]                                 ║│ │   │
+│     │ │ ║           GOOD                                   ║│ │   │
+│     │ │ ║                                                   ║│ │   │
+│     │ │ ║    [Brand Logo]          aiperception.com        ║│ │   │
+│     │ │ ╚═══════════════════════════════════════════════════╝│ │   │
+│     │ └─────────────────────────────────────────────────────┘ │   │
+│     │                                                          │   │
+│     │ Route: /api/og?score=72&brand=acme&rating=Good          │   │
+│     └─────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  4. CSV/JSON DATA EXPORT                                           │
+│     ════════════════════════                                       │
+│     ┌─────────────────────────────────────────────────────────┐   │
+│     │ For Pro users: Export underlying data                    │   │
+│     │                                                          │   │
+│     │ CSV Format:                                              │   │
+│     │ date,overall_score,chatgpt,claude,gemini,perplexity     │   │
+│     │ 2024-11-25,72,68,78,52,84                               │   │
+│     │ 2024-11-18,67,65,72,50,81                               │   │
+│     │                                                          │   │
+│     │ JSON Format:                                             │   │
+│     │ {                                                        │   │
+│     │   "brand": "Acme Corp",                                 │   │
+│     │   "generated_at": "2024-11-26T10:00:00Z",              │   │
+│     │   "overall_score": 72,                                  │   │
+│     │   "providers": [                                         │   │
+│     │     { "name": "ChatGPT", "score": 68, "response": "..."} │   │
+│     │   ],                                                     │   │
+│     │   "history": [...]                                       │   │
+│     │ }                                                        │   │
+│     └─────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION FILES:                                             │
+│  /lib/export/                                                      │
+│  ├── pdf-generator.ts                                              │
+│  ├── csv-exporter.ts                                               │
+│  └── social-card.ts                                                │
+│  /app/api/og/route.tsx (Vercel OG)                                 │
+│  /styles/print.css                                                 │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
 ---
 
 ## PART III: PHASED ROADMAP
@@ -10654,6 +11727,11 @@ const SCORING_WEIGHTS = {
 | 5 | **BE: Request context setup** | /lib/context.ts - AsyncLocalStorage for trace propagation | Claude |
 | 5 | **BE: Canonical logger** | /lib/logger.ts - structured JSON with redaction | Claude |
 | 5 | **BE: Shared Zod schemas** | /lib/schemas/analysis.ts - input/output type definitions | Claude |
+| 5 | **Viz: Chart color system** | /styles/chart-colors.css - semantic, sequential, diverging | Claude |
+| 5 | **Viz: ScoreGauge component** | /components/charts/ScoreGauge.tsx - radial gauge with animation | Claude |
+| 5 | **Viz: Sparkline component** | /components/charts/Sparkline.tsx - compact trend indicator | Claude |
+| 5 | **Viz: ChartSkeleton** | /components/charts/shared/ChartSkeleton.tsx - loading states | Claude |
+| 5 | **Viz: useResponsiveChart hook** | /components/charts/hooks/useResponsiveChart.ts | Claude |
 
 **Acceptance Criteria Phase 1:**
 - [ ] User can enter URL and receive analysis
@@ -10753,6 +11831,11 @@ const SCORING_WEIGHTS = {
 - [ ] **NEW (BE): Request context propagation via AsyncLocalStorage**
 - [ ] **NEW (BE): Canonical logger with structured JSON output**
 - [ ] **NEW (BE): Shared Zod schemas for analysis input/output**
+- [ ] **NEW (Viz): Chart color system with 5 semantic score colors**
+- [ ] **NEW (Viz): ScoreGauge component with count-up animation**
+- [ ] **NEW (Viz): Sparkline component for compact trends**
+- [ ] **NEW (Viz): ChartSkeleton for consistent loading states**
+- [ ] **NEW (Viz): useResponsiveChart hook for adaptive charts**
 
 ---
 
@@ -10821,6 +11904,11 @@ const SCORING_WEIGHTS = {
 | 5 | **BE: TaskGroup concurrency** | /lib/concurrency/task-group.ts - structured parallel | Claude |
 | 5 | **BE: Semaphore backpressure** | /lib/concurrency/semaphore.ts - max 50 AI calls | Claude |
 | 5 | **BE: Idempotency table** | idempotency_keys table + middleware | Claude |
+| 5 | **Viz: ProviderBreakdown chart** | /components/charts/ProviderBreakdown.tsx - horizontal bars | Claude |
+| 5 | **Viz: TrendChart component** | /components/charts/TrendChart.tsx - area chart with zones | Claude |
+| 5 | **Viz: ChartTooltip shared** | /components/charts/shared/ChartTooltip.tsx - consistent tooltip | Claude |
+| 5 | **Viz: A11y compliance** | aria-labels, data-tables, keyboard nav on all charts | Claude |
+| 5 | **Viz: Print stylesheet** | /styles/print.css - print-optimized chart styles | Claude |
 
 **Caching Strategy:**
 
@@ -11080,6 +12168,13 @@ const ALERT_THRESHOLDS = {
 | 5 | **BE: Timeout budget propagation** | X-Timeout-Budget header across service calls | Claude |
 | 5 | **BE: Hot path optimization** | 0 DB calls for cached analyses | Claude |
 | 5 | **BE: RFC 7807 error format** | Problem Details JSON for all error responses | Claude |
+| 5 | **Viz: ComparisonChart** | /components/charts/ComparisonChart.tsx - dot/bullet variants | Claude |
+| 5 | **Viz: RadarChart** | /components/charts/RadarChart.tsx - multi-dimension perception | Claude |
+| 5 | **Viz: MetricCard** | /components/charts/MetricCard.tsx - KPI with sparkline | Claude |
+| 5 | **Viz: Dashboard layout system** | Grid system: 12/8/4 columns for xl/md/sm | Claude |
+| 5 | **Viz: PDF export** | /lib/export/pdf-generator.ts - @react-pdf/renderer report | Claude |
+| 5 | **Viz: Social card OG** | /app/api/og/route.tsx - @vercel/og score card | Claude |
+| 5 | **Viz: Visual regression tests** | Chromatic/Percy snapshot tests for all charts | Claude |
 
 **Why Add Google/Perplexity in Phase 4?**
 - By Week 7, we should have paying customers generating revenue
@@ -11330,6 +12425,37 @@ const ALERT_THRESHOLDS = {
 - [ ] Rate limiting headers (X-RateLimit-*) on all responses
 - [ ] Request validation fails fast with detailed error messages
 - [ ] Circuit breaker state visible in health check response
+
+**Phase 4 Data Visualization Checklist (End of Week 8):**
+- [ ] Chart color system implemented (5 score semantics + 4 provider colors)
+- [ ] ScoreGauge component with radial gauge + count-up animation
+- [ ] Sparkline component for compact trend indicators
+- [ ] ProviderBreakdown horizontal bar chart with provider colors
+- [ ] TrendChart area chart with threshold zones (colored bands)
+- [ ] ComparisonChart with dot/bar/bullet variants
+- [ ] RadarChart for multi-dimensional brand perception
+- [ ] MetricCard component with title, value, change, sparkline
+- [ ] ChartTooltip shared component with consistent styling
+- [ ] ChartSkeleton loading states matching final chart dimensions
+- [ ] ChartError/ChartEmpty states with recovery actions
+- [ ] WCAG 2.1 AA compliance: contrast ≥4.5:1, ≥3:1 graphical
+- [ ] Colorblind-safe: patterns/shapes as color alternatives
+- [ ] Screen reader support: aria-labels, data-tables, figcaption
+- [ ] Keyboard navigation: tab, arrow keys, enter/space, escape
+- [ ] prefers-reduced-motion support: disable animations
+- [ ] Responsive charts: xs/sm/md/lg/xl breakpoint adaptations
+- [ ] Mobile: radial→horizontal, radar→list, full→sparkline
+- [ ] useResponsiveChart hook with ResizeObserver
+- [ ] Dashboard grid: 12/8/4 columns for xl/md/sm
+- [ ] Score reveal animation (1200ms spring with confetti >80)
+- [ ] Data update transitions (300-500ms ease-in-out)
+- [ ] Skeleton shimmer animation (1.5s infinite)
+- [ ] Print stylesheet with light mode, no interactive elements
+- [ ] PDF export with @react-pdf/renderer (3-page report)
+- [ ] Social card OG images via @vercel/og (1200x630)
+- [ ] CSV/JSON data export for Pro users
+- [ ] Visual regression tests (Chromatic/Percy) for all 7 charts
+- [ ] Chart component library: /components/charts/ with 7+ components
 
 ---
 
@@ -12086,6 +13212,11 @@ Begin Phase 1, Week 1, Day 1:
 - BE: Request context setup (/lib/context.ts)
 - BE: Canonical logger (/lib/logger.ts)
 - BE: Shared Zod schemas (/lib/schemas/)
+- Viz: Chart color system (/styles/chart-colors.css)
+- Viz: ScoreGauge component (/components/charts/ScoreGauge.tsx)
+- Viz: Sparkline component (/components/charts/Sparkline.tsx)
+- Viz: ChartSkeleton (/components/charts/shared/ChartSkeleton.tsx)
+- Viz: useResponsiveChart hook (/components/charts/hooks/)
 
 **Backend Engineering Review Summary (v16.0):**
 - Identified 16 critical Backend Engineering gaps in API architecture
@@ -12121,6 +13252,40 @@ Begin Phase 1, Week 1, Day 1:
 15. **RFC 7807 Problem Details for errors** - Consistent error format for all clients
 16. **Circuit breaker state in health checks** - Know when providers are degraded
 
+**Data Visualization Review Summary (v17.0):**
+- Identified 17 critical Data Visualization gaps in chart architecture
+- Added Data Visualization Architecture Gap Analysis (2.121) with comprehensive assessment
+- Added Chart Type Selection Matrix (2.122) - data type → question → chart mapping
+- Added Data Visualization Color System (2.123) - semantic, sequential, diverging, categorical
+- Added Visualization Accessibility Requirements (2.124) - WCAG 2.1 AA compliance
+- Added Responsive Visualization Patterns (2.125) - simplify don't shrink strategy
+- Added Animation & Transition Guidelines (2.126) - timing, easing, purpose
+- Added Chart Component Library Specification (2.127) - 7 core components + 5 shared
+- Added Dashboard Visualization Layout (2.128) - desktop/tablet/mobile layouts
+- Added Print & Export Visualization (2.129) - PDF, PNG/OG, CSV/JSON export
+- Added 18 new Viz tasks across all phases (5 Week 2, 6 Week 3, 7 Week 7)
+- Added 5 new Viz acceptance criteria for Phase 1
+- Added Phase 4 Data Visualization Checklist with 29 success criteria
+
+**Key Data Visualization Principles:**
+1. **Right chart for the question** - Chart selection matrix, not gut feeling
+2. **Colors encode meaning** - Semantic (score), categorical (provider), sequential, diverging
+3. **Accessibility is non-negotiable** - WCAG 2.1 AA for all visualizations
+4. **Never use color alone** - Always combine with shape, pattern, or label
+5. **Screen readers need data tables** - Hidden but accessible alternative
+6. **Keyboard navigation required** - Tab, arrows, enter, escape for interactive charts
+7. **Respect reduced motion** - prefers-reduced-motion disables all animations
+8. **Simplify, don't shrink** - Mobile gets different chart types, not smaller ones
+9. **Data-ink ratio matters** - Remove chartjunk, maximize data pixels
+10. **Animations reveal insight** - Score reveal builds anticipation, updates show change
+11. **Loading states match layout** - Skeleton shimmer with same dimensions as final
+12. **Error states offer recovery** - Retry button, partial data fallback
+13. **Print needs light mode** - Force white background, hide interactive elements
+14. **Export enables sharing** - PDF reports, OG social cards, data downloads
+15. **Visual regression catches breaks** - Snapshot tests for all chart components
+16. **Tooltips provide context** - Hover details without cluttering the view
+17. **Progressive disclosure** - Summary → detail, dashboard → deep dive
+
 ---
 
 *Document prepared by BCG Digital Ventures - Technology Strategy Practice*
@@ -12139,6 +13304,7 @@ Begin Phase 1, Week 1, Day 1:
 *MLOps Review by: Senior MLOps Engineer Director - 333 years experience, ex-Google ML Platform/Netflix ML Platform/Uber Michelangelo/Meta AI Infra/Amazon SageMaker/Databricks MLflow*
 *Data Engineering Review by: Senior Data Engineer (Architect Level) - 855 years experience, ex-Google BigQuery/Snowflake/Databricks/Netflix Data Platform/Meta Data Infra/Amazon Redshift*
 *Backend Engineering Review by: Senior Backend Engineer (Python/Rust) - 1200 years experience, ex-Google Core/Meta Infrastructure/Amazon Web Services/Cloudflare/Fastly/Stripe Platform/Netflix Edge/Uber Platform/Dropbox Infra*
+*Data Visualization Review by: Senior Data Visualization Specialist - 1240 years experience, ex-New York Times Graphics/Washington Post Visual/Bloomberg Data Viz/Tableau/Observable/D3.js/McKinsey/BCG*
 *For: AI Perception Engineering Agency*
 *Date: November 26, 2024*
-*Version: 16.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering + Backend Engineering Review)*
+*Version: 17.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering + Backend Engineering + Data Visualization Review)*

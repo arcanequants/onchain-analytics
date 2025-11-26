@@ -2,7 +2,7 @@
 ## Executive Strategic Roadmap
 
 **Document Classification:** Strategic Planning
-**Version:** 7.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack Review)
+**Version:** 8.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR Review)
 **Date:** November 25, 2024
 **Prepared by:** BCG Digital Ventures - Technology Strategy Practice
 **Reviewed by:**
@@ -12,6 +12,7 @@
 - Senior Knowledge Graph & SEO Architect - Structured Data & AI Discoverability Review
 - Senior Technical Content Writer Director - Documentation & UX Writing Review
 - Senior Full Stack Developer Director - Code Quality & DevOps Review
+- Senior Reputation & Digital PR Specialist - Brand Strategy & Crisis Management Review
 
 ---
 
@@ -3311,6 +3312,532 @@ Based on industry best practices, we're adding these **fully automated** diagnos
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
+### 2.46 Reputation & Digital PR Architecture (NEW - PR Review)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│           REPUTATION & DIGITAL PR GAPS IDENTIFIED                   │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  1. NO BRAND SENTIMENT TRACKING OVER TIME                          │
+│     ═══════════════════════════════════                            │
+│     Problem: We measure AI perception once, but reputation evolves  │
+│     Impact: Can't show clients if their reputation is improving     │
+│     Solution: Longitudinal sentiment tracking dashboard             │
+│                                                                     │
+│  2. NO CRISIS DETECTION SYSTEM                                     │
+│     ═══════════════════════════                                    │
+│     Problem: No alert when AI perception suddenly drops             │
+│     Impact: Clients discover reputation crisis too late             │
+│     Solution: Threshold-based crisis alerts + immediate notification│
+│                                                                     │
+│  3. NO NEGATIVE PR IDENTIFICATION                                  │
+│     ═══════════════════════════════                                │
+│     Problem: We don't identify WHAT is causing negative perception  │
+│     Impact: Clients know they have a problem but not the source     │
+│     Solution: Source attribution for negative mentions              │
+│                                                                     │
+│  4. NO MEDIA MENTION TRACKING                                      │
+│     ════════════════════════════                                   │
+│     Problem: Don't track WHERE brands appear (news, blogs, reviews) │
+│     Impact: Missing context of WHY AIs recommend or don't recommend │
+│     Solution: Media mention scraping + authority scoring            │
+│                                                                     │
+│  5. NO COMPETITOR PR COMPARISON                                    │
+│     ═════════════════════════════                                  │
+│     Problem: Show own score but not competitive PR landscape        │
+│     Impact: No context if 60/100 is good or bad vs competitors      │
+│     Solution: Competitor PR positioning matrix                      │
+│                                                                     │
+│  6. NO INFLUENCER/KOL MENTION TRACKING                             │
+│     ═══════════════════════════════════                            │
+│     Problem: AI models cite influencers/experts but we don't track  │
+│     Impact: Missing key PR channel optimization opportunity         │
+│     Solution: KOL mention detection + influence scoring             │
+│                                                                     │
+│  7. NO PR ACTION RECOMMENDATIONS                                   │
+│     ═══════════════════════════════                                │
+│     Problem: We show score but not PR strategy to improve           │
+│     Impact: Clients know problem, don't know PR solution            │
+│     Solution: PR playbook recommendations by industry               │
+│                                                                     │
+│  8. NO REPUTATION RECOVERY TRACKING                                │
+│     ══════════════════════════════════                             │
+│     Problem: No way to track if PR efforts are working              │
+│     Impact: Clients can't prove ROI of reputation improvement work  │
+│     Solution: Before/after reputation recovery dashboard            │
+│                                                                     │
+│  9. NO PRESS RELEASE OPTIMIZATION                                  │
+│     ═══════════════════════════════                                │
+│     Problem: Press releases not optimized for AI consumption        │
+│     Impact: PR efforts don't translate to AI perception             │
+│     Solution: AI-optimized press release templates + guidelines     │
+│                                                                     │
+│  10. NO REVIEW AGGREGATION ANALYSIS                                │
+│      ═════════════════════════════════                             │
+│      Problem: Don't analyze how reviews affect AI recommendations   │
+│      Impact: Clients don't prioritize review management             │
+│      Solution: Review platform analysis (G2, Capterra, Yelp, etc.)  │
+│                                                                     │
+│  11. NO BRAND NARRATIVE CONSISTENCY CHECK                          │
+│      ═══════════════════════════════════════                       │
+│      Problem: Brand messaging inconsistent across sources           │
+│      Impact: AIs receive conflicting signals, reduce confidence     │
+│      Solution: Cross-source narrative consistency analyzer          │
+│                                                                     │
+│  12. NO OWN PR STRATEGY FOR LAUNCH                                 │
+│      ═════════════════════════════════                             │
+│      Problem: No PR plan for AI Perception's own product launch     │
+│      Impact: We sell PR advice but don't follow it ourselves        │
+│      Solution: Launch PR playbook (Product Hunt, press, influencers)│
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.47 Brand Sentiment Tracking System (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                 LONGITUDINAL REPUTATION DASHBOARD                   │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  SENTIMENT DIMENSIONS (Per AI Provider):                            │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ • Overall Sentiment: Positive | Neutral | Negative | Mixed   │   │
+│  │ • Recommendation Strength: Strong | Moderate | Weak | None   │   │
+│  │ • Context Quality: Primary | Alternative | Mentioned | Absent │   │
+│  │ • Consistency Score: 0-100 (same message across providers)   │   │
+│  │ • Trend Direction: Rising | Stable | Declining | Volatile    │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: reputation_history                                 │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id              UUID PRIMARY KEY                             │   │
+│  │ analysis_id     UUID REFERENCES analyses(id)                 │   │
+│  │ brand_id        UUID REFERENCES entities(id)                 │   │
+│  │ provider        ENUM('openai','anthropic','google','perplexity')│
+│  │ sentiment       ENUM('positive','neutral','negative','mixed') │   │
+│  │ sentiment_score DECIMAL (-1.0 to 1.0)                        │   │
+│  │ recommendation_strength ENUM('strong','moderate','weak','none')│  │
+│  │ context_type    ENUM('primary','alternative','mentioned','absent')│
+│  │ key_phrases     TEXT[] (extracted sentiment phrases)         │   │
+│  │ negative_factors JSONB (what's hurting reputation)           │   │
+│  │ positive_factors JSONB (what's helping reputation)           │   │
+│  │ measured_at     TIMESTAMPTZ                                  │   │
+│  │ created_at      TIMESTAMPTZ                                  │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  REPUTATION TREND VISUALIZATION:                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  100 ┤                                    ╭───╮               │   │
+│  │   80 ┤               ╭──────╮       ╭────╯   │               │   │
+│  │   60 ┤         ╭────╯      ╰──────╯         │               │   │
+│  │   40 ┤    ╭───╯                              ╰── Current: 72 │   │
+│  │   20 ┤───╯                                                   │   │
+│  │    0 ┼─────┬─────┬─────┬─────┬─────┬─────┬─────              │   │
+│  │      Week1 Week2 Week3 Week4 Week5 Week6 Week7               │   │
+│  │                                                               │   │
+│  │  ▲ +18 points since first analysis                           │   │
+│  │  Your PR efforts are working!                                 │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  ALERTS & THRESHOLDS:                                             │
+│  ├─ Score drops >15 points in 7 days → CRISIS ALERT              │
+│  ├─ Sentiment flips negative → IMMEDIATE NOTIFICATION            │
+│  ├─ Competitor overtakes → COMPETITIVE ALERT                     │
+│  └─ Score improves >10 points → CELEBRATION NOTIFICATION         │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.48 Crisis Detection & Response System (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    REPUTATION CRISIS MANAGEMENT                     │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  CRISIS DETECTION TRIGGERS:                                        │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ LEVEL 1 - YELLOW (Warning):                                  │   │
+│  │ • Score drops 10-15 points in 7 days                         │   │
+│  │ • New negative mention appears in AI response                │   │
+│  │ • Competitor score rises 20+ points                          │   │
+│  │ → Action: Email notification + dashboard badge               │   │
+│  │                                                               │   │
+│  │ LEVEL 2 - ORANGE (Urgent):                                   │   │
+│  │ • Score drops 15-25 points in 7 days                         │   │
+│  │ • Multiple negative mentions across providers                │   │
+│  │ • Recommendation status changes from "recommended" to "not"  │   │
+│  │ → Action: SMS/Push + urgent banner + suggested PR actions    │   │
+│  │                                                               │   │
+│  │ LEVEL 3 - RED (Crisis):                                      │   │
+│  │ • Score drops >25 points in 7 days                           │   │
+│  │ • Brand explicitly NOT recommended with negative reason      │   │
+│  │ • All providers show negative sentiment                      │   │
+│  │ → Action: Immediate call/SMS + crisis playbook activated     │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  CRISIS ROOT CAUSE IDENTIFICATION:                                 │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ When crisis detected, analyze:                               │   │
+│  │ 1. What changed in AI responses? (diff previous vs current)  │   │
+│  │ 2. What negative keywords appeared? (extract phrases)        │   │
+│  │ 3. What source is AI citing? (news, reviews, social)        │   │
+│  │ 4. Is this affecting all providers or just one?             │   │
+│  │ 5. Are competitors affected too? (industry-wide issue?)     │   │
+│  │                                                               │   │
+│  │ OUTPUT: Root Cause Report                                    │   │
+│  │ "Your reputation dropped because:                            │   │
+│  │  • ChatGPT now cites a TechCrunch article about your outage │   │
+│  │  • 12 new 1-star reviews on G2 in last week                 │   │
+│  │  • Your pricing page shows 'discontinued' product"          │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  CRISIS RESPONSE PLAYBOOK (Auto-generated):                        │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ IMMEDIATE (Within 24h):                                      │   │
+│  │ ☐ Acknowledge issue on official channels                    │   │
+│  │ ☐ Prepare statement for press inquiries                     │   │
+│  │ ☐ Update website FAQ with explanation                       │   │
+│  │                                                               │   │
+│  │ SHORT-TERM (Within 1 week):                                  │   │
+│  │ ☐ Respond to negative reviews professionally                │   │
+│  │ ☐ Publish resolution/update blog post                       │   │
+│  │ ☐ Request positive reviews from satisfied customers         │   │
+│  │                                                               │   │
+│  │ MEDIUM-TERM (Within 1 month):                                │   │
+│  │ ☐ PR campaign highlighting positive developments            │   │
+│  │ ☐ Expert content establishing authority                     │   │
+│  │ ☐ Influencer outreach for positive coverage                 │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: crisis_events                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id              UUID PRIMARY KEY                             │   │
+│  │ brand_id        UUID REFERENCES entities(id)                 │   │
+│  │ severity_level  ENUM('yellow','orange','red')                │   │
+│  │ trigger_type    TEXT                                         │   │
+│  │ score_before    INTEGER                                      │   │
+│  │ score_after     INTEGER                                      │   │
+│  │ root_causes     JSONB                                        │   │
+│  │ playbook_actions JSONB                                       │   │
+│  │ resolved_at     TIMESTAMPTZ (nullable)                       │   │
+│  │ resolution_notes TEXT                                        │   │
+│  │ created_at      TIMESTAMPTZ                                  │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.49 Media & Review Monitoring (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    MEDIA PRESENCE TRACKING                          │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  MEDIA SOURCES TO MONITOR:                                         │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ TIER 1 - HIGH AUTHORITY (AI models trust most):              │   │
+│  │ • Major news outlets (NYT, WSJ, Forbes, TechCrunch)         │   │
+│  │ • Wikipedia / Wikidata entries                               │   │
+│  │ • Industry publications (specific to client industry)        │   │
+│  │                                                               │   │
+│  │ TIER 2 - PROFESSIONAL REVIEWS:                               │   │
+│  │ • G2, Capterra, TrustRadius (B2B SaaS)                      │   │
+│  │ • Yelp, TripAdvisor, Google Maps (Local business)           │   │
+│  │ • App Store, Play Store (Mobile apps)                        │   │
+│  │                                                               │   │
+│  │ TIER 3 - SOCIAL & COMMUNITY:                                 │   │
+│  │ • Reddit discussions (specific subreddits)                   │   │
+│  │ • Twitter/X mentions and sentiment                           │   │
+│  │ • LinkedIn company mentions                                  │   │
+│  │ • Quora answers mentioning brand                             │   │
+│  │                                                               │   │
+│  │ TIER 4 - EXPERT/KOL CONTENT:                                 │   │
+│  │ • YouTube reviews and tutorials                              │   │
+│  │ • Podcast mentions                                           │   │
+│  │ • Blog posts from industry influencers                       │   │
+│  │ • Newsletter mentions                                        │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  REVIEW PLATFORM ANALYSIS OUTPUT:                                  │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ G2 Analysis:                                                 │   │
+│  │ ┌─────────────────────────────────────────────────────┐     │   │
+│  │ │ Your Rating: 4.2/5 (127 reviews)                     │     │   │
+│  │ │ Industry Avg: 4.4/5                                  │     │   │
+│  │ │ Top Competitor: 4.6/5 (Salesforce)                   │     │   │
+│  │ │                                                       │     │   │
+│  │ │ Sentiment Breakdown:                                  │     │   │
+│  │ │ ████████████████░░░░ 78% Positive                    │     │   │
+│  │ │ ████░░░░░░░░░░░░░░░░ 15% Neutral                     │     │   │
+│  │ │ ██░░░░░░░░░░░░░░░░░░  7% Negative                    │     │   │
+│  │ │                                                       │     │   │
+│  │ │ Top Negative Themes:                                  │     │   │
+│  │ │ • "Customer support slow" (12 mentions)              │     │   │
+│  │ │ • "Pricing increased" (8 mentions)                   │     │   │
+│  │ │ • "Missing integrations" (5 mentions)                │     │   │
+│  │ │                                                       │     │   │
+│  │ │ PR RECOMMENDATION:                                    │     │   │
+│  │ │ Request 20+ new reviews from satisfied customers      │     │   │
+│  │ │ to dilute negative sentiment                         │     │   │
+│  │ └─────────────────────────────────────────────────────┘     │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: media_mentions                                    │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id              UUID PRIMARY KEY                             │   │
+│  │ brand_id        UUID REFERENCES entities(id)                 │   │
+│  │ source_url      TEXT                                         │   │
+│  │ source_domain   TEXT                                         │   │
+│  │ source_type     ENUM('news','review','social','expert','wiki')│  │
+│  │ authority_tier  INTEGER (1-4)                                │   │
+│  │ sentiment       ENUM('positive','neutral','negative')        │   │
+│  │ headline        TEXT                                         │   │
+│  │ excerpt         TEXT                                         │   │
+│  │ published_at    TIMESTAMPTZ                                  │   │
+│  │ discovered_at   TIMESTAMPTZ                                  │   │
+│  │ ai_citing_this  BOOLEAN (is AI using this source?)          │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.50 PR Action Recommendations Engine (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                 PR PLAYBOOK BY INDUSTRY & SITUATION                 │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PR RECOMMENDATION CATEGORIES:                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ 1. VISIBILITY BUILDING (Score < 40, not mentioned)          │   │
+│  │    • Create Wikipedia/Wikidata entry                        │   │
+│  │    • Submit to industry directories                         │   │
+│  │    • Guest post on authoritative blogs                      │   │
+│  │    • Launch on Product Hunt / relevant platforms            │   │
+│  │    • Pitch to industry newsletters                          │   │
+│  │                                                               │   │
+│  │ 2. AUTHORITY BUILDING (Score 40-60, mentioned but weak)     │   │
+│  │    • Publish original research / data reports               │   │
+│  │    • Speak at industry conferences                          │   │
+│  │    • Get quoted in news articles                            │   │
+│  │    • Build thought leadership on LinkedIn                   │   │
+│  │    • Create expert content (guides, whitepapers)            │   │
+│  │                                                               │   │
+│  │ 3. SOCIAL PROOF BUILDING (Score 60-80, needs validation)    │   │
+│  │    • Accelerate review collection on G2/Capterra            │   │
+│  │    • Showcase customer case studies                         │   │
+│  │    • Highlight awards and certifications                    │   │
+│  │    • Influencer partnership campaigns                       │   │
+│  │    • User-generated content promotion                       │   │
+│  │                                                               │   │
+│  │ 4. REPUTATION DEFENSE (Score >80, maintain position)        │   │
+│  │    • Monitor for negative mentions proactively              │   │
+│  │    • Respond quickly to criticism                           │   │
+│  │    • Continuous fresh content publication                   │   │
+│  │    • Regular PR outreach cadence                            │   │
+│  │    • Crisis response plan ready                             │   │
+│  │                                                               │   │
+│  │ 5. CRISIS RECOVERY (Score dropped significantly)            │   │
+│  │    • Issue public statement addressing concerns             │   │
+│  │    • Respond to ALL negative reviews                        │   │
+│  │    • Publish "lessons learned" transparency content         │   │
+│  │    • Intensify positive coverage outreach                   │   │
+│  │    • Consider brand refresh if severe                       │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  INDUSTRY-SPECIFIC PR PLAYBOOKS:                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ B2B SaaS:                                                    │   │
+│  │ • Priority platforms: G2, Capterra, TrustRadius            │   │
+│  │ • Content focus: ROI case studies, technical docs          │   │
+│  │ • Influencers: Industry analysts, tech journalists          │   │
+│  │                                                               │   │
+│  │ Local Business:                                              │   │
+│  │ • Priority platforms: Google Maps, Yelp, local directories │   │
+│  │ • Content focus: Community involvement, local news          │   │
+│  │ • Influencers: Local bloggers, community leaders           │   │
+│  │                                                               │   │
+│  │ E-commerce:                                                  │   │
+│  │ • Priority platforms: Trustpilot, Amazon reviews           │   │
+│  │ • Content focus: Product quality, customer service          │   │
+│  │ • Influencers: YouTube reviewers, Instagram creators        │   │
+│  │                                                               │   │
+│  │ Healthcare:                                                  │   │
+│  │ • Priority platforms: Healthgrades, Zocdoc, RateMDs        │   │
+│  │ • Content focus: Credentials, patient outcomes, trust       │   │
+│  │ • Influencers: Medical professionals, health journalists    │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  OUTPUT FORMAT (Per Recommendation):                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ PR RECOMMENDATION #1                                         │   │
+│  │ ──────────────────                                          │   │
+│  │ Action: Create comprehensive Wikipedia page                  │   │
+│  │ Why: AI models heavily cite Wikipedia. You're not there.     │   │
+│  │ Expected Impact: +15-25 points on AI Perception Score       │   │
+│  │ Effort: High (requires notability + citations)              │   │
+│  │ Timeline: 2-4 weeks to creation, 3-6 months to rank         │   │
+│  │ Resources: Wikipedia editing guide (link)                   │   │
+│  │            List of required citations                        │   │
+│  │            Template for company pages                        │   │
+│  │ Success Metric: Wikipedia page indexed, cited by AI         │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.51 Narrative Consistency Analyzer (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              BRAND NARRATIVE CONSISTENCY CHECK                      │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PROBLEM: Brand sends conflicting signals across sources           │
+│  • Website says "Enterprise CRM" but G2 categorizes as "SMB CRM"   │
+│  • LinkedIn bio differs from Twitter bio                           │
+│  • Press releases use different company descriptions               │
+│  → AI models receive mixed signals = lower confidence = lower score│
+│                                                                     │
+│  CONSISTENCY CHECK DIMENSIONS:                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ 1. COMPANY DESCRIPTION                                       │   │
+│  │    Compare: Website about, LinkedIn, Twitter, Crunchbase    │   │
+│  │    Check: Same core value proposition?                       │   │
+│  │                                                               │   │
+│  │ 2. INDUSTRY CATEGORIZATION                                   │   │
+│  │    Compare: How you categorize vs how platforms categorize  │   │
+│  │    Check: Consistent industry/category across all sources?  │   │
+│  │                                                               │   │
+│  │ 3. FOUNDER/LEADERSHIP BIOS                                   │   │
+│  │    Compare: LinkedIn, company website, speaker bios          │   │
+│  │    Check: Consistent credentials and experience claims?      │   │
+│  │                                                               │   │
+│  │ 4. PRODUCT/SERVICE DESCRIPTIONS                              │   │
+│  │    Compare: Website, G2, Product Hunt, press releases       │   │
+│  │    Check: Same features highlighted? Same target audience?  │   │
+│  │                                                               │   │
+│  │ 5. CONTACT INFORMATION                                       │   │
+│  │    Compare: All public sources                               │   │
+│  │    Check: Same address, phone, email across all?            │   │
+│  │                                                               │   │
+│  │ 6. SOCIAL PROOF CLAIMS                                       │   │
+│  │    Compare: "X customers" on website vs press releases      │   │
+│  │    Check: Numbers match? Date stamps accurate?              │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  OUTPUT: Narrative Consistency Score (0-100)                       │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Narrative Consistency: 67/100                                │   │
+│  │                                                               │   │
+│  │ ✓ Company description consistent (90%)                       │   │
+│  │ ✓ Leadership bios match (95%)                                │   │
+│  │ ⚠ Industry categorization inconsistent (60%)                │   │
+│  │   - Website: "Enterprise CRM"                                │   │
+│  │   - G2: "Small Business CRM"                                 │   │
+│  │   - LinkedIn: "Sales Software"                               │   │
+│  │ ✗ Contact info mismatch (40%)                               │   │
+│  │   - Old address on Crunchbase                                │   │
+│  │   - Different phone on Yelp listing                          │   │
+│  │                                                               │   │
+│  │ TOP FIXES:                                                   │   │
+│  │ 1. Update G2 category to match positioning (+10 pts)        │   │
+│  │ 2. Update Crunchbase address (+5 pts)                       │   │
+│  │ 3. Standardize LinkedIn company description (+3 pts)        │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.52 AI Perception Launch PR Strategy (NEW - Our Own Launch)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│          AI PERCEPTION ENGINEERING AGENCY - LAUNCH PR PLAN          │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ⚠️ CRITICAL: We must follow our own advice for our launch!        │
+│                                                                     │
+│  PRE-LAUNCH (2 weeks before):                                      │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ □ Create Wikidata entry for "AI Perception Engineering"     │   │
+│  │ □ Set up Crunchbase company profile                         │   │
+│  │ □ Claim LinkedIn company page with full details             │   │
+│  │ □ Create Twitter/X account @aiperception                    │   │
+│  │ □ Prepare Product Hunt launch page (draft)                  │   │
+│  │ □ Write 3 launch blog posts (draft)                         │   │
+│  │ □ Create press kit (logo, screenshots, founder bio)         │   │
+│  │ □ Build email list of beta testers (target: 100)            │   │
+│  │ □ Identify 20 target journalists/bloggers to pitch          │   │
+│  │ □ Prepare founder thought leadership content                │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  LAUNCH DAY (Product Hunt focus):                                  │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ □ Submit to Product Hunt at 12:01 AM PT                     │   │
+│  │ □ Email beta testers asking for upvotes/comments            │   │
+│  │ □ Post on Twitter, LinkedIn, relevant subreddits            │   │
+│  │ □ Send press release to media list                          │   │
+│  │ □ Engage with EVERY Product Hunt comment                    │   │
+│  │ □ Live-tweet launch day with behind-scenes content          │   │
+│  │ □ Founder available for immediate interviews                │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  POST-LAUNCH (Week 1-2):                                           │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ □ Follow up with journalists who didn't respond             │   │
+│  │ □ Publish first case study from launch users                │   │
+│  │ □ Guest post on marketing/SEO blogs about GEO              │   │
+│  │ □ Podcast interview outreach (20 targets)                   │   │
+│  │ □ LinkedIn article: "We Launched and Here's What We Learned"│   │
+│  │ □ Request testimonials from happy launch users              │   │
+│  │ □ Submit to Indie Hackers, Hacker News                      │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  ONGOING PR CADENCE:                                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Weekly:                                                      │   │
+│  │ • 1 Twitter thread with insights/tips                       │   │
+│  │ • Engage in 5 relevant conversations                        │   │
+│  │                                                               │   │
+│  │ Bi-weekly:                                                   │   │
+│  │ • 1 LinkedIn article                                         │   │
+│  │ • 1 guest post pitch to blogs                               │   │
+│  │                                                               │   │
+│  │ Monthly:                                                     │   │
+│  │ • 1 data-driven report (e.g., "AI Perception by Industry")  │   │
+│  │ • 1 podcast appearance                                      │   │
+│  │ • Press release if newsworthy update                        │   │
+│  │                                                               │   │
+│  │ Quarterly:                                                   │   │
+│  │ • Industry benchmark report                                  │   │
+│  │ • Speaking engagement at conference                          │   │
+│  │ • Major feature launch with PR push                         │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  TARGET MEDIA OUTLETS FOR COVERAGE:                                │
+│  ├─ Tech: TechCrunch, The Verge, Wired, VentureBeat            │
+│  ├─ Marketing: MarketingWeek, AdAge, Digiday, Search Engine Land│
+│  ├─ Business: Forbes, Entrepreneur, Inc., Fast Company          │
+│  ├─ Newsletters: TLDR, The Hustle, Morning Brew                 │
+│  └─ Podcasts: Marketing School, My First Million, SaaS Growth   │
+│                                                                     │
+│  SUCCESS METRICS (Month 1):                                        │
+│  ├─ Product Hunt: Top 5 of the day                              │
+│  ├─ Press mentions: 5+ articles                                  │
+│  ├─ Social followers: 500+ across platforms                      │
+│  ├─ Email subscribers: 1,000+                                    │
+│  └─ Podcast appearances: 2+                                      │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
 ---
 
 ## PART III: PHASED ROADMAP
@@ -3400,6 +3927,9 @@ Based on industry best practices, we're adding these **fully automated** diagnos
 | 5 | **Dev: Env validation** | /lib/env.ts with Zod schema for all env vars | Claude |
 | 5 | **Dev: Supabase types gen** | npm script to generate DB types | Claude |
 | 5 | **Dev: API middleware factory** | /lib/api/middleware.ts centralized middleware | Claude |
+| 5 | **PR: Pre-launch checklist** | Wikidata entry, Crunchbase, LinkedIn page setup | Alberto |
+| 5 | **PR: Press kit creation** | Logo pack, screenshots, founder bio, boilerplate | Claude |
+| 5 | **PR: Target media list** | 20 journalists/bloggers in AI/marketing space | Alberto |
 
 **NEW: Security Deliverables Week 1:**
 ```typescript
@@ -3473,6 +4003,10 @@ const SCORING_WEIGHTS = {
 | 5 | **Dev: Service factory** | /lib/services/factory.ts dependency injection pattern | Claude |
 | 5 | **Dev: Feature flags module** | /lib/feature-flags.ts with env-based flags | Claude |
 | 5 | **Dev: Request tracing** | X-Request-ID header propagation across all requests | Claude |
+| 5 | **PR: Product Hunt draft** | Product Hunt launch page prepared (not submitted) | Alberto |
+| 5 | **PR: Social accounts setup** | Twitter @aiperception, verified LinkedIn page | Alberto |
+| 5 | **PR: Sentiment tracking DB** | reputation_history table + sentiment extraction | Claude |
+| 5 | **PR: Launch blog posts** | 3 draft posts for launch week content | Claude |
 
 **Acceptance Criteria Phase 1:**
 - [ ] User can enter URL and receive analysis
@@ -3516,6 +4050,13 @@ const SCORING_WEIGHTS = {
 - [ ] **NEW (Dev): Feature flags module active (at least 2 flags defined)**
 - [ ] **NEW (Dev): X-Request-ID header present on all API responses**
 - [ ] **NEW (Dev): Bundle size < 150KB first load JS (homepage)**
+- [ ] **NEW (PR): Wikidata entry created for AI Perception**
+- [ ] **NEW (PR): Crunchbase company profile complete**
+- [ ] **NEW (PR): Twitter and LinkedIn accounts active**
+- [ ] **NEW (PR): Press kit ready with all assets**
+- [ ] **NEW (PR): Product Hunt page drafted (not launched)**
+- [ ] **NEW (PR): Sentiment tracking table in database**
+- [ ] **NEW (PR): 20 media targets identified with contact info**
 
 ---
 
@@ -3550,6 +4091,9 @@ const SCORING_WEIGHTS = {
 | 5 | **Dev: Database indexes** | Composite indexes on high-query tables (analyses, scores) | Claude |
 | 5 | **Dev: API versioning** | /api/v1/ prefix for all public endpoints | Claude |
 | 5 | **Dev: Graceful shutdown** | Handle SIGTERM, complete in-flight requests | Claude |
+| 5 | **PR: Crisis detection system** | crisis_events table + threshold alerts | Claude |
+| 5 | **PR: Media mentions tracking** | media_mentions table + basic scraping | Claude |
+| 5 | **PR: Review platform analysis** | G2/Capterra/Yelp review aggregation logic | Claude |
 
 **Caching Strategy:**
 
@@ -3585,6 +4129,9 @@ const CACHE_TTL = {
 | 5 | **Dev: Bundle analyzer** | @next/bundle-analyzer integration | Claude |
 | 5 | **Dev: Preview environments** | Vercel preview URLs per PR | Claude |
 | 5 | **Dev: Performance monitoring** | Core Web Vitals tracking (LCP, FID, CLS) | Claude |
+| 5 | **PR: Narrative consistency checker** | Cross-source brand messaging analyzer | Claude |
+| 5 | **PR: PR recommendations engine** | Industry-specific playbook generator | Claude |
+| 5 | **PR: Beta tester outreach** | Email list of 100+ beta testers | Alberto |
 
 **Freemium Gating Rules:**
 
@@ -3684,6 +4231,9 @@ const PRODUCTS = {
 | 5 | **Dev: Drizzle ORM migration** | Database migrations versioning system | Claude |
 | 5 | **Dev: Background job retry** | Exponential backoff for failed CRON jobs | Claude |
 | 5 | **Dev: Webhook idempotency** | Prevent duplicate Stripe event processing | Claude |
+| 5 | **PR: Product Hunt LAUNCH** | Submit and execute launch day playbook | Alberto |
+| 5 | **PR: Press release distribution** | Send to 20 target journalists | Alberto |
+| 5 | **PR: Launch day social blitz** | Twitter, LinkedIn, Reddit posts | Both |
 
 **Monitoring Schedule:**
 
@@ -3733,6 +4283,9 @@ const ALERT_THRESHOLDS = {
 | 5 | **Dev: Feature flags Vercel Edge** | Migrate to Edge Config for production | Claude |
 | 5 | **Dev: Error boundary** | Global React error boundary with Sentry | Claude |
 | 5 | **Dev: Load testing** | k6/Artillery scripts for 100 concurrent users | Claude |
+| 5 | **PR: Post-launch case study** | First customer success story | Both |
+| 5 | **PR: Podcast outreach** | Pitch to 10 marketing/SaaS podcasts | Alberto |
+| 5 | **PR: Guest post campaign** | 3 guest posts on SEO/marketing blogs | Both |
 
 **Why Add Google/Perplexity in Phase 4?**
 - By Week 7, we should have paying customers generating revenue
@@ -3792,6 +4345,10 @@ const ALERT_THRESHOLDS = {
 | 5 | **Dev: CDN caching strategy** | Vercel Edge Network for static + ISR pages | Claude |
 | 5 | **Dev: Health dashboard** | Internal status page with all service health | Claude |
 | 5 | **Dev: Runbook documentation** | On-call runbooks for common incidents | Claude |
+| 5 | **PR: Monthly data report** | "AI Perception by Industry" benchmark report | Claude |
+| 5 | **PR: Testimonial collection** | Request testimonials from 10 happy users | Alberto |
+| 5 | **PR: Competitor PR analysis** | Competitive PR positioning matrix | Claude |
+| 5 | **PR: Influencer partnerships** | Identify 5 KOLs for partnership discussions | Alberto |
 
 **Phase 4 Dev Checklist (End of Week 8):**
 - [ ] Feature flags on Vercel Edge Config
@@ -3801,6 +4358,18 @@ const ALERT_THRESHOLDS = {
 - [ ] CDN cache hit rate > 80% on static content
 - [ ] Health dashboard accessible
 - [ ] Runbooks for all critical services documented
+
+**Phase 4 PR Checklist (End of Week 8):**
+- [ ] Product Hunt launched (target: top 5 of the day)
+- [ ] 5+ press articles published about AI Perception
+- [ ] 500+ social followers across platforms
+- [ ] 1,000+ email subscribers
+- [ ] 2+ podcast appearances scheduled/completed
+- [ ] First customer case study published
+- [ ] Monthly industry benchmark report released
+- [ ] 10 testimonials collected and displayed
+- [ ] Ongoing PR cadence established (weekly social, bi-weekly content)
+- [ ] Crisis detection system active and monitoring
 
 ---
 
@@ -4246,6 +4815,32 @@ This roadmap represents a comprehensive strategic plan for the AI Perception Eng
 7. **Feature flags for safety** - New features behind flags, gradual rollout
 8. **Infrastructure as code** - No manual Vercel config, everything in repo
 
+**Reputation & Digital PR Review Summary (v8.0):**
+- Identified 12 critical Reputation & Digital PR gaps
+- Added Reputation & Digital PR Architecture section (2.46) with gap analysis
+- Added Brand Sentiment Tracking System (2.47) - longitudinal reputation dashboard
+- Added Crisis Detection & Response System (2.48) - 3-level severity alerts + playbooks
+- Added Media & Review Monitoring (2.49) - tiered source tracking + review analysis
+- Added PR Action Recommendations Engine (2.50) - industry-specific PR playbooks
+- Added Narrative Consistency Analyzer (2.51) - cross-source brand messaging check
+- Added AI Perception Launch PR Strategy (2.52) - our own launch playbook
+- Added 3 new database tables: `reputation_history`, `crisis_events`, `media_mentions`
+- Added 23 new PR tasks across all phases (7 Week 1-2, 6 Week 3-4, 3 Week 5-6, 7 Week 7-8)
+- Added 7 new PR acceptance criteria for Phase 1
+- Added Phase 4 PR Checklist with 10 success criteria
+
+**Key Reputation & Digital PR Principles:**
+1. **Practice what we preach** - Our own launch must follow our PR playbook
+2. **Reputation is longitudinal** - Single scores are useless without trends over time
+3. **Crisis prevention > crisis response** - Detect drops before they become disasters
+4. **Source attribution is key** - Know WHERE reputation problems originate
+5. **Narrative consistency builds trust** - Conflicting messages confuse AI models
+6. **PR is ongoing, not one-time** - Establish weekly/monthly cadence from day 1
+7. **Measure PR ROI** - Track before/after to prove reputation improvement value
+8. **Industry-specific playbooks** - B2B SaaS PR ≠ Local Restaurant PR
+9. **Reviews are PR currency** - Prioritize review management across platforms
+10. **Influencers matter to AI** - KOL mentions increasingly influence AI recommendations
+
 **Recommended Next Action:**
 Begin Phase 1, Week 1, Day 1:
 - Database schema design + RLS policies
@@ -4255,6 +4850,10 @@ Begin Phase 1, Week 1, Day 1:
 - AI: Industry taxonomy seed data (20 categories)
 - SEO: Own site JSON-LD SoftwareApplication schema
 - Content: UX writing guide document
+- PR: Create Wikidata entry for AI Perception (Alberto)
+- PR: Set up Crunchbase company profile (Alberto)
+- PR: Claim LinkedIn company page (Alberto)
+- PR: Create press kit with all assets (Claude)
 
 ---
 
@@ -4265,6 +4864,7 @@ Begin Phase 1, Week 1, Day 1:
 *KG/SEO Review by: Senior Knowledge Graph & SEO Architect - 333 years experience, ex-Google Search/Wikidata/Schema.org*
 *Content Review by: Senior Technical Content Writer Director - 250 years experience, ex-Stripe/Notion/Figma*
 *Full Stack Review by: Senior Full Stack Developer Director - 359 years experience, ex-Google/Meta/Stripe/Amazon*
+*Reputation & PR Review by: Senior Reputation & Digital PR Specialist - 412 years experience, ex-Edelman/Weber Shandwick/Burson*
 *For: AI Perception Engineering Agency*
 *Date: November 25, 2024*
-*Version: 7.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack Review)*
+*Version: 8.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR Review)*

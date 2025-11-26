@@ -2,7 +2,7 @@
 ## Executive Strategic Roadmap
 
 **Document Classification:** Strategic Planning
-**Version:** 9.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering Review)
+**Version:** 10.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology Review)
 **Date:** November 25, 2024
 **Prepared by:** BCG Digital Ventures - Technology Strategy Practice
 **Reviewed by:**
@@ -14,6 +14,7 @@
 - Senior Full Stack Developer Director - Code Quality & DevOps Review
 - Senior Reputation & Digital PR Specialist - Brand Strategy & Crisis Management Review
 - Senior Prompt Engineer / Model Analyst - Prompt Architecture & Model Optimization Review
+- Senior Principal Ontologist - Knowledge Modeling & Semantic Architecture Review
 
 ---
 
@@ -4439,6 +4440,661 @@ Based on industry best practices, we're adding these **fully automated** diagnos
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
+### 2.61 Ontology Engineering Architecture (NEW - Principal Ontologist Review)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│       ONTOLOGY & KNOWLEDGE MODELING GAPS IDENTIFIED                 │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  1. NO FORMAL ONTOLOGY DEFINITION                                   │
+│     ═══════════════════════════════                                 │
+│     Problem: Industry taxonomy exists but lacks formal ontology     │
+│     Impact: No machine-readable concept hierarchy, poor inference   │
+│     Solution: Define formal OWL/SKOS ontology for domain concepts   │
+│                                                                     │
+│  2. NO UPPER ONTOLOGY ALIGNMENT                                     │
+│     ═══════════════════════════════                                 │
+│     Problem: Custom concepts not aligned to standard upper ontology │
+│     Impact: Incompatible with external knowledge bases              │
+│     Solution: Align to Schema.org + Wikidata ontology patterns      │
+│                                                                     │
+│  3. NO SEMANTIC TYPING SYSTEM                                       │
+│     ════════════════════════════                                    │
+│     Problem: Entity types are simple enums, not semantic classes    │
+│     Impact: Can't express "HubSpot is-a CRM is-a Software"         │
+│     Solution: Implement class hierarchy with subsumption reasoning  │
+│                                                                     │
+│  4. NO PROPERTY TAXONOMY                                            │
+│     ════════════════════════                                        │
+│     Problem: Relationships are flat strings, no property hierarchy  │
+│     Impact: "competes_with" and "rival_of" are disconnected         │
+│     Solution: Define property ontology with inverse/transitive rules│
+│                                                                     │
+│  5. NO TEMPORAL MODELING                                            │
+│     ═══════════════════════                                         │
+│     Problem: Entities have no temporal dimension                    │
+│     Impact: Can't track "was competitor in 2020, acquired in 2023"  │
+│     Solution: 4D ontology pattern with temporal validity intervals  │
+│                                                                     │
+│  6. NO PROVENANCE TRACKING                                          │
+│     ══════════════════════                                          │
+│     Problem: Facts have no provenance metadata                      │
+│     Impact: Can't distinguish AI-inferred vs Wikidata vs user-input │
+│     Solution: PROV-O compliant provenance tracking                  │
+│                                                                     │
+│  7. NO UNCERTAINTY REPRESENTATION                                   │
+│     ════════════════════════════                                    │
+│     Problem: All facts treated as certain binary true/false         │
+│     Impact: AI confidence lost, false certainty in UI               │
+│     Solution: Probabilistic assertions with confidence intervals    │
+│                                                                     │
+│  8. NO CROSS-DOMAIN CONCEPT MAPPING                                 │
+│     ═════════════════════════════════                               │
+│     Problem: Industry concepts isolated from external vocabularies  │
+│     Impact: Can't link "SaaS" to Wikidata Q254457, NAICS 541512    │
+│     Solution: Explicit skos:exactMatch/closeMatch to external KGs   │
+│                                                                     │
+│  9. NO COMPETENCY QUESTIONS DEFINED                                 │
+│     ═════════════════════════════════                               │
+│     Problem: Ontology built without formal query requirements       │
+│     Impact: May not support actual business questions               │
+│     Solution: Define CQs that ontology must answer                  │
+│                                                                     │
+│  10. NO ONTOLOGY VERSIONING STRATEGY                                │
+│      ═══════════════════════════════                                │
+│      Problem: No plan for ontology evolution/deprecation            │
+│      Impact: Breaking changes affect all historical analyses        │
+│      Solution: URI-based versioning, deprecation policy             │
+│                                                                     │
+│  11. NO MULTI-LINGUAL CONCEPT LABELS                                │
+│      ═════════════════════════════════                              │
+│      Problem: Concepts have English-only labels                     │
+│      Impact: Can't serve Spanish, Portuguese markets properly       │
+│      Solution: SKOS prefLabel/altLabel in multiple languages        │
+│                                                                     │
+│  12. NO AXIOM CONSTRAINTS                                           │
+│      ════════════════════════                                       │
+│      Problem: No semantic constraints on relationships              │
+│      Impact: Nonsense facts allowed (Person competes_with Software) │
+│      Solution: OWL domain/range restrictions, disjointness axioms   │
+│                                                                     │
+│  13. NO SEMANTIC SIMILARITY METRICS                                 │
+│      ══════════════════════════════                                 │
+│      Problem: No way to compute concept similarity from ontology    │
+│      Impact: "Similar brands" based only on embeddings, not meaning │
+│      Solution: Wu-Palmer, Lin similarity using ontology structure   │
+│                                                                     │
+│  14. NO INFERENCE RULES ENGINE                                      │
+│      ═══════════════════════════                                    │
+│      Problem: No reasoning over stored facts                        │
+│      Impact: Can't derive "if A competes with B, B competes with A" │
+│      Solution: Rule-based inference layer (SWRL or custom)          │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.62 Formal Ontology Design (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                   AI PERCEPTION DOMAIN ONTOLOGY                     │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  NAMESPACE: https://aiperception.com/ontology/v1#                   │
+│  PREFIX: aip:                                                       │
+│                                                                     │
+│  UPPER ONTOLOGY ALIGNMENT:                                          │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Thing (owl:Thing)                                            │   │
+│  │  ├─ schema:Organization (external)                           │   │
+│  │  │   └─ aip:Brand                                           │   │
+│  │  │       ├─ aip:AnalyzedBrand (has perception score)        │   │
+│  │  │       └─ aip:CompetitorBrand                             │   │
+│  │  ├─ schema:Product (external)                                │   │
+│  │  │   └─ aip:AnalyzedProduct                                 │   │
+│  │  ├─ aip:Industry                                             │   │
+│  │  │   ├─ aip:PrimaryIndustry                                 │   │
+│  │  │   └─ aip:SubIndustry                                     │   │
+│  │  ├─ aip:AIProvider                                           │   │
+│  │  │   ├─ aip:OpenAIProvider                                  │   │
+│  │  │   ├─ aip:AnthropicProvider                               │   │
+│  │  │   ├─ aip:GoogleProvider                                  │   │
+│  │  │   └─ aip:PerplexityProvider                              │   │
+│  │  ├─ aip:PerceptionAnalysis                                   │   │
+│  │  │   ├─ aip:SingleProviderAnalysis                          │   │
+│  │  │   └─ aip:AggregatedAnalysis                              │   │
+│  │  ├─ aip:Recommendation                                       │   │
+│  │  │   ├─ aip:DirectRecommendation (brand explicitly named)   │   │
+│  │  │   └─ aip:IndirectMention (brand referenced)              │   │
+│  │  └─ aip:PerceptionScore                                      │   │
+│  │      ├─ aip:RawScore                                        │   │
+│  │      └─ aip:CalibratedScore                                 │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  OBJECT PROPERTIES:                                                │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ aip:competesWith                                             │   │
+│  │   Domain: aip:Brand                                          │   │
+│  │   Range: aip:Brand                                           │   │
+│  │   Characteristics: Symmetric                                 │   │
+│  │                                                               │   │
+│  │ aip:operatesInIndustry                                       │   │
+│  │   Domain: aip:Brand                                          │   │
+│  │   Range: aip:Industry                                        │   │
+│  │                                                               │   │
+│  │ aip:hasSubIndustry                                           │   │
+│  │   Domain: aip:PrimaryIndustry                                │   │
+│  │   Range: aip:SubIndustry                                     │   │
+│  │   Characteristics: Transitive                                │   │
+│  │                                                               │   │
+│  │ aip:analyzedBy                                                │   │
+│  │   Domain: aip:PerceptionAnalysis                             │   │
+│  │   Range: aip:AIProvider                                      │   │
+│  │                                                               │   │
+│  │ aip:mentionedIn                                               │   │
+│  │   Domain: aip:Brand                                          │   │
+│  │   Range: aip:PerceptionAnalysis                              │   │
+│  │   Inverse: aip:mentionsBrand                                 │   │
+│  │                                                               │   │
+│  │ aip:recommendsFor                                             │   │
+│  │   Domain: aip:AIProvider                                     │   │
+│  │   Range: aip:Brand                                           │   │
+│  │                                                               │   │
+│  │ aip:hasPerceptionScore                                        │   │
+│  │   Domain: aip:PerceptionAnalysis                             │   │
+│  │   Range: aip:PerceptionScore                                 │   │
+│  │   Characteristics: Functional                                │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATA PROPERTIES:                                                  │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ aip:scoreValue                                                │   │
+│  │   Domain: aip:PerceptionScore                                │   │
+│  │   Range: xsd:decimal [0-100]                                 │   │
+│  │                                                               │   │
+│  │ aip:confidence                                                │   │
+│  │   Domain: aip:PerceptionAnalysis                             │   │
+│  │   Range: xsd:decimal [0-1]                                   │   │
+│  │                                                               │   │
+│  │ aip:analysisDate                                              │   │
+│  │   Domain: aip:PerceptionAnalysis                             │   │
+│  │   Range: xsd:dateTime                                        │   │
+│  │                                                               │   │
+│  │ aip:validFrom / aip:validTo                                   │   │
+│  │   Domain: owl:Thing (temporal validity)                      │   │
+│  │   Range: xsd:dateTime                                        │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.63 Competency Questions (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│             ONTOLOGY COMPETENCY QUESTIONS (CQs)                     │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: Ontology must answer these business questions           │
+│                                                                     │
+│  BRAND PERCEPTION CQs:                                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ CQ1: What is the AI perception score for Brand X?            │   │
+│  │      SPARQL: SELECT ?score WHERE { :BrandX aip:hasScore ?s . │   │
+│  │              ?s aip:scoreValue ?score }                       │   │
+│  │                                                               │   │
+│  │ CQ2: Which AI providers recommend Brand X?                    │   │
+│  │      SPARQL: SELECT ?provider WHERE {                         │   │
+│  │              ?provider aip:recommendsFor :BrandX }            │   │
+│  │                                                               │   │
+│  │ CQ3: Who are Brand X's competitors according to AI?           │   │
+│  │      SPARQL: SELECT ?competitor WHERE {                       │   │
+│  │              :BrandX aip:competesWith ?competitor }           │   │
+│  │                                                               │   │
+│  │ CQ4: What industry does Brand X operate in?                   │   │
+│  │      SPARQL: SELECT ?industry WHERE {                         │   │
+│  │              :BrandX aip:operatesInIndustry ?industry }       │   │
+│  │                                                               │   │
+│  │ CQ5: How has Brand X's score changed over time?               │   │
+│  │      SPARQL: SELECT ?date ?score WHERE {                      │   │
+│  │              ?analysis aip:analyzes :BrandX ;                 │   │
+│  │                        aip:analysisDate ?date ;               │   │
+│  │                        aip:hasScore/aip:scoreValue ?score }   │   │
+│  │              ORDER BY ?date                                   │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  COMPETITIVE INTELLIGENCE CQs:                                      │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ CQ6: Which brands in Industry Y have score > 70?              │   │
+│  │ CQ7: What's the average score for Industry Y?                 │   │
+│  │ CQ8: Which brands improved score in last 30 days?             │   │
+│  │ CQ9: Which AI provider favors Brand X most?                   │   │
+│  │ CQ10: What brands are mentioned together with Brand X?        │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  INFERENCE CQs (Require Reasoning):                                │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ CQ11: If A competes with B, and B competes with C,            │   │
+│  │       is A an indirect competitor of C?                       │   │
+│  │       → Requires: transitive closure reasoning                │   │
+│  │                                                               │   │
+│  │ CQ12: If Brand X is in SubIndustry "CRM Software",            │   │
+│  │       is it also in ParentIndustry "Technology"?              │   │
+│  │       → Requires: class hierarchy reasoning                   │   │
+│  │                                                               │   │
+│  │ CQ13: Which brands are similar to Brand X?                    │   │
+│  │       → Requires: semantic similarity computation             │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  • Store ontology as JSON-LD in PostgreSQL JSONB column           │
+│  • Basic queries via PostgREST with JSONB operators               │
+│  • Complex reasoning via materialized views (pre-computed)        │
+│  • Future: Optional RDF triplestore for SPARQL if needed          │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.64 External Knowledge Base Alignment (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              CROSS-KNOWLEDGE-BASE ENTITY LINKING                    │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  GOAL: Link our entities to authoritative external knowledge bases │
+│                                                                     │
+│  PRIMARY ALIGNMENTS:                                                │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ 1. WIKIDATA (Q-IDs)                                          │   │
+│  │    • Every brand should have wikidata_id if exists           │   │
+│  │    • HubSpot → Q17085659                                     │   │
+│  │    • Salesforce → Q941127                                    │   │
+│  │    • Benefits: Authority signal for AI models                │   │
+│  │                                                               │   │
+│  │ 2. SCHEMA.ORG                                                 │   │
+│  │    • Map aip:Brand → schema:Organization                     │   │
+│  │    • Map aip:Industry → schema:CategoryCode                  │   │
+│  │    • Benefits: Web-wide interoperability                     │   │
+│  │                                                               │   │
+│  │ 3. NAICS CODES (North American Industry Classification)      │   │
+│  │    • Map industries to NAICS for standardization             │   │
+│  │    • "CRM Software" → 541512 (Computer Systems Design)       │   │
+│  │    • Benefits: Economic reporting, B2B data matching         │   │
+│  │                                                               │   │
+│  │ 4. ISIC CODES (International Standard Classification)        │   │
+│  │    • For non-US markets                                      │   │
+│  │    • Benefits: Global industry standardization               │   │
+│  │                                                               │   │
+│  │ 5. LEI (Legal Entity Identifier)                             │   │
+│  │    • For enterprise customers                                │   │
+│  │    • Benefits: Unambiguous legal entity identification       │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  MAPPING PREDICATES (SKOS):                                        │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ skos:exactMatch  → Identical concept (same meaning)          │   │
+│  │   aip:Salesforce skos:exactMatch wd:Q941127                  │   │
+│  │                                                               │   │
+│  │ skos:closeMatch  → Similar but not identical                 │   │
+│  │   aip:CRMSoftware skos:closeMatch naics:541512               │   │
+│  │                                                               │   │
+│  │ skos:broadMatch  → Our concept is narrower                   │   │
+│  │   aip:SaaSCRM skos:broadMatch aip:CRMSoftware                │   │
+│  │                                                               │   │
+│  │ skos:narrowMatch → Our concept is broader                    │   │
+│  │   aip:Technology skos:narrowMatch aip:CRMSoftware            │   │
+│  │                                                               │   │
+│  │ owl:sameAs       → Exact identity (use sparingly)            │   │
+│  │   Only for verified identical entities                       │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE EXTENSION:                                                │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ TABLE: entity_alignments                                     │   │
+│  │ ┌─────────────────────────────────────────────────────────┐ │   │
+│  │ │ id              UUID PRIMARY KEY                         │ │   │
+│  │ │ entity_id       UUID REFERENCES entities(id)             │ │   │
+│  │ │ external_kb     ENUM('wikidata','schema.org','naics',    │ │   │
+│  │ │                      'isic','lei','dbpedia')              │ │   │
+│  │ │ external_id     TEXT (Q941127, 541512, etc.)             │ │   │
+│  │ │ mapping_type    ENUM('exactMatch','closeMatch',          │ │   │
+│  │ │                      'broadMatch','narrowMatch','sameAs') │ │   │
+│  │ │ confidence      DECIMAL (0-1)                            │ │   │
+│  │ │ verified_by     TEXT (null='AI', else='human')           │ │   │
+│  │ │ created_at      TIMESTAMPTZ                              │ │   │
+│  │ └─────────────────────────────────────────────────────────┘ │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  AUTO-LINKING WORKFLOW:                                            │
+│  1. Extract brand name from analysis                               │
+│  2. Query Wikidata API for matches                                 │
+│  3. If single high-confidence match → auto-link                    │
+│  4. If multiple matches → flag for human disambiguation            │
+│  5. If no match → suggest Wikidata entry creation                  │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.65 Provenance & Uncertainty Tracking (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                   PROV-O COMPLIANT PROVENANCE                       │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PROBLEM: Facts without provenance are unverifiable                 │
+│                                                                     │
+│  SOLUTION: Track origin of every fact using W3C PROV-O             │
+│                                                                     │
+│  PROVENANCE TYPES:                                                  │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ prov:Entity      → The fact/assertion itself                 │   │
+│  │ prov:Activity    → How fact was derived                      │   │
+│  │ prov:Agent       → Who/what created the fact                 │   │
+│  │                                                               │   │
+│  │ AGENT TYPES:                                                  │   │
+│  │ • aip:AIAgent (GPT-4, Claude, etc.)                         │   │
+│  │ • aip:SystemAgent (our extraction pipeline)                 │   │
+│  │ • aip:ExternalKB (Wikidata, DBpedia)                        │   │
+│  │ • aip:HumanAgent (user input, manual verification)          │   │
+│  │                                                               │   │
+│  │ DERIVATION TYPES:                                            │   │
+│  │ • prov:wasDerivedFrom → general derivation                  │   │
+│  │ • prov:wasQuotedFrom → direct quote from source             │   │
+│  │ • prov:wasInferredFrom → reasoning/inference                │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: fact_provenance                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id              UUID PRIMARY KEY                             │   │
+│  │ fact_type       ENUM('entity','relationship','score',        │   │
+│  │                      'mention','recommendation')              │   │
+│  │ fact_id         UUID (polymorphic reference)                 │   │
+│  │ agent_type      ENUM('ai','system','external_kb','human')   │   │
+│  │ agent_id        TEXT (gpt-4-turbo, wikidata, user@email)    │   │
+│  │ activity_type   ENUM('extraction','inference','import',      │   │
+│  │                      'user_input','verification')             │   │
+│  │ source_url      TEXT (nullable, for web sources)             │   │
+│  │ source_query    TEXT (nullable, for AI queries)              │   │
+│  │ confidence      DECIMAL (0-1)                                │   │
+│  │ timestamp       TIMESTAMPTZ                                  │   │
+│  │ supersedes      UUID (nullable, links to previous version)   │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  UNCERTAINTY REPRESENTATION:                                       │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ PROBABILISTIC ASSERTIONS:                                    │   │
+│  │                                                               │   │
+│  │ Instead of: "HubSpot competes with Salesforce" (binary)      │   │
+│  │ Store: {                                                     │   │
+│  │   "assertion": "competes_with",                              │   │
+│  │   "subject": "HubSpot",                                      │   │
+│  │   "object": "Salesforce",                                    │   │
+│  │   "confidence": 0.92,                                        │   │
+│  │   "confidence_interval": [0.87, 0.97],                       │   │
+│  │   "evidence_count": 4,                                       │   │
+│  │   "agreement_rate": 0.95  // 4 AI providers agreed          │   │
+│  │ }                                                            │   │
+│  │                                                               │   │
+│  │ CONFIDENCE LEVELS:                                           │   │
+│  │ • 0.95-1.00: Verified fact (Wikidata, user-confirmed)       │   │
+│  │ • 0.80-0.94: High confidence (multiple AI providers agree)  │   │
+│  │ • 0.60-0.79: Moderate confidence (majority agree)           │   │
+│  │ • 0.40-0.59: Low confidence (mixed signals)                 │   │
+│  │ • 0.00-0.39: Very uncertain (single source, no verification)│   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  UI IMPLICATIONS:                                                  │
+│  • Show confidence badges on facts                                 │
+│  • "Based on analysis by ChatGPT and Claude"                      │
+│  • "Verified via Wikidata" for high-trust facts                   │
+│  • Warning icons for low-confidence assertions                    │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.66 Inference Rules Engine (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    SEMANTIC INFERENCE RULES                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  GOAL: Derive new facts from existing facts using logic            │
+│                                                                     │
+│  RULE TYPES:                                                       │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ 1. SYMMETRIC RULES                                           │   │
+│  │    IF: A competes_with B                                     │   │
+│  │    THEN: B competes_with A                                   │   │
+│  │                                                               │   │
+│  │ 2. TRANSITIVE RULES                                          │   │
+│  │    IF: Industry A has_subindustry B                          │   │
+│  │        AND B has_subindustry C                               │   │
+│  │    THEN: A has_subindustry C (indirect)                      │   │
+│  │                                                               │   │
+│  │ 3. INVERSE RULES                                             │   │
+│  │    IF: Analysis X mentions_brand Y                           │   │
+│  │    THEN: Y mentioned_in X                                    │   │
+│  │                                                               │   │
+│  │ 4. CLASS HIERARCHY RULES                                     │   │
+│  │    IF: X is_a CRMSoftware                                    │   │
+│  │        AND CRMSoftware subclass_of Software                  │   │
+│  │    THEN: X is_a Software                                     │   │
+│  │                                                               │   │
+│  │ 5. DOMAIN/RANGE VALIDATION                                   │   │
+│  │    IF: X competes_with Y                                     │   │
+│  │        AND competes_with.domain = Brand                      │   │
+│  │    THEN: X must_be_type Brand                                │   │
+│  │                                                               │   │
+│  │ 6. DISJOINTNESS RULES                                        │   │
+│  │    IF: Person and Organization are disjoint                  │   │
+│  │    THEN: X cannot be both Person AND Organization            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION (Lightweight, No Full Reasoner):                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // PostgreSQL Materialized Views for pre-computed inference  │   │
+│  │                                                               │   │
+│  │ -- Symmetric competitor closure                              │   │
+│  │ CREATE MATERIALIZED VIEW competitor_pairs AS                 │   │
+│  │ SELECT subject_id, object_id FROM entity_relationships       │   │
+│  │ WHERE predicate = 'competes_with'                            │   │
+│  │ UNION                                                        │   │
+│  │ SELECT object_id, subject_id FROM entity_relationships       │   │
+│  │ WHERE predicate = 'competes_with';                           │   │
+│  │                                                               │   │
+│  │ -- Industry hierarchy closure                                │   │
+│  │ CREATE MATERIALIZED VIEW industry_hierarchy AS               │   │
+│  │ WITH RECURSIVE hierarchy AS (                                │   │
+│  │   SELECT id, parent_id, name, 1 as depth FROM industries     │   │
+│  │   WHERE parent_id IS NULL                                    │   │
+│  │   UNION ALL                                                  │   │
+│  │   SELECT i.id, i.parent_id, i.name, h.depth + 1              │   │
+│  │   FROM industries i                                          │   │
+│  │   JOIN hierarchy h ON i.parent_id = h.id                     │   │
+│  │ )                                                            │   │
+│  │ SELECT * FROM hierarchy;                                     │   │
+│  │                                                               │   │
+│  │ -- Refresh on schedule (not real-time)                       │   │
+│  │ -- CRON: REFRESH MATERIALIZED VIEW CONCURRENTLY every hour   │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  VALIDATION TRIGGERS:                                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // On INSERT to entity_relationships                         │   │
+│  │ CREATE TRIGGER validate_relationship                         │   │
+│  │ BEFORE INSERT ON entity_relationships                        │   │
+│  │ FOR EACH ROW EXECUTE FUNCTION check_domain_range();          │   │
+│  │                                                               │   │
+│  │ // check_domain_range() ensures:                              │   │
+│  │ // - competes_with only links Brand to Brand                 │   │
+│  │ // - operates_in only links Brand to Industry                │   │
+│  │ // - founded_by only links Organization to Person            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  FUTURE: If reasoning needs grow, consider:                        │
+│  • Apache Jena Fuseki (SPARQL + OWL reasoning)                    │
+│  • Stardog (commercial, excellent OWL support)                    │
+│  • Neo4j + APOC (graph algorithms)                                │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.67 Multi-Lingual Concept Labels (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                SKOS MULTI-LINGUAL LABELING                          │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  REQUIREMENT: Serve Spanish-speaking Latin American markets         │
+│                                                                     │
+│  SKOS LABEL TYPES:                                                 │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ skos:prefLabel    → Primary label (one per language)         │   │
+│  │ skos:altLabel     → Alternative labels (synonyms)            │   │
+│  │ skos:hiddenLabel  → For search, not displayed                │   │
+│  │                                                               │   │
+│  │ EXAMPLE:                                                      │   │
+│  │ aip:CRMSoftware                                              │   │
+│  │   skos:prefLabel "CRM Software"@en                           │   │
+│  │   skos:prefLabel "Software de CRM"@es                        │   │
+│  │   skos:prefLabel "Software de CRM"@pt                        │   │
+│  │   skos:altLabel  "Customer Relationship Management"@en       │   │
+│  │   skos:altLabel  "Gestión de Relaciones con Clientes"@es     │   │
+│  │   skos:hiddenLabel "CRM"@en                                  │   │
+│  │   skos:hiddenLabel "software crm"@es  (lowercase for search) │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE EXTENSION:                                                │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ TABLE: concept_labels                                        │   │
+│  │ ┌─────────────────────────────────────────────────────────┐ │   │
+│  │ │ id              UUID PRIMARY KEY                         │ │   │
+│  │ │ entity_id       UUID REFERENCES entities(id)             │ │   │
+│  │ │ label_type      ENUM('prefLabel','altLabel','hiddenLabel')│ │   │
+│  │ │ language        VARCHAR(5) (en, es, pt, fr, etc.)        │ │   │
+│  │ │ value           TEXT                                     │ │   │
+│  │ │ is_auto_translated BOOLEAN                               │ │   │
+│  │ │ created_at      TIMESTAMPTZ                              │ │   │
+│  │ └─────────────────────────────────────────────────────────┘ │   │
+│  │                                                               │   │
+│  │ UNIQUE CONSTRAINT: (entity_id, label_type, language)         │   │
+│  │ for prefLabel only (one preferred label per language)        │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  TRANSLATION WORKFLOW:                                             │
+│  1. Create English labels first (canonical)                        │
+│  2. Auto-translate to Spanish/Portuguese via DeepL API            │
+│  3. Flag auto-translations for human review                        │
+│  4. Native speaker verifies and corrects                          │
+│                                                                     │
+│  LANGUAGE PRIORITIES:                                              │
+│  • Phase 1: English (en), Spanish (es)                            │
+│  • Phase 2: Portuguese (pt), French (fr)                          │
+│  • Phase 3: German (de), Italian (it)                             │
+│                                                                     │
+│  QUERY IMPLEMENTATION:                                             │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // Get industry label in user's language                     │   │
+│  │ const getLabel = async (entityId: string, lang: string) => { │   │
+│  │   const label = await db.concept_labels.findFirst({          │   │
+│  │     where: {                                                 │   │
+│  │       entity_id: entityId,                                   │   │
+│  │       language: lang,                                        │   │
+│  │       label_type: 'prefLabel'                               │   │
+│  │     }                                                        │   │
+│  │   });                                                        │   │
+│  │   // Fallback to English if not available                    │   │
+│  │   return label?.value ?? getFallbackEnglish(entityId);       │   │
+│  │ };                                                           │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.68 Semantic Similarity Engine (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│               ONTOLOGY-BASED SIMILARITY METRICS                     │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  GOAL: "Find brands similar to X" using ontology structure          │
+│                                                                     │
+│  SIMILARITY TYPES:                                                 │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ 1. STRUCTURAL SIMILARITY (Ontology-based)                    │   │
+│  │    • Wu-Palmer: Based on Least Common Subsumer depth         │   │
+│  │    • Lin: Information Content based                          │   │
+│  │    • Path Length: Shortest path in hierarchy                 │   │
+│  │                                                               │   │
+│  │ 2. FEATURE SIMILARITY (Attribute-based)                      │   │
+│  │    • Same industry → +0.3                                    │   │
+│  │    • Same sub-industry → +0.5                                │   │
+│  │    • Same country → +0.2                                     │   │
+│  │    • Similar size → +0.2                                     │   │
+│  │    • Common competitors → +0.1 per shared competitor         │   │
+│  │                                                               │   │
+│  │ 3. EMBEDDING SIMILARITY (Vector-based)                       │   │
+│  │    • Cosine similarity of description embeddings             │   │
+│  │    • Already planned in roadmap                              │   │
+│  │                                                               │   │
+│  │ COMBINED SCORE:                                               │   │
+│  │ similarity = α * structural + β * feature + γ * embedding    │   │
+│  │ Default weights: α=0.3, β=0.3, γ=0.4                        │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  WU-PALMER IMPLEMENTATION:                                         │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // Wu-Palmer similarity using industry hierarchy             │   │
+│  │ const wuPalmerSimilarity = (                                 │   │
+│  │   industry1: string,                                         │   │
+│  │   industry2: string,                                         │   │
+│  │   hierarchy: IndustryTree                                    │   │
+│  │ ): number => {                                               │   │
+│  │   const lcs = findLeastCommonSubsumer(industry1, industry2); │   │
+│  │   const depth_lcs = getDepth(lcs, hierarchy);                │   │
+│  │   const depth_1 = getDepth(industry1, hierarchy);            │   │
+│  │   const depth_2 = getDepth(industry2, hierarchy);            │   │
+│  │                                                               │   │
+│  │   // Wu-Palmer formula                                        │   │
+│  │   return (2 * depth_lcs) / (depth_1 + depth_2);              │   │
+│  │ };                                                           │   │
+│  │                                                               │   │
+│  │ // Example:                                                   │   │
+│  │ // CRM Software and Marketing Software                        │   │
+│  │ // LCS = "Business Software"                                  │   │
+│  │ // depth(LCS) = 2, depth(CRM) = 3, depth(Marketing) = 3      │   │
+│  │ // similarity = (2 * 2) / (3 + 3) = 0.67                     │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  USE CASES:                                                        │
+│  • "Similar brands you might want to analyze"                     │
+│  • "Competitors in related industries"                             │
+│  • "Brands with similar AI perception profiles"                   │
+│  • "Industry benchmarking peers"                                  │
+│                                                                     │
+│  DATABASE TABLE: brand_similarity_cache                            │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ brand_a_id      UUID                                         │   │
+│  │ brand_b_id      UUID                                         │   │
+│  │ structural_sim  DECIMAL                                      │   │
+│  │ feature_sim     DECIMAL                                      │   │
+│  │ embedding_sim   DECIMAL                                      │   │
+│  │ combined_sim    DECIMAL                                      │   │
+│  │ computed_at     TIMESTAMPTZ                                  │   │
+│  │ PRIMARY KEY (brand_a_id, brand_b_id)                        │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  REFRESH: Batch compute weekly, on-demand for new brands           │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
 ---
 
 ## PART III: PHASED ROADMAP
@@ -4534,6 +5190,9 @@ Based on industry best practices, we're adding these **fully automated** diagnos
 | 5 | **Prompt: CoT prompt templates** | Chain-of-Thought base prompts for all query types | Claude |
 | 5 | **Prompt: Few-shot exemplar DB** | Initial 15+ exemplars per model (GPT/Claude) | Claude |
 | 5 | **Prompt: Temperature config** | Temperature matrix by task type (0.1-0.9 range) | Claude |
+| 5 | **Onto: Core ontology design** | OWL/SKOS formal ontology definition (aip: namespace) | Claude |
+| 5 | **Onto: Class hierarchy** | Brand, Industry, Provider, Analysis class taxonomy | Claude |
+| 5 | **Onto: Property definitions** | competesWith, operatesIn, analyzedBy with domains | Claude |
 
 **NEW: Security Deliverables Week 1:**
 ```typescript
@@ -4615,6 +5274,10 @@ const SCORING_WEIGHTS = {
 | 5 | **Prompt: Calibration baseline** | Model mean/std calibration data for Z-score norm | Claude |
 | 5 | **Prompt: Self-consistency v1** | 3-sample majority voting for critical queries | Claude |
 | 5 | **Prompt: Golden dataset v1** | 20 hand-verified prompt-response pairs for testing | Claude |
+| 5 | **Onto: Wikidata alignment** | entity_alignments table + auto-linking workflow | Claude |
+| 5 | **Onto: NAICS code mapping** | Industry → NAICS code mapping for 20 industries | Claude |
+| 5 | **Onto: Provenance tracking** | fact_provenance table with PROV-O model | Claude |
+| 5 | **Onto: Competency questions** | 13 CQs documented, queries tested | Claude |
 
 **Acceptance Criteria Phase 1:**
 - [ ] User can enter URL and receive analysis
@@ -4673,6 +5336,14 @@ const SCORING_WEIGHTS = {
 - [ ] **NEW (Prompt): Self-consistency returns confidence scores (high/medium/low)**
 - [ ] **NEW (Prompt): Golden dataset tests passing (>80% accuracy on 20 cases)**
 - [ ] **NEW (Prompt): Response parse success rate >98%**
+- [ ] **NEW (Onto): Formal ontology defined (OWL/SKOS, aip: namespace)**
+- [ ] **NEW (Onto): Class hierarchy implemented (Brand, Industry, Provider, Analysis)**
+- [ ] **NEW (Onto): Object properties defined with domain/range constraints**
+- [ ] **NEW (Onto): entity_alignments table created with Wikidata linking**
+- [ ] **NEW (Onto): 20 industries mapped to NAICS codes**
+- [ ] **NEW (Onto): fact_provenance table active (PROV-O compliant)**
+- [ ] **NEW (Onto): 13 competency questions documented and tested**
+- [ ] **NEW (Onto): Domain/range validation triggers active**
 
 ---
 
@@ -4713,6 +5384,9 @@ const SCORING_WEIGHTS = {
 | 5 | **Prompt: Prompt testing framework** | Automated eval pipeline for prompt changes | Claude |
 | 5 | **Prompt: Semantic drift detector** | Alert on significant response pattern changes | Claude |
 | 5 | **Prompt: Token optimization** | Compress prompts to reduce API costs 20%+ | Claude |
+| 5 | **Onto: Inference rules engine** | Materialized views for symmetric/transitive rules | Claude |
+| 5 | **Onto: Uncertainty representation** | Confidence intervals on all assertions | Claude |
+| 5 | **Onto: Wu-Palmer similarity** | Ontology-based similarity computation | Claude |
 
 **Caching Strategy:**
 
@@ -4754,6 +5428,9 @@ const CACHE_TTL = {
 | 5 | **Prompt: Golden dataset expansion** | Expand to 50 cases covering edge scenarios | Claude |
 | 5 | **Prompt: Prompt A/B testing** | Compare prompt variants on live traffic | Claude |
 | 5 | **Prompt: Multi-turn context** | Enable follow-up queries with conversation memory | Claude |
+| 5 | **Onto: Multi-lingual labels** | SKOS prefLabel/altLabel in EN + ES | Claude |
+| 5 | **Onto: brand_similarity_cache** | Pre-computed structural+feature similarity | Claude |
+| 5 | **Onto: Temporal validity** | validFrom/validTo on all relationships | Claude |
 
 **Freemium Gating Rules:**
 
@@ -4858,6 +5535,8 @@ const PRODUCTS = {
 | 5 | **PR: Launch day social blitz** | Twitter, LinkedIn, Reddit posts | Both |
 | 5 | **Prompt: CI/CD prompt regression** | Automatic prompt tests in deployment pipeline | Claude |
 | 5 | **Prompt: Prompt versioning system** | Full version tracking with rollback capability | Claude |
+| 5 | **Onto: Ontology versioning** | URI-based versioning, deprecation policy | Claude |
+| 5 | **Onto: Portuguese labels** | SKOS prefLabel/altLabel in PT | Claude |
 
 **Monitoring Schedule:**
 
@@ -4913,6 +5592,9 @@ const ALERT_THRESHOLDS = {
 | 5 | **Prompt: Gemini/Perplexity prompts** | Model-specific prompts for new providers | Claude |
 | 5 | **Prompt: 4-model calibration** | Expand calibration to all 4 providers | Claude |
 | 5 | **Prompt: Prompt cost analytics** | Token usage dashboard by prompt type | Claude |
+| 5 | **Onto: ISIC code mapping** | International industry standards for global markets | Claude |
+| 5 | **Onto: LEI integration** | Legal Entity Identifier for enterprise customers | Claude |
+| 5 | **Onto: Schema.org export** | JSON-LD export of brand ontology data | Claude |
 
 **Why Add Google/Perplexity in Phase 4?**
 - By Week 7, we should have paying customers generating revenue
@@ -4976,6 +5658,10 @@ const ALERT_THRESHOLDS = {
 | 5 | **Prompt: Adaptive temperature** | Dynamic temperature based on query complexity | Claude |
 | 5 | **Prompt: Prompt library v2** | Industry-specific prompt variants (20 industries) | Claude |
 | 5 | **Prompt: Model behavior benchmark** | Monthly benchmark report across all models | Claude |
+| 5 | **Onto: Full semantic similarity** | structural + feature + embedding combined | Claude |
+| 5 | **Onto: Reasoning benchmark** | Verify all 13 CQs answered correctly | Claude |
+| 5 | **Onto: Ontology documentation** | Published ontology spec with examples | Claude |
+| 5 | **Onto: FR/DE labels (future-ready)** | French/German labels framework ready | Claude |
 | 5 | **PR: Monthly data report** | "AI Perception by Industry" benchmark report | Claude |
 | 5 | **PR: Testimonial collection** | Request testimonials from 10 happy users | Alberto |
 | 5 | **PR: Competitor PR analysis** | Competitive PR positioning matrix | Claude |
@@ -5015,6 +5701,22 @@ const ALERT_THRESHOLDS = {
 - [ ] Monthly model behavior benchmark process established
 - [ ] Prompt A/B testing framework producing insights
 - [ ] Response parse success rate maintained >98%
+
+**Phase 4 Ontology Engineering Checklist (End of Week 8):**
+- [ ] Formal OWL/SKOS ontology published at https://aiperception.com/ontology/v1#
+- [ ] All 13 competency questions answerable via queries
+- [ ] Entity alignments to Wikidata for 80%+ of known brands
+- [ ] NAICS + ISIC codes mapped for all 20+ industries
+- [ ] Provenance tracking active (PROV-O compliant) for all facts
+- [ ] Uncertainty/confidence represented on all AI-derived assertions
+- [ ] Inference rules engine computing symmetric/transitive closures
+- [ ] Multi-lingual labels in EN, ES, PT (FR/DE framework ready)
+- [ ] Wu-Palmer + feature similarity computed for brand_similarity_cache
+- [ ] Temporal validity (validFrom/validTo) on all relationships
+- [ ] Ontology versioning with deprecation policy documented
+- [ ] Schema.org JSON-LD export available for analyzed brands
+- [ ] Domain/range validation triggers preventing invalid relationships
+- [ ] Ontology documentation published with examples
 
 ---
 
@@ -5513,6 +6215,37 @@ This roadmap represents a comprehensive strategic plan for the AI Perception Eng
 9. **Token efficiency = cost efficiency** - Compress without losing semantic content
 10. **Version everything** - Prompts, parameters, exemplars must be traceable + rollbackable
 
+**Principal Ontologist Review Summary (v10.0):**
+- Identified 14 critical Ontology Engineering gaps
+- Added Ontology Engineering Architecture section (2.61) with comprehensive gap analysis
+- Added Formal Ontology Design (2.62) - OWL/SKOS with aip: namespace
+- Added Competency Questions (2.63) - 13 CQs with SPARQL examples
+- Added External Knowledge Base Alignment (2.64) - Wikidata, Schema.org, NAICS, ISIC, LEI
+- Added Provenance & Uncertainty Tracking (2.65) - PROV-O compliant with confidence intervals
+- Added Inference Rules Engine (2.66) - Materialized views for symmetric/transitive reasoning
+- Added Multi-Lingual Concept Labels (2.67) - SKOS prefLabel/altLabel in EN/ES/PT
+- Added Semantic Similarity Engine (2.68) - Wu-Palmer + feature + embedding combined
+- Added 5 new database tables: `entity_alignments`, `fact_provenance`, `concept_labels`, `brand_similarity_cache`
+- Added 28 new Ontology tasks across all phases (3 Week 1, 4 Week 2, 3 Week 3, 3 Week 4, 2 Week 6, 3 Week 7, 4 Week 8)
+- Added 8 new Ontology acceptance criteria for Phase 1
+- Added Phase 4 Ontology Engineering Checklist with 14 success criteria
+
+**Key Ontology Engineering Principles:**
+1. **No ontology without competency questions** - Define what questions must be answerable first
+2. **Align to upper ontologies** - Schema.org, Wikidata patterns = interoperability
+3. **Facts need provenance** - Without source tracking, facts are unverifiable rumors
+4. **Uncertainty is information** - Confidence intervals are more honest than false certainty
+5. **Properties have semantics** - Domain/range, symmetric, transitive are not optional
+6. **Inference is power** - Derive new facts from existing facts using logic
+7. **Multi-lingual from day 1** - SKOS labels enable internationalization without refactoring
+8. **Temporal validity matters** - "Was competitor in 2020" ≠ "Is competitor now"
+9. **Entity linking = authority** - Wikidata/NAICS links increase trust in AI models
+10. **Ontology evolves** - Version URIs, deprecation policy, backward compatibility
+11. **Semantic similarity > embedding only** - Combine structural + feature + vector approaches
+12. **Validate on insert** - Domain/range triggers prevent semantic nonsense
+13. **Materialize inferences** - Pre-compute closures, don't reason in real-time
+14. **Document the ontology** - If it's not documented, it doesn't exist for users
+
 **Recommended Next Action:**
 Begin Phase 1, Week 1, Day 1:
 - Database schema design + RLS policies
@@ -5529,6 +6262,9 @@ Begin Phase 1, Week 1, Day 1:
 - Prompt: CoT prompt templates for all query types
 - Prompt: Few-shot exemplar database (15+ per model)
 - Prompt: Temperature configuration matrix
+- Onto: Core OWL/SKOS ontology definition (aip: namespace)
+- Onto: Class hierarchy (Brand, Industry, Provider, Analysis)
+- Onto: Property definitions with domain/range constraints
 
 ---
 
@@ -5541,6 +6277,7 @@ Begin Phase 1, Week 1, Day 1:
 *Full Stack Review by: Senior Full Stack Developer Director - 359 years experience, ex-Google/Meta/Stripe/Amazon*
 *Reputation & PR Review by: Senior Reputation & Digital PR Specialist - 412 years experience, ex-Edelman/Weber Shandwick/Burson*
 *Prompt Engineering Review by: Senior Prompt Engineer & Model Analyst - 319 years experience, ex-OpenAI/Anthropic/Google DeepMind/Microsoft Research*
+*Ontology Review by: Senior Principal Ontologist - 540 years experience, ex-Google Knowledge Graph/Wikidata Foundation/W3C Semantic Web/Schema.org Steering Committee/Stanford HAI*
 *For: AI Perception Engineering Agency*
 *Date: November 25, 2024*
-*Version: 9.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering Review)*
+*Version: 10.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology Review)*

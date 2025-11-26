@@ -14,13 +14,20 @@
 
 We are witnessing a fundamental shift in how consumers discover products and services. By 2027, an estimated **70% of product research** will begin with AI assistants rather than traditional search engines. This creates an unprecedented blind spot for businesses: **they have no visibility into whether AI models recommend them**.
 
+### The Core Problem We Solve
+
+> "Las empresas gastan millones en SEO tradicional (para Google), pero cuando le preguntas a ChatGPT: '¿Cuál es el mejor CRM para una PyME en México?', la IA recomienda basándose en su 'conocimiento interno'. Si la marca no existe en el 'cerebro' de la IA, será ignorada."
+
+**Key Insight:** OpenAI/Google venderán espacios publicitarios ("Sponsored" en ChatGPT), pero la **reputación orgánica no se compra**. Ellos no arreglarán la estructura de datos ni la presencia digital de un cliente. Ese trabajo estratégico es nuestro.
+
 ### Our Position
 
 AI Perception Engineering Agency enters this market as a **first-mover** in the GEO (Generative Engine Optimization) SaaS space, offering businesses a simple, self-service tool to:
 
 1. **Measure** their AI perception score across major LLMs
 2. **Monitor** changes in AI recommendations over time
-3. **Improve** their visibility through actionable insights
+3. **Diagnose** issues (hallucinations, missing data, poor sentiment)
+4. **Improve** their visibility through actionable, automated insights
 
 ### Strategic Differentiators
 
@@ -31,6 +38,34 @@ AI Perception Engineering Agency enters this market as a **first-mover** in the 
 | Time to Value | 30 seconds | Days/weeks |
 | Pricing | $0-79/month | $100-500+/month |
 | Operations | 100% automated | Requires expertise |
+
+### The Strategic Positioning
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│           MARKETING VIEJO vs AI PERCEPTION ENGINEERING              │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  SEO/Ads Tradicional          AI Perception (Nosotros)              │
+│  ═══════════════════          ════════════════════════              │
+│  Objetivo: Ganar un Click     Objetivo: SER la Respuesta            │
+│  Target: Motor de Búsqueda    Target: Modelo de Lenguaje (LLM)      │
+│  Métrica: Tráfico/Visitas     Métrica: Menciones/Sentimiento/Citas  │
+│  Táctica: Keywords            Táctica: Entidades y Contexto         │
+│  Resultado: Top 10 Google     Resultado: "Te recomiendo X porque…"  │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### The Vision (Alberto's North Star)
+
+**"Todo automatizado. El negocio no depende de mí. Yo soy el visionario, Claude ejecuta."**
+
+This means:
+- **ZERO manual operations** - Every feature must run without human intervention
+- **Self-service complete** - Users never need to contact support
+- **AI Agents handle edge cases** - Not humans
+- **Scales infinitely** - No bottleneck on people
 
 ---
 
@@ -120,7 +155,64 @@ AI Perception Engineering Agency enters this market as a **first-mover** in the 
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-### 2.2 Database Schema (New Tables Required)
+### 2.2 Advanced Analysis Features (NEW)
+
+Based on industry best practices, we're adding these **fully automated** diagnostic capabilities:
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    ADVANCED DIAGNOSTICS ENGINE                      │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  1. HALLUCINATION DETECTION                                         │
+│     ════════════════════════                                        │
+│     Problem: AIs sometimes invent facts about brands                │
+│     Solution: Cross-reference AI claims with actual website data    │
+│     Output: "ChatGPT says you sell X, but your site shows Y"        │
+│     Automation: 100% - Compare AI response vs scraped metadata      │
+│                                                                     │
+│  2. SHARE OF VOICE (SOV) IN AI                                      │
+│     ═══════════════════════════                                     │
+│     Problem: How often does brand appear vs competitors?            │
+│     Solution: Run multiple queries, calculate mention frequency     │
+│     Output: "You appear in 2/10 queries, competitor in 7/10"        │
+│     Automation: 100% - Batch queries by industry, aggregate stats   │
+│                                                                     │
+│  3. KNOWLEDGE GRAPH PRESENCE CHECK                                  │
+│     ═════════════════════════════════                               │
+│     Problem: AIs trust structured data (Wikidata, Schema.org)       │
+│     Solution: Check if brand exists in key knowledge sources        │
+│     Output: Checklist of "Found in Wikidata ✓, Missing Schema ✗"   │
+│     Automation: 100% - API calls to Wikidata, parse site for schema │
+│                                                                     │
+│  4. SEMANTIC SENTIMENT ANALYSIS                                     │
+│     ════════════════════════════                                    │
+│     Problem: AI learns from reviews/mentions across the web         │
+│     Solution: Analyze how AI perceives brand sentiment              │
+│     Output: "AI associates your brand with: reliable, expensive"    │
+│     Automation: 100% - Extract sentiment from AI explanations       │
+│                                                                     │
+│  5. RAG OPTIMIZATION SCORE                                          │
+│     ════════════════════════                                        │
+│     Problem: Modern AIs search web before answering (RAG)           │
+│     Solution: Check if site is "AI-readable" (structured, dense)    │
+│     Output: "Your site scores 45/100 for AI readability"            │
+│     Automation: 100% - Analyze page structure, content density      │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+**Implementation Priority:**
+
+| Feature | Phase | Complexity | Value |
+|---------|-------|------------|-------|
+| Hallucination Detection | Phase 2 | Medium | High |
+| Share of Voice | Phase 2 | Medium | Very High |
+| Knowledge Graph Check | Phase 2 | Low | Medium |
+| Semantic Sentiment | Phase 1 | Low | High (already partial) |
+| RAG Optimization Score | Phase 4 | High | High |
+
+### 2.3 Database Schema (New Tables Required)
 
 ```sql
 -- Core Analysis Tables
@@ -216,6 +308,63 @@ AI Perception Engineering Agency enters this market as a **first-mover** in the 
 │ analyses_count  INTEGER                                     │
 │ api_calls_count INTEGER                                     │
 │ tokens_used     INTEGER                                     │
+└─────────────────────────────────────────────────────────────┘
+
+-- NEW: Advanced Diagnostics Tables
+
+┌─────────────────────────────────────────────────────────────┐
+│ hallucinations                                              │
+├─────────────────────────────────────────────────────────────┤
+│ id              UUID PRIMARY KEY                            │
+│ analysis_id     UUID REFERENCES analyses(id)                │
+│ provider        TEXT                                        │
+│ claim           TEXT (what AI said)                         │
+│ reality         TEXT (what website actually shows)          │
+│ severity        ENUM('minor','moderate','severe')           │
+│ category        TEXT (product, location, pricing, etc.)     │
+└─────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────┐
+│ share_of_voice                                              │
+├─────────────────────────────────────────────────────────────┤
+│ id              UUID PRIMARY KEY                            │
+│ analysis_id     UUID REFERENCES analyses(id)                │
+│ industry        TEXT                                        │
+│ country         TEXT                                        │
+│ total_queries   INTEGER                                     │
+│ brand_mentions  INTEGER                                     │
+│ sov_percentage  DECIMAL                                     │
+│ top_competitor  TEXT                                        │
+│ competitor_sov  DECIMAL                                     │
+│ recorded_at     TIMESTAMPTZ                                 │
+└─────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────┐
+│ knowledge_graph_status                                      │
+├─────────────────────────────────────────────────────────────┤
+│ id              UUID PRIMARY KEY                            │
+│ analysis_id     UUID REFERENCES analyses(id)                │
+│ wikidata_found  BOOLEAN                                     │
+│ wikidata_id     TEXT                                        │
+│ schema_org      JSONB (detected schemas on site)            │
+│ crunchbase      BOOLEAN                                     │
+│ linkedin_co     BOOLEAN                                     │
+│ google_kg       BOOLEAN (Google Knowledge Graph)            │
+│ overall_score   INTEGER (0-100)                             │
+└─────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────┐
+│ rag_readability                                             │
+├─────────────────────────────────────────────────────────────┤
+│ id              UUID PRIMARY KEY                            │
+│ analysis_id     UUID REFERENCES analyses(id)                │
+│ content_density INTEGER (facts per 1000 words)              │
+│ structure_score INTEGER (headings, lists, tables)           │
+│ schema_score    INTEGER (structured data quality)           │
+│ mobile_score    INTEGER                                     │
+│ load_speed_ms   INTEGER                                     │
+│ overall_score   INTEGER (0-100)                             │
+│ recommendations JSONB                                       │
 └─────────────────────────────────────────────────────────────┘
 ```
 

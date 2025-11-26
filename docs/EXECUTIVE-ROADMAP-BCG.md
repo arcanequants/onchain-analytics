@@ -2,7 +2,7 @@
 ## Executive Strategic Roadmap
 
 **Document Classification:** Strategic Planning
-**Version:** 14.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps Review)
+**Version:** 15.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering Review)
 **Date:** November 26, 2024
 **Prepared by:** BCG Digital Ventures - Technology Strategy Practice
 **Reviewed by:**
@@ -19,6 +19,7 @@
 - Senior LLM Behavioral Researcher - Model Behavior, Drift Detection & Response Stability Review
 - Senior Adversarial AI Security Specialist - AI Attack Surface, Red Team & Security Hardening Review
 - Senior MLOps Engineer Director - ML Infrastructure, Model Serving & Production AI Systems Review
+- Senior Data Engineer (Architect Level) - Data Modeling, Quality, Lineage & Governance Review
 
 ---
 
@@ -8227,6 +8228,1163 @@ Based on industry best practices, we're adding these **fully automated** diagnos
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
+### 2.103 Data Engineering Architecture Gap Analysis (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│        DATA ENGINEERING ARCHITECT REVIEW (v15.0)                    │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  REVIEWER: Senior Director Data Engineer (Architect Level)         │
+│  EXPERIENCE: 855 years - ex-Google BigQuery/Snowflake/Databricks/  │
+│              Netflix Data Platform/Meta Data Infra/Amazon Redshift │
+│  DATE: November 26, 2024                                           │
+│                                                                     │
+│  ════════════════════════════════════════════════════════════════  │
+│  METHODOLOGY: Line-by-line review with 14 critical gap analysis    │
+│  ════════════════════════════════════════════════════════════════  │
+│                                                                     │
+│  IDENTIFIED GAPS (14 Critical Data Engineering Issues):            │
+│                                                                     │
+│  1. NO DATA MODELING FRAMEWORK                                     │
+│     Current: Ad-hoc table design with no dimensional modeling      │
+│     Problem: Inconsistent schema design, no fact/dimension pattern │
+│     Solution: Implement Kimball star schema for analytics          │
+│                                                                     │
+│  2. NO DATA QUALITY FRAMEWORK                                      │
+│     Current: Basic Zod validation only on AI responses             │
+│     Problem: No data quality gates, no DQ metrics, no alerts       │
+│     Solution: Great Expectations-style DQ with expectations        │
+│                                                                     │
+│  3. NO DATA LINEAGE TRACKING                                       │
+│     Current: Cannot trace data origin → transformation → output    │
+│     Problem: Debug hell, compliance issues, no impact analysis     │
+│     Solution: Column-level lineage with OpenLineage-style tracking │
+│                                                                     │
+│  4. NO DATA CATALOG / DISCOVERY                                    │
+│     Current: Schema knowledge lives only in code                   │
+│     Problem: Engineers can't discover available data assets        │
+│     Solution: Lightweight data catalog with search + documentation │
+│                                                                     │
+│  5. NO DATA CONTRACTS                                              │
+│     Current: Implicit schema assumptions between services          │
+│     Problem: Breaking changes cascade without warning              │
+│     Solution: Schema contracts with versioning + compatibility     │
+│                                                                     │
+│  6. NO PARTITIONING STRATEGY                                       │
+│     Current: All tables are append-only without partitions         │
+│     Problem: Query performance degrades as data grows              │
+│     Solution: Time-based partitioning on high-volume tables        │
+│                                                                     │
+│  7. NO DATA RETENTION & ARCHIVAL                                   │
+│     Current: Data grows forever with no lifecycle management       │
+│     Problem: Storage costs, GDPR compliance, performance issues    │
+│     Solution: Tiered retention: hot (30d), warm (1yr), cold (3yr)  │
+│                                                                     │
+│  8. NO INCREMENTAL PROCESSING                                      │
+│     Current: Full table scans for analytics queries                │
+│     Problem: Expensive, slow, doesn't scale                        │
+│     Solution: CDC + incremental materialization patterns           │
+│                                                                     │
+│  9. NO DATA WAREHOUSE LAYER                                        │
+│     Current: Direct queries against operational tables             │
+│     Problem: Analytical workloads compete with transactional       │
+│     Solution: Materialized views for analytics (bronze/silver/gold)│
+│                                                                     │
+│  10. NO IDEMPOTENT DATA PIPELINES                                  │
+│      Current: Cron jobs may create duplicates on retry             │
+│      Problem: Data integrity issues, impossible debugging          │
+│      Solution: Idempotent writes with natural keys + deduplication │
+│                                                                     │
+│  11. NO SCHEMA EVOLUTION STRATEGY                                  │
+│      Current: Breaking changes require manual coordination         │
+│      Problem: Schema changes break consumers                       │
+│      Solution: Backward/forward compatible evolution rules         │
+│                                                                     │
+│  12. NO LATE-ARRIVING DATA HANDLING                                │
+│      Current: Assumes all data arrives in order                    │
+│      Problem: AI API retries, network delays cause out-of-order    │
+│      Solution: Event-time processing with watermarks               │
+│                                                                     │
+│  13. NO DATA OBSERVABILITY                                         │
+│      Current: ML observability exists, but not data observability  │
+│      Problem: Silent data issues, no freshness monitoring          │
+│      Solution: Data quality dashboard with freshness/volume/schema │
+│                                                                     │
+│  14. NO BACKUP & DISASTER RECOVERY FOR DATA                        │
+│      Current: Relying only on Supabase default backups             │
+│      Problem: RPO/RTO undefined, no tested recovery procedure      │
+│      Solution: Point-in-time recovery + cross-region backup test   │
+│                                                                     │
+│  ════════════════════════════════════════════════════════════════  │
+│  SECTIONS TO ADD: 2.103-2.111 (9 new architecture sections)       │
+│  DATABASE TABLES TO ADD: 8 new tables                             │
+│  TASKS TO ADD: 22 new tasks across all phases                     │
+│  ════════════════════════════════════════════════════════════════  │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.104 Dimensional Data Modeling Framework (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│           DIMENSIONAL DATA MODELING (KIMBALL-STYLE)                 │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ARCHITECTURE: Star Schema for AI Perception Analytics              │
+│                                                                     │
+│  WHY DIMENSIONAL MODELING:                                          │
+│  • Optimized for analytical queries (aggregations, filters)        │
+│  • Self-documenting through business terminology                   │
+│  • Scales predictably with data volume                             │
+│  • Decouples analytics from operational schema changes             │
+│                                                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                    STAR SCHEMA DESIGN                        │   │
+│  │                                                               │   │
+│  │                    ┌─────────────┐                           │   │
+│  │                    │ dim_date    │                           │   │
+│  │                    ├─────────────┤                           │   │
+│  │                    │ date_key PK │                           │   │
+│  │                    │ full_date   │                           │   │
+│  │                    │ day_of_week │                           │   │
+│  │                    │ month       │                           │   │
+│  │                    │ quarter     │                           │   │
+│  │                    │ year        │                           │   │
+│  │                    │ is_weekend  │                           │   │
+│  │                    └──────┬──────┘                           │   │
+│  │                           │                                   │   │
+│  │  ┌───────────┐     ┌──────┴──────┐     ┌─────────────┐       │   │
+│  │  │dim_brand  │     │fact_analysis│     │dim_provider │       │   │
+│  │  ├───────────┤     ├─────────────┤     ├─────────────┤       │   │
+│  │  │brand_key  │────►│brand_key FK │◄────│provider_key │       │   │
+│  │  │user_id    │     │provider_key │     │provider_name│       │   │
+│  │  │url        │     │date_key FK  │     │model_name   │       │   │
+│  │  │domain     │     │industry_key │     │api_version  │       │   │
+│  │  │name       │     │             │     │cost_per_req │       │   │
+│  │  │created_at │     │mention_score│     │is_active    │       │   │
+│  │  └───────────┘     │sentiment    │     └─────────────┘       │   │
+│  │                    │position     │                           │   │
+│  │  ┌───────────┐     │competitors  │                           │   │
+│  │  │dim_industry│    │latency_ms   │                           │   │
+│  │  ├───────────┤     │cost_usd     │                           │   │
+│  │  │industry_key│───►│hallucinated │                           │   │
+│  │  │name       │     │raw_response │                           │   │
+│  │  │category   │     └─────────────┘                           │   │
+│  │  │parent_id  │                                               │   │
+│  │  └───────────┘                                               │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  SLOWLY CHANGING DIMENSIONS (SCD):                                  │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Type 1: Overwrite (dim_provider.api_version)                │   │
+│  │ Type 2: History (dim_brand with valid_from/valid_to)        │   │
+│  │ Type 3: N/A (not needed for MVP)                             │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLES (New):                                            │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ dim_date                                                     │   │
+│  │ ├─ date_key          DATE PRIMARY KEY                       │   │
+│  │ ├─ full_date         DATE NOT NULL                          │   │
+│  │ ├─ day_of_week       INTEGER (1-7)                          │   │
+│  │ ├─ day_name          TEXT ('Monday', etc)                   │   │
+│  │ ├─ month             INTEGER (1-12)                         │   │
+│  │ ├─ month_name        TEXT ('January', etc)                  │   │
+│  │ ├─ quarter           INTEGER (1-4)                          │   │
+│  │ ├─ year              INTEGER                                │   │
+│  │ ├─ is_weekend        BOOLEAN                                │   │
+│  │ └─ is_holiday        BOOLEAN                                │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ dim_brand (SCD Type 2)                                      │   │
+│  │ ├─ brand_key         SERIAL PRIMARY KEY                     │   │
+│  │ ├─ brand_id          UUID (natural key from analyses)       │   │
+│  │ ├─ user_id           UUID                                   │   │
+│  │ ├─ url               TEXT                                   │   │
+│  │ ├─ domain            TEXT                                   │   │
+│  │ ├─ name              TEXT                                   │   │
+│  │ ├─ industry_id       UUID                                   │   │
+│  │ ├─ valid_from        TIMESTAMP                              │   │
+│  │ ├─ valid_to          TIMESTAMP (NULL = current)             │   │
+│  │ └─ is_current        BOOLEAN                                │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ fact_analysis (Fact Table - Grain: 1 row per provider per  │   │
+│  │                 analysis)                                    │   │
+│  │ ├─ analysis_fact_id  BIGSERIAL PRIMARY KEY                  │   │
+│  │ ├─ brand_key         INTEGER REFERENCES dim_brand           │   │
+│  │ ├─ provider_key      INTEGER REFERENCES dim_provider        │   │
+│  │ ├─ date_key          DATE REFERENCES dim_date               │   │
+│  │ ├─ industry_key      INTEGER REFERENCES dim_industry        │   │
+│  │ ├─ -- MEASURES --                                           │   │
+│  │ ├─ mention_score     INTEGER (0-100)                        │   │
+│  │ ├─ sentiment_score   DECIMAL (−1 to +1)                     │   │
+│  │ ├─ position_rank     INTEGER (NULL if not ranked)           │   │
+│  │ ├─ competitor_count  INTEGER                                │   │
+│  │ ├─ latency_ms        INTEGER                                │   │
+│  │ ├─ cost_usd          DECIMAL(10,6)                          │   │
+│  │ ├─ token_input       INTEGER                                │   │
+│  │ ├─ token_output      INTEGER                                │   │
+│  │ ├─ is_hallucinated   BOOLEAN                                │   │
+│  │ ├─ is_cached         BOOLEAN                                │   │
+│  │ ├─ -- DEGENERATE DIMS --                                    │   │
+│  │ ├─ analysis_id       UUID (for drill-through)               │   │
+│  │ └─ response_id       UUID (for drill-through)               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  MATERIALIZED VIEWS FOR PERFORMANCE:                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ mv_daily_analysis_summary (refresh: every hour)             │   │
+│  │ mv_brand_monthly_trends (refresh: daily)                    │   │
+│  │ mv_provider_performance (refresh: every 15 min)             │   │
+│  │ mv_industry_benchmarks (refresh: weekly)                    │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /lib/data/dimensional-model.ts                                    │
+│  /lib/data/etl/load-dimensions.ts                                  │
+│  /lib/data/etl/load-facts.ts                                       │
+│  /migrations/xxx_create_dimensional_model.sql                      │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.105 Data Quality Framework (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              DATA QUALITY FRAMEWORK                                 │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PHILOSOPHY: "Data quality is not a project, it's a process"       │
+│                                                                     │
+│  QUALITY DIMENSIONS (6 Pillars):                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ 1. COMPLETENESS - No unexpected NULLs                       │   │
+│  │ 2. ACCURACY - Values match business rules                   │   │
+│  │ 3. CONSISTENCY - Cross-table referential integrity          │   │
+│  │ 4. TIMELINESS - Data arrives within SLA                     │   │
+│  │ 5. UNIQUENESS - No duplicate records                        │   │
+│  │ 6. VALIDITY - Values within expected ranges/formats         │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  EXPECTATION DEFINITIONS (Great Expectations style):               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // /lib/data-quality/expectations.ts                        │   │
+│  │                                                               │   │
+│  │ interface Expectation {                                      │   │
+│  │   id: string;                                                │   │
+│  │   table: string;                                             │   │
+│  │   column?: string;                                           │   │
+│  │   type: ExpectationType;                                     │   │
+│  │   params: Record<string, any>;                               │   │
+│  │   severity: 'critical' | 'warning' | 'info';                │   │
+│  │ }                                                            │   │
+│  │                                                               │   │
+│  │ type ExpectationType =                                       │   │
+│  │   | 'not_null'                                               │   │
+│  │   | 'unique'                                                 │   │
+│  │   | 'in_range'                                               │   │
+│  │   | 'in_set'                                                 │   │
+│  │   | 'regex_match'                                            │   │
+│  │   | 'foreign_key'                                            │   │
+│  │   | 'row_count_range'                                        │   │
+│  │   | 'freshness'                                              │   │
+│  │   | 'custom_sql';                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  EXAMPLE EXPECTATIONS:                                             │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ const analysesExpectations: Expectation[] = [               │   │
+│  │   {                                                          │   │
+│  │     id: 'analyses_id_unique',                               │   │
+│  │     table: 'analyses',                                       │   │
+│  │     column: 'id',                                            │   │
+│  │     type: 'unique',                                          │   │
+│  │     params: {},                                              │   │
+│  │     severity: 'critical'                                     │   │
+│  │   },                                                         │   │
+│  │   {                                                          │   │
+│  │     id: 'analyses_score_range',                             │   │
+│  │     table: 'analyses',                                       │   │
+│  │     column: 'overall_score',                                 │   │
+│  │     type: 'in_range',                                        │   │
+│  │     params: { min: 0, max: 100 },                           │   │
+│  │     severity: 'critical'                                     │   │
+│  │   },                                                         │   │
+│  │   {                                                          │   │
+│  │     id: 'analyses_freshness',                               │   │
+│  │     table: 'analyses',                                       │   │
+│  │     type: 'freshness',                                       │   │
+│  │     params: { max_age_hours: 24 },                          │   │
+│  │     severity: 'warning'                                      │   │
+│  │   },                                                         │   │
+│  │   {                                                          │   │
+│  │     id: 'analyses_daily_volume',                            │   │
+│  │     table: 'analyses',                                       │   │
+│  │     type: 'row_count_range',                                │   │
+│  │     params: { min: 10, max: 10000, period: '1 day' },       │   │
+│  │     severity: 'warning'                                      │   │
+│  │   }                                                          │   │
+│  │ ];                                                           │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: data_quality_runs                                 │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ ├─ id                  UUID PRIMARY KEY                     │   │
+│  │ ├─ run_id              UUID (batch of expectations)         │   │
+│  │ ├─ expectation_id      TEXT                                 │   │
+│  │ ├─ table_name          TEXT                                 │   │
+│  │ ├─ column_name         TEXT                                 │   │
+│  │ ├─ expectation_type    TEXT                                 │   │
+│  │ ├─ passed              BOOLEAN                              │   │
+│  │ ├─ severity            TEXT                                 │   │
+│  │ ├─ actual_value        JSONB                                │   │
+│  │ ├─ expected_value      JSONB                                │   │
+│  │ ├─ failed_rows_sample  JSONB (first 5 failing rows)        │   │
+│  │ ├─ execution_time_ms   INTEGER                              │   │
+│  │ └─ created_at          TIMESTAMP                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: data_quality_alerts                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ ├─ id                  UUID PRIMARY KEY                     │   │
+│  │ ├─ run_id              UUID REFERENCES data_quality_runs    │   │
+│  │ ├─ expectation_id      TEXT                                 │   │
+│  │ ├─ severity            TEXT                                 │   │
+│  │ ├─ message             TEXT                                 │   │
+│  │ ├─ acknowledged        BOOLEAN DEFAULT FALSE                │   │
+│  │ ├─ acknowledged_by     UUID REFERENCES users                │   │
+│  │ ├─ acknowledged_at     TIMESTAMP                            │   │
+│  │ └─ created_at          TIMESTAMP                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  QUALITY GATES (Block bad data):                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ STAGE 1: Pre-insert validation (Zod schemas)                │   │
+│  │ STAGE 2: Post-insert DQ run (async, non-blocking)          │   │
+│  │ STAGE 3: Pre-materialization DQ (blocks fact table refresh) │   │
+│  │ STAGE 4: Scheduled full scan (daily, all tables)           │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  ALERTING:                                                         │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ CRITICAL failures → Slack alert + PagerDuty (if enabled)   │   │
+│  │ WARNING failures → Slack alert + dashboard badge            │   │
+│  │ INFO failures → Dashboard only                              │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /lib/data-quality/expectations.ts (expectation definitions)       │
+│  /lib/data-quality/runner.ts (execute expectations)                │
+│  /lib/data-quality/reporters.ts (Slack, dashboard)                 │
+│  /api/cron/data-quality/route.ts (scheduled DQ runs)               │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.106 Data Lineage & Catalog (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│           DATA LINEAGE & CATALOG SYSTEM                             │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PURPOSE:                                                          │
+│  • Track data origin → transformation → destination                │
+│  • Enable impact analysis for schema changes                       │
+│  • Provide data discovery for developers                           │
+│  • Support GDPR/compliance data subject requests                   │
+│                                                                     │
+│  LINEAGE ARCHITECTURE (OpenLineage-inspired):                      │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  ┌──────────┐     ┌──────────┐     ┌──────────┐             │   │
+│  │  │  SOURCE  │────►│   JOB    │────►│  OUTPUT  │             │   │
+│  │  │ Dataset  │     │ (ETL/API)│     │ Dataset  │             │   │
+│  │  └──────────┘     └──────────┘     └──────────┘             │   │
+│  │       │                │                │                    │   │
+│  │       ▼                ▼                ▼                    │   │
+│  │  ┌─────────────────────────────────────────────────────┐    │   │
+│  │  │              LINEAGE GRAPH                          │    │   │
+│  │  │  ┌─────────┐  ┌─────────┐  ┌─────────┐            │    │   │
+│  │  │  │ OpenAI  │─►│ AI      │─►│analyses │            │    │   │
+│  │  │  │ API     │  │ Client  │  │ table   │            │    │   │
+│  │  │  └─────────┘  └─────────┘  └─────────┘            │    │   │
+│  │  │       │                          │                 │    │   │
+│  │  │       │                          ▼                 │    │   │
+│  │  │       │              ┌───────────────────┐         │    │   │
+│  │  │       └─────────────►│ fact_analysis     │         │    │   │
+│  │  │                      │ (materialized)    │         │    │   │
+│  │  │                      └───────────────────┘         │    │   │
+│  │  └─────────────────────────────────────────────────────┘    │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: data_lineage                                      │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ ├─ id                  UUID PRIMARY KEY                     │   │
+│  │ ├─ job_name            TEXT (e.g., 'load_fact_analysis')    │   │
+│  │ ├─ job_type            ENUM('api_call','etl','mv_refresh')  │   │
+│  │ ├─ source_datasets     JSONB (array of source tables/APIs)  │   │
+│  │ ├─ output_datasets     JSONB (array of target tables)       │   │
+│  │ ├─ column_mappings     JSONB (source_col → target_col)      │   │
+│  │ ├─ transformations     JSONB (SQL/code snippets)            │   │
+│  │ ├─ run_id              UUID (instance of this job)          │   │
+│  │ ├─ started_at          TIMESTAMP                            │   │
+│  │ ├─ completed_at        TIMESTAMP                            │   │
+│  │ ├─ rows_affected       INTEGER                              │   │
+│  │ ├─ status              ENUM('running','success','failed')   │   │
+│  │ └─ created_at          TIMESTAMP                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATA CATALOG:                                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ DATABASE TABLE: data_catalog                                │   │
+│  │ ├─ id                  UUID PRIMARY KEY                     │   │
+│  │ ├─ dataset_type        ENUM('table','view','mv','api')      │   │
+│  │ ├─ dataset_name        TEXT UNIQUE                          │   │
+│  │ ├─ schema_name         TEXT DEFAULT 'public'                │   │
+│  │ ├─ description         TEXT                                 │   │
+│  │ ├─ owner               TEXT (team or person)                │   │
+│  │ ├─ tags                TEXT[] (e.g., ['pii','analytics'])   │   │
+│  │ ├─ columns             JSONB (name, type, description)      │   │
+│  │ ├─ row_count           BIGINT (updated periodically)        │   │
+│  │ ├─ size_bytes          BIGINT                               │   │
+│  │ ├─ freshness_sla_hours INTEGER                              │   │
+│  │ ├─ last_updated        TIMESTAMP                            │   │
+│  │ ├─ pii_columns         TEXT[] (columns with PII)            │   │
+│  │ ├─ sample_queries      TEXT[] (useful example queries)      │   │
+│  │ └─ created_at          TIMESTAMP                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  COLUMN-LEVEL LINEAGE (for impact analysis):                       │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // Example: What depends on ai_responses.raw_response?      │   │
+│  │                                                               │   │
+│  │ SELECT downstream_table, downstream_column                  │   │
+│  │ FROM data_lineage                                           │   │
+│  │ WHERE column_mappings @> '{"source": "ai_responses.raw"}';  │   │
+│  │                                                               │   │
+│  │ // Result:                                                   │   │
+│  │ // fact_analysis.sentiment_score                            │   │
+│  │ // fact_analysis.mention_score                              │   │
+│  │ // discourse_analysis.full_response                         │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  AUTOMATIC LINEAGE CAPTURE:                                        │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // /lib/data/lineage-tracker.ts                             │   │
+│  │                                                               │   │
+│  │ export async function withLineage<T>(                        │   │
+│  │   jobName: string,                                           │   │
+│  │   sources: string[],                                         │   │
+│  │   outputs: string[],                                         │   │
+│  │   fn: () => Promise<T>                                       │   │
+│  │ ): Promise<T> {                                              │   │
+│  │   const runId = crypto.randomUUID();                        │   │
+│  │   await recordLineageStart(jobName, runId, sources, outputs);│   │
+│  │   try {                                                      │   │
+│  │     const result = await fn();                               │   │
+│  │     await recordLineageComplete(runId, 'success');           │   │
+│  │     return result;                                           │   │
+│  │   } catch (error) {                                          │   │
+│  │     await recordLineageComplete(runId, 'failed', error);     │   │
+│  │     throw error;                                             │   │
+│  │   }                                                          │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /lib/data/lineage-tracker.ts                                      │
+│  /lib/data/catalog-manager.ts                                      │
+│  /api/admin/data-catalog/route.ts                                  │
+│  /app/(admin)/data-catalog/page.tsx                                │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.107 Data Contracts & Schema Evolution (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│           DATA CONTRACTS & SCHEMA EVOLUTION                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PROBLEM SOLVED:                                                   │
+│  • Producer changes schema → Consumer breaks silently              │
+│  • No way to validate compatibility before deployment              │
+│  • Breaking changes discovered in production                       │
+│                                                                     │
+│  DATA CONTRACT DEFINITION:                                         │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // /contracts/analyses.contract.yaml                        │   │
+│  │                                                               │   │
+│  │ contract:                                                    │   │
+│  │   name: analyses                                             │   │
+│  │   version: 1.2.0                                             │   │
+│  │   owner: ai-team                                             │   │
+│  │   description: Core analysis results                         │   │
+│  │                                                               │   │
+│  │ schema:                                                      │   │
+│  │   type: object                                               │   │
+│  │   required:                                                  │   │
+│  │     - id                                                     │   │
+│  │     - user_id                                                │   │
+│  │     - url                                                    │   │
+│  │     - overall_score                                          │   │
+│  │   properties:                                                │   │
+│  │     id:                                                      │   │
+│  │       type: string                                           │   │
+│  │       format: uuid                                           │   │
+│  │     user_id:                                                 │   │
+│  │       type: string                                           │   │
+│  │       format: uuid                                           │   │
+│  │     overall_score:                                           │   │
+│  │       type: integer                                          │   │
+│  │       minimum: 0                                             │   │
+│  │       maximum: 100                                           │   │
+│  │     # NEW FIELD (v1.2.0) - backward compatible               │   │
+│  │     confidence:                                              │   │
+│  │       type: number                                           │   │
+│  │       nullable: true  # Optional = backward compatible       │   │
+│  │                                                               │   │
+│  │ sla:                                                         │   │
+│  │   freshness: 1h                                              │   │
+│  │   availability: 99.9%                                        │   │
+│  │                                                               │   │
+│  │ consumers:                                                   │   │
+│  │   - dashboard                                                │   │
+│  │   - fact_analysis_etl                                        │   │
+│  │   - export_api                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  SCHEMA EVOLUTION RULES:                                           │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ BACKWARD COMPATIBLE (allowed without version bump):         │   │
+│  │ ✓ Add optional column (nullable or with default)            │   │
+│  │ ✓ Widen column type (INT → BIGINT)                          │   │
+│  │ ✓ Remove NOT NULL constraint                                │   │
+│  │ ✓ Add new index                                             │   │
+│  │                                                               │   │
+│  │ BREAKING CHANGES (require major version + migration):       │   │
+│  │ ✗ Remove column                                              │   │
+│  │ ✗ Rename column                                              │   │
+│  │ ✗ Change column type (narrower)                             │   │
+│  │ ✗ Add NOT NULL to existing column                           │   │
+│  │ ✗ Change primary key                                         │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: data_contracts                                    │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ ├─ id                  UUID PRIMARY KEY                     │   │
+│  │ ├─ contract_name       TEXT UNIQUE                          │   │
+│  │ ├─ version             TEXT (semver)                        │   │
+│  │ ├─ owner               TEXT                                 │   │
+│  │ ├─ schema_json         JSONB (JSON Schema)                  │   │
+│  │ ├─ sla_freshness       INTERVAL                             │   │
+│  │ ├─ sla_availability    DECIMAL(5,2)                         │   │
+│  │ ├─ consumers           TEXT[]                               │   │
+│  │ ├─ is_active           BOOLEAN DEFAULT TRUE                 │   │
+│  │ ├─ deprecated_at       TIMESTAMP                            │   │
+│  │ └─ created_at          TIMESTAMP                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: contract_violations                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ ├─ id                  UUID PRIMARY KEY                     │   │
+│  │ ├─ contract_id         UUID REFERENCES data_contracts       │   │
+│  │ ├─ violation_type      ENUM('schema','sla_freshness',       │   │
+│  │ │                           'sla_availability')             │   │
+│  │ ├─ details             JSONB                                │   │
+│  │ ├─ sample_data         JSONB (violating records)            │   │
+│  │ ├─ notified            BOOLEAN DEFAULT FALSE                │   │
+│  │ └─ created_at          TIMESTAMP                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  CONTRACT VALIDATION (Pre-deployment):                             │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // /lib/data/contract-validator.ts                          │   │
+│  │                                                               │   │
+│  │ async function validateSchemaChange(                        │   │
+│  │   contractName: string,                                      │   │
+│  │   newSchema: JSONSchema                                      │   │
+│  │ ): Promise<ValidationResult> {                               │   │
+│  │   const current = await getActiveContract(contractName);    │   │
+│  │   const changes = detectSchemaChanges(current.schema, new); │   │
+│  │                                                               │   │
+│  │   return {                                                   │   │
+│  │     isBackwardCompatible: changes.every(c => c.compatible), │   │
+│  │     breakingChanges: changes.filter(c => !c.compatible),    │   │
+│  │     suggestedVersion: calcNextVersion(current.version, chg),│   │
+│  │     affectedConsumers: current.consumers                    │   │
+│  │   };                                                         │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  CI/CD INTEGRATION:                                                │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ # .github/workflows/contract-check.yml                      │   │
+│  │                                                               │   │
+│  │ - name: Validate Data Contracts                             │   │
+│  │   run: |                                                     │   │
+│  │     npm run contracts:validate                              │   │
+│  │     # Fails if breaking change without version bump         │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /contracts/*.contract.yaml (contract definitions)                 │
+│  /lib/data/contract-validator.ts                                   │
+│  /lib/data/schema-diff.ts                                          │
+│  /scripts/validate-contracts.ts (CI script)                        │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.108 Data Partitioning & Retention Strategy (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│         DATA PARTITIONING & RETENTION STRATEGY                      │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PROBLEM:                                                          │
+│  • Tables grow unbounded → queries slow down                       │
+│  • Storage costs increase linearly                                 │
+│  • GDPR requires data deletion capability                          │
+│  • No clear lifecycle management                                   │
+│                                                                     │
+│  PARTITIONING STRATEGY (Time-based):                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ HIGH-VOLUME TABLES (Partition by month):                    │   │
+│  │ • ai_responses (millions of rows expected)                  │   │
+│  │ • fact_analysis (analytical fact table)                     │   │
+│  │ • api_cost_tracking (cost logs)                             │   │
+│  │ • security_events (security audit)                          │   │
+│  │ • data_quality_runs (DQ history)                            │   │
+│  │                                                               │   │
+│  │ MEDIUM-VOLUME TABLES (Partition by quarter):                │   │
+│  │ • analyses (user analyses)                                  │   │
+│  │ • score_history (score tracking)                            │   │
+│  │ • hallucination_detections                                  │   │
+│  │                                                               │   │
+│  │ LOW-VOLUME TABLES (No partitioning):                        │   │
+│  │ • users, subscriptions, industries (dimension tables)       │   │
+│  │ • dim_* (all dimension tables)                              │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  PARTITION IMPLEMENTATION (PostgreSQL):                            │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ -- Create partitioned table                                 │   │
+│  │ CREATE TABLE ai_responses (                                 │   │
+│  │   id UUID NOT NULL,                                         │   │
+│  │   analysis_id UUID NOT NULL,                                │   │
+│  │   provider TEXT NOT NULL,                                   │   │
+│  │   created_at TIMESTAMP NOT NULL,                            │   │
+│  │   -- ... other columns                                      │   │
+│  │   PRIMARY KEY (id, created_at)                              │   │
+│  │ ) PARTITION BY RANGE (created_at);                          │   │
+│  │                                                               │   │
+│  │ -- Create monthly partitions                                │   │
+│  │ CREATE TABLE ai_responses_2024_11 PARTITION OF ai_responses │   │
+│  │   FOR VALUES FROM ('2024-11-01') TO ('2024-12-01');         │   │
+│  │                                                               │   │
+│  │ CREATE TABLE ai_responses_2024_12 PARTITION OF ai_responses │   │
+│  │   FOR VALUES FROM ('2024-12-01') TO ('2025-01-01');         │   │
+│  │                                                               │   │
+│  │ -- Auto-create future partitions (pg_partman or cron)       │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATA RETENTION TIERS:                                             │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ ┌─────────────────────────────────────────────────────────┐ │   │
+│  │ │  HOT TIER (0-30 days)                                   │ │   │
+│  │ │  • Full data, all columns                               │ │   │
+│  │ │  • All indexes active                                   │ │   │
+│  │ │  • Fast queries                                         │ │   │
+│  │ │  • Storage: SSD                                         │ │   │
+│  │ └─────────────────────────────────────────────────────────┘ │   │
+│  │               │                                              │   │
+│  │               ▼                                              │   │
+│  │ ┌─────────────────────────────────────────────────────────┐ │   │
+│  │ │  WARM TIER (30 days - 1 year)                           │ │   │
+│  │ │  • Aggregated data only (daily summaries)               │ │   │
+│  │ │  • Raw responses compressed or dropped                  │ │   │
+│  │ │  • Reduced indexes                                      │ │   │
+│  │ │  • Storage: Standard                                    │ │   │
+│  │ └─────────────────────────────────────────────────────────┘ │   │
+│  │               │                                              │   │
+│  │               ▼                                              │   │
+│  │ ┌─────────────────────────────────────────────────────────┐ │   │
+│  │ │  COLD TIER (1-3 years)                                  │ │   │
+│  │ │  • Monthly aggregates only                              │ │   │
+│  │ │  • Archived to object storage (S3/R2)                   │ │   │
+│  │ │  • Query via external tables if needed                  │ │   │
+│  │ │  • Storage: Archive                                     │ │   │
+│  │ └─────────────────────────────────────────────────────────┘ │   │
+│  │               │                                              │   │
+│  │               ▼                                              │   │
+│  │ ┌─────────────────────────────────────────────────────────┐ │   │
+│  │ │  DELETE (>3 years)                                      │ │   │
+│  │ │  • GDPR compliance                                      │ │   │
+│  │ │  • Partition DROP (instant, no row-by-row delete)       │ │   │
+│  │ └─────────────────────────────────────────────────────────┘ │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: retention_policies                                │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ ├─ id                  UUID PRIMARY KEY                     │   │
+│  │ ├─ table_name          TEXT UNIQUE                          │   │
+│  │ ├─ hot_retention_days  INTEGER DEFAULT 30                   │   │
+│  │ ├─ warm_retention_days INTEGER DEFAULT 365                  │   │
+│  │ ├─ cold_retention_days INTEGER DEFAULT 1095 (3 years)       │   │
+│  │ ├─ aggregation_query   TEXT (for warm tier)                 │   │
+│  │ ├─ archive_bucket      TEXT (S3/R2 bucket for cold)         │   │
+│  │ ├─ last_cleanup_at     TIMESTAMP                            │   │
+│  │ └─ created_at          TIMESTAMP                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  RETENTION AUTOMATION:                                             │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // /api/cron/data-retention/route.ts (runs daily)          │   │
+│  │                                                               │   │
+│  │ async function runRetentionJob() {                          │   │
+│  │   // 1. Move hot → warm (aggregate + compress)              │   │
+│  │   await aggregateToWarm('ai_responses', 30);                │   │
+│  │                                                               │   │
+│  │   // 2. Move warm → cold (archive to S3/R2)                 │   │
+│  │   await archiveToCold('ai_responses', 365);                 │   │
+│  │                                                               │   │
+│  │   // 3. Delete expired cold (DROP PARTITION)                │   │
+│  │   await dropExpiredPartitions('ai_responses', 1095);        │   │
+│  │                                                               │   │
+│  │   // 4. Log retention metrics                               │   │
+│  │   await logRetentionMetrics();                              │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  GDPR DATA SUBJECT DELETION:                                       │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // Delete all data for a user (right to be forgotten)       │   │
+│  │                                                               │   │
+│  │ async function deleteUserData(userId: string) {             │   │
+│  │   // 1. Get all tables with user_id column from catalog     │   │
+│  │   const tables = await getTablesWithColumn('user_id');      │   │
+│  │                                                               │   │
+│  │   // 2. Delete from each table (use lineage for order)      │   │
+│  │   for (const table of tables) {                             │   │
+│  │     await db.from(table).delete().eq('user_id', userId);    │   │
+│  │   }                                                          │   │
+│  │                                                               │   │
+│  │   // 3. Delete from cold storage archives                   │   │
+│  │   await deleteFr
+omArchive(userId);                           │   │
+│  │                                                               │   │
+│  │   // 4. Log deletion for compliance                         │   │
+│  │   await logGdprDeletion(userId);                            │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /lib/data/retention-manager.ts                                    │
+│  /lib/data/partition-manager.ts                                    │
+│  /api/cron/data-retention/route.ts                                 │
+│  /migrations/xxx_add_partitioning.sql                              │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.109 Idempotent Data Pipelines (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│           IDEMPOTENT DATA PIPELINES                                 │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PROBLEM:                                                          │
+│  • Pipeline retries create duplicate records                       │
+│  • No way to safely re-run failed jobs                             │
+│  • Partial failures leave data in inconsistent state               │
+│                                                                     │
+│  IDEMPOTENCY PRINCIPLE:                                            │
+│  "Running the same pipeline N times produces the same result as 1" │
+│                                                                     │
+│  PATTERN 1: UPSERT WITH NATURAL KEYS                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // Instead of INSERT, always use UPSERT on natural key      │   │
+│  │                                                               │   │
+│  │ // Natural key: (analysis_id, provider) uniquely identifies │   │
+│  │ const { error } = await supabase                            │   │
+│  │   .from('ai_responses')                                      │   │
+│  │   .upsert({                                                  │   │
+│  │     analysis_id: analysisId,                                │   │
+│  │     provider: 'openai',                                      │   │
+│  │     raw_response: response,                                  │   │
+│  │     // ... other fields                                      │   │
+│  │   }, {                                                       │   │
+│  │     onConflict: 'analysis_id,provider',  // natural key     │   │
+│  │     ignoreDuplicates: false // update if exists             │   │
+│  │   });                                                        │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  PATTERN 2: PROCESSING CHECKPOINTS                                 │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // Track what's already processed                           │   │
+│  │                                                               │   │
+│  │ DATABASE TABLE: pipeline_checkpoints                        │   │
+│  │ ├─ id                  UUID PRIMARY KEY                     │   │
+│  │ ├─ pipeline_name       TEXT                                 │   │
+│  │ ├─ checkpoint_key      TEXT (e.g., 'last_processed_id')    │   │
+│  │ ├─ checkpoint_value    TEXT                                 │   │
+│  │ ├─ updated_at          TIMESTAMP                            │   │
+│  │ └─ UNIQUE(pipeline_name, checkpoint_key)                    │   │
+│  │                                                               │   │
+│  │ // Usage:                                                    │   │
+│  │ async function processNewAnalyses() {                       │   │
+│  │   const lastId = await getCheckpoint('etl_analyses', 'id'); │   │
+│  │                                                               │   │
+│  │   const newRows = await db                                  │   │
+│  │     .from('analyses')                                        │   │
+│  │     .select('*')                                             │   │
+│  │     .gt('id', lastId)                                        │   │
+│  │     .order('id')                                             │   │
+│  │     .limit(1000);                                            │   │
+│  │                                                               │   │
+│  │   for (const row of newRows) {                              │   │
+│  │     await processRow(row);                                   │   │
+│  │     await setCheckpoint('etl_analyses', 'id', row.id);      │   │
+│  │   }                                                          │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  PATTERN 3: DEDUPLICATION WINDOW                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // For event streams, dedupe within time window             │   │
+│  │                                                               │   │
+│  │ DATABASE TABLE: processed_events                            │   │
+│  │ ├─ event_id            TEXT PRIMARY KEY                     │   │
+│  │ ├─ processed_at        TIMESTAMP                            │   │
+│  │ └─ INDEX idx_processed_at (processed_at)                    │   │
+│  │                                                               │   │
+│  │ // Check before processing                                  │   │
+│  │ async function processEvent(eventId: string, payload: any) {│   │
+│  │   // 1. Check if already processed (last 24h window)        │   │
+│  │   const exists = await db                                   │   │
+│  │     .from('processed_events')                               │   │
+│  │     .select('event_id')                                      │   │
+│  │     .eq('event_id', eventId)                                │   │
+│  │     .single();                                               │   │
+│  │                                                               │   │
+│  │   if (exists) {                                              │   │
+│  │     console.log(`Skipping duplicate: ${eventId}`);          │   │
+│  │     return;                                                  │   │
+│  │   }                                                          │   │
+│  │                                                               │   │
+│  │   // 2. Process (idempotent operation)                      │   │
+│  │   await processPayload(payload);                            │   │
+│  │                                                               │   │
+│  │   // 3. Mark as processed                                   │   │
+│  │   await db.from('processed_events').insert({ event_id });   │   │
+│  │ }                                                            │   │
+│  │                                                               │   │
+│  │ // Cleanup old dedup records (cron job)                     │   │
+│  │ DELETE FROM processed_events                                │   │
+│  │ WHERE processed_at < NOW() - INTERVAL '24 hours';           │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  PATTERN 4: TRANSACTIONAL OUTBOX                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // Ensure exactly-once processing across services           │   │
+│  │                                                               │   │
+│  │ DATABASE TABLE: outbox                                      │   │
+│  │ ├─ id                  BIGSERIAL PRIMARY KEY                │   │
+│  │ ├─ aggregate_type      TEXT (e.g., 'analysis')              │   │
+│  │ ├─ aggregate_id        UUID                                 │   │
+│  │ ├─ event_type          TEXT (e.g., 'analysis_completed')    │   │
+│  │ ├─ payload             JSONB                                │   │
+│  │ ├─ processed           BOOLEAN DEFAULT FALSE                │   │
+│  │ ├─ processed_at        TIMESTAMP                            │   │
+│  │ └─ created_at          TIMESTAMP                            │   │
+│  │                                                               │   │
+│  │ // Write to main table + outbox in same transaction         │   │
+│  │ await db.transaction(async (tx) => {                        │   │
+│  │   // 1. Insert main record                                  │   │
+│  │   const analysis = await tx.from('analyses').insert({...}); │   │
+│  │                                                               │   │
+│  │   // 2. Write event to outbox (same transaction!)           │   │
+│  │   await tx.from('outbox').insert({                          │   │
+│  │     aggregate_type: 'analysis',                             │   │
+│  │     aggregate_id: analysis.id,                              │   │
+│  │     event_type: 'analysis_completed',                       │   │
+│  │     payload: { score: analysis.score }                      │   │
+│  │   });                                                        │   │
+│  │ });                                                          │   │
+│  │                                                               │   │
+│  │ // Separate process reads outbox and triggers downstream    │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /lib/data/idempotent-upsert.ts                                    │
+│  /lib/data/checkpoint-manager.ts                                   │
+│  /lib/data/deduplication.ts                                        │
+│  /lib/data/outbox-processor.ts                                     │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.110 Data Observability Dashboard (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│           DATA OBSERVABILITY DASHBOARD                              │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PURPOSE: Monitor data health independently from application health │
+│                                                                     │
+│  THREE PILLARS OF DATA OBSERVABILITY:                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ 1. FRESHNESS - Is data arriving on time?                    │   │
+│  │ 2. VOLUME - Is data volume within expected range?           │   │
+│  │ 3. SCHEMA - Has the schema changed unexpectedly?            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DASHBOARD LAYOUT:                                                 │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  PANEL 1: DATA FRESHNESS                                    │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ Table              │ Last Update │ SLA    │ Status      ││   │
+│  │  │────────────────────┼─────────────┼────────┼─────────────││   │
+│  │  │ analyses           │ 2 min ago   │ 1h     │ ✅ OK       ││   │
+│  │  │ ai_responses       │ 5 min ago   │ 1h     │ ✅ OK       ││   │
+│  │  │ fact_analysis      │ 45 min ago  │ 1h     │ ⚠️ WARNING  ││   │
+│  │  │ token_prices       │ 3h ago      │ 1h     │ ❌ STALE    ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  PANEL 2: VOLUME ANOMALIES (24h)                            │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │                                                         ││   │
+│  │  │  analyses    ▂▃▅▇██▇▅▃▂▁▁▂▃▅▇██▇▅▃▂▁▁▂▃▅▇              ││   │
+│  │  │              ↑ Expected range                           ││   │
+│  │  │                                                         ││   │
+│  │  │  ai_responses▂▃▅▇██▇▅▃▂▁▁▂▃▅▇██▇▅▃▂▁▁▂▃▅▇              ││   │
+│  │  │                                                         ││   │
+│  │  │  ⚠️ ai_responses volume 40% below expected (11am-12pm)  ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  PANEL 3: SCHEMA CHANGES                                    │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ 🔵 analyses: Added column 'confidence' (nullable)       ││   │
+│  │  │    Nov 25, 2024 - Backward compatible ✓                 ││   │
+│  │  │                                                         ││   │
+│  │  │ 🟡 ai_responses: Column 'model' renamed to 'model_id'   ││   │
+│  │  │    Nov 24, 2024 - Breaking change! 3 consumers affected ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  PANEL 4: DATA QUALITY SUMMARY                              │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ Last DQ Run: 15 min ago                                 ││   │
+│  │  │                                                         ││   │
+│  │  │ ✅ 47 expectations passed                               ││   │
+│  │  │ ⚠️ 3 warnings (non-critical)                            ││   │
+│  │  │ ❌ 1 critical failure: ai_responses.score out of range  ││   │
+│  │  │                                                         ││   │
+│  │  │ [View Details] [Acknowledge] [Create Incident]          ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  PANEL 5: PIPELINE STATUS                                   │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ Pipeline            │ Last Run    │ Duration │ Status   ││   │
+│  │  │─────────────────────┼─────────────┼──────────┼──────────││   │
+│  │  │ load_fact_analysis  │ 10 min ago  │ 45s      │ ✅ OK    ││   │
+│  │  │ aggregate_daily     │ 2h ago      │ 2m 12s   │ ✅ OK    ││   │
+│  │  │ retention_cleanup   │ 6h ago      │ 15m      │ ✅ OK    ││   │
+│  │  │ mv_refresh_all      │ 1h ago      │ 3m       │ ⚠️ SLOW  ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  PANEL 6: TABLE SIZE & GROWTH                               │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ Table           │ Rows      │ Size   │ 7d Growth        ││   │
+│  │  │─────────────────┼───────────┼────────┼──────────────────││   │
+│  │  │ ai_responses    │ 1.2M      │ 450MB  │ +12% ↗️          ││   │
+│  │  │ analyses        │ 85K       │ 120MB  │ +8% ↗️           ││   │
+│  │  │ fact_analysis   │ 250K      │ 80MB   │ +15% ↗️ ⚠️       ││   │
+│  │  │ embeddings      │ 50K       │ 2.1GB  │ +25% ↗️ ⚠️       ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: data_observability_metrics                        │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ ├─ id                  UUID PRIMARY KEY                     │   │
+│  │ ├─ table_name          TEXT                                 │   │
+│  │ ├─ metric_type         ENUM('freshness','volume','schema')  │   │
+│  │ ├─ metric_value        JSONB                                │   │
+│  │ ├─ is_anomaly          BOOLEAN                              │   │
+│  │ ├─ anomaly_score       DECIMAL (0-1, higher = more anomalous)│  │
+│  │ └─ created_at          TIMESTAMP                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  ALERTING RULES:                                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ CRITICAL (PagerDuty):                                       │   │
+│  │ • Freshness > 2x SLA                                        │   │
+│  │ • Volume < 10% of expected                                  │   │
+│  │ • Breaking schema change detected                           │   │
+│  │                                                               │   │
+│  │ WARNING (Slack):                                            │   │
+│  │ • Freshness > 1.5x SLA                                      │   │
+│  │ • Volume outside 2 standard deviations                      │   │
+│  │ • Table growth > 30% week-over-week                         │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /app/(admin)/data-observability/page.tsx                          │
+│  /api/admin/data-observability/route.ts                            │
+│  /lib/data/observability-collector.ts                              │
+│  /api/cron/data-observability/route.ts                             │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.111 Backup & Disaster Recovery for Data (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│         BACKUP & DISASTER RECOVERY FOR DATA                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  CURRENT STATE: Relying on Supabase default backups (daily)        │
+│  PROBLEM: Undefined RPO/RTO, no tested recovery procedure          │
+│                                                                     │
+│  DISASTER RECOVERY OBJECTIVES:                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ RPO (Recovery Point Objective): Max data loss acceptable    │   │
+│  │ ├─ Tier 1 (Critical): 1 hour (analyses, ai_responses)       │   │
+│  │ ├─ Tier 2 (Important): 24 hours (score_history, costs)      │   │
+│  │ └─ Tier 3 (Nice-to-have): 7 days (logs, metrics)            │   │
+│  │                                                               │   │
+│  │ RTO (Recovery Time Objective): Max downtime acceptable      │   │
+│  │ ├─ Tier 1 (Critical): 4 hours                               │   │
+│  │ ├─ Tier 2 (Important): 24 hours                             │   │
+│  │ └─ Tier 3 (Nice-to-have): 72 hours                          │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  BACKUP STRATEGY (3-2-1 Rule):                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ 3 copies of data:                                           │   │
+│  │   1. Primary database (Supabase)                            │   │
+│  │   2. Daily backup to S3/R2                                  │   │
+│  │   3. Weekly backup to different region                      │   │
+│  │                                                               │   │
+│  │ 2 different media types:                                    │   │
+│  │   1. Database (PostgreSQL)                                  │   │
+│  │   2. Object storage (S3/R2)                                 │   │
+│  │                                                               │   │
+│  │ 1 offsite copy:                                             │   │
+│  │   Weekly backup to different cloud provider/region          │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  BACKUP TYPES:                                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ 1. LOGICAL BACKUPS (pg_dump)                                │   │
+│  │    • Daily full backup                                      │   │
+│  │    • Stored in S3/R2 with 30-day retention                  │   │
+│  │    • Encrypted with AES-256                                 │   │
+│  │    • Compressed with gzip                                   │   │
+│  │                                                               │   │
+│  │ 2. POINT-IN-TIME RECOVERY (PITR)                            │   │
+│  │    • Supabase Pro feature (if budget allows)                │   │
+│  │    • WAL archiving for continuous backup                    │   │
+│  │    • Restore to any second within retention                 │   │
+│  │                                                               │   │
+│  │ 3. TABLE-LEVEL EXPORTS (for critical tables)                │   │
+│  │    • Hourly exports of Tier 1 tables to S3                  │   │
+│  │    • JSON/Parquet format for flexibility                    │   │
+│  │    • Independent of database backup                         │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: backup_runs                                       │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ ├─ id                  UUID PRIMARY KEY                     │   │
+│  │ ├─ backup_type         ENUM('full','incremental','table')   │   │
+│  │ ├─ tables_included     TEXT[]                               │   │
+│  │ ├─ storage_location    TEXT (S3 URI)                        │   │
+│  │ ├─ size_bytes          BIGINT                               │   │
+│  │ ├─ duration_seconds    INTEGER                              │   │
+│  │ ├─ status              ENUM('running','success','failed')   │   │
+│  │ ├─ error_message       TEXT                                 │   │
+│  │ ├─ checksum            TEXT (SHA-256)                       │   │
+│  │ ├─ expires_at          TIMESTAMP (retention policy)         │   │
+│  │ └─ created_at          TIMESTAMP                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: recovery_tests                                    │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ ├─ id                  UUID PRIMARY KEY                     │   │
+│  │ ├─ backup_id           UUID REFERENCES backup_runs          │   │
+│  │ ├─ test_type           ENUM('restore','integrity','sample') │   │
+│  │ ├─ target_environment  TEXT ('test', 'staging')             │   │
+│  │ ├─ duration_seconds    INTEGER                              │   │
+│  │ ├─ rows_restored       BIGINT                               │   │
+│  │ ├─ integrity_check     BOOLEAN (checksums match)            │   │
+│  │ ├─ sample_queries_ok   BOOLEAN                              │   │
+│  │ ├─ status              ENUM('success','failed')             │   │
+│  │ └─ created_at          TIMESTAMP                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DISASTER RECOVERY RUNBOOK:                                        │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ SCENARIO 1: Accidental data deletion                        │   │
+│  │ 1. Identify affected tables and time of deletion            │   │
+│  │ 2. If < 1h: Use PITR to restore specific tables            │   │
+│  │ 3. If > 1h: Restore from latest backup to staging          │   │
+│  │ 4. Extract needed data from staging                         │   │
+│  │ 5. Merge back to production with conflict resolution        │   │
+│  │ 6. Document incident and update RCA                         │   │
+│  │                                                               │   │
+│  │ SCENARIO 2: Database corruption                             │   │
+│  │ 1. Immediately stop all writes (maintenance mode)           │   │
+│  │ 2. Assess corruption scope                                  │   │
+│  │ 3. If partial: Restore affected tables from backup          │   │
+│  │ 4. If full: Full database restore to new instance           │   │
+│  │ 5. Update DNS/connection strings                            │   │
+│  │ 6. Verify data integrity with checksums                     │   │
+│  │ 7. Resume operations                                        │   │
+│  │                                                               │   │
+│  │ SCENARIO 3: Complete cloud provider outage                  │   │
+│  │ 1. Activate static "under maintenance" page                 │   │
+│  │ 2. Spin up new Supabase project in different region         │   │
+│  │ 3. Restore from offsite backup                              │   │
+│  │ 4. Update Vercel env vars to new Supabase                   │   │
+│  │ 5. Redeploy application                                     │   │
+│  │ 6. Test critical paths                                      │   │
+│  │ 7. Resume operations                                        │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  TESTING SCHEDULE:                                                 │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ WEEKLY: Verify backup completion and checksums              │   │
+│  │ MONTHLY: Restore latest backup to test environment          │   │
+│  │ QUARTERLY: Full DR drill (simulate outage, measure RTO)     │   │
+│  │ ANNUALLY: Cross-region restore test                         │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /lib/data/backup-manager.ts                                       │
+│  /api/cron/backup/route.ts (daily backup job)                      │
+│  /scripts/restore-from-backup.ts (manual restore)                  │
+│  /scripts/dr-drill.ts (disaster recovery test)                     │
+│  /docs/DISASTER-RECOVERY-RUNBOOK.md                                │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
 ---
 
 ## PART III: PHASED ROADMAP
@@ -8428,6 +9586,9 @@ const SCORING_WEIGHTS = {
 | 5 | **MLOps: Model registry schema** | models_registry table + lifecycle states | Claude |
 | 5 | **MLOps: Basic SLI tracking** | Latency, success rate logging per request | Claude |
 | 5 | **MLOps: Cost tagging by prompt** | Cost attribution by prompt_id, user_tier | Claude |
+| 5 | **Data: Dimensional model design** | dim_date, dim_brand, dim_provider, dim_industry design | Claude |
+| 5 | **Data: Data catalog seed** | data_catalog table + 10 initial table entries | Claude |
+| 5 | **Data: DQ expectations v1** | 15 core expectations for analyses/ai_responses | Claude |
 
 **Acceptance Criteria Phase 1:**
 - [ ] User can enter URL and receive analysis
@@ -8519,6 +9680,9 @@ const SCORING_WEIGHTS = {
 - [ ] **NEW (MLOps): SLI tracking for latency/success rate active**
 - [ ] **NEW (MLOps): Cost tagging by prompt_id implemented**
 - [ ] **NEW (MLOps): Request coalescing for duplicate queries (100ms window)**
+- [ ] **NEW (Data): Dimensional model designed (dim_date, dim_brand, dim_provider)**
+- [ ] **NEW (Data): Data catalog seeded with 10+ table entries**
+- [ ] **NEW (Data): 15 core DQ expectations defined for critical tables**
 
 ---
 
@@ -8578,6 +9742,10 @@ const SCORING_WEIGHTS = {
 | 5 | **MLOps: Embedding store setup** | pgvector extension + embeddings table | Claude |
 | 5 | **MLOps: Semantic cache v1** | Query embedding similarity > 0.95 cache | Claude |
 | 5 | **MLOps: Experiment tracking schema** | experiments + experiment_variants tables | Claude |
+| 5 | **Data: fact_analysis ETL** | Load facts from analyses + ai_responses | Claude |
+| 5 | **Data: Lineage tracking v1** | data_lineage table + withLineage wrapper | Claude |
+| 5 | **Data: DQ runner v1** | /lib/data-quality/runner.ts + daily cron | Claude |
+| 5 | **Data: Contract definitions** | analyses + ai_responses contract.yaml files | Claude |
 
 **Caching Strategy:**
 
@@ -8742,6 +9910,10 @@ const PRODUCTS = {
 | 5 | **MLOps: Error budget tracking** | Error budget policy implementation | Claude |
 | 5 | **MLOps: Pipeline orchestration v1** | pipeline_executions table + basic DAG engine | Claude |
 | 5 | **MLOps: Model lifecycle automation** | dev→staging→canary→prod promotion | Claude |
+| 5 | **Data: Partitioning setup** | ai_responses partitioned by month | Claude |
+| 5 | **Data: Retention policies table** | retention_policies + initial configurations | Claude |
+| 5 | **Data: Idempotent pipelines v1** | Checkpoint manager + upsert patterns | Claude |
+| 5 | **Data: Contract CI validation** | GitHub Action for contract compatibility check | Claude |
 
 **Monitoring Schedule:**
 
@@ -8820,6 +9992,13 @@ const ALERT_THRESHOLDS = {
 | 5 | **MLOps: Request batching for monitoring** | Batch similar queries, process in parallel | Claude |
 | 5 | **MLOps: Dead letter queue** | DLQ for failed pipeline steps | Claude |
 | 5 | **MLOps: SLO alerting** | Error budget burn rate alerts | Claude |
+| 5 | **Data: Data observability dashboard** | /app/(admin)/data-observability/page.tsx | Claude |
+| 5 | **Data: Freshness monitoring** | data_observability_metrics + alerting | Claude |
+| 5 | **Data: Materialized views v1** | mv_daily_analysis_summary, mv_provider_performance | Claude |
+| 5 | **Data: Backup automation** | backup_runs table + daily backup cron | Claude |
+| 5 | **Data: GDPR deletion API** | /api/admin/gdpr-delete endpoint + lineage-based deletion | Claude |
+| 5 | **Data: DR runbook v1** | /docs/DISASTER-RECOVERY-RUNBOOK.md | Claude |
+| 5 | **Data: Schema evolution validation** | Pre-deployment compatibility check | Claude |
 
 **Why Add Google/Perplexity in Phase 4?**
 - By Week 7, we should have paying customers generating revenue
@@ -9020,6 +10199,30 @@ const ALERT_THRESHOLDS = {
 - [ ] Error budget burn rate alerts configured
 - [ ] Request batching for monitoring jobs (>50% cost savings)
 - [ ] Golden test automation integrated with SLO tracking
+
+**Phase 4 Data Engineering Checklist (End of Week 8):**
+- [ ] Dimensional model live with dim_date, dim_brand, dim_provider, dim_industry
+- [ ] fact_analysis table populated with ETL pipeline running hourly
+- [ ] Materialized views refreshing (mv_daily_analysis_summary, mv_provider_performance)
+- [ ] Data quality framework with 50+ expectations defined
+- [ ] DQ runner executing daily with Slack alerts on failures
+- [ ] Data catalog documenting all 30+ tables with descriptions
+- [ ] Data lineage tracking all ETL jobs (source → output mapping)
+- [ ] Data contracts defined for 5+ critical tables (analyses, ai_responses, etc.)
+- [ ] Contract validation integrated in CI/CD (blocks breaking changes)
+- [ ] Time-based partitioning active on ai_responses table
+- [ ] Retention policies configured (hot 30d, warm 1yr, cold 3yr)
+- [ ] Daily retention job running (aggregate, archive, delete)
+- [ ] Idempotent pipelines using upsert/checkpoint patterns
+- [ ] Data observability dashboard with freshness/volume/schema panels
+- [ ] Freshness SLA monitoring with <1h threshold for critical tables
+- [ ] Volume anomaly detection alerting on ±2 std deviations
+- [ ] Schema change detection with consumer impact analysis
+- [ ] Backup automation running daily to S3/R2
+- [ ] Recovery tests passing monthly (restore to test environment)
+- [ ] DR runbook documented with 3 scenarios tested
+- [ ] GDPR deletion API functional (lineage-based cascade delete)
+- [ ] RPO < 1 hour for Tier 1 tables, RTO < 4 hours tested
 
 ---
 
@@ -9712,6 +10915,66 @@ Begin Phase 1, Week 1, Day 1:
 17. **Semantic cache dramatically cuts costs** - 40%+ reduction with embeddings
 18. **Batch processing for monitoring** - Process similar jobs together
 
+**Data Engineering Review Summary (v15.0):**
+- Identified 14 critical Data Engineering gaps in data architecture
+- Added Data Engineering Architecture Gap Analysis (2.103) with comprehensive assessment
+- Added Dimensional Data Modeling Framework (2.104) - Kimball star schema with dim/fact tables
+- Added Data Quality Framework (2.105) - Great Expectations-style with 6 quality pillars
+- Added Data Lineage & Catalog System (2.106) - OpenLineage-inspired tracking + discovery
+- Added Data Contracts & Schema Evolution (2.107) - Backward compatibility rules + CI validation
+- Added Data Partitioning & Retention Strategy (2.108) - Time-based partitions + 3-tier retention
+- Added Idempotent Data Pipelines (2.109) - Upsert patterns, checkpoints, outbox
+- Added Data Observability Dashboard (2.110) - Freshness/volume/schema monitoring
+- Added Backup & Disaster Recovery (2.111) - 3-2-1 rule, RPO/RTO, DR runbooks
+- Added 8 new database tables: `dim_date`, `dim_brand`, `fact_analysis`, `data_quality_runs`, `data_quality_alerts`, `data_lineage`, `data_catalog`, `data_contracts`, `contract_violations`, `retention_policies`, `pipeline_checkpoints`, `data_observability_metrics`, `backup_runs`, `recovery_tests`
+- Added 22 new Data tasks across all phases (3 Week 2, 4 Week 3, 4 Week 6, 7 Week 7)
+- Added 3 new Data acceptance criteria for Phase 1
+- Added Phase 4 Data Engineering Checklist with 22 success criteria
+
+**Key Data Engineering Principles:**
+1. **Dimensional modeling for analytics** - Star schema enables fast, intuitive queries
+2. **Data quality is a process, not a project** - Continuous validation with expectations
+3. **Lineage enables impact analysis** - Know what breaks before changing schemas
+4. **Data contracts prevent surprises** - Explicit schema agreements between services
+5. **Partitioning is not premature optimization** - Plan for growth from day one
+6. **Retention policies are compliance requirements** - GDPR requires deletion capability
+7. **Idempotency enables safe retries** - Same input always produces same output
+8. **Data observability ≠ application observability** - Monitor freshness, volume, schema separately
+9. **Backup without tested recovery is not backup** - Regular DR drills are mandatory
+10. **Schema evolution has rules** - Backward compatible changes vs breaking changes
+11. **Data catalog enables discovery** - Engineers can't use what they can't find
+12. **Incremental processing scales** - Full table scans don't scale to millions of rows
+13. **Late-arriving data is inevitable** - Event-time processing handles out-of-order
+14. **RPO/RTO must be defined** - Know your recovery objectives before disaster strikes
+
+**Recommended Next Action:**
+Begin Phase 1, Week 1, Day 1:
+- Database schema design + RLS policies
+- Security: URL validator
+- UX: Design tokens (score colors, provider colors)
+- AI: Zod output schemas for all AI responses
+- AI: Industry taxonomy seed data (20 categories)
+- SEO: Own site JSON-LD SoftwareApplication schema
+- Content: UX writing guide document
+- PR: Create Wikidata entry for AI Perception (Alberto)
+- PR: Set up Crunchbase company profile (Alberto)
+- PR: Claim LinkedIn company page (Alberto)
+- PR: Create press kit with all assets (Claude)
+- Prompt: CoT prompt templates for all query types
+- Prompt: Few-shot exemplar database (15+ per model)
+- Prompt: Temperature configuration matrix
+- Onto: Core OWL/SKOS ontology definition (aip: namespace)
+- Onto: Class hierarchy (Brand, Industry, Provider, Analysis)
+- Onto: Property definitions with domain/range constraints
+- CL: Negation scope detector (/lib/nlp/negation.ts)
+- CL: Hedge/certainty scorer (/lib/nlp/certainty.ts)
+- CL: Basic coreference resolver (/lib/nlp/coreference.ts)
+- LLM-B: Response stability sampler (5x multi-run)
+- LLM-B: Model version tracker
+- LLM-B: Basic hallucination flags
+- Data: Dimensional model design document
+- Data: data_catalog table seed with initial entries
+
 ---
 
 *Document prepared by BCG Digital Ventures - Technology Strategy Practice*
@@ -9728,6 +10991,7 @@ Begin Phase 1, Week 1, Day 1:
 *LLM Behavioral Research Review by: Senior LLM Behavioral Researcher - 432 years experience, ex-OpenAI Research/Anthropic Alignment/Google DeepMind Eval/Meta FAIR/Microsoft Research AI Behavior*
 *Adversarial AI Security Review by: Senior Adversarial AI Security Specialist - 102 years experience, ex-McKinsey Cyber/BCG Digital Ventures/Mandiant/CrowdStrike/Palo Alto Networks/Microsoft MSTIC/Google Project Zero*
 *MLOps Review by: Senior MLOps Engineer Director - 333 years experience, ex-Google ML Platform/Netflix ML Platform/Uber Michelangelo/Meta AI Infra/Amazon SageMaker/Databricks MLflow*
+*Data Engineering Review by: Senior Data Engineer (Architect Level) - 855 years experience, ex-Google BigQuery/Snowflake/Databricks/Netflix Data Platform/Meta Data Infra/Amazon Redshift*
 *For: AI Perception Engineering Agency*
 *Date: November 26, 2024*
-*Version: 14.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps Review)*
+*Version: 15.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering Review)*

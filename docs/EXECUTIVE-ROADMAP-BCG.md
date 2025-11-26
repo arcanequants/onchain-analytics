@@ -2,7 +2,7 @@
 ## Executive Strategic Roadmap
 
 **Document Classification:** Strategic Planning
-**Version:** 6.0 (Technical + UX/UI + AI/Data + KG/SEO + Content Review)
+**Version:** 7.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack Review)
 **Date:** November 25, 2024
 **Prepared by:** BCG Digital Ventures - Technology Strategy Practice
 **Reviewed by:**
@@ -11,6 +11,7 @@
 - Senior AI & Data Engineer Director - AI/ML & Data Pipeline Review
 - Senior Knowledge Graph & SEO Architect - Structured Data & AI Discoverability Review
 - Senior Technical Content Writer Director - Documentation & UX Writing Review
+- Senior Full Stack Developer Director - Code Quality & DevOps Review
 
 ---
 
@@ -2642,6 +2643,674 @@ Based on industry best practices, we're adding these **fully automated** diagnos
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
+### 2.38 Full Stack Development Architecture (NEW - Full Stack Review)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│           FULL STACK DEVELOPMENT GAPS IDENTIFIED                    │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  1. NO MONOREPO STRUCTURE                                          │
+│     ═════════════════════                                          │
+│     Problem: Single package.json mixing concerns                    │
+│     Impact: Hard to scale, test, and maintain                       │
+│     Solution: Turborepo/pnpm workspaces for organized code          │
+│                                                                     │
+│  2. NO ENV VALIDATION AT STARTUP                                   │
+│     ═══════════════════════════                                    │
+│     Problem: Runtime crashes when env vars missing                  │
+│     Impact: Silent failures in production, hard to debug            │
+│     Solution: Zod schema validation on app startup                  │
+│                                                                     │
+│  3. NO DATABASE MIGRATIONS VERSIONING                              │
+│     ════════════════════════════════                               │
+│     Problem: SQL files without version tracking system              │
+│     Impact: Can't rollback, no migration history                    │
+│     Solution: Drizzle ORM or Prisma for type-safe migrations       │
+│                                                                     │
+│  4. NO TYPE-SAFE DATABASE CLIENT                                   │
+│     ══════════════════════════                                     │
+│     Problem: Raw Supabase client without TypeScript inference       │
+│     Impact: Runtime errors from wrong column names/types            │
+│     Solution: Generate types from Supabase schema                   │
+│                                                                     │
+│  5. NO API ROUTE MIDDLEWARE PATTERN                                │
+│     ═══════════════════════════════                                │
+│     Problem: Each route implements auth/rate-limit separately       │
+│     Impact: Code duplication, inconsistent error handling           │
+│     Solution: Centralized middleware factory pattern                │
+│                                                                     │
+│  6. NO DEPENDENCY INJECTION                                        │
+│     ══════════════════════                                         │
+│     Problem: Direct imports make testing and mocking hard           │
+│     Impact: Can't mock AI providers in tests                        │
+│     Solution: DI container or factory pattern for services          │
+│                                                                     │
+│  7. NO FEATURE FLAGS                                               │
+│     ════════════════                                               │
+│     Problem: No way to gradually rollout or kill features           │
+│     Impact: All-or-nothing deployments, risky releases              │
+│     Solution: Simple feature flag system (Vercel Edge Config)       │
+│                                                                     │
+│  8. NO PREVIEW ENVIRONMENTS                                        │
+│     ═══════════════════════                                        │
+│     Problem: Test only in prod or local, nothing in between         │
+│     Impact: Bugs discovered too late, risky deploys                 │
+│     Solution: Vercel Preview Deployments per PR                     │
+│                                                                     │
+│  9. NO CI/CD PIPELINE DEFINED                                      │
+│     ═════════════════════════                                      │
+│     Problem: Manual testing, no automated quality gates             │
+│     Impact: Regressions slip through, slow iteration                │
+│     Solution: GitHub Actions for lint, test, build, deploy          │
+│                                                                     │
+│  10. NO BUNDLE SIZE MONITORING                                     │
+│      ═════════════════════════                                     │
+│      Problem: No visibility into JS bundle size                     │
+│      Impact: Slow page loads, poor Core Web Vitals                  │
+│      Solution: Next.js bundle analyzer + size limits in CI          │
+│                                                                     │
+│  11. NO DATABASE INDEXES STRATEGY                                  │
+│      ═══════════════════════════                                   │
+│      Problem: Queries may be slow without proper indexes            │
+│      Impact: Slow dashboard, poor UX as data grows                  │
+│      Solution: Index strategy for common query patterns             │
+│                                                                     │
+│  12. NO GRACEFUL SHUTDOWN HANDLING                                 │
+│      ══════════════════════════════                                │
+│      Problem: Background jobs may be interrupted mid-execution      │
+│      Impact: Corrupt data, incomplete analyses                      │
+│      Solution: SIGTERM handling for graceful shutdown               │
+│                                                                     │
+│  13. NO REQUEST TRACING                                            │
+│      ═════════════════════                                         │
+│      Problem: Can't trace a request through the entire stack        │
+│      Impact: Hard to debug production issues                        │
+│      Solution: Request ID propagation across all services           │
+│                                                                     │
+│  14. NO API VERSIONING STRATEGY                                    │
+│      ═══════════════════════════                                   │
+│      Problem: Breaking changes will break clients                   │
+│      Impact: Can't evolve API without breaking existing users       │
+│      Solution: /api/v1/ namespace, deprecation headers              │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.39 Environment & Configuration Management (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                 ENVIRONMENT CONFIGURATION                           │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ENV VALIDATION (Startup Check):                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // /lib/env.ts                                               │   │
+│  │ import { z } from 'zod';                                     │   │
+│  │                                                               │   │
+│  │ const envSchema = z.object({                                 │   │
+│  │   // Required                                                 │   │
+│  │   DATABASE_URL: z.string().url(),                            │   │
+│  │   NEXT_PUBLIC_SUPABASE_URL: z.string().url(),               │   │
+│  │   NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1),         │   │
+│  │   SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),             │   │
+│  │   OPENAI_API_KEY: z.string().startsWith('sk-'),             │   │
+│  │   ANTHROPIC_API_KEY: z.string().startsWith('sk-ant-'),      │   │
+│  │   UPSTASH_REDIS_URL: z.string().url(),                      │   │
+│  │   UPSTASH_REDIS_TOKEN: z.string().min(1),                   │   │
+│  │   RESEND_API_KEY: z.string().startsWith('re_'),             │   │
+│  │                                                               │   │
+│  │   // Optional with defaults                                   │   │
+│  │   NODE_ENV: z.enum(['development','production','test'])      │   │
+│  │     .default('development'),                                 │   │
+│  │   DAILY_BUDGET_USD: z.coerce.number().default(5),           │   │
+│  │   ENABLE_GOOGLE_AI: z.coerce.boolean().default(false),      │   │
+│  │   ENABLE_PERPLEXITY: z.coerce.boolean().default(false),     │   │
+│  │ });                                                          │   │
+│  │                                                               │   │
+│  │ export const env = envSchema.parse(process.env);             │   │
+│  │ // Throws immediately if validation fails                    │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  ENVIRONMENT SEPARATION:                                           │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ DEVELOPMENT (.env.local):                                    │   │
+│  │ - Local Supabase instance (supabase start)                  │   │
+│  │ - Sandbox API keys (rate limited)                            │   │
+│  │ - DAILY_BUDGET_USD=1 (very conservative)                    │   │
+│  │                                                               │   │
+│  │ PREVIEW (Vercel Preview):                                    │   │
+│  │ - Shared preview Supabase project                            │   │
+│  │ - Test API keys (separate quotas)                            │   │
+│  │ - DAILY_BUDGET_USD=2                                         │   │
+│  │                                                               │   │
+│  │ PRODUCTION (Vercel Production):                              │   │
+│  │ - Production Supabase project                                │   │
+│  │ - Production API keys                                        │   │
+│  │ - DAILY_BUDGET_USD=5                                         │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.40 Type-Safe Database Layer (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│               TYPE-SAFE DATABASE ARCHITECTURE                       │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  CURRENT STATE: Raw Supabase client, manual types                  │
+│  TARGET STATE: Generated types, compile-time safety                │
+│                                                                     │
+│  OPTION A: Supabase Type Generation (Recommended for MVP)          │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // Generate types from Supabase schema                       │   │
+│  │ npx supabase gen types typescript \                          │   │
+│  │   --project-id YOUR_PROJECT_ID \                            │   │
+│  │   > src/types/database.ts                                    │   │
+│  │                                                               │   │
+│  │ // Usage                                                      │   │
+│  │ import { Database } from '@/types/database';                 │   │
+│  │ const supabase = createClient<Database>(...);                │   │
+│  │                                                               │   │
+│  │ // Now fully typed:                                          │   │
+│  │ const { data } = await supabase                              │   │
+│  │   .from('analyses')   // autocomplete                        │   │
+│  │   .select('*')                                               │   │
+│  │   .eq('status', 'completed');  // type-checked              │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  OPTION B: Drizzle ORM (Recommended for Phase 4+)                  │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // Schema definition with Drizzle                            │   │
+│  │ import { pgTable, uuid, text, timestamp } from 'drizzle-orm';│   │
+│  │                                                               │   │
+│  │ export const analyses = pgTable('analyses', {                │   │
+│  │   id: uuid('id').primaryKey().defaultRandom(),              │   │
+│  │   userId: uuid('user_id').references(() => users.id),       │   │
+│  │   url: text('url').notNull(),                               │   │
+│  │   score: integer('score'),                                   │   │
+│  │   createdAt: timestamp('created_at').defaultNow(),          │   │
+│  │ });                                                          │   │
+│  │                                                               │   │
+│  │ // Benefits:                                                 │   │
+│  │ // - Type-safe migrations                                    │   │
+│  │ // - Automatic rollback                                      │   │
+│  │ // - Better DX for complex queries                          │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE INDEXES (Critical for Performance):                      │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ -- analyses table                                            │   │
+│  │ CREATE INDEX idx_analyses_user_id ON analyses(user_id);     │   │
+│  │ CREATE INDEX idx_analyses_status ON analyses(status);       │   │
+│  │ CREATE INDEX idx_analyses_created_at ON analyses(created_at);│  │
+│  │                                                               │   │
+│  │ -- ai_responses table                                        │   │
+│  │ CREATE INDEX idx_ai_responses_analysis_id                    │   │
+│  │   ON ai_responses(analysis_id);                             │   │
+│  │                                                               │   │
+│  │ -- api_cost_tracking (for budget queries)                   │   │
+│  │ CREATE INDEX idx_cost_tracking_date                         │   │
+│  │   ON api_cost_tracking(created_at);                         │   │
+│  │ CREATE INDEX idx_cost_tracking_provider_date                │   │
+│  │   ON api_cost_tracking(provider, created_at);               │   │
+│  │                                                               │   │
+│  │ -- score_history (for trends)                               │   │
+│  │ CREATE INDEX idx_score_history_user_url                     │   │
+│  │   ON score_history(user_id, url, recorded_at DESC);         │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.41 API Middleware & Route Patterns (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                 API MIDDLEWARE ARCHITECTURE                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  MIDDLEWARE FACTORY PATTERN:                                       │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // /lib/api/middleware.ts                                    │   │
+│  │                                                               │   │
+│  │ type MiddlewareConfig = {                                    │   │
+│  │   requireAuth?: boolean;                                     │   │
+│  │   rateLimit?: { requests: number; window: string };         │   │
+│  │   requiredPlan?: 'free' | 'starter' | 'pro';               │   │
+│  │   validateBody?: ZodSchema;                                  │   │
+│  │ };                                                           │   │
+│  │                                                               │   │
+│  │ export function withMiddleware(                              │   │
+│  │   handler: RouteHandler,                                     │   │
+│  │   config: MiddlewareConfig                                   │   │
+│  │ ) {                                                          │   │
+│  │   return async (req: NextRequest) => {                      │   │
+│  │     const requestId = crypto.randomUUID();                  │   │
+│  │     const startTime = Date.now();                           │   │
+│  │                                                               │   │
+│  │     try {                                                    │   │
+│  │       // 1. Rate limiting                                    │   │
+│  │       if (config.rateLimit) {                               │   │
+│  │         const result = await rateLimiter.limit(getIP(req)); │   │
+│  │         if (!result.success) {                              │   │
+│  │           return Response.json(                              │   │
+│  │             { error: 'Rate limit exceeded' },               │   │
+│  │             { status: 429, headers: rateLimitHeaders }      │   │
+│  │           );                                                 │   │
+│  │         }                                                    │   │
+│  │       }                                                      │   │
+│  │                                                               │   │
+│  │       // 2. Authentication                                   │   │
+│  │       let user = null;                                      │   │
+│  │       if (config.requireAuth) {                             │   │
+│  │         user = await getUser(req);                          │   │
+│  │         if (!user) {                                        │   │
+│  │           return Response.json(                              │   │
+│  │             { error: 'Unauthorized' },                      │   │
+│  │             { status: 401 }                                 │   │
+│  │           );                                                 │   │
+│  │         }                                                    │   │
+│  │       }                                                      │   │
+│  │                                                               │   │
+│  │       // 3. Plan enforcement                                 │   │
+│  │       if (config.requiredPlan && user) {                    │   │
+│  │         if (!hasPlan(user, config.requiredPlan)) {          │   │
+│  │           return Response.json(                              │   │
+│  │             { error: 'Upgrade required' },                  │   │
+│  │             { status: 403 }                                 │   │
+│  │           );                                                 │   │
+│  │         }                                                    │   │
+│  │       }                                                      │   │
+│  │                                                               │   │
+│  │       // 4. Body validation                                  │   │
+│  │       let body = undefined;                                 │   │
+│  │       if (config.validateBody) {                            │   │
+│  │         const json = await req.json();                      │   │
+│  │         const result = config.validateBody.safeParse(json); │   │
+│  │         if (!result.success) {                              │   │
+│  │           return Response.json(                              │   │
+│  │             { error: 'Validation failed', details: errors },│   │
+│  │             { status: 400 }                                 │   │
+│  │           );                                                 │   │
+│  │         }                                                    │   │
+│  │         body = result.data;                                 │   │
+│  │       }                                                      │   │
+│  │                                                               │   │
+│  │       // 5. Execute handler                                  │   │
+│  │       const response = await handler(req, { user, body });  │   │
+│  │                                                               │   │
+│  │       // 6. Add response headers                            │   │
+│  │       response.headers.set('X-Request-ID', requestId);      │   │
+│  │       return response;                                       │   │
+│  │                                                               │   │
+│  │     } catch (error) {                                       │   │
+│  │       // Centralized error handling                          │   │
+│  │       Sentry.captureException(error, { extra: { requestId }});│  │
+│  │       return Response.json(                                  │   │
+│  │         { error: 'Internal server error', requestId },      │   │
+│  │         { status: 500 }                                     │   │
+│  │       );                                                     │   │
+│  │     } finally {                                              │   │
+│  │       // Log request                                         │   │
+│  │       logRequest(requestId, Date.now() - startTime);        │   │
+│  │     }                                                        │   │
+│  │   };                                                         │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  USAGE IN ROUTES:                                                  │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // /app/api/analyze/route.ts                                │   │
+│  │ import { withMiddleware } from '@/lib/api/middleware';      │   │
+│  │ import { analyzeSchema } from '@/lib/validation';           │   │
+│  │                                                               │   │
+│  │ const handler = async (req, { user, body }) => {            │   │
+│  │   // Handler only deals with business logic                 │   │
+│  │   // Auth, validation, rate limiting already done            │   │
+│  │   const analysis = await startAnalysis(body.url, user);     │   │
+│  │   return Response.json({ id: analysis.id });                │   │
+│  │ };                                                           │   │
+│  │                                                               │   │
+│  │ export const POST = withMiddleware(handler, {               │   │
+│  │   requireAuth: false,  // Allow anonymous analysis          │   │
+│  │   rateLimit: { requests: 10, window: '1m' },               │   │
+│  │   validateBody: analyzeSchema,                              │   │
+│  │ });                                                          │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.42 CI/CD Pipeline (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    CI/CD PIPELINE DESIGN                            │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  GITHUB ACTIONS WORKFLOW:                                          │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ # .github/workflows/ci.yml                                   │   │
+│  │                                                               │   │
+│  │ name: CI                                                     │   │
+│  │ on:                                                          │   │
+│  │   push:                                                      │   │
+│  │     branches: [main]                                         │   │
+│  │   pull_request:                                              │   │
+│  │     branches: [main]                                         │   │
+│  │                                                               │   │
+│  │ jobs:                                                        │   │
+│  │   lint:                                                      │   │
+│  │     runs-on: ubuntu-latest                                   │   │
+│  │     steps:                                                   │   │
+│  │       - uses: actions/checkout@v4                           │   │
+│  │       - uses: pnpm/action-setup@v2                          │   │
+│  │       - run: pnpm install --frozen-lockfile                 │   │
+│  │       - run: pnpm lint                                      │   │
+│  │       - run: pnpm typecheck                                 │   │
+│  │                                                               │   │
+│  │   test:                                                      │   │
+│  │     runs-on: ubuntu-latest                                   │   │
+│  │     steps:                                                   │   │
+│  │       - uses: actions/checkout@v4                           │   │
+│  │       - uses: pnpm/action-setup@v2                          │   │
+│  │       - run: pnpm install --frozen-lockfile                 │   │
+│  │       - run: pnpm test:coverage                             │   │
+│  │       - uses: codecov/codecov-action@v3  # Coverage report  │   │
+│  │                                                               │   │
+│  │   build:                                                     │   │
+│  │     runs-on: ubuntu-latest                                   │   │
+│  │     needs: [lint, test]                                     │   │
+│  │     steps:                                                   │   │
+│  │       - uses: actions/checkout@v4                           │   │
+│  │       - uses: pnpm/action-setup@v2                          │   │
+│  │       - run: pnpm install --frozen-lockfile                 │   │
+│  │       - run: pnpm build                                     │   │
+│  │       - name: Check bundle size                             │   │
+│  │         run: pnpm analyze && ./scripts/check-bundle-size.sh │   │
+│  │                                                               │   │
+│  │   e2e:                                                       │   │
+│  │     runs-on: ubuntu-latest                                   │   │
+│  │     needs: [build]                                          │   │
+│  │     steps:                                                   │   │
+│  │       - uses: actions/checkout@v4                           │   │
+│  │       - uses: pnpm/action-setup@v2                          │   │
+│  │       - run: pnpm install --frozen-lockfile                 │   │
+│  │       - run: pnpm playwright install --with-deps            │   │
+│  │       - run: pnpm test:e2e                                  │   │
+│  │       - uses: actions/upload-artifact@v3                    │   │
+│  │         if: failure()                                        │   │
+│  │         with:                                                │   │
+│  │           name: playwright-report                            │   │
+│  │           path: playwright-report/                           │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  PR QUALITY GATES:                                                 │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ • Lint must pass (0 errors, 0 warnings)                     │   │
+│  │ • Type check must pass (tsc --noEmit)                       │   │
+│  │ • Unit test coverage > 70%                                   │   │
+│  │ • All E2E tests pass                                         │   │
+│  │ • Bundle size < 300KB first load                            │   │
+│  │ • No high/critical vulnerabilities (npm audit)              │   │
+│  │ • Preview deployment successful                              │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DEPLOYMENT STRATEGY:                                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ PR Created → Preview Deploy (Vercel) → Review & Test        │   │
+│  │     │                                                        │   │
+│  │     └─→ All checks pass → Approve PR → Merge to main        │   │
+│  │                                  │                           │   │
+│  │                                  └─→ Auto-deploy to Prod    │   │
+│  │                                                               │   │
+│  │ Rollback: Vercel instant rollback to previous deployment    │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.43 Service Architecture & Dependency Injection (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              SERVICE ARCHITECTURE PATTERN                           │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  SERVICE FACTORY (Enables Testing & Mocking):                      │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // /lib/services/index.ts                                   │   │
+│  │                                                               │   │
+│  │ // Interfaces (contracts)                                    │   │
+│  │ export interface IAIProvider {                               │   │
+│  │   name: string;                                              │   │
+│  │   query(prompt: string, options?: QueryOptions): Promise<AIResponse>;│   │
+│  │   isHealthy(): Promise<boolean>;                            │   │
+│  │ }                                                            │   │
+│  │                                                               │   │
+│  │ export interface ICacheService {                             │   │
+│  │   get<T>(key: string): Promise<T | null>;                   │   │
+│  │   set<T>(key: string, value: T, ttl?: number): Promise<void>;│   │
+│  │   delete(key: string): Promise<void>;                       │   │
+│  │ }                                                            │   │
+│  │                                                               │   │
+│  │ export interface IAnalysisService {                          │   │
+│  │   startAnalysis(url: string, userId?: string): Promise<Analysis>;│   │
+│  │   getAnalysis(id: string): Promise<Analysis | null>;        │   │
+│  │ }                                                            │   │
+│  │                                                               │   │
+│  │ // Service container                                         │   │
+│  │ export type Services = {                                     │   │
+│  │   ai: {                                                      │   │
+│  │     openai: IAIProvider;                                    │   │
+│  │     anthropic: IAIProvider;                                 │   │
+│  │     google?: IAIProvider;                                   │   │
+│  │   };                                                         │   │
+│  │   cache: ICacheService;                                     │   │
+│  │   analysis: IAnalysisService;                               │   │
+│  │   email: IEmailService;                                     │   │
+│  │   metrics: IMetricsService;                                 │   │
+│  │ };                                                           │   │
+│  │                                                               │   │
+│  │ // Factory for production                                    │   │
+│  │ export function createServices(): Services {                 │   │
+│  │   return {                                                   │   │
+│  │     ai: {                                                    │   │
+│  │       openai: new OpenAIProvider(env.OPENAI_API_KEY),       │   │
+│  │       anthropic: new AnthropicProvider(env.ANTHROPIC_API_KEY),│   │
+│  │     },                                                       │   │
+│  │     cache: new UpstashCacheService(redis),                  │   │
+│  │     analysis: new AnalysisService(db, ai, cache),           │   │
+│  │     email: new ResendEmailService(resend),                  │   │
+│  │     metrics: new MetricsService(db),                        │   │
+│  │   };                                                         │   │
+│  │ }                                                            │   │
+│  │                                                               │   │
+│  │ // Factory for testing                                       │   │
+│  │ export function createMockServices(): Services {             │   │
+│  │   return {                                                   │   │
+│  │     ai: {                                                    │   │
+│  │       openai: new MockAIProvider('openai'),                 │   │
+│  │       anthropic: new MockAIProvider('anthropic'),           │   │
+│  │     },                                                       │   │
+│  │     cache: new InMemoryCacheService(),                      │   │
+│  │     analysis: new MockAnalysisService(),                    │   │
+│  │     email: new MockEmailService(),                          │   │
+│  │     metrics: new NoOpMetricsService(),                      │   │
+│  │   };                                                         │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  SINGLETON PATTERN (Production):                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // /lib/services/singleton.ts                               │   │
+│  │ let services: Services | null = null;                       │   │
+│  │                                                               │   │
+│  │ export function getServices(): Services {                    │   │
+│  │   if (!services) {                                          │   │
+│  │     services = createServices();                            │   │
+│  │   }                                                          │   │
+│  │   return services;                                           │   │
+│  │ }                                                            │   │
+│  │                                                               │   │
+│  │ // For testing - allows injection of mocks                  │   │
+│  │ export function setServices(s: Services): void {            │   │
+│  │   services = s;                                              │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.44 Performance & Bundle Optimization (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              PERFORMANCE OPTIMIZATION STRATEGY                      │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  BUNDLE SIZE TARGETS:                                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ First Load JS (all pages):     < 100KB                      │   │
+│  │ Page-specific JS:              < 50KB per page               │   │
+│  │ Total JS (lazy loaded):        < 300KB                       │   │
+│  │                                                               │   │
+│  │ Current heavy dependencies to watch:                         │   │
+│  │ • recharts (~45KB) - lazy load on dashboard only            │   │
+│  │ • @supabase/supabase-js (~30KB) - necessary                 │   │
+│  │ • zod (~12KB) - necessary for validation                    │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  LAZY LOADING STRATEGY:                                            │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // Heavy components - lazy load                             │   │
+│  │ const ScoreChart = dynamic(                                 │   │
+│  │   () => import('@/components/ScoreChart'),                  │   │
+│  │   { loading: () => <ChartSkeleton /> }                      │   │
+│  │ );                                                           │   │
+│  │                                                               │   │
+│  │ const CompetitorTable = dynamic(                            │   │
+│  │   () => import('@/components/CompetitorTable'),             │   │
+│  │   { ssr: false }  // Client-only                            │   │
+│  │ );                                                           │   │
+│  │                                                               │   │
+│  │ // Route-based code splitting (automatic with Next.js)      │   │
+│  │ // /app/dashboard/page.tsx → only loads when navigating     │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMAGE OPTIMIZATION:                                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ • Use next/image for all images (automatic WebP, resizing)  │   │
+│  │ • Provider logos: SVG or small PNG (< 5KB each)            │   │
+│  │ • OG images: Generate with @vercel/og (on-demand)          │   │
+│  │ • No hero images in MVP (reduce LCP)                        │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  CORE WEB VITALS TARGETS:                                          │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ LCP (Largest Contentful Paint):  < 2.5s                     │   │
+│  │ FID (First Input Delay):         < 100ms                    │   │
+│  │ CLS (Cumulative Layout Shift):   < 0.1                      │   │
+│  │                                                               │   │
+│  │ Measurement: Vercel Analytics (included free)               │   │
+│  │ Monitoring: Weekly CWV report in dashboard                  │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  CACHING HEADERS:                                                  │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // next.config.js                                           │   │
+│  │ async headers() {                                            │   │
+│  │   return [                                                   │   │
+│  │     {                                                        │   │
+│  │       source: '/api/:path*',                                │   │
+│  │       headers: [                                            │   │
+│  │         { key: 'Cache-Control', value: 'no-store' },       │   │
+│  │       ],                                                    │   │
+│  │     },                                                       │   │
+│  │     {                                                        │   │
+│  │       source: '/(.*).svg',                                  │   │
+│  │       headers: [                                            │   │
+│  │         { key: 'Cache-Control',                             │   │
+│  │           value: 'public, max-age=31536000, immutable' },  │   │
+│  │       ],                                                    │   │
+│  │     },                                                       │   │
+│  │   ];                                                         │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.45 Feature Flags & Gradual Rollout (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                 FEATURE FLAG SYSTEM                                 │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  SIMPLE FEATURE FLAGS (Phase 1-3):                                 │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // /lib/features.ts                                         │   │
+│  │ // Environment-based feature flags (simple, free)            │   │
+│  │                                                               │   │
+│  │ export const FEATURES = {                                    │   │
+│  │   // AI Providers                                            │   │
+│  │   ENABLE_GOOGLE_AI: env.ENABLE_GOOGLE_AI,                   │   │
+│  │   ENABLE_PERPLEXITY: env.ENABLE_PERPLEXITY,                 │   │
+│  │                                                               │   │
+│  │   // Features                                                │   │
+│  │   ENABLE_COMPETITOR_DETECTION: true,                        │   │
+│  │   ENABLE_HALLUCINATION_CHECK: true,                         │   │
+│  │   ENABLE_SOV_CALCULATION: false,  // Phase 2                │   │
+│  │   ENABLE_RAG_SCORE: false,        // Phase 4                │   │
+│  │                                                               │   │
+│  │   // Experimental                                            │   │
+│  │   ENABLE_NEW_SCORING_ALGORITHM: false,                      │   │
+│  │   ENABLE_REALTIME_UPDATES: false,                           │   │
+│  │ };                                                           │   │
+│  │                                                               │   │
+│  │ // Usage                                                     │   │
+│  │ if (FEATURES.ENABLE_SOV_CALCULATION) {                      │   │
+│  │   await calculateShareOfVoice(analysis);                    │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  VERCEL EDGE CONFIG (Phase 4+ for real-time flags):                │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // Allows changing flags without redeploy                   │   │
+│  │ import { get } from '@vercel/edge-config';                  │   │
+│  │                                                               │   │
+│  │ export async function getFeatureFlag(name: string) {        │   │
+│  │   return await get(name);                                    │   │
+│  │ }                                                            │   │
+│  │                                                               │   │
+│  │ // Benefits:                                                 │   │
+│  │ // - Instant flag changes (no deploy needed)                │   │
+│  │ // - Percentage rollouts (10% of users)                     │   │
+│  │ // - User-specific flags (beta testers)                     │   │
+│  │ // - Kill switch for problematic features                   │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  ROLLOUT STRATEGY:                                                 │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Phase 1: Feature off (flag = false)                         │   │
+│  │     ↓                                                        │   │
+│  │ Phase 2: Internal testing (flag = 'internal-only')          │   │
+│  │     ↓                                                        │   │
+│  │ Phase 3: Beta users (flag = 'beta' or percentage = 10%)     │   │
+│  │     ↓                                                        │   │
+│  │ Phase 4: General availability (flag = true)                 │   │
+│  │     ↓                                                        │   │
+│  │ Phase 5: Remove flag, feature is default                    │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
 ---
 
 ## PART III: PHASED ROADMAP
@@ -2728,6 +3397,9 @@ Based on industry best practices, we're adding these **fully automated** diagnos
 | 5 | **SEO: Own site JSON-LD** | Add SoftwareApplication schema to our site | Claude |
 | 5 | **Content: UX writing guide** | Voice, tone, terminology standards doc | Claude |
 | 5 | **Content: Glossary page** | /glossary with 6 core terms + tooltips | Claude |
+| 5 | **Dev: Env validation** | /lib/env.ts with Zod schema for all env vars | Claude |
+| 5 | **Dev: Supabase types gen** | npm script to generate DB types | Claude |
+| 5 | **Dev: API middleware factory** | /lib/api/middleware.ts centralized middleware | Claude |
 
 **NEW: Security Deliverables Week 1:**
 ```typescript
@@ -2797,6 +3469,10 @@ const SCORING_WEIGHTS = {
 | 5 | **Content: AI disclaimer** | Results page disclaimer + ToS AI section | Claude |
 | 5 | **Content: Email templates** | Welcome + score change email templates | Claude |
 | 5 | **Content: Share copy** | Pre-written Twitter/LinkedIn share templates | Claude |
+| 5 | **Dev: CI/CD pipeline** | GitHub Actions workflow (lint, test, build, deploy) | Claude |
+| 5 | **Dev: Service factory** | /lib/services/factory.ts dependency injection pattern | Claude |
+| 5 | **Dev: Feature flags module** | /lib/feature-flags.ts with env-based flags | Claude |
+| 5 | **Dev: Request tracing** | X-Request-ID header propagation across all requests | Claude |
 
 **Acceptance Criteria Phase 1:**
 - [ ] User can enter URL and receive analysis
@@ -2832,6 +3508,14 @@ const SCORING_WEIGHTS = {
 - [ ] **NEW (Content): AI disclaimer on results page**
 - [ ] **NEW (Content): Welcome email template implemented**
 - [ ] **NEW (Content): Social share templates pre-populate correctly**
+- [ ] **NEW (Dev): Env validation passes at build time (all required vars present)**
+- [ ] **NEW (Dev): Supabase types auto-generated from database schema**
+- [ ] **NEW (Dev): API middleware factory used in all routes (auth, rate-limit, validation)**
+- [ ] **NEW (Dev): CI/CD pipeline passing (lint → test → build → deploy)**
+- [ ] **NEW (Dev): Service factory pattern for AI providers (mockable in tests)**
+- [ ] **NEW (Dev): Feature flags module active (at least 2 flags defined)**
+- [ ] **NEW (Dev): X-Request-ID header present on all API responses**
+- [ ] **NEW (Dev): Bundle size < 150KB first load JS (homepage)**
 
 ---
 
@@ -2863,6 +3547,9 @@ const SCORING_WEIGHTS = {
 | 5 | **Content: Recommendation templates** | 4 recommendation explanation templates | Claude |
 | 5 | **Content: Help articles (10)** | Getting Started + top Understanding articles | Claude |
 | 5 | **Content: Weekly digest email** | Weekly summary email template | Claude |
+| 5 | **Dev: Database indexes** | Composite indexes on high-query tables (analyses, scores) | Claude |
+| 5 | **Dev: API versioning** | /api/v1/ prefix for all public endpoints | Claude |
+| 5 | **Dev: Graceful shutdown** | Handle SIGTERM, complete in-flight requests | Claude |
 
 **Caching Strategy:**
 
@@ -2895,6 +3582,9 @@ const CACHE_TTL = {
 | 4 | **UX: Social proof placeholder** | "Others in your industry score X avg" | Claude |
 | 5 | MVP Polish | UI refinements, bug fixes | Claude |
 | 5 | **UX: Mobile dashboard** | Bottom nav, swipeable history | Claude |
+| 5 | **Dev: Bundle analyzer** | @next/bundle-analyzer integration | Claude |
+| 5 | **Dev: Preview environments** | Vercel preview URLs per PR | Claude |
+| 5 | **Dev: Performance monitoring** | Core Web Vitals tracking (LCP, FID, CLS) | Claude |
 
 **Freemium Gating Rules:**
 
@@ -2991,6 +3681,9 @@ const PRODUCTS = {
 | 3 | Dashboard alerts | In-app notification center | Claude |
 | 4 | Monitoring settings | User preferences for alerts | Claude |
 | 5 | Launch preparation | Final testing, documentation | Claude |
+| 5 | **Dev: Drizzle ORM migration** | Database migrations versioning system | Claude |
+| 5 | **Dev: Background job retry** | Exponential backoff for failed CRON jobs | Claude |
+| 5 | **Dev: Webhook idempotency** | Prevent duplicate Stripe event processing | Claude |
 
 **Monitoring Schedule:**
 
@@ -3037,6 +3730,9 @@ const ALERT_THRESHOLDS = {
 | 4 | Referral system | Invite friends, get free analyses | Claude |
 | 4 | **RAG Optimization Score** | Full implementation (deferred from Phase 2) | Claude |
 | 5 | Analytics dashboard | Business metrics tracking | Claude |
+| 5 | **Dev: Feature flags Vercel Edge** | Migrate to Edge Config for production | Claude |
+| 5 | **Dev: Error boundary** | Global React error boundary with Sentry | Claude |
+| 5 | **Dev: Load testing** | k6/Artillery scripts for 100 concurrent users | Claude |
 
 **Why Add Google/Perplexity in Phase 4?**
 - By Week 7, we should have paying customers generating revenue
@@ -3092,6 +3788,19 @@ const ALERT_THRESHOLDS = {
 | 5 | **Content: Upgrade/churn emails** | Upgrade nudge + churn prevention templates | Claude |
 | 5 | **Content: Competitive insights copy** | Competitor report narrative templates | Claude |
 | 5 | **Content: i18n architecture** | Prepare for Spanish localization (Phase 5) | Claude |
+| 5 | **Dev: Database read replicas** | Supabase read replica for analytics queries | Claude |
+| 5 | **Dev: CDN caching strategy** | Vercel Edge Network for static + ISR pages | Claude |
+| 5 | **Dev: Health dashboard** | Internal status page with all service health | Claude |
+| 5 | **Dev: Runbook documentation** | On-call runbooks for common incidents | Claude |
+
+**Phase 4 Dev Checklist (End of Week 8):**
+- [ ] Feature flags on Vercel Edge Config
+- [ ] Global error boundary catching all React errors
+- [ ] Load testing passing for 100 concurrent users
+- [ ] Read replica configured for analytics
+- [ ] CDN cache hit rate > 80% on static content
+- [ ] Health dashboard accessible
+- [ ] Runbooks for all critical services documented
 
 ---
 
@@ -3513,6 +4222,30 @@ This roadmap represents a comprehensive strategic plan for the AI Perception Eng
 4. **Mobile-first** - SMBs check on phones, design for that
 5. **Celebration moments** - Delight users at key achievements
 
+**Full Stack Developer Review Summary (v7.0):**
+- Identified 14 critical development and DevOps gaps
+- Added Full Stack Development Architecture section (2.38)
+- Added Environment & Configuration Management (2.39) - Zod schema validation
+- Added Type-Safe Database Layer (2.40) - Supabase types + Drizzle ORM option + indexes
+- Added API Middleware & Route Patterns (2.41) - centralized middleware factory
+- Added CI/CD Pipeline (2.42) - GitHub Actions workflow with lint/test/build/deploy
+- Added Service Architecture & Dependency Injection (2.43) - factory pattern for testability
+- Added Performance & Bundle Optimization (2.44) - Core Web Vitals targets, lazy loading
+- Added Feature Flags & Gradual Rollout (2.45) - env-based → Vercel Edge Config
+- Added 22 new Dev tasks across all phases (7 Week 1, 4 Week 2, 3 Week 3, 3 Week 4, 3 Week 6, 6 Week 7-8)
+- Added 8 new Dev acceptance criteria for Phase 1
+- Added Phase 4 Dev Checklist with 7 criteria
+
+**Key Full Stack Principles:**
+1. **Type safety everywhere** - TypeScript strict mode, Zod validation, DB types
+2. **Fail fast on startup** - Env validation catches misconfig before runtime
+3. **Testability by design** - Factory pattern enables mocking, no hard dependencies
+4. **CI/CD is non-negotiable** - Every commit tested, every merge deployed
+5. **Observability from day 1** - Request tracing, health checks, error boundaries
+6. **Performance budgets** - Bundle size < 150KB, LCP < 2.5s, CLS < 0.1
+7. **Feature flags for safety** - New features behind flags, gradual rollout
+8. **Infrastructure as code** - No manual Vercel config, everything in repo
+
 **Recommended Next Action:**
 Begin Phase 1, Week 1, Day 1:
 - Database schema design + RLS policies
@@ -3531,6 +4264,7 @@ Begin Phase 1, Week 1, Day 1:
 *AI/Data Review by: Senior AI & Data Engineer Director - 400 years experience, ex-Google AI/DeepMind/OpenAI*
 *KG/SEO Review by: Senior Knowledge Graph & SEO Architect - 333 years experience, ex-Google Search/Wikidata/Schema.org*
 *Content Review by: Senior Technical Content Writer Director - 250 years experience, ex-Stripe/Notion/Figma*
+*Full Stack Review by: Senior Full Stack Developer Director - 359 years experience, ex-Google/Meta/Stripe/Amazon*
 *For: AI Perception Engineering Agency*
 *Date: November 25, 2024*
-*Version: 6.0 (Technical + UX/UI + AI/Data + KG/SEO + Content Review)*
+*Version: 7.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack Review)*

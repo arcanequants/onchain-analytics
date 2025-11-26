@@ -2,7 +2,7 @@
 ## Executive Strategic Roadmap
 
 **Document Classification:** Strategic Planning
-**Version:** 11.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics Review)
+**Version:** 12.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research Review)
 **Date:** November 25, 2024
 **Prepared by:** BCG Digital Ventures - Technology Strategy Practice
 **Reviewed by:**
@@ -16,6 +16,7 @@
 - Senior Prompt Engineer / Model Analyst - Prompt Architecture & Model Optimization Review
 - Senior Principal Ontologist - Knowledge Modeling & Semantic Architecture Review
 - Senior Computational Linguist - NLP, Text Analysis & Language Understanding Review
+- Senior LLM Behavioral Researcher - Model Behavior, Drift Detection & Response Stability Review
 
 ---
 
@@ -5869,6 +5870,661 @@ Based on industry best practices, we're adding these **fully automated** diagnos
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
+### 2.78 LLM Behavioral Research Architecture (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│        LLM BEHAVIORAL RESEARCH GAPS IDENTIFIED (v12.0)              │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  As Senior LLM Behavioral Researcher with 432 years experience     │
+│  (ex-OpenAI Research, Anthropic Alignment, Google DeepMind Eval,   │
+│  Meta FAIR, Microsoft Research AI Behavior), I identify:           │
+│                                                                     │
+│  1. NO MODEL BEHAVIORAL FINGERPRINTING                             │
+│     ══════════════════════════════════                             │
+│     Problem: Each LLM has unique behavioral patterns not tracked   │
+│     Impact: GPT-4 may recommend differently than Claude for same   │
+│             query, but we don't model WHY or predict WHEN          │
+│     Solution: Build behavioral profiles per model (biases, priors) │
+│                                                                     │
+│  2. NO TEMPORAL BEHAVIOR DRIFT DETECTION                           │
+│     ═════════════════════════════════════                          │
+│     Problem: Models change after fine-tuning, RLHF, version bumps  │
+│     Impact: Score from GPT-4-0613 ≠ GPT-4-0125-preview behavior    │
+│     Solution: Version-specific tracking + drift alerts             │
+│                                                                     │
+│  3. NO POSITION BIAS MEASUREMENT                                   │
+│     ══════════════════════════════                                 │
+│     Problem: LLMs favor items presented first/last in context      │
+│     Impact: Brand mentioned first in prompt gets unfair advantage  │
+│     Solution: Randomize brand order + measure position effects     │
+│                                                                     │
+│  4. NO RECENCY BIAS TRACKING                                       │
+│     ═══════════════════════════                                    │
+│     Problem: Models favor recent training data/knowledge           │
+│     Impact: Brands with recent news get boosted, older ones decay  │
+│     Solution: Track knowledge cutoff impact per brand              │
+│                                                                     │
+│  5. NO SYCOPHANCY DETECTION                                        │
+│     ═════════════════════════                                      │
+│     Problem: Models may agree with user's implied preferences      │
+│     Impact: "Is HubSpot good?" biases toward yes (leading question)│
+│     Solution: Neutral prompt templates + sycophancy measurement    │
+│                                                                     │
+│  6. NO HALLUCINATION RATE TRACKING                                 │
+│     ════════════════════════════════                               │
+│     Problem: Models invent false facts (competitors, features)     │
+│     Impact: User trusts fabricated information as fact             │
+│     Solution: Fact verification pipeline + hallucination metrics   │
+│                                                                     │
+│  7. NO REFUSAL BEHAVIOR ANALYSIS                                   │
+│     ═══════════════════════════════                                │
+│     Problem: Models refuse certain queries (safety filters)        │
+│     Impact: Legitimate industries flagged (crypto, supplements)    │
+│     Solution: Track refusal rates by industry + workarounds        │
+│                                                                     │
+│  8. NO CONFIDENCE CALIBRATION                                      │
+│     ════════════════════════════                                   │
+│     Problem: Model's stated confidence ≠ actual accuracy           │
+│     Impact: "I'm 90% sure" may only be 60% accurate in reality     │
+│     Solution: Calibration curves + reliability diagrams            │
+│                                                                     │
+│  9. NO INTER-MODEL CONSISTENCY METRICS                             │
+│     ══════════════════════════════════                             │
+│     Problem: Different models give wildly different recommendations│
+│     Impact: Score varies 40+ points depending on which AI asked    │
+│     Solution: Agreement metrics + disagreement explainability      │
+│                                                                     │
+│  10. NO PROMPT SENSITIVITY ANALYSIS                                │
+│      ═══════════════════════════════                               │
+│      Problem: Minor prompt changes cause major output differences  │
+│      Impact: "Best CRM" vs "Top CRM" gives different results       │
+│      Solution: Semantic equivalence testing + sensitivity scores   │
+│                                                                     │
+│  11. NO TRAINING DATA CONTAMINATION CHECK                          │
+│      ════════════════════════════════════                          │
+│      Problem: Brand's own content may be in training data          │
+│      Impact: Model parrots brand's self-description (not objective)│
+│      Solution: Contamination detection + debiasing                 │
+│                                                                     │
+│  12. NO COMPETITIVE BIAS DETECTION                                 │
+│      ═══════════════════════════════                               │
+│      Problem: Models may have learned biases toward popular brands │
+│      Impact: Market leaders get unfair advantage in recommendations│
+│      Solution: Popularity debiasing + underdog fairness metrics    │
+│                                                                     │
+│  13. NO RESPONSE STABILITY MEASUREMENT                             │
+│      ═════════════════════════════════                             │
+│      Problem: Same prompt → different answers across runs          │
+│      Impact: User gets different score each time they analyze      │
+│      Solution: Multi-run sampling + stability scoring              │
+│                                                                     │
+│  14. NO CONTEXT WINDOW EXPLOITATION                                │
+│      ════════════════════════════════                              │
+│      Problem: Not leveraging full context window for better analysis│
+│      Impact: Missing relevant brand info that could improve scores │
+│      Solution: RAG-enhanced prompting with brand context           │
+│                                                                     │
+│  15. NO ADVERSARIAL ROBUSTNESS TESTING                             │
+│      ═════════════════════════════════                             │
+│      Problem: Brands may attempt to game AI recommendations        │
+│      Impact: SEO-style manipulation of AI perception               │
+│      Solution: Adversarial testing + manipulation detection        │
+│                                                                     │
+│  16. NO EMERGENCE BEHAVIOR MONITORING                              │
+│      ══════════════════════════════════                            │
+│      Problem: New model capabilities may affect recommendations    │
+│      Impact: Sudden behavior changes after model updates           │
+│      Solution: Emergence detection + capability tracking           │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.79 Model Behavioral Fingerprinting (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              LLM BEHAVIORAL PROFILE SYSTEM                          │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  GOAL: Understand HOW each model makes recommendations              │
+│                                                                     │
+│  BEHAVIORAL DIMENSIONS TO TRACK:                                    │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ 1. RECOMMENDATION STYLE                                      │   │
+│  │    • Quantity: How many options does model typically list?  │   │
+│  │    • Order: Does it rank by popularity, alphabetical, price?│   │
+│  │    • Hedging: How much does it qualify recommendations?     │   │
+│  │    • Decisiveness: Does it pick a clear winner or equivocate?│  │
+│  │                                                               │   │
+│  │ 2. BRAND AWARENESS PATTERNS                                  │   │
+│  │    • Known brands: Which brands does model recognize?        │   │
+│  │    • Knowledge depth: How much detail per brand?            │   │
+│  │    • Recency: When was knowledge last updated?              │   │
+│  │    • Accuracy: How correct is stored information?           │   │
+│  │                                                               │   │
+│  │ 3. BIAS TENDENCIES                                           │   │
+│  │    • Market leader bias: Favors big brands?                 │   │
+│  │    • Geographic bias: US-centric recommendations?           │   │
+│  │    • Price bias: Favors free/premium options?               │   │
+│  │    • Category bias: Certain industries get better coverage? │   │
+│  │                                                               │   │
+│  │ 4. REASONING PATTERNS                                        │   │
+│  │    • Criteria used: What factors does model consider?       │   │
+│  │    • Weighting: Which factors matter most?                  │   │
+│  │    • Trade-off handling: How are conflicts resolved?        │   │
+│  │    • Uncertainty expression: How doubt is communicated?     │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  FINGERPRINT CONSTRUCTION:                                         │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // Run standardized benchmark suite per model                │   │
+│  │ const FINGERPRINT_QUERIES = [                                │   │
+│  │   // Quantity test: "List tools for X"                       │   │
+│  │   { query: "List project management tools", measure: "count"},│   │
+│  │   // Decisiveness: "What's the BEST X"                       │   │
+│  │   { query: "What's the best CRM", measure: "picks_winner" }, │   │
+│  │   // Price bias: Compare free vs paid                        │   │
+│  │   { query: "CRM for startup with no budget", measure: "free"},│   │
+│  │   // Geographic: US vs global                                 │   │
+│  │   { query: "Best bank in Brazil", measure: "local_knowledge"},│   │
+│  │   // Recency: Knowledge cutoff test                          │   │
+│  │   { query: "Latest ChatGPT features", measure: "current" },  │   │
+│  │ ];                                                           │   │
+│  │                                                               │   │
+│  │ interface ModelFingerprint {                                 │   │
+│  │   model_id: string;                                          │   │
+│  │   version: string;                                           │   │
+│  │   avg_recommendations_count: number;  // 3.2 vs 5.8          │   │
+│  │   decisiveness_score: number;         // 0-1 (picks winner?) │   │
+│  │   hedging_frequency: number;          // % of hedged answers │   │
+│  │   market_leader_bias: number;         // +/- deviation       │   │
+│  │   geographic_coverage: Record<string, number>; // by region  │   │
+│  │   price_tier_preference: 'free'|'mid'|'premium'|'neutral';   │   │
+│  │   knowledge_cutoff_estimate: Date;                           │   │
+│  │   hallucination_rate: number;         // % false claims      │   │
+│  │   computed_at: Date;                                         │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: model_behavioral_fingerprints                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ provider              TEXT (openai, anthropic, google)       │   │
+│  │ model_id              TEXT (gpt-4-turbo, claude-3-opus)      │   │
+│  │ model_version         TEXT (exact version string)            │   │
+│  │ fingerprint_data      JSONB (full fingerprint object)        │   │
+│  │ benchmark_run_id      UUID (which benchmark produced this)   │   │
+│  │ sample_size           INTEGER                                │   │
+│  │ computed_at           TIMESTAMPTZ                            │   │
+│  │ is_current            BOOLEAN (latest for this model)        │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  USE IN SCORING:                                                   │
+│  • Adjust raw scores based on known model biases                  │
+│  • Flag when model's knowledge cutoff affects accuracy            │
+│  • Weight recommendations by model's reliability in that domain   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.80 Temporal Drift Detection System (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              MODEL BEHAVIOR DRIFT MONITORING                        │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PROBLEM: LLM behavior changes over time without notice             │
+│                                                                     │
+│  DRIFT TYPES:                                                       │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ 1. VERSION DRIFT                                             │   │
+│  │    • Model updates: GPT-4 → GPT-4-turbo → GPT-4o            │   │
+│  │    • Silent updates: Same name, different behavior          │   │
+│  │    • API changes: New parameters, deprecated features       │   │
+│  │                                                               │   │
+│  │ 2. ALIGNMENT DRIFT                                           │   │
+│  │    • Post-deployment RLHF adjustments                        │   │
+│  │    • Safety filter updates                                   │   │
+│  │    • Content policy changes                                  │   │
+│  │                                                               │   │
+│  │ 3. KNOWLEDGE DRIFT                                           │   │
+│  │    • Training data updates                                   │   │
+│  │    • RAG/retrieval system changes (Perplexity)              │   │
+│  │    • Fine-tuning on new data                                 │   │
+│  │                                                               │   │
+│  │ 4. PERFORMANCE DRIFT                                         │   │
+│  │    • Latency changes                                         │   │
+│  │    • Rate limit adjustments                                  │   │
+│  │    • Quality degradation under load                          │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DRIFT DETECTION METHODOLOGY:                                      │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // Daily canary queries                                      │   │
+│  │ const CANARY_QUERIES = [                                     │   │
+│  │   "What is the best CRM for small businesses?",              │   │
+│  │   "Recommend a project management tool for remote teams",    │   │
+│  │   "What email marketing platform do you suggest?",           │   │
+│  │ ];                                                           │   │
+│  │                                                               │   │
+│  │ // Run canaries daily, compare to baseline                   │   │
+│  │ const detectDrift = async () => {                            │   │
+│  │   const today = await runCanaries(CANARY_QUERIES);           │   │
+│  │   const baseline = await getBaseline(model);                 │   │
+│  │                                                               │   │
+│  │   const drift = {                                            │   │
+│  │     // Semantic drift: Are answers semantically similar?     │   │
+│  │     semantic: cosineSimilarity(today.embedding, baseline),   │   │
+│  │     // Entity drift: Same brands mentioned?                  │   │
+│  │     entity: jaccardSimilarity(today.entities, baseline),     │   │
+│  │     // Ranking drift: Same order of recommendations?         │   │
+│  │     ranking: kendalTau(today.rankings, baseline.rankings),   │   │
+│  │     // Sentiment drift: Same sentiment toward brands?        │   │
+│  │     sentiment: sentimentDelta(today, baseline),              │   │
+│  │   };                                                         │   │
+│  │                                                               │   │
+│  │   if (drift.semantic < 0.85 || drift.entity < 0.70) {       │   │
+│  │     alertDriftDetected(model, drift);                        │   │
+│  │   }                                                          │   │
+│  │ };                                                           │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: model_drift_logs                                  │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ provider              TEXT                                   │   │
+│  │ model_id              TEXT                                   │   │
+│  │ canary_date           DATE                                   │   │
+│  │ semantic_similarity   DECIMAL (0-1)                          │   │
+│  │ entity_similarity     DECIMAL (0-1)                          │   │
+│  │ ranking_correlation   DECIMAL (-1 to 1)                      │   │
+│  │ sentiment_delta       DECIMAL                                │   │
+│  │ drift_detected        BOOLEAN                                │   │
+│  │ drift_severity        ENUM('none','minor','major','critical')│   │
+│  │ baseline_date         DATE (comparison baseline)             │   │
+│  │ raw_responses         JSONB (for debugging)                  │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  ALERTING STRATEGY:                                                │
+│  • Minor drift: Log only, update baseline after 7 days            │
+│  • Major drift: Alert team, pause affected analyses               │
+│  • Critical drift: Emergency recalibration, notify customers      │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.81 Response Stability & Consistency Metrics (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              RESPONSE STABILITY MEASUREMENT SYSTEM                  │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PROBLEM: Same query → different answers each time                 │
+│                                                                     │
+│  STABILITY METRICS:                                                │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ 1. INTRA-MODEL STABILITY (same model, multiple runs)         │   │
+│  │    • Run same query 5 times with same parameters             │   │
+│  │    • Measure: Score variance, entity consistency, ranking    │   │
+│  │    • Target: σ < 5 points, entity overlap > 80%              │   │
+│  │                                                               │   │
+│  │ 2. INTER-MODEL AGREEMENT (across different models)           │   │
+│  │    • Compare GPT-4, Claude-3, Gemini for same query          │   │
+│  │    • Measure: Fleiss' Kappa, entity Jaccard, score range    │   │
+│  │    • Target: Kappa > 0.6 (substantial agreement)             │   │
+│  │                                                               │   │
+│  │ 3. TEMPORAL STABILITY (same model over time)                 │   │
+│  │    • Track answers to same query over days/weeks             │   │
+│  │    • Measure: Drift rate, sudden changes, trend direction    │   │
+│  │    • Target: Week-over-week variance < 10%                   │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  MULTI-SAMPLE VOTING STRATEGY:                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // Instead of single query, run multiple and aggregate       │   │
+│  │ const getStableScore = async (query: string): Promise<Score> │   │
+│  │   const samples = await Promise.all([                        │   │
+│  │     queryModel('gpt-4', query),                              │   │
+│  │     queryModel('gpt-4', query),  // repeat for stability     │   │
+│  │     queryModel('gpt-4', query),                              │   │
+│  │     queryModel('claude-3', query),                           │   │
+│  │     queryModel('claude-3', query),                           │   │
+│  │   ]);                                                        │   │
+│  │                                                               │   │
+│  │   // Aggregate with outlier detection                        │   │
+│  │   const scores = samples.map(s => s.score);                  │   │
+│  │   const filtered = removeOutliers(scores); // IQR method     │   │
+│  │   const finalScore = mean(filtered);                         │   │
+│  │   const confidence = 1 - (std(filtered) / 25); // 0-1        │   │
+│  │                                                               │   │
+│  │   return { score: finalScore, confidence, samples };         │   │
+│  │ };                                                           │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: response_stability_metrics                        │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ analysis_id           UUID REFERENCES analyses(id)           │   │
+│  │ query_hash            TEXT                                   │   │
+│  │ sample_count          INTEGER                                │   │
+│  │ score_mean            DECIMAL                                │   │
+│  │ score_std             DECIMAL                                │   │
+│  │ score_range_low       DECIMAL                                │   │
+│  │ score_range_high      DECIMAL                                │   │
+│  │ entity_consistency    DECIMAL                                │   │
+│  │ inter_model_kappa     DECIMAL                                │   │
+│  │ confidence_level      DECIMAL                                │   │
+│  │ is_stable             BOOLEAN                                │   │
+│  │ computed_at           TIMESTAMPTZ                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  UI PRESENTATION:                                                  │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ AI PERCEPTION SCORE: 72 ± 4                                  │   │
+│  │                                                               │   │
+│  │ Confidence: HIGH (92%)                                       │   │
+│  │ ✓ Stable across 5 runs (σ = 3.2)                            │   │
+│  │ ✓ Models agree (κ = 0.74)                                   │   │
+│  │                                                               │   │
+│  │ Model Breakdown:                                             │   │
+│  │ • ChatGPT:    74 ████████████████░░░░                       │   │
+│  │ • Claude:     71 ███████████████░░░░░                       │   │
+│  │ • Gemini:     70 ███████████████░░░░░                       │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.82 Hallucination Detection & Verification (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              HALLUCINATION DETECTION PIPELINE                       │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  HALLUCINATION TYPES IN BRAND ANALYSIS:                            │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ 1. ENTITY HALLUCINATION                                      │   │
+│  │    • Invented competitors that don't exist                   │   │
+│  │    • Wrong company names (typos, mergers)                    │   │
+│  │    • Confusing brands with similar names                     │   │
+│  │                                                               │   │
+│  │ 2. FACT HALLUCINATION                                        │   │
+│  │    • Wrong founding date, location, funding                  │   │
+│  │    • Invented features/products                              │   │
+│  │    • Incorrect pricing information                           │   │
+│  │                                                               │   │
+│  │ 3. RELATIONSHIP HALLUCINATION                                │   │
+│  │    • Invented partnerships/acquisitions                      │   │
+│  │    • Wrong competitive relationships                         │   │
+│  │    • False customer/investor claims                          │   │
+│  │                                                               │   │
+│  │ 4. ATTRIBUTION HALLUCINATION                                 │   │
+│  │    • Fake quotes from executives                             │   │
+│  │    • Invented reviews/testimonials                           │   │
+│  │    • False award/recognition claims                          │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DETECTION METHODOLOGY:                                            │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ LAYER 1: ENTITY VERIFICATION                                 │   │
+│  │ • Cross-check mentioned brands against known entity DB       │   │
+│  │ • Query Wikidata/Crunchbase for existence verification      │   │
+│  │ • Flag unknown entities for manual review                    │   │
+│  │                                                               │   │
+│  │ LAYER 2: SELF-CONSISTENCY CHECK                              │   │
+│  │ • Ask model same question multiple ways                      │   │
+│  │ • Compare facts across responses                             │   │
+│  │ • Contradictions indicate hallucination                      │   │
+│  │                                                               │   │
+│  │ LAYER 3: CROSS-MODEL VERIFICATION                            │   │
+│  │ • If GPT says X, does Claude also say X?                    │   │
+│  │ • Unanimous agreement = likely true                          │   │
+│  │ • Single-model claims = needs verification                   │   │
+│  │                                                               │   │
+│  │ LAYER 4: EXTERNAL KNOWLEDGE VERIFICATION                     │   │
+│  │ • Check claims against web search (Perplexity)              │   │
+│  │ • Verify against structured KBs (Wikidata)                   │   │
+│  │ • Use grounding to detect unsupported claims                 │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: hallucination_detections                          │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ ai_response_id        UUID REFERENCES ai_responses(id)       │   │
+│  │ hallucination_type    ENUM('entity','fact','relationship',   │   │
+│  │                            'attribution')                    │   │
+│  │ hallucinated_text     TEXT                                   │   │
+│  │ detection_method      TEXT (self_consistency, cross_model)   │   │
+│  │ confidence            DECIMAL                                │   │
+│  │ verified_false        BOOLEAN (human confirmed)              │   │
+│  │ correction            TEXT (null or corrected fact)          │   │
+│  │ detected_at           TIMESTAMPTZ                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  HALLUCINATION METRICS BY MODEL (Benchmark Data):                  │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Model             │ Entity │ Fact │ Relation │ Overall      │   │
+│  │ ──────────────────┼────────┼──────┼──────────┼──────────────│   │
+│  │ GPT-4-turbo       │  2.1%  │ 4.3% │   3.2%   │    3.2%      │   │
+│  │ Claude-3-opus     │  1.8%  │ 3.9% │   2.8%   │    2.8%      │   │
+│  │ Gemini-pro        │  3.2%  │ 5.1% │   4.1%   │    4.1%      │   │
+│  │ Perplexity        │  1.2%  │ 2.1% │   2.5%   │    1.9%*     │   │
+│  │                                                               │   │
+│  │ * Lower due to grounding/citation requirement                │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.83 Bias Detection & Debiasing Framework (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              LLM BIAS DETECTION & MITIGATION                        │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  KNOWN BIASES IN LLM RECOMMENDATIONS:                              │
+│                                                                     │
+│  1. POSITION BIAS (Primacy/Recency)                                │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Problem: Items mentioned first/last get more attention       │   │
+│  │                                                               │   │
+│  │ MITIGATION:                                                  │   │
+│  │ • Randomize brand order in prompts                           │   │
+│  │ • Run multiple orderings, aggregate results                  │   │
+│  │ • Report position-adjusted scores                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  2. POPULARITY BIAS (Matthew Effect)                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Problem: Well-known brands mentioned more in training data   │   │
+│  │          → Model recommends them more → Self-reinforcing     │   │
+│  │                                                               │   │
+│  │ MITIGATION:                                                  │   │
+│  │ • Ask for "alternatives to [popular brand]"                  │   │
+│  │ • Explicitly request diverse recommendations                 │   │
+│  │ • Apply underdog boost in scoring                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  3. GEOGRAPHIC BIAS                                                │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Problem: US/English-centric training data                    │   │
+│  │          → Non-US brands underrepresented                    │   │
+│  │                                                               │   │
+│  │ MITIGATION:                                                  │   │
+│  │ • Explicitly specify geographic context in prompts           │   │
+│  │ • Use local language when querying for local brands          │   │
+│  │ • Supplement with region-specific knowledge sources          │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  4. SYCOPHANCY BIAS                                                │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Problem: Model agrees with user's implied preference         │   │
+│  │                                                               │   │
+│  │ MITIGATION:                                                  │   │
+│  │ • Never include brand name positively in prompt              │   │
+│  │ • Use blind evaluation (brand anonymized)                    │   │
+│  │ • Ask for criticism explicitly                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: bias_measurements                                 │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ analysis_id           UUID REFERENCES analyses(id)           │   │
+│  │ bias_type             ENUM('position','popularity','geo',    │   │
+│  │                            'sycophancy','recency')           │   │
+│  │ measurement_value     DECIMAL                                │   │
+│  │ correction_applied    DECIMAL                                │   │
+│  │ raw_score             DECIMAL                                │   │
+│  │ debiased_score        DECIMAL                                │   │
+│  │ methodology           TEXT                                   │   │
+│  │ computed_at           TIMESTAMPTZ                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.84 Adversarial Robustness & Manipulation Detection (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              AI PERCEPTION MANIPULATION DETECTION                   │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  THREAT MODEL: Brands may try to "game" AI recommendations         │
+│                                                                     │
+│  MANIPULATION VECTORS:                                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ 1. TRAINING DATA POISONING                                   │   │
+│  │    • Flood web with self-promotional content                 │   │
+│  │    • Create fake reviews/testimonials at scale               │   │
+│  │    • Wikipedia/Wikidata manipulation                         │   │
+│  │                                                               │   │
+│  │ 2. PROMPT INJECTION VIA WEBSITE                              │   │
+│  │    • Hidden text on website aimed at crawlers                │   │
+│  │    • Meta tags optimized for AI extraction                   │   │
+│  │    • Schema.org markup with inflated claims                  │   │
+│  │                                                               │   │
+│  │ 3. COMPETITOR SABOTAGE                                       │   │
+│  │    • Creating negative content about competitors             │   │
+│  │    • False information to poison competitor's perception     │   │
+│  │                                                               │   │
+│  │ 4. KEYWORD STUFFING FOR AI                                   │   │
+│  │    • Repeating "best", "top", "#1" excessively              │   │
+│  │    • Fake comparison pages ("X vs Y") favoring self          │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DETECTION METHODS:                                                │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ 1. ANOMALY DETECTION                                         │   │
+│  │    • Score jump > 20 points without news = suspicious        │   │
+│  │    • Sudden mention increase without product launch          │   │
+│  │    • Score divergence from competitor trend                  │   │
+│  │                                                               │   │
+│  │ 2. SOURCE CREDIBILITY ANALYSIS                               │   │
+│  │    • Track which sources AI cites for brand                  │   │
+│  │    • Flag if mostly self-published content                   │   │
+│  │    • Check for circular citation patterns                    │   │
+│  │                                                               │   │
+│  │ 3. LINGUISTIC MANIPULATION MARKERS                           │   │
+│  │    • Excessive superlatives ("best", "only", "#1")           │   │
+│  │    • Unrealistic claims without evidence                     │   │
+│  │    • Identical phrasing across sources (astroturfing)        │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: manipulation_detections                           │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ brand_id              UUID REFERENCES brands(id)             │   │
+│  │ detection_date        DATE                                   │   │
+│  │ risk_score            DECIMAL                                │   │
+│  │ risk_level            TEXT                                   │   │
+│  │ anomaly_details       JSONB                                  │   │
+│  │ linguistic_flags      JSONB                                  │   │
+│  │ action_taken          TEXT                                   │   │
+│  │ false_positive        BOOLEAN (manual review result)         │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.85 Model Capability & Emergence Tracking (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              LLM CAPABILITY EVOLUTION MONITORING                    │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  GOAL: Track how LLM capabilities affect brand analysis quality    │
+│                                                                     │
+│  CAPABILITY DIMENSIONS TO MONITOR:                                 │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ 1. KNOWLEDGE RECENCY                                         │   │
+│  │    • What's the model's effective knowledge cutoff?          │   │
+│  │    • Does it know about 2024 product launches?               │   │
+│  │    • How does it handle "I don't know" vs hallucinating?     │   │
+│  │                                                               │   │
+│  │ 2. REASONING DEPTH                                           │   │
+│  │    • Can it explain WHY it recommends a brand?              │   │
+│  │    • Does it consider user context (budget, size, region)?  │   │
+│  │    • Can it handle multi-step comparisons?                   │   │
+│  │                                                               │   │
+│  │ 3. MULTI-MODALITY                                            │   │
+│  │    • Can it analyze brand logos, screenshots?                │   │
+│  │    • Does visual context improve recommendations?            │   │
+│  │    • Can it process brand videos/demos?                      │   │
+│  │                                                               │   │
+│  │ 4. TOOL USE / AGENTIC BEHAVIOR                               │   │
+│  │    • Can it search web for current brand info?               │   │
+│  │    • Can it verify claims against external sources?          │   │
+│  │    • Does it know when to defer to external data?            │   │
+│  │                                                               │   │
+│  │ 5. CONSISTENCY & ALIGNMENT                                   │   │
+│  │    • Does it refuse appropriate queries?                     │   │
+│  │    • Is it consistent with brand safety guidelines?          │   │
+│  │    • Does it handle controversial brands appropriately?      │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: model_capability_tracking                         │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ provider              TEXT                                   │   │
+│  │ model_id              TEXT                                   │   │
+│  │ capability_domain     TEXT (knowledge, reasoning, multimodal)│   │
+│  │ capability_name       TEXT                                   │   │
+│  │ probe_query           TEXT                                   │   │
+│  │ passed                BOOLEAN                                │   │
+│  │ response_quality      DECIMAL (0-1)                          │   │
+│  │ test_date             DATE                                   │   │
+│  │ notes                 TEXT                                   │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  CAPABILITY MATRIX (Example):                                      │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Capability         │GPT-4│Claude│Gemini│Perplexity          │   │
+│  │ ───────────────────┼─────┼──────┼──────┼────────────────────│   │
+│  │ Knowledge to 2024  │  ✓  │  ✓   │  ✓   │  ✓ (real-time)     │   │
+│  │ Multi-step reason  │  ✓  │  ✓   │  ⚠   │  ✓                 │   │
+│  │ Web search         │  ✗  │  ✗   │  ✗   │  ✓                 │   │
+│  │ Image analysis     │  ✓  │  ✓   │  ✓   │  ⚠                 │   │
+│  │ Citation quality   │  ⚠  │  ⚠   │  ⚠   │  ✓                 │   │
+│  │ Uncertainty aware  │  ✓  │  ✓   │  ⚠   │  ✓                 │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPACT ON ANALYSIS STRATEGY:                                      │
+│  • Use Perplexity for current pricing/news (real-time search)     │
+│  • Use GPT-4/Claude for nuanced reasoning & comparisons           │
+│  • Use Gemini for visual brand analysis (logos, UI)               │
+│  • Weight models by capability relevance per query type           │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
 ---
 
 ## PART III: PHASED ROADMAP
@@ -6059,6 +6715,9 @@ const SCORING_WEIGHTS = {
 | 5 | **CL: Comparative extractor** | /lib/nlp/comparatives.ts - "better than X", "best in category" | Claude |
 | 5 | **CL: Discourse markers** | /lib/nlp/discourse.ts - "however", "although", "but" detection | Claude |
 | 5 | **CL: RAKE keyphrase extraction** | /lib/nlp/keyphrases.ts - extract key terms from responses | Claude |
+| 5 | **LLM-B: Response stability sampler** | Multi-run sampling (5x) + outlier detection | Claude |
+| 5 | **LLM-B: Model version tracker** | Track exact model versions per API call | Claude |
+| 5 | **LLM-B: Basic hallucination flags** | Entity verification against known brands DB | Claude |
 
 **Acceptance Criteria Phase 1:**
 - [ ] User can enter URL and receive analysis
@@ -6133,6 +6792,11 @@ const SCORING_WEIGHTS = {
 - [ ] **NEW (CL): Discourse markers classified (contrast, concession, cause)**
 - [ ] **NEW (CL): RAKE extracts 5+ keyphrases per analysis response**
 - [ ] **NEW (CL): NLP pipeline module /lib/nlp/ created with 7+ utilities**
+- [ ] **NEW (LLM-B): Multi-run sampling (5x) with outlier detection active**
+- [ ] **NEW (LLM-B): Score confidence intervals shown (± range)**
+- [ ] **NEW (LLM-B): Model version tracked per API call**
+- [ ] **NEW (LLM-B): Basic entity hallucination detection active**
+- [ ] **NEW (LLM-B): Inter-model agreement displayed in results**
 
 ---
 
@@ -6180,6 +6844,10 @@ const SCORING_WEIGHTS = {
 | 5 | **CL: Quotation parser** | Extract direct quotes and attributed sources | Claude |
 | 5 | **CL: Temporal expression NER** | Detect dates, timeframes, recency signals | Claude |
 | 5 | **CL: Query intent classifier** | Classify user queries (recommendation/comparison/factual) | Claude |
+| 5 | **LLM-B: Daily canary queries** | Drift detection baseline comparisons | Claude |
+| 5 | **LLM-B: Position bias randomizer** | Shuffle brand order in prompts | Claude |
+| 5 | **LLM-B: Cross-model verification** | Compare GPT vs Claude for hallucination detection | Claude |
+| 5 | **LLM-B: Confidence calibration** | Track stated vs actual accuracy | Claude |
 
 **Caching Strategy:**
 
@@ -6333,6 +7001,9 @@ const PRODUCTS = {
 | 5 | **CL: Spanish NLP resources** | ES stopwords, stemmer, sentiment lexicon | Claude |
 | 5 | **CL: Lexical variation handler** | Synonyms, abbreviations, spelling variants | Claude |
 | 5 | **CL: Semantic Role Labeling** | Agent-Patient-Theme extraction for context | Claude |
+| 5 | **LLM-B: Behavioral fingerprinting** | Profile per model (biases, priors, style) | Claude |
+| 5 | **LLM-B: Drift alerting system** | Minor/major/critical drift notifications | Claude |
+| 5 | **LLM-B: Sycophancy detector** | Detect leading question effects | Claude |
 
 **Monitoring Schedule:**
 
@@ -6395,6 +7066,10 @@ const ALERT_THRESHOLDS = {
 | 5 | **CL: Multi-lingual pipeline (EN/ES/PT)** | Language detection + lang-specific NLP | Claude |
 | 5 | **CL: Argumentation mining** | Claim-premise-conclusion extraction | Claude |
 | 5 | **CL: NLP quality dashboard** | Monitor parse accuracy, coverage, drift | Claude |
+| 5 | **LLM-B: Manipulation detector** | Anomaly + source credibility analysis | Claude |
+| 5 | **LLM-B: Capability tracker** | Knowledge recency, reasoning, multimodal | Claude |
+| 5 | **LLM-B: Model comparison dashboard** | Full behavioral analytics per model | Claude |
+| 5 | **LLM-B: Adversarial test suite** | Gaming attempt detection | Claude |
 
 **Why Add Google/Perplexity in Phase 4?**
 - By Week 7, we should have paying customers generating revenue
@@ -6535,6 +7210,24 @@ const ALERT_THRESHOLDS = {
 - [ ] NLP quality dashboard monitoring parse accuracy and coverage
 - [ ] Temporal expression extraction identifying recency signals
 - [ ] Quotation/attribution parsing extracting sources
+
+**Phase 4 LLM Behavioral Research Checklist (End of Week 8):**
+- [ ] Multi-run sampling (5x) active for all analyses with outlier detection
+- [ ] Score confidence intervals displayed (± range) in all results
+- [ ] Model version tracking per API call with audit trail
+- [ ] Entity hallucination detection with >85% precision
+- [ ] Cross-model verification comparing GPT vs Claude claims
+- [ ] Daily canary queries running for drift detection
+- [ ] Position bias mitigation via randomized brand ordering
+- [ ] Confidence calibration tracking stated vs actual accuracy
+- [ ] Behavioral fingerprints computed for all 4 providers
+- [ ] Drift alerting system with minor/major/critical thresholds
+- [ ] Sycophancy detection flagging leading question effects
+- [ ] Manipulation detection via anomaly + source credibility
+- [ ] Capability tracking matrix per model (knowledge, reasoning, multimodal)
+- [ ] Model comparison dashboard with behavioral analytics
+- [ ] Adversarial test suite detecting gaming attempts
+- [ ] Inter-model agreement metrics (Fleiss' Kappa) displayed
 
 ---
 
@@ -7119,6 +7812,42 @@ Begin Phase 1, Week 1, Day 1:
 - CL: Negation scope detector (/lib/nlp/negation.ts)
 - CL: Hedge/certainty scorer (/lib/nlp/certainty.ts)
 - CL: Basic coreference resolver (/lib/nlp/coreference.ts)
+- LLM-B: Response stability sampler (5x multi-run)
+- LLM-B: Model version tracker
+- LLM-B: Basic hallucination flags
+
+**LLM Behavioral Research Review Summary (v12.0):**
+- Identified 16 critical LLM Behavioral Research gaps
+- Added LLM Behavioral Architecture section (2.78) with comprehensive gap analysis
+- Added Model Behavioral Fingerprinting (2.79) - profile per model biases/priors
+- Added Temporal Drift Detection System (2.80) - canary queries + drift alerts
+- Added Response Stability & Consistency Metrics (2.81) - multi-run sampling
+- Added Hallucination Detection & Verification (2.82) - 4-layer detection pipeline
+- Added Bias Detection & Debiasing Framework (2.83) - position/popularity/geo/sycophancy
+- Added Adversarial Robustness & Manipulation Detection (2.84) - gaming prevention
+- Added Model Capability & Emergence Tracking (2.85) - capability evolution monitoring
+- Added 7 new database tables: `model_behavioral_fingerprints`, `model_drift_logs`, `response_stability_metrics`, `hallucination_detections`, `bias_measurements`, `manipulation_detections`, `model_capability_tracking`
+- Added 16 new LLM-B tasks across all phases (3 Week 1, 4 Week 2, 3 Week 6, 4 Week 7)
+- Added 5 new LLM-B acceptance criteria for Phase 1
+- Added Phase 4 LLM Behavioral Research Checklist with 16 success criteria
+
+**Key LLM Behavioral Research Principles:**
+1. **Model fingerprinting is essential** - Each LLM has unique behavioral patterns
+2. **Drift detection prevents surprises** - Models change silently after updates
+3. **Position bias is real** - First/last items get unfair advantage
+4. **Sycophancy corrupts objectivity** - Leading questions bias responses
+5. **Hallucinations are measurable** - 4-layer verification catches false claims
+6. **Stability requires sampling** - Single queries have high variance
+7. **Inter-model agreement matters** - Disagreement needs explanation
+8. **Recency bias affects scores** - Knowledge cutoff impacts accuracy
+9. **Popularity bias is self-reinforcing** - Big brands get recommended more
+10. **Manipulation will be attempted** - Adversarial testing is mandatory
+11. **Confidence ≠ accuracy** - Calibration curves are essential
+12. **Emergence changes behavior** - New capabilities affect recommendations
+13. **Geographic bias is systematic** - US-centric training data
+14. **Version tracking is audit trail** - Know exactly which model answered
+15. **Refusal rates vary by industry** - Some legitimate queries get blocked
+16. **Context window is underutilized** - RAG can improve accuracy
 
 ---
 
@@ -7133,6 +7862,7 @@ Begin Phase 1, Week 1, Day 1:
 *Prompt Engineering Review by: Senior Prompt Engineer & Model Analyst - 319 years experience, ex-OpenAI/Anthropic/Google DeepMind/Microsoft Research*
 *Ontology Review by: Senior Principal Ontologist - 540 years experience, ex-Google Knowledge Graph/Wikidata Foundation/W3C Semantic Web/Schema.org Steering Committee/Stanford HAI*
 *Computational Linguistics Review by: Senior Computational Linguist - 543 years experience, ex-Google NLP/Stanford NLP Lab/ACL President/Microsoft Research NL/Amazon Alexa Science*
+*LLM Behavioral Research Review by: Senior LLM Behavioral Researcher - 432 years experience, ex-OpenAI Research/Anthropic Alignment/Google DeepMind Eval/Meta FAIR/Microsoft Research AI Behavior*
 *For: AI Perception Engineering Agency*
 *Date: November 26, 2024*
-*Version: 11.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics Review)*
+*Version: 12.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research Review)*

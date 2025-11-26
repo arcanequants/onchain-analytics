@@ -2,7 +2,7 @@
 ## Executive Strategic Roadmap
 
 **Document Classification:** Strategic Planning
-**Version:** 15.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering Review)
+**Version:** 16.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering + Backend Engineering Review)
 **Date:** November 26, 2024
 **Prepared by:** BCG Digital Ventures - Technology Strategy Practice
 **Reviewed by:**
@@ -20,6 +20,7 @@
 - Senior Adversarial AI Security Specialist - AI Attack Surface, Red Team & Security Hardening Review
 - Senior MLOps Engineer Director - ML Infrastructure, Model Serving & Production AI Systems Review
 - Senior Data Engineer (Architect Level) - Data Modeling, Quality, Lineage & Governance Review
+- Senior Backend Engineer (Python/Rust) - API Design, Concurrency, Error Handling & Reliability Review
 
 ---
 
@@ -9385,6 +9386,1065 @@ omArchive(userId);                           │   │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
+### 2.112 Backend Engineering Architecture Gap Analysis (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│        BACKEND ENGINEERING ARCHITECT REVIEW (v16.0)                 │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  REVIEWER: Senior Director Backend Engineer (Python/Rust)          │
+│  EXPERIENCE: 1,200 years - ex-Google Infrastructure/Amazon AWS/    │
+│              Meta Backend/Netflix Platform/Dropbox Core/Discord/   │
+│              Cloudflare Workers/Figma Multiplayer/Linear Eng       │
+│  DATE: November 26, 2024                                           │
+│                                                                     │
+│  ════════════════════════════════════════════════════════════════  │
+│  METHODOLOGY: Line-by-line review with 16 critical gap analysis    │
+│  ════════════════════════════════════════════════════════════════  │
+│                                                                     │
+│  IDENTIFIED GAPS (16 Critical Backend Engineering Issues):         │
+│                                                                     │
+│  1. NO STRUCTURED ERROR HANDLING                                   │
+│     Current: Generic try/catch, no error taxonomy                  │
+│     Problem: Can't differentiate retriable vs fatal errors         │
+│     Solution: Result<T,E> pattern with typed error hierarchy       │
+│                                                                     │
+│  2. NO REQUEST CONTEXT PROPAGATION                                 │
+│     Current: X-Request-ID mentioned but no context chain           │
+│     Problem: Can't correlate logs across service boundaries        │
+│     Solution: AsyncLocalStorage context with trace/span IDs        │
+│                                                                     │
+│  3. NO GRACEFUL SHUTDOWN HANDLING                                  │
+│     Current: Mentioned but no drain/cleanup implementation         │
+│     Problem: In-flight requests lost on deploy, data corruption    │
+│     Solution: SIGTERM handler with connection draining             │
+│                                                                     │
+│  4. NO CONNECTION POOLING STRATEGY                                 │
+│     Current: Direct Supabase client instantiation                  │
+│     Problem: Connection exhaustion under load, cold start latency  │
+│     Solution: Pooled connections with health checks                │
+│                                                                     │
+│  5. NO STRUCTURED CONCURRENCY                                      │
+│     Current: Promise.all without cancellation or timeout           │
+│     Problem: Leaked promises, resource exhaustion, zombie requests │
+│     Solution: Promise.allSettled + AbortController + timeout       │
+│                                                                     │
+│  6. NO BACKPRESSURE MECHANISM                                      │
+│     Current: Queue system mentioned but no flow control            │
+│     Problem: Server overwhelmed, cascading failures                │
+│     Solution: Semaphore-based concurrency limiting                 │
+│                                                                     │
+│  7. NO TYPE-SAFE API CONTRACTS                                     │
+│     Current: Zod for AI responses, but API inputs/outputs ad-hoc   │
+│     Problem: Runtime errors, inconsistent API behavior             │
+│     Solution: End-to-end type safety with shared schemas           │
+│                                                                     │
+│  8. NO IDEMPOTENCY KEYS FOR MUTATIONS                              │
+│     Current: Webhook idempotency mentioned but not generalized     │
+│     Problem: Duplicate analysis on retry, billing issues           │
+│     Solution: Idempotency-Key header with deduplication window     │
+│                                                                     │
+│  9. NO HEALTH CHECK DEPTH                                          │
+│     Current: /api/health returns OK                                │
+│     Problem: Shallow check misses downstream failures              │
+│     Solution: Deep health with dependency status + degraded mode   │
+│                                                                     │
+│  10. NO RESOURCE CLEANUP (Memory/Handles)                          │
+│      Current: No explicit cleanup patterns                         │
+│      Problem: Memory leaks in long-running serverless functions    │
+│      Solution: Disposable pattern with finally blocks              │
+│                                                                     │
+│  11. NO CACHING INVALIDATION STRATEGY                              │
+│      Current: TTL-based caching only                               │
+│      Problem: Stale data after updates, cache stampede             │
+│      Solution: Event-driven invalidation + stale-while-revalidate  │
+│                                                                     │
+│  12. NO API PAGINATION STANDARDS                                   │
+│      Current: Implicit pagination in dashboard                     │
+│      Problem: Inconsistent pagination, N+1 queries, timeout        │
+│      Solution: Cursor-based pagination with consistent interface   │
+│                                                                     │
+│  13. NO STRUCTURED LOGGING FORMAT                                  │
+│      Current: "Structured JSON logs" mentioned, no schema          │
+│      Problem: Log parsing fails, alerts don't fire                 │
+│      Solution: Canonical log format with required fields           │
+│                                                                     │
+│  14. NO TIMEOUT BUDGET PROPAGATION                                 │
+│      Current: Per-call timeouts, no request-level budget           │
+│      Problem: Timeout at boundary but work already done upstream   │
+│      Solution: Deadline propagation from edge to all dependencies  │
+│                                                                     │
+│  15. NO HOT PATH OPTIMIZATION                                      │
+│      Current: All code paths treated equally                       │
+│      Problem: Critical paths (analysis start) compete with noise   │
+│      Solution: Identify hot paths, optimize separately             │
+│                                                                     │
+│  16. NO DEPENDENCY INJECTION FOR TESTING                           │
+│      Current: Service factory mentioned, not implemented           │
+│      Problem: Can't unit test without hitting real services        │
+│      Solution: Interface-based DI with mock implementations        │
+│                                                                     │
+│  ════════════════════════════════════════════════════════════════  │
+│  SECTIONS TO ADD: 2.112-2.120 (9 new architecture sections)       │
+│  DATABASE TABLES TO ADD: 2 new tables                             │
+│  TASKS TO ADD: 20 new tasks across all phases                     │
+│  ════════════════════════════════════════════════════════════════  │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.113 Structured Error Handling (Result Pattern) (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│           STRUCTURED ERROR HANDLING (RUST-INSPIRED)                 │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PHILOSOPHY: Make errors first-class citizens, not exceptions       │
+│                                                                     │
+│  ERROR HIERARCHY:                                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ AppError (base)                                              │   │
+│  │ ├─ ValidationError (user input invalid)                      │   │
+│  │ │   ├─ UrlValidationError                                    │   │
+│  │ │   ├─ SchemaValidationError                                 │   │
+│  │ │   └─ PayloadTooLargeError                                  │   │
+│  │ ├─ AuthError (authentication/authorization)                  │   │
+│  │ │   ├─ UnauthenticatedError                                  │   │
+│  │ │   ├─ UnauthorizedError                                     │   │
+│  │ │   └─ TokenExpiredError                                     │   │
+│  │ ├─ RateLimitError (throttling)                               │   │
+│  │ │   └─ retryAfter: number                                    │   │
+│  │ ├─ ExternalServiceError (third-party failures)               │   │
+│  │ │   ├─ AIProviderError                                       │   │
+│  │ │   │   ├─ provider: string                                  │   │
+│  │ │   │   └─ isRetriable: boolean                              │   │
+│  │ │   ├─ DatabaseError                                         │   │
+│  │ │   └─ CacheError                                            │   │
+│  │ ├─ BusinessLogicError (domain rules violated)                │   │
+│  │ │   ├─ QuotaExceededError                                    │   │
+│  │ │   ├─ DuplicateAnalysisError                                │   │
+│  │ │   └─ InvalidStateTransitionError                           │   │
+│  │ └─ InternalError (bugs, unexpected states)                   │   │
+│  │     ├─ AssertionError                                        │   │
+│  │     └─ UnreachableCodeError                                  │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  RESULT TYPE (Rust-inspired):                                      │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // /lib/types/result.ts                                      │   │
+│  │                                                               │   │
+│  │ type Result<T, E = AppError> =                               │   │
+│  │   | { ok: true; value: T }                                   │   │
+│  │   | { ok: false; error: E };                                 │   │
+│  │                                                               │   │
+│  │ // Helper constructors                                       │   │
+│  │ function Ok<T>(value: T): Result<T, never> {                 │   │
+│  │   return { ok: true, value };                                │   │
+│  │ }                                                            │   │
+│  │                                                               │   │
+│  │ function Err<E>(error: E): Result<never, E> {                │   │
+│  │   return { ok: false, error };                               │   │
+│  │ }                                                            │   │
+│  │                                                               │   │
+│  │ // Usage example                                             │   │
+│  │ async function analyzeUrl(url: string): Promise<Result<Analysis>> {│
+│  │   const validation = validateUrl(url);                       │   │
+│  │   if (!validation.ok) return validation;                     │   │
+│  │                                                               │   │
+│  │   const aiResult = await queryAIProviders(url);              │   │
+│  │   if (!aiResult.ok) return aiResult;                         │   │
+│  │                                                               │   │
+│  │   return Ok({ url, score: calculateScore(aiResult.value) }); │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  ERROR PROPERTIES:                                                 │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ interface AppError {                                         │   │
+│  │   code: string;          // 'ERR_VALIDATION_URL'             │   │
+│  │   message: string;       // Human readable                   │   │
+│  │   httpStatus: number;    // 400, 401, 429, 500, etc         │   │
+│  │   isRetriable: boolean;  // Can client retry?                │   │
+│  │   isOperational: boolean;// Expected (true) vs bug (false)   │   │
+│  │   context?: Record<string, unknown>; // Debug info           │   │
+│  │   cause?: Error;         // Original error if wrapping       │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  API ERROR RESPONSE FORMAT:                                        │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ {                                                            │   │
+│  │   "error": {                                                 │   │
+│  │     "code": "ERR_RATE_LIMIT",                               │   │
+│  │     "message": "Too many requests. Please slow down.",      │   │
+│  │     "retryAfter": 60,                                       │   │
+│  │     "requestId": "req_abc123"                               │   │
+│  │   }                                                          │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /lib/errors/base.ts (error hierarchy)                             │
+│  /lib/errors/factory.ts (error constructors)                       │
+│  /lib/types/result.ts (Result type + helpers)                      │
+│  /lib/api/error-handler.ts (API error serialization)               │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.114 Request Context & Distributed Tracing (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│           REQUEST CONTEXT & DISTRIBUTED TRACING                     │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PURPOSE: Correlate all operations within a single user request     │
+│                                                                     │
+│  CONTEXT STRUCTURE:                                                 │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ interface RequestContext {                                   │   │
+│  │   // Identification                                          │   │
+│  │   requestId: string;     // Unique per request (UUID v7)     │   │
+│  │   traceId: string;       // For distributed tracing          │   │
+│  │   spanId: string;        // Current span in trace            │   │
+│  │   parentSpanId?: string; // Parent span if nested            │   │
+│  │                                                               │   │
+│  │   // Timing                                                  │   │
+│  │   startTime: number;     // hrtime.bigint()                  │   │
+│  │   deadline?: number;     // When request MUST complete       │   │
+│  │                                                               │   │
+│  │   // User context                                            │   │
+│  │   userId?: string;                                           │   │
+│  │   userPlan?: 'free' | 'starter' | 'pro';                     │   │
+│  │   userIp: string;                                            │   │
+│  │                                                               │   │
+│  │   // Request metadata                                        │   │
+│  │   method: string;                                            │   │
+│  │   path: string;                                              │   │
+│  │   userAgent?: string;                                        │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  ASYNC LOCAL STORAGE IMPLEMENTATION:                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // /lib/context/request-context.ts                           │   │
+│  │                                                               │   │
+│  │ import { AsyncLocalStorage } from 'async_hooks';             │   │
+│  │                                                               │   │
+│  │ const contextStorage = new AsyncLocalStorage<RequestContext>();│  │
+│  │                                                               │   │
+│  │ export function runWithContext<T>(                           │   │
+│  │   context: RequestContext,                                   │   │
+│  │   fn: () => T                                                │   │
+│  │ ): T {                                                       │   │
+│  │   return contextStorage.run(context, fn);                    │   │
+│  │ }                                                            │   │
+│  │                                                               │   │
+│  │ export function getContext(): RequestContext | undefined {   │   │
+│  │   return contextStorage.getStore();                          │   │
+│  │ }                                                            │   │
+│  │                                                               │   │
+│  │ export function getRequestId(): string {                     │   │
+│  │   return getContext()?.requestId ?? 'no-context';            │   │
+│  │ }                                                            │   │
+│  │                                                               │   │
+│  │ export function getRemainingBudget(): number {               │   │
+│  │   const ctx = getContext();                                  │   │
+│  │   if (!ctx?.deadline) return Infinity;                       │   │
+│  │   return Math.max(0, ctx.deadline - Date.now());             │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  MIDDLEWARE INTEGRATION:                                           │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // /middleware.ts                                            │   │
+│  │                                                               │   │
+│  │ export function middleware(request: NextRequest) {           │   │
+│  │   const requestId = request.headers.get('x-request-id')      │   │
+│  │     ?? crypto.randomUUID();                                  │   │
+│  │   const traceId = request.headers.get('x-trace-id')          │   │
+│  │     ?? requestId;                                            │   │
+│  │                                                               │   │
+│  │   // Set response headers for correlation                    │   │
+│  │   const response = NextResponse.next();                      │   │
+│  │   response.headers.set('x-request-id', requestId);           │   │
+│  │   response.headers.set('x-trace-id', traceId);               │   │
+│  │                                                               │   │
+│  │   return response;                                           │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  SPAN CREATION FOR OPERATIONS:                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // Usage in code                                             │   │
+│  │                                                               │   │
+│  │ async function queryOpenAI(prompt: string) {                 │   │
+│  │   return withSpan('openai.query', async (span) => {          │   │
+│  │     span.setAttribute('prompt.length', prompt.length);       │   │
+│  │                                                               │   │
+│  │     const result = await openai.chat.completions.create({...});│  │
+│  │                                                               │   │
+│  │     span.setAttribute('tokens.used', result.usage.total);    │   │
+│  │     return result;                                           │   │
+│  │   });                                                        │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /lib/context/request-context.ts                                   │
+│  /lib/context/span.ts                                              │
+│  /lib/context/with-context.ts (middleware wrapper)                 │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.115 Graceful Shutdown & Connection Draining (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│           GRACEFUL SHUTDOWN & CONNECTION DRAINING                   │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PROBLEM: Vercel serverless = no explicit shutdown, but CRON jobs   │
+│           and background tasks need proper cleanup                  │
+│                                                                     │
+│  SHUTDOWN SEQUENCE:                                                 │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ 1. SIGTERM received (or function timeout approaching)        │   │
+│  │    ↓                                                         │   │
+│  │ 2. Stop accepting new work (set isShuttingDown = true)       │   │
+│  │    ↓                                                         │   │
+│  │ 3. Wait for in-flight requests (max 10s)                     │   │
+│  │    ↓                                                         │   │
+│  │ 4. Flush pending writes (logs, metrics, cache)               │   │
+│  │    ↓                                                         │   │
+│  │ 5. Close connections (DB, Redis)                             │   │
+│  │    ↓                                                         │   │
+│  │ 6. Exit cleanly                                              │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // /lib/lifecycle/shutdown.ts                                │   │
+│  │                                                               │   │
+│  │ class ShutdownManager {                                      │   │
+│  │   private isShuttingDown = false;                            │   │
+│  │   private inFlightCount = 0;                                 │   │
+│  │   private cleanupHandlers: (() => Promise<void>)[] = [];     │   │
+│  │                                                               │   │
+│  │   registerCleanup(handler: () => Promise<void>) {            │   │
+│  │     this.cleanupHandlers.push(handler);                      │   │
+│  │   }                                                          │   │
+│  │                                                               │   │
+│  │   trackRequest() {                                           │   │
+│  │     if (this.isShuttingDown) {                               │   │
+│  │       throw new Error('Server is shutting down');            │   │
+│  │     }                                                        │   │
+│  │     this.inFlightCount++;                                    │   │
+│  │     return () => { this.inFlightCount--; };                  │   │
+│  │   }                                                          │   │
+│  │                                                               │   │
+│  │   async shutdown(timeoutMs = 10000) {                        │   │
+│  │     this.isShuttingDown = true;                              │   │
+│  │                                                               │   │
+│  │     // Wait for in-flight requests                           │   │
+│  │     const deadline = Date.now() + timeoutMs;                 │   │
+│  │     while (this.inFlightCount > 0 && Date.now() < deadline) {│   │
+│  │       await sleep(100);                                      │   │
+│  │     }                                                        │   │
+│  │                                                               │   │
+│  │     // Run cleanup handlers                                  │   │
+│  │     await Promise.allSettled(                                │   │
+│  │       this.cleanupHandlers.map(h => h())                     │   │
+│  │     );                                                       │   │
+│  │   }                                                          │   │
+│  │ }                                                            │   │
+│  │                                                               │   │
+│  │ export const shutdown = new ShutdownManager();               │   │
+│  │                                                               │   │
+│  │ // Register cleanup handlers                                 │   │
+│  │ shutdown.registerCleanup(async () => {                       │   │
+│  │   await flushLogs();                                         │   │
+│  │   await closeDbConnections();                                │   │
+│  │ });                                                          │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  VERCEL SERVERLESS CONSIDERATIONS:                                 │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // Vercel doesn't send SIGTERM, but we can detect timeout   │   │
+│  │                                                               │   │
+│  │ const MAX_DURATION = 10000; // 10s for hobby, 60s for pro   │   │
+│  │ const CLEANUP_BUFFER = 1000; // Reserve 1s for cleanup      │   │
+│  │                                                               │   │
+│  │ export function withTimeout<T>(                              │   │
+│  │   fn: () => Promise<T>,                                      │   │
+│  │   timeoutMs = MAX_DURATION - CLEANUP_BUFFER                  │   │
+│  │ ): Promise<T> {                                              │   │
+│  │   return Promise.race([                                      │   │
+│  │     fn(),                                                    │   │
+│  │     new Promise<never>((_, reject) =>                        │   │
+│  │       setTimeout(() => reject(new TimeoutError()), timeoutMs)│   │
+│  │     )                                                        │   │
+│  │   ]);                                                        │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /lib/lifecycle/shutdown.ts                                        │
+│  /lib/lifecycle/with-timeout.ts                                    │
+│  /lib/lifecycle/in-flight-tracker.ts                               │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.116 Structured Concurrency & Backpressure (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│           STRUCTURED CONCURRENCY & BACKPRESSURE                     │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PROBLEM: Uncontrolled Promise.all leads to:                       │
+│  • Memory exhaustion from too many concurrent AI calls             │
+│  • Timeouts when one provider is slow                              │
+│  • No way to cancel work when request is abandoned                 │
+│                                                                     │
+│  STRUCTURED CONCURRENCY PATTERN:                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // /lib/concurrency/task-group.ts                            │   │
+│  │                                                               │   │
+│  │ class TaskGroup<T> {                                         │   │
+│  │   private abortController: AbortController;                  │   │
+│  │   private tasks: Promise<T>[] = [];                          │   │
+│  │   private results: PromiseSettledResult<T>[] = [];           │   │
+│  │                                                               │   │
+│  │   constructor(private options: {                              │   │
+│  │     maxConcurrency?: number;                                  │   │
+│  │     timeout?: number;                                         │   │
+│  │   } = {}) {                                                   │   │
+│  │     this.abortController = new AbortController();            │   │
+│  │   }                                                          │   │
+│  │                                                               │   │
+│  │   get signal() { return this.abortController.signal; }       │   │
+│  │                                                               │   │
+│  │   spawn(task: (signal: AbortSignal) => Promise<T>) {         │   │
+│  │     this.tasks.push(task(this.signal));                      │   │
+│  │   }                                                          │   │
+│  │                                                               │   │
+│  │   async wait(): Promise<PromiseSettledResult<T>[]> {         │   │
+│  │     const timeout = this.options.timeout;                    │   │
+│  │     if (timeout) {                                           │   │
+│  │       setTimeout(() => this.abort(), timeout);               │   │
+│  │     }                                                        │   │
+│  │     return Promise.allSettled(this.tasks);                   │   │
+│  │   }                                                          │   │
+│  │                                                               │   │
+│  │   abort() {                                                  │   │
+│  │     this.abortController.abort();                            │   │
+│  │   }                                                          │   │
+│  │ }                                                            │   │
+│  │                                                               │   │
+│  │ // Usage                                                     │   │
+│  │ async function queryAllProviders(prompt: string) {           │   │
+│  │   const group = new TaskGroup<AIResponse>({ timeout: 30000 });│  │
+│  │                                                               │   │
+│  │   group.spawn((signal) => queryOpenAI(prompt, signal));      │   │
+│  │   group.spawn((signal) => queryAnthropic(prompt, signal));   │   │
+│  │                                                               │   │
+│  │   const results = await group.wait();                        │   │
+│  │   return results.filter(r => r.status === 'fulfilled');      │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  SEMAPHORE FOR BACKPRESSURE:                                       │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // /lib/concurrency/semaphore.ts                             │   │
+│  │                                                               │   │
+│  │ class Semaphore {                                            │   │
+│  │   private permits: number;                                   │   │
+│  │   private waiting: (() => void)[] = [];                      │   │
+│  │                                                               │   │
+│  │   constructor(private maxPermits: number) {                  │   │
+│  │     this.permits = maxPermits;                               │   │
+│  │   }                                                          │   │
+│  │                                                               │   │
+│  │   async acquire(): Promise<void> {                           │   │
+│  │     if (this.permits > 0) {                                  │   │
+│  │       this.permits--;                                        │   │
+│  │       return;                                                │   │
+│  │     }                                                        │   │
+│  │     await new Promise<void>(resolve => {                     │   │
+│  │       this.waiting.push(resolve);                            │   │
+│  │     });                                                      │   │
+│  │   }                                                          │   │
+│  │                                                               │   │
+│  │   release(): void {                                          │   │
+│  │     const next = this.waiting.shift();                       │   │
+│  │     if (next) {                                              │   │
+│  │       next();                                                │   │
+│  │     } else {                                                 │   │
+│  │       this.permits++;                                        │   │
+│  │     }                                                        │   │
+│  │   }                                                          │   │
+│  │                                                               │   │
+│  │   async withPermit<T>(fn: () => Promise<T>): Promise<T> {    │   │
+│  │     await this.acquire();                                    │   │
+│  │     try {                                                    │   │
+│  │       return await fn();                                     │   │
+│  │     } finally {                                              │   │
+│  │       this.release();                                        │   │
+│  │     }                                                        │   │
+│  │   }                                                          │   │
+│  │ }                                                            │   │
+│  │                                                               │   │
+│  │ // Global concurrency limits                                 │   │
+│  │ export const aiProviderSemaphore = new Semaphore(10);        │   │
+│  │ export const dbConnectionSemaphore = new Semaphore(5);       │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  CIRCUIT BREAKER INTEGRATION:                                      │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // Combine with existing circuit breaker                     │   │
+│  │                                                               │   │
+│  │ async function safeAICall(provider: string, prompt: string) {│   │
+│  │   // Check circuit breaker first                             │   │
+│  │   if (circuitBreaker.isOpen(provider)) {                     │   │
+│  │     throw new CircuitOpenError(provider);                    │   │
+│  │   }                                                          │   │
+│  │                                                               │   │
+│  │   // Acquire semaphore permit                                │   │
+│  │   return aiProviderSemaphore.withPermit(async () => {        │   │
+│  │     try {                                                    │   │
+│  │       const result = await callProvider(provider, prompt);   │   │
+│  │       circuitBreaker.recordSuccess(provider);                │   │
+│  │       return result;                                         │   │
+│  │     } catch (error) {                                        │   │
+│  │       circuitBreaker.recordFailure(provider);                │   │
+│  │       throw error;                                           │   │
+│  │     }                                                        │   │
+│  │   });                                                        │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /lib/concurrency/task-group.ts                                    │
+│  /lib/concurrency/semaphore.ts                                     │
+│  /lib/concurrency/rate-limiter.ts                                  │
+│  /lib/concurrency/with-concurrency.ts                              │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.117 Type-Safe API Layer (End-to-End Types) (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│           TYPE-SAFE API LAYER (END-TO-END)                          │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PROBLEM: TypeScript doesn't cross network boundaries               │
+│  SOLUTION: Shared schemas for request/response validation           │
+│                                                                     │
+│  ARCHITECTURE:                                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  ┌──────────────┐      ┌──────────────┐      ┌────────────┐ │   │
+│  │  │   Frontend   │      │  Shared      │      │   Backend  │ │   │
+│  │  │   (React)    │      │  Schemas     │      │  (API)     │ │   │
+│  │  └──────┬───────┘      │  (Zod)       │      └────┬───────┘ │   │
+│  │         │              └──────┬───────┘           │         │   │
+│  │         │                     │                   │         │   │
+│  │         ▼                     ▼                   ▼         │   │
+│  │  ┌──────────────────────────────────────────────────────┐  │   │
+│  │  │              INFERRED TYPESCRIPT TYPES              │  │   │
+│  │  │  Request: z.infer<typeof AnalyzeRequestSchema>      │  │   │
+│  │  │  Response: z.infer<typeof AnalyzeResponseSchema>    │  │   │
+│  │  └──────────────────────────────────────────────────────┘  │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  SHARED SCHEMA DEFINITIONS:                                        │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // /lib/schemas/api/analyze.ts                               │   │
+│  │                                                               │   │
+│  │ import { z } from 'zod';                                     │   │
+│  │                                                               │   │
+│  │ // Request schema                                            │   │
+│  │ export const AnalyzeRequestSchema = z.object({               │   │
+│  │   url: z.string().url().max(2048),                          │   │
+│  │   industry: z.string().optional(),                          │   │
+│  │   competitors: z.array(z.string().url()).max(5).optional(), │   │
+│  │ });                                                          │   │
+│  │                                                               │   │
+│  │ // Response schema                                           │   │
+│  │ export const AnalyzeResponseSchema = z.object({              │   │
+│  │   analysisId: z.string().uuid(),                            │   │
+│  │   status: z.enum(['pending', 'processing', 'completed']),   │   │
+│  │   estimatedTime: z.number().optional(),                     │   │
+│  │ });                                                          │   │
+│  │                                                               │   │
+│  │ // Error response schema                                     │   │
+│  │ export const ErrorResponseSchema = z.object({                │   │
+│  │   error: z.object({                                          │   │
+│  │     code: z.string(),                                       │   │
+│  │     message: z.string(),                                    │   │
+│  │     retryAfter: z.number().optional(),                      │   │
+│  │     requestId: z.string(),                                  │   │
+│  │   }),                                                        │   │
+│  │ });                                                          │   │
+│  │                                                               │   │
+│  │ // Inferred types                                            │   │
+│  │ export type AnalyzeRequest = z.infer<typeof AnalyzeRequestSchema>;│
+│  │ export type AnalyzeResponse = z.infer<typeof AnalyzeResponseSchema>;│
+│  │ export type ErrorResponse = z.infer<typeof ErrorResponseSchema>;│  │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  TYPE-SAFE API CLIENT:                                             │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // /lib/api/client.ts                                        │   │
+│  │                                                               │   │
+│  │ type ApiRoute<TReq, TRes> = {                                │   │
+│  │   path: string;                                              │   │
+│  │   method: 'GET' | 'POST' | 'PUT' | 'DELETE';                │   │
+│  │   requestSchema: z.ZodSchema<TReq>;                         │   │
+│  │   responseSchema: z.ZodSchema<TRes>;                        │   │
+│  │ };                                                           │   │
+│  │                                                               │   │
+│  │ export const api = {                                         │   │
+│  │   analyze: {                                                 │   │
+│  │     start: {                                                 │   │
+│  │       path: '/api/analyze',                                  │   │
+│  │       method: 'POST',                                        │   │
+│  │       requestSchema: AnalyzeRequestSchema,                   │   │
+│  │       responseSchema: AnalyzeResponseSchema,                 │   │
+│  │     },                                                       │   │
+│  │     status: {                                                │   │
+│  │       path: '/api/analyze/:id/status',                       │   │
+│  │       method: 'GET',                                         │   │
+│  │       requestSchema: z.object({ id: z.string().uuid() }),    │   │
+│  │       responseSchema: AnalysisStatusSchema,                  │   │
+│  │     },                                                       │   │
+│  │   },                                                         │   │
+│  │ } as const;                                                  │   │
+│  │                                                               │   │
+│  │ // Type-safe fetch wrapper                                   │   │
+│  │ export async function fetchApi<TReq, TRes>(                  │   │
+│  │   route: ApiRoute<TReq, TRes>,                               │   │
+│  │   data: TReq                                                 │   │
+│  │ ): Promise<Result<TRes, ErrorResponse>> {                    │   │
+│  │   // Validate request                                        │   │
+│  │   const validated = route.requestSchema.parse(data);         │   │
+│  │                                                               │   │
+│  │   const response = await fetch(route.path, {                 │   │
+│  │     method: route.method,                                    │   │
+│  │     body: JSON.stringify(validated),                         │   │
+│  │   });                                                        │   │
+│  │                                                               │   │
+│  │   const json = await response.json();                        │   │
+│  │                                                               │   │
+│  │   if (!response.ok) {                                        │   │
+│  │     return Err(ErrorResponseSchema.parse(json));             │   │
+│  │   }                                                          │   │
+│  │                                                               │   │
+│  │   // Validate response                                       │   │
+│  │   return Ok(route.responseSchema.parse(json));               │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /lib/schemas/api/*.ts (shared schemas)                            │
+│  /lib/api/client.ts (type-safe client)                             │
+│  /lib/api/server.ts (type-safe handlers)                           │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.118 Idempotency Layer (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│           IDEMPOTENCY LAYER FOR MUTATIONS                           │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PROBLEM: Network failures + retries = duplicate operations         │
+│  SOLUTION: Idempotency keys with response caching                   │
+│                                                                     │
+│  HOW IT WORKS:                                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  Client                    Server                             │   │
+│  │    │                         │                                │   │
+│  │    │  POST /api/analyze      │                                │   │
+│  │    │  Idempotency-Key: abc   │                                │   │
+│  │    │ ───────────────────────>│                                │   │
+│  │    │                         │  1. Check idempotency cache    │   │
+│  │    │                         │  2. Not found → process        │   │
+│  │    │                         │  3. Store response + key       │   │
+│  │    │  200 OK                 │                                │   │
+│  │    │ <───────────────────────│                                │   │
+│  │    │                         │                                │   │
+│  │    │  POST /api/analyze      │  (retry due to timeout)        │   │
+│  │    │  Idempotency-Key: abc   │                                │   │
+│  │    │ ───────────────────────>│                                │   │
+│  │    │                         │  1. Check idempotency cache    │   │
+│  │    │                         │  2. Found! Return cached       │   │
+│  │    │  200 OK (cached)        │                                │   │
+│  │    │ <───────────────────────│                                │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: idempotency_keys                                  │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ ├─ key                 TEXT PRIMARY KEY                      │   │
+│  │ ├─ user_id             UUID                                  │   │
+│  │ ├─ endpoint            TEXT                                  │   │
+│  │ ├─ request_hash        TEXT (hash of request body)           │   │
+│  │ ├─ response_status     INTEGER                               │   │
+│  │ ├─ response_body       JSONB                                 │   │
+│  │ ├─ processing          BOOLEAN DEFAULT FALSE                 │   │
+│  │ ├─ created_at          TIMESTAMP                             │   │
+│  │ ├─ expires_at          TIMESTAMP (created_at + 24h)          │   │
+│  │ └─ INDEX idx_expires (expires_at) for cleanup                │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // /lib/api/idempotency.ts                                   │   │
+│  │                                                               │   │
+│  │ export async function withIdempotency<T>(                    │   │
+│  │   key: string,                                               │   │
+│  │   userId: string,                                            │   │
+│  │   endpoint: string,                                          │   │
+│  │   requestHash: string,                                       │   │
+│  │   handler: () => Promise<T>                                  │   │
+│  │ ): Promise<T> {                                              │   │
+│  │   // 1. Check for existing key                               │   │
+│  │   const existing = await db.idempotency_keys.findUnique({    │   │
+│  │     where: { key }                                           │   │
+│  │   });                                                        │   │
+│  │                                                               │   │
+│  │   if (existing) {                                            │   │
+│  │     // Request hash mismatch = misuse                        │   │
+│  │     if (existing.request_hash !== requestHash) {             │   │
+│  │       throw new IdempotencyKeyReuseError();                  │   │
+│  │     }                                                        │   │
+│  │                                                               │   │
+│  │     // Still processing = concurrent request                 │   │
+│  │     if (existing.processing) {                               │   │
+│  │       throw new IdempotencyKeyInProgressError();             │   │
+│  │     }                                                        │   │
+│  │                                                               │   │
+│  │     // Return cached response                                │   │
+│  │     return existing.response_body as T;                      │   │
+│  │   }                                                          │   │
+│  │                                                               │   │
+│  │   // 2. Create processing record                             │   │
+│  │   await db.idempotency_keys.create({                         │   │
+│  │     data: {                                                  │   │
+│  │       key,                                                   │   │
+│  │       user_id: userId,                                       │   │
+│  │       endpoint,                                              │   │
+│  │       request_hash: requestHash,                             │   │
+│  │       processing: true,                                      │   │
+│  │       expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000)│   │
+│  │     }                                                        │   │
+│  │   });                                                        │   │
+│  │                                                               │   │
+│  │   // 3. Execute handler                                      │   │
+│  │   try {                                                      │   │
+│  │     const result = await handler();                          │   │
+│  │                                                               │   │
+│  │     // 4. Store successful response                          │   │
+│  │     await db.idempotency_keys.update({                       │   │
+│  │       where: { key },                                        │   │
+│  │       data: {                                                │   │
+│  │         processing: false,                                   │   │
+│  │         response_status: 200,                                │   │
+│  │         response_body: result                                │   │
+│  │       }                                                      │   │
+│  │     });                                                      │   │
+│  │                                                               │   │
+│  │     return result;                                           │   │
+│  │   } catch (error) {                                          │   │
+│  │     // Delete on failure (allow retry with same key)         │   │
+│  │     await db.idempotency_keys.delete({ where: { key } });    │   │
+│  │     throw error;                                             │   │
+│  │   }                                                          │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  CLIENT-SIDE KEY GENERATION:                                       │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // Generate key once per user action (not per retry)        │   │
+│  │                                                               │   │
+│  │ const idempotencyKey = `${userId}-${action}-${timestamp}`;   │   │
+│  │                                                               │   │
+│  │ // Store in component state to survive retries               │   │
+│  │ const [key] = useState(() => generateIdempotencyKey());      │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /lib/api/idempotency.ts                                           │
+│  /api/cron/cleanup-idempotency/route.ts (daily cleanup)            │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.119 Deep Health Checks & Degraded Mode (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│           DEEP HEALTH CHECKS & DEGRADED MODE                        │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PROBLEM: Shallow health check says "OK" but DB is down            │
+│  SOLUTION: Check all dependencies, report degraded status          │
+│                                                                     │
+│  HEALTH CHECK LEVELS:                                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ LEVEL 1: LIVENESS (/api/health/live)                        │   │
+│  │ └─ "Is the process running?"                                │   │
+│  │    • Always returns 200 if server responds                  │   │
+│  │    • Used by load balancer to detect crashed instances      │   │
+│  │                                                               │   │
+│  │ LEVEL 2: READINESS (/api/health/ready)                      │   │
+│  │ └─ "Can the process accept traffic?"                        │   │
+│  │    • Checks: DB connection, cache connection                │   │
+│  │    • Returns 503 during startup or shutdown                 │   │
+│  │    • Used by load balancer for traffic routing              │   │
+│  │                                                               │   │
+│  │ LEVEL 3: DEEP (/api/health/deep)                            │   │
+│  │ └─ "Are all features operational?"                          │   │
+│  │    • Checks: DB, cache, AI providers, external APIs         │   │
+│  │    • Returns component-level status                         │   │
+│  │    • Used for monitoring dashboards                         │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DEEP HEALTH RESPONSE:                                             │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ {                                                            │   │
+│  │   "status": "degraded",  // healthy | degraded | unhealthy  │   │
+│  │   "version": "1.2.3",                                       │   │
+│  │   "uptime": 86400,                                          │   │
+│  │   "timestamp": "2024-11-26T12:00:00Z",                      │   │
+│  │   "checks": {                                               │   │
+│  │     "database": {                                           │   │
+│  │       "status": "healthy",                                  │   │
+│  │       "latency_ms": 5,                                      │   │
+│  │       "details": { "pool_size": 5, "active": 2 }           │   │
+│  │     },                                                       │   │
+│  │     "cache": {                                              │   │
+│  │       "status": "healthy",                                  │   │
+│  │       "latency_ms": 2                                       │   │
+│  │     },                                                       │   │
+│  │     "openai": {                                             │   │
+│  │       "status": "degraded",                                 │   │
+│  │       "latency_ms": 2500,                                   │   │
+│  │       "details": { "error_rate_5m": 0.15 }                 │   │
+│  │     },                                                       │   │
+│  │     "anthropic": {                                          │   │
+│  │       "status": "healthy",                                  │   │
+│  │       "latency_ms": 800                                     │   │
+│  │     }                                                        │   │
+│  │   }                                                          │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DEGRADED MODE BEHAVIOR:                                           │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // /lib/health/degraded-mode.ts                              │   │
+│  │                                                               │   │
+│  │ interface DegradedModeConfig {                               │   │
+│  │   openai_down: {                                             │   │
+│  │     action: 'use_anthropic_only',                           │   │
+│  │     userMessage: 'Analysis uses Claude only (ChatGPT temp   │   │
+│  │                   unavailable)',                             │   │
+│  │   },                                                         │   │
+│  │   anthropic_down: {                                          │   │
+│  │     action: 'use_openai_only',                              │   │
+│  │     userMessage: 'Analysis uses ChatGPT only',              │   │
+│  │   },                                                         │   │
+│  │   both_ai_down: {                                            │   │
+│  │     action: 'return_cached_or_queue',                       │   │
+│  │     userMessage: 'AI services temporarily unavailable.      │   │
+│  │                   Your analysis is queued.',                │   │
+│  │   },                                                         │   │
+│  │   database_down: {                                           │   │
+│  │     action: 'maintenance_mode',                             │   │
+│  │     userMessage: 'Service temporarily unavailable',         │   │
+│  │   },                                                         │   │
+│  │ }                                                            │   │
+│  │                                                               │   │
+│  │ export function getDegradedBehavior(                        │   │
+│  │   healthStatus: HealthStatus                                 │   │
+│  │ ): DegradedBehavior {                                        │   │
+│  │   if (healthStatus.database !== 'healthy') {                │   │
+│  │     return config.database_down;                            │   │
+│  │   }                                                          │   │
+│  │   if (healthStatus.openai !== 'healthy' &&                  │   │
+│  │       healthStatus.anthropic !== 'healthy') {               │   │
+│  │     return config.both_ai_down;                             │   │
+│  │   }                                                          │   │
+│  │   // ... etc                                                 │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /lib/health/checker.ts                                            │
+│  /lib/health/degraded-mode.ts                                      │
+│  /api/health/live/route.ts                                         │
+│  /api/health/ready/route.ts                                        │
+│  /api/health/deep/route.ts                                         │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.120 Canonical Logging Format (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│           CANONICAL LOGGING FORMAT                                  │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PROBLEM: Ad-hoc logging makes debugging and alerting impossible   │
+│  SOLUTION: Structured logs with required fields                     │
+│                                                                     │
+│  LOG LEVELS:                                                       │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ TRACE: Detailed debugging (disabled in prod)                │   │
+│  │ DEBUG: Development debugging                                 │   │
+│  │ INFO: Normal operations (request start/end)                 │   │
+│  │ WARN: Recoverable issues (retry succeeded, fallback used)   │   │
+│  │ ERROR: Operation failed (will alert)                        │   │
+│  │ FATAL: System unusable (pages on-call)                      │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  CANONICAL LOG FORMAT:                                             │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ {                                                            │   │
+│  │   // Required fields                                         │   │
+│  │   "timestamp": "2024-11-26T12:00:00.123Z",                  │   │
+│  │   "level": "INFO",                                          │   │
+│  │   "message": "Analysis completed",                          │   │
+│  │   "service": "ai-perception",                               │   │
+│  │   "environment": "production",                              │   │
+│  │                                                               │   │
+│  │   // Request context (from AsyncLocalStorage)               │   │
+│  │   "request_id": "req_abc123",                               │   │
+│  │   "trace_id": "trace_xyz789",                               │   │
+│  │   "span_id": "span_def456",                                 │   │
+│  │   "user_id": "user_123",                                    │   │
+│  │                                                               │   │
+│  │   // Operation context                                       │   │
+│  │   "operation": "analyze",                                   │   │
+│  │   "duration_ms": 2500,                                      │   │
+│  │                                                               │   │
+│  │   // Custom fields (operation-specific)                     │   │
+│  │   "analysis_id": "ana_789",                                 │   │
+│  │   "url": "https://example.com",                             │   │
+│  │   "providers_queried": ["openai", "anthropic"],             │   │
+│  │   "score": 72,                                              │   │
+│  │   "cost_usd": 0.003,                                        │   │
+│  │                                                               │   │
+│  │   // Error fields (only on ERROR level)                     │   │
+│  │   "error_code": "ERR_AI_TIMEOUT",                           │   │
+│  │   "error_message": "OpenAI request timed out",              │   │
+│  │   "stack_trace": "Error: timeout\n    at ..."               │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  LOGGER IMPLEMENTATION:                                            │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // /lib/logging/logger.ts                                    │   │
+│  │                                                               │   │
+│  │ import { getContext } from '../context/request-context';     │   │
+│  │                                                               │   │
+│  │ type LogLevel = 'trace'|'debug'|'info'|'warn'|'error'|'fatal';│  │
+│  │                                                               │   │
+│  │ interface LogFields {                                        │   │
+│  │   [key: string]: unknown;                                   │   │
+│  │ }                                                            │   │
+│  │                                                               │   │
+│  │ class Logger {                                               │   │
+│  │   private baseFields: LogFields = {};                        │   │
+│  │                                                               │   │
+│  │   child(fields: LogFields): Logger {                         │   │
+│  │     const child = new Logger();                              │   │
+│  │     child.baseFields = { ...this.baseFields, ...fields };   │   │
+│  │     return child;                                            │   │
+│  │   }                                                          │   │
+│  │                                                               │   │
+│  │   private log(level: LogLevel, message: string, fields: LogFields = {}) {│
+│  │     const ctx = getContext();                                │   │
+│  │                                                               │   │
+│  │     const logEntry = {                                       │   │
+│  │       timestamp: new Date().toISOString(),                  │   │
+│  │       level: level.toUpperCase(),                           │   │
+│  │       message,                                               │   │
+│  │       service: 'ai-perception',                             │   │
+│  │       environment: process.env.NODE_ENV,                    │   │
+│  │       request_id: ctx?.requestId,                           │   │
+│  │       trace_id: ctx?.traceId,                               │   │
+│  │       span_id: ctx?.spanId,                                 │   │
+│  │       user_id: ctx?.userId,                                 │   │
+│  │       ...this.baseFields,                                   │   │
+│  │       ...fields,                                            │   │
+│  │     };                                                       │   │
+│  │                                                               │   │
+│  │     // Remove undefined values                               │   │
+│  │     Object.keys(logEntry).forEach(key =>                    │   │
+│  │       logEntry[key] === undefined && delete logEntry[key]   │   │
+│  │     );                                                       │   │
+│  │                                                               │   │
+│  │     console.log(JSON.stringify(logEntry));                  │   │
+│  │   }                                                          │   │
+│  │                                                               │   │
+│  │   trace(message: string, fields?: LogFields) { this.log('trace', message, fields); }│
+│  │   debug(message: string, fields?: LogFields) { this.log('debug', message, fields); }│
+│  │   info(message: string, fields?: LogFields) { this.log('info', message, fields); }│
+│  │   warn(message: string, fields?: LogFields) { this.log('warn', message, fields); }│
+│  │   error(message: string, fields?: LogFields) { this.log('error', message, fields); }│
+│  │   fatal(message: string, fields?: LogFields) { this.log('fatal', message, fields); }│
+│  │ }                                                            │   │
+│  │                                                               │   │
+│  │ export const logger = new Logger();                          │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  USAGE PATTERNS:                                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // Request start                                             │   │
+│  │ logger.info('Request started', {                             │   │
+│  │   operation: 'analyze',                                      │   │
+│  │   url: request.url,                                          │   │
+│  │ });                                                          │   │
+│  │                                                               │   │
+│  │ // Child logger for scoped context                          │   │
+│  │ const analysisLogger = logger.child({                       │   │
+│  │   analysis_id: analysisId                                   │   │
+│  │ });                                                          │   │
+│  │                                                               │   │
+│  │ analysisLogger.info('Querying OpenAI');                     │   │
+│  │ analysisLogger.warn('OpenAI slow, falling back');           │   │
+│  │                                                               │   │
+│  │ // Error with stack trace                                   │   │
+│  │ logger.error('Analysis failed', {                           │   │
+│  │   error_code: error.code,                                   │   │
+│  │   error_message: error.message,                             │   │
+│  │   stack_trace: error.stack,                                 │   │
+│  │ });                                                          │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /lib/logging/logger.ts                                            │
+│  /lib/logging/with-logging.ts (middleware wrapper)                 │
+│  /lib/logging/scrubber.ts (PII removal)                            │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
 ---
 
 ## PART III: PHASED ROADMAP
@@ -9589,6 +10649,11 @@ const SCORING_WEIGHTS = {
 | 5 | **Data: Dimensional model design** | dim_date, dim_brand, dim_provider, dim_industry design | Claude |
 | 5 | **Data: Data catalog seed** | data_catalog table + 10 initial table entries | Claude |
 | 5 | **Data: DQ expectations v1** | 15 core expectations for analyses/ai_responses | Claude |
+| 5 | **BE: Result type pattern** | /lib/result.ts - Result<T,E> with ok/err helpers | Claude |
+| 5 | **BE: AppError hierarchy** | /lib/errors.ts - ValidationError, ExternalError, NotFoundError | Claude |
+| 5 | **BE: Request context setup** | /lib/context.ts - AsyncLocalStorage for trace propagation | Claude |
+| 5 | **BE: Canonical logger** | /lib/logger.ts - structured JSON with redaction | Claude |
+| 5 | **BE: Shared Zod schemas** | /lib/schemas/analysis.ts - input/output type definitions | Claude |
 
 **Acceptance Criteria Phase 1:**
 - [ ] User can enter URL and receive analysis
@@ -9683,6 +10748,11 @@ const SCORING_WEIGHTS = {
 - [ ] **NEW (Data): Dimensional model designed (dim_date, dim_brand, dim_provider)**
 - [ ] **NEW (Data): Data catalog seeded with 10+ table entries**
 - [ ] **NEW (Data): 15 core DQ expectations defined for critical tables**
+- [ ] **NEW (BE): Result<T,E> pattern in all service functions**
+- [ ] **NEW (BE): AppError hierarchy implemented (5 error types)**
+- [ ] **NEW (BE): Request context propagation via AsyncLocalStorage**
+- [ ] **NEW (BE): Canonical logger with structured JSON output**
+- [ ] **NEW (BE): Shared Zod schemas for analysis input/output**
 
 ---
 
@@ -9746,6 +10816,11 @@ const SCORING_WEIGHTS = {
 | 5 | **Data: Lineage tracking v1** | data_lineage table + withLineage wrapper | Claude |
 | 5 | **Data: DQ runner v1** | /lib/data-quality/runner.ts + daily cron | Claude |
 | 5 | **Data: Contract definitions** | analyses + ai_responses contract.yaml files | Claude |
+| 5 | **BE: Graceful shutdown handler** | /lib/shutdown.ts - SIGTERM with drain period | Claude |
+| 5 | **BE: Connection pool manager** | /lib/db/pool.ts - refCount tracking for draining | Claude |
+| 5 | **BE: TaskGroup concurrency** | /lib/concurrency/task-group.ts - structured parallel | Claude |
+| 5 | **BE: Semaphore backpressure** | /lib/concurrency/semaphore.ts - max 50 AI calls | Claude |
+| 5 | **BE: Idempotency table** | idempotency_keys table + middleware | Claude |
 
 **Caching Strategy:**
 
@@ -9999,6 +11074,12 @@ const ALERT_THRESHOLDS = {
 | 5 | **Data: GDPR deletion API** | /api/admin/gdpr-delete endpoint + lineage-based deletion | Claude |
 | 5 | **Data: DR runbook v1** | /docs/DISASTER-RECOVERY-RUNBOOK.md | Claude |
 | 5 | **Data: Schema evolution validation** | Pre-deployment compatibility check | Claude |
+| 5 | **BE: Deep health checks** | /api/health/deep - 3-level health (liveness/readiness/deep) | Claude |
+| 5 | **BE: Degraded mode handler** | /lib/degraded-mode.ts - graceful service degradation | Claude |
+| 5 | **BE: OpenAPI 3.1 spec** | Auto-generated from Zod schemas + Swagger UI | Claude |
+| 5 | **BE: Timeout budget propagation** | X-Timeout-Budget header across service calls | Claude |
+| 5 | **BE: Hot path optimization** | 0 DB calls for cached analyses | Claude |
+| 5 | **BE: RFC 7807 error format** | Problem Details JSON for all error responses | Claude |
 
 **Why Add Google/Perplexity in Phase 4?**
 - By Week 7, we should have paying customers generating revenue
@@ -10223,6 +11304,32 @@ const ALERT_THRESHOLDS = {
 - [ ] DR runbook documented with 3 scenarios tested
 - [ ] GDPR deletion API functional (lineage-based cascade delete)
 - [ ] RPO < 1 hour for Tier 1 tables, RTO < 4 hours tested
+
+**Phase 4 Backend Engineering Checklist (End of Week 8):**
+- [ ] Result<T,E> pattern implemented for all service functions
+- [ ] AppError hierarchy covering all error domains (Validation, External, NotFound, Auth, RateLimit)
+- [ ] Request context propagation via AsyncLocalStorage across all API routes
+- [ ] trace_id, span_id, request_id present on every log entry
+- [ ] Graceful shutdown handling SIGTERM with 30s drain period
+- [ ] Connection draining for Supabase pooled connections (refCount tracking)
+- [ ] TaskGroup pattern used for parallel AI provider queries
+- [ ] Semaphore backpressure active (max 50 concurrent AI calls)
+- [ ] Shared Zod schemas in /lib/schemas/ (input + output type-safe)
+- [ ] OpenAPI 3.1 spec auto-generated from Zod schemas
+- [ ] Idempotency keys table active for all mutation endpoints
+- [ ] Idempotency middleware checking replay attacks (24h TTL)
+- [ ] Deep health check endpoint (/api/health/deep) validating all dependencies
+- [ ] Degraded mode responses when non-critical services fail
+- [ ] Canonical log format with 11 required fields (timestamp, level, trace_id, etc.)
+- [ ] Sensitive data redaction active in logs (API keys, emails, tokens)
+- [ ] Timeout budgets propagating across service calls
+- [ ] Hot path optimization: 0 DB calls for cached analyses
+- [ ] Dependency injection via service factory for 100% test mockability
+- [ ] API response times P99 < 2s for cached, < 15s for uncached analyses
+- [ ] Error responses follow RFC 7807 Problem Details format
+- [ ] Rate limiting headers (X-RateLimit-*) on all responses
+- [ ] Request validation fails fast with detailed error messages
+- [ ] Circuit breaker state visible in health check response
 
 ---
 
@@ -10974,6 +12081,45 @@ Begin Phase 1, Week 1, Day 1:
 - LLM-B: Basic hallucination flags
 - Data: Dimensional model design document
 - Data: data_catalog table seed with initial entries
+- BE: Result type pattern (/lib/result.ts)
+- BE: AppError hierarchy (/lib/errors.ts)
+- BE: Request context setup (/lib/context.ts)
+- BE: Canonical logger (/lib/logger.ts)
+- BE: Shared Zod schemas (/lib/schemas/)
+
+**Backend Engineering Review Summary (v16.0):**
+- Identified 16 critical Backend Engineering gaps in API architecture
+- Added Backend Engineering Architecture Gap Analysis (2.112) with comprehensive assessment
+- Added Structured Error Handling (2.113) - Rust-inspired Result<T,E> pattern
+- Added Request Context & Distributed Tracing (2.114) - AsyncLocalStorage propagation
+- Added Graceful Shutdown & Connection Draining (2.115) - SIGTERM handling with drain period
+- Added Structured Concurrency & Backpressure (2.116) - TaskGroup + Semaphore patterns
+- Added Type-Safe API Layer (2.117) - Shared Zod schemas with OpenAPI generation
+- Added Idempotency Layer (2.118) - Mutation deduplication with 24h TTL
+- Added Deep Health Checks & Degraded Mode (2.119) - 3-level health (liveness/readiness/deep)
+- Added Canonical Logging Format (2.120) - 11 required fields with redaction
+- Added 1 new database table: `idempotency_keys`
+- Added 16 new BE tasks across all phases (5 Week 2, 5 Week 3, 6 Week 7)
+- Added 5 new BE acceptance criteria for Phase 1
+- Added Phase 4 Backend Engineering Checklist with 24 success criteria
+
+**Key Backend Engineering Principles:**
+1. **Result<T,E> forces error handling** - No more try/catch spaghetti, explicit error paths
+2. **Request context enables tracing** - trace_id on every log entry, every service call
+3. **Graceful shutdown prevents data loss** - Complete in-flight requests before exit
+4. **Structured concurrency prevents leaks** - TaskGroup ensures all spawned tasks complete
+5. **Backpressure prevents overload** - Semaphore limits concurrent AI calls
+6. **Type-safe APIs catch bugs at compile time** - Zod validates both input and output
+7. **Idempotency enables safe retries** - Same request key always returns same response
+8. **Deep health checks validate dependencies** - Don't just say "I'm alive", prove connectivity
+9. **Degraded mode keeps users happy** - Partial results beat total failure
+10. **Canonical logging enables debugging** - Consistent format across all services
+11. **Sensitive data must be redacted** - API keys, emails, tokens never in logs
+12. **Timeout budgets propagate** - Caller's deadline flows to all downstream calls
+13. **Hot paths need optimization** - 0 DB calls for cached analyses
+14. **Dependency injection enables testing** - Mock everything, test in isolation
+15. **RFC 7807 Problem Details for errors** - Consistent error format for all clients
+16. **Circuit breaker state in health checks** - Know when providers are degraded
 
 ---
 
@@ -10992,6 +12138,7 @@ Begin Phase 1, Week 1, Day 1:
 *Adversarial AI Security Review by: Senior Adversarial AI Security Specialist - 102 years experience, ex-McKinsey Cyber/BCG Digital Ventures/Mandiant/CrowdStrike/Palo Alto Networks/Microsoft MSTIC/Google Project Zero*
 *MLOps Review by: Senior MLOps Engineer Director - 333 years experience, ex-Google ML Platform/Netflix ML Platform/Uber Michelangelo/Meta AI Infra/Amazon SageMaker/Databricks MLflow*
 *Data Engineering Review by: Senior Data Engineer (Architect Level) - 855 years experience, ex-Google BigQuery/Snowflake/Databricks/Netflix Data Platform/Meta Data Infra/Amazon Redshift*
+*Backend Engineering Review by: Senior Backend Engineer (Python/Rust) - 1200 years experience, ex-Google Core/Meta Infrastructure/Amazon Web Services/Cloudflare/Fastly/Stripe Platform/Netflix Edge/Uber Platform/Dropbox Infra*
 *For: AI Perception Engineering Agency*
 *Date: November 26, 2024*
-*Version: 15.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering Review)*
+*Version: 16.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering + Backend Engineering Review)*

@@ -2,9 +2,10 @@
 ## Executive Strategic Roadmap
 
 **Document Classification:** Strategic Planning
-**Version:** 1.0
+**Version:** 2.0 (Technical Review)
 **Date:** November 25, 2024
 **Prepared by:** BCG Digital Ventures - Technology Strategy Practice
+**Reviewed by:** Senior Software Director - Technical Architecture Review
 
 ---
 
@@ -108,6 +109,41 @@ This means:
 | Competitor enters market | Medium | Medium | Speed to market, UX excellence |
 | Low conversion to paid | Medium | High | Iterate on value proposition |
 | AI recommendations become deterministic | Low | Medium | Expand to optimization services |
+| Security breach (SSRF, injection) | Medium | Critical | Input validation, URL sanitization |
+| AI hallucinations in scoring | High | Medium | Golden dataset validation, user feedback |
+
+### 1.4 Budget Constraint Analysis ($100/month Maximum)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              OPERATIONAL BUDGET BREAKDOWN (PRE-REVENUE)             │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  TIER 1: FREE SERVICES (Use These First)                           │
+│  ├─ Vercel Hobby           $0    (100GB bandwidth, good for MVP)   │
+│  ├─ Supabase Free          $0    (500MB DB, 2GB storage)           │
+│  ├─ Upstash Free           $0    (10K requests/day)                │
+│  ├─ Resend Free            $0    (100 emails/day)                  │
+│  ├─ Google AI (Gemini)     $0    (Free tier very generous)         │
+│  └─ Subtotal               $0                                      │
+│                                                                     │
+│  TIER 2: PAY-PER-USE (Main Cost Driver)                            │
+│  ├─ OpenAI (GPT-3.5-turbo) ~$0.002/request                         │
+│  ├─ Anthropic (Haiku)      ~$0.003/request                         │
+│  └─ Perplexity             ~$0.005/request (DEFER TO PHASE 4)      │
+│                                                                     │
+│  BUDGET ALLOCATION (Worst Case Pre-Revenue):                       │
+│  ├─ Target: 50 analyses/day × 30 days = 1,500 analyses/month       │
+│  ├─ With 2 AI providers: 3,000 API calls                           │
+│  ├─ Cost: 3,000 × $0.0025 avg = $7.50/month                       │
+│  ├─ Safety buffer (caching fails): ×3 = $22.50/month              │
+│  └─ TOTAL PROJECTED: ~$25/month (75% buffer remaining)             │
+│                                                                     │
+│  ⚠️  CRITICAL DECISION: Start with 2 AI providers only            │
+│      (OpenAI + Anthropic). Add Google/Perplexity in Phase 4.       │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
 
 ---
 
@@ -366,9 +402,168 @@ Based on industry best practices, we're adding these **fully automated** diagnos
 │ overall_score   INTEGER (0-100)                             │
 │ recommendations JSONB                                       │
 └─────────────────────────────────────────────────────────────┘
+
+-- NEW: Cost Control & Observability Tables
+
+┌─────────────────────────────────────────────────────────────┐
+│ api_cost_tracking (CRITICAL for budget control)             │
+├─────────────────────────────────────────────────────────────┤
+│ id              UUID PRIMARY KEY                            │
+│ analysis_id     UUID REFERENCES analyses(id)                │
+│ provider        TEXT (openai, anthropic, google, perplexity)│
+│ model           TEXT (gpt-3.5-turbo, claude-haiku, etc.)    │
+│ tokens_input    INTEGER                                     │
+│ tokens_output   INTEGER                                     │
+│ cost_usd        DECIMAL(10,6)                               │
+│ latency_ms      INTEGER                                     │
+│ cached          BOOLEAN (true if served from cache)         │
+│ created_at      TIMESTAMPTZ                                 │
+└─────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────┐
+│ daily_cost_summary (for alerts and dashboards)              │
+├─────────────────────────────────────────────────────────────┤
+│ date            DATE PRIMARY KEY                            │
+│ total_cost_usd  DECIMAL(10,2)                               │
+│ total_analyses  INTEGER                                     │
+│ cache_hit_rate  DECIMAL(5,2) (percentage)                   │
+│ avg_cost_per_analysis DECIMAL(10,4)                         │
+│ openai_cost     DECIMAL(10,2)                               │
+│ anthropic_cost  DECIMAL(10,2)                               │
+│ google_cost     DECIMAL(10,2)                               │
+│ perplexity_cost DECIMAL(10,2)                               │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-### 2.3 API Cost Optimization Strategy
+### 2.4 Security Architecture (NEW - Critical)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    SECURITY REQUIREMENTS                            │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  1. INPUT VALIDATION (URLs)                                         │
+│     ════════════════════════                                        │
+│     - Validate URL format (reject malformed)                        │
+│     - Block internal IPs (127.0.0.1, 10.x, 192.168.x) → SSRF       │
+│     - Block localhost, file://, ftp://                              │
+│     - Whitelist only http:// and https://                          │
+│     - Max URL length: 2048 characters                              │
+│     Implementation: /lib/security/url-validator.ts                  │
+│                                                                     │
+│  2. RATE LIMITING                                                   │
+│     ═══════════════                                                 │
+│     - Per IP: 10 requests/minute (unauthenticated)                  │
+│     - Per User: Based on plan limits                                │
+│     - Per API Key: 100/minute (if public API)                       │
+│     Implementation: Upstash Rate Limit (already have Upstash)       │
+│                                                                     │
+│  3. PROMPT INJECTION PREVENTION                                     │
+│     ════════════════════════════                                    │
+│     - Sanitize brand names before inserting in prompts              │
+│     - Never include raw user input in system prompts                │
+│     - Use parameterized prompts with strict templates               │
+│     Implementation: /lib/ai/prompt-sanitizer.ts                     │
+│                                                                     │
+│  4. DATA PROTECTION                                                 │
+│     ═══════════════                                                 │
+│     - Hash sensitive data (emails for lookup)                       │
+│     - Row Level Security in Supabase (users see only their data)    │
+│     - API routes validate session before data access                │
+│     Implementation: Supabase RLS policies                           │
+│                                                                     │
+│  5. SECRETS MANAGEMENT                                              │
+│     ══════════════════                                              │
+│     - All API keys in Vercel env vars (not in code)                 │
+│     - Rotate keys quarterly                                         │
+│     - Separate keys for dev/staging/prod                            │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.5 Testing Strategy (NEW - Quality Assurance)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                       TESTING PYRAMID                               │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│                         ┌─────────┐                                 │
+│                        │   E2E   │  5-10 tests (critical flows)    │
+│                       ─┴─────────┴─                                 │
+│                     ┌───────────────┐                               │
+│                    │  Integration   │  20-30 tests (API routes)    │
+│                   ─┴───────────────┴─                               │
+│                 ┌───────────────────────┐                           │
+│                │       Unit Tests       │  50+ tests (functions)   │
+│               ─┴───────────────────────┴─                           │
+│                                                                     │
+│  TOOLS (Free/Budget-Friendly):                                     │
+│  ├─ Vitest (unit tests, fast, free)                                │
+│  ├─ Testing Library (React components, free)                       │
+│  ├─ Playwright (E2E, free, runs in Vercel preview)                 │
+│  └─ GitHub Actions (CI, free for public repos)                     │
+│                                                                     │
+│  CRITICAL TEST CASES:                                              │
+│  ├─ URL validation rejects malicious inputs                        │
+│  ├─ AI responses are parsed correctly                              │
+│  ├─ Scoring algorithm is deterministic                             │
+│  ├─ Rate limiting blocks excessive requests                        │
+│  ├─ Free users can't access paid features                          │
+│  ├─ Stripe webhook updates subscription correctly                  │
+│  └─ Analysis completes under 45 seconds                            │
+│                                                                     │
+│  GOLDEN DATASET (AI Quality):                                      │
+│  ├─ 20 known brands with expected AI responses                     │
+│  ├─ Manual scoring for comparison                                  │
+│  └─ Weekly regression test against golden dataset                  │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.6 Observability & Cost Control (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                  OBSERVABILITY STACK (FREE TIER)                    │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  1. LOGGING                                                        │
+│     ═══════                                                        │
+│     - Vercel Logs (free, 1 hour retention)                         │
+│     - Structured JSON logs for all API routes                      │
+│     - Log: analysis_id, duration_ms, tokens_used, cost_usd         │
+│                                                                     │
+│  2. REAL-TIME COST TRACKING                                        │
+│     ═══════════════════════                                        │
+│     - Track every AI API call cost in database                     │
+│     - Daily/weekly cost aggregation                                │
+│     - Alert when daily cost > $5 (50% of worst-case budget)       │
+│     Table: api_cost_tracking                                       │
+│     Columns: provider, tokens_in, tokens_out, cost_usd, date       │
+│                                                                     │
+│  3. HEALTH CHECKS                                                  │
+│     ═════════════                                                  │
+│     - /api/health → returns OK if all services connected           │
+│     - UptimeRobot (free) pings /api/health every 5 min            │
+│     - Email alert on downtime                                      │
+│                                                                     │
+│  4. ERROR TRACKING                                                 │
+│     ══════════════                                                 │
+│     - Sentry free tier (5K errors/month)                          │
+│     - Capture: AI failures, payment failures, auth errors          │
+│     - Source maps for debugging                                    │
+│                                                                     │
+│  5. ANALYTICS (Without Extra Cost)                                 │
+│     ═══════════════════════════                                    │
+│     - Vercel Analytics (included in Hobby)                         │
+│     - Track: page views, analysis starts, conversions              │
+│     - No need for Google Analytics initially                       │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.7 API Cost Optimization Strategy
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -463,14 +658,37 @@ Based on industry best practices, we're adding these **fully automated** diagnos
 
 | Day | Activity | Deliverable | Owner |
 |-----|----------|-------------|-------|
-| 1 | Database schema design | Migration files for new tables | Claude |
-| 1 | Set up AI provider clients | `/lib/ai/` with OpenAI, Anthropic clients | Claude |
+| 1 | Database schema design | Migration files for new tables + RLS policies | Claude |
+| 1 | Set up AI provider clients | `/lib/ai/` with OpenAI + Anthropic ONLY (budget) | Claude |
+| 1 | **Security: URL validator** | `/lib/security/url-validator.ts` - SSRF prevention | Claude |
 | 2 | URL analysis service | `/lib/url-analyzer.ts` - extract metadata from URLs | Claude |
 | 2 | Industry detection | `/lib/industry-detector.ts` - classify business type | Claude |
+| 2 | **Security: Rate limiting** | Upstash rate limit middleware | Claude |
 | 3 | Prompt engineering | `/lib/prompts/` - optimized prompts for each AI | Claude |
+| 3 | **Security: Prompt sanitizer** | `/lib/ai/prompt-sanitizer.ts` - prevent injection | Claude |
 | 3 | Response parser | `/lib/ai/response-parser.ts` - extract mentions, sentiment | Claude |
 | 4 | Scoring algorithm | `/lib/scoring.ts` - calculate 0-100 score | Claude |
+| 4 | **Cost tracking table** | `api_cost_tracking` table + logging | Claude |
+| 5 | **Unit tests setup** | Vitest config + first 20 unit tests | Claude |
 | 5 | Integration testing | Test full analysis flow end-to-end | Claude |
+
+**NEW: Security Deliverables Week 1:**
+```typescript
+// /lib/security/url-validator.ts
+export function validateURL(url: string): { valid: boolean; error?: string } {
+  // 1. Check URL format
+  // 2. Block internal IPs (SSRF prevention)
+  // 3. Block non-http(s) protocols
+  // 4. Max length 2048 chars
+}
+
+// /lib/ai/prompt-sanitizer.ts
+export function sanitizeBrandName(name: string): string {
+  // Remove injection attempts
+  // Escape special characters
+  // Max length enforcement
+}
+```
 
 **Key Technical Decisions:**
 
@@ -498,41 +716,52 @@ const SCORING_WEIGHTS = {
 |-----|----------|-------------|-------|
 | 1 | Analysis API endpoint | `/api/analyze/route.ts` | Claude |
 | 1 | Analysis status endpoint | `/api/analyze/[id]/status/route.ts` | Claude |
+| 1 | **Health check endpoint** | `/api/health/route.ts` - uptime monitoring | Claude |
 | 2 | Results page (UI) | `/app/results/[id]/page.tsx` | Claude |
 | 2 | Score visualization | `<PerceptionScore />` component | Claude |
 | 3 | AI breakdown cards | `<AIProviderCard />` component | Claude |
 | 3 | Recommendations list | `<RecommendationCard />` component | Claude |
 | 4 | Loading/progress states | Analysis progress animation | Claude |
-| 4 | Error handling | Graceful degradation, retry logic | Claude |
-| 5 | End-to-end testing | Full user flow testing | Claude |
+| 4 | Error handling | Graceful degradation, retry with backoff | Claude |
+| 4 | **Fallback logic** | If OpenAI fails → use Anthropic only (no crash) | Claude |
+| 5 | **Integration tests** | 20+ tests for API routes | Claude |
+| 5 | End-to-end testing | Full user flow with Playwright | Claude |
 
 **Acceptance Criteria Phase 1:**
 - [ ] User can enter URL and receive analysis
-- [ ] Analysis queries at least 2 AI providers (OpenAI + Anthropic)
+- [ ] Analysis queries 2 AI providers (OpenAI + Anthropic) ← BUDGET DECISION
 - [ ] Results show score (0-100) with visual representation
 - [ ] Results show per-provider breakdown
 - [ ] At least 3 recommendations generated
 - [ ] Analysis completes in < 45 seconds
 - [ ] All API costs tracked per analysis
+- [ ] **NEW: Malicious URLs rejected (security)**
+- [ ] **NEW: Rate limit enforced (10 req/min unauthenticated)**
+- [ ] **NEW: 20+ unit tests passing**
+- [ ] **NEW: Health check returns 200 OK**
 
 ---
 
 ### PHASE 2: CORE ENGINE [Weeks 3-4]
 
-**Objective:** Complete AI integration, add caching, implement freemium gating
+**Objective:** Add caching, implement freemium gating, advanced diagnostics
 
-#### Week 3: Full AI Integration + Caching
+⚠️ **BUDGET DECISION:** Google AI and Perplexity deferred to Phase 4 to stay under $100/month.
+
+#### Week 3: Caching + Advanced Diagnostics
 
 | Day | Activity | Deliverable | Owner |
 |-----|----------|-------------|-------|
-| 1 | Google AI integration | Gemini API client | Claude |
-| 1 | Perplexity integration | Perplexity API client | Claude |
-| 2 | Response caching layer | Redis caching for AI responses | Claude |
-| 2 | Cache invalidation | TTL-based + manual invalidation | Claude |
+| 1 | Response caching layer | Redis caching for AI responses | Claude |
+| 1 | Cache invalidation | TTL-based + manual invalidation | Claude |
+| 2 | **Hallucination Detection** | Compare AI claims vs scraped website data | Claude |
+| 2 | **Share of Voice calc** | Run batch queries, calculate SOV | Claude |
+| 3 | **Knowledge Graph Check** | Wikidata API + Schema.org parser | Claude |
 | 3 | Competitor detection | Auto-detect competitors from AI responses | Claude |
-| 3 | Competitor comparison | Side-by-side score comparison | Claude |
+| 4 | Competitor comparison | Side-by-side score comparison | Claude |
 | 4 | Enhanced recommendations | AI-generated actionable recommendations | Claude |
 | 5 | Performance optimization | Parallel AI queries, timeout handling | Claude |
+| 5 | **Cost dashboard (internal)** | Admin view of daily API costs | Claude |
 
 **Caching Strategy:**
 
@@ -685,20 +914,27 @@ const ALERT_THRESHOLDS = {
 
 ### PHASE 4: SCALE & OPTIMIZE [Weeks 7-8]
 
-**Objective:** Optimize for growth, add viral features, prepare for scale
+**Objective:** Add remaining AI providers, viral features, prepare for scale
 
-#### Week 7: Viral Features
+#### Week 7: Additional AI Providers + Viral Features
 
 | Day | Activity | Deliverable | Owner |
 |-----|----------|-------------|-------|
-| 1 | Public score badges | Embeddable badge for websites | Claude |
-| 1 | Social sharing | Share score on Twitter/LinkedIn | Claude |
-| 2 | Industry leaderboards | Public rankings by industry | Claude |
-| 2 | Comparison landing pages | SEO-optimized comparison pages | Claude |
-| 3 | Referral system | Invite friends, get free analyses | Claude |
-| 3 | API for partners | `/api/v1/` public API | Claude |
-| 4 | Blog/Content system | Auto-generated industry reports | Claude |
+| 1 | **Google AI (Gemini) integration** | Gemini API client (deferred from Phase 2) | Claude |
+| 1 | **Perplexity integration** | Perplexity API client (deferred from Phase 2) | Claude |
+| 2 | Public score badges | Embeddable badge for websites | Claude |
+| 2 | Social sharing | Share score on Twitter/LinkedIn | Claude |
+| 3 | Industry leaderboards | Public rankings by industry | Claude |
+| 3 | Comparison landing pages | SEO-optimized comparison pages | Claude |
+| 4 | Referral system | Invite friends, get free analyses | Claude |
+| 4 | **RAG Optimization Score** | Full implementation (deferred from Phase 2) | Claude |
 | 5 | Analytics dashboard | Business metrics tracking | Claude |
+
+**Why Add Google/Perplexity in Phase 4?**
+- By Week 7, we should have paying customers generating revenue
+- Revenue covers additional API costs
+- Caching is mature, reducing per-analysis cost
+- Can offer "4 AI providers" as premium upgrade incentive
 
 **Viral Loop Design:**
 
@@ -1007,6 +1243,54 @@ Respond in JSON format.
 
 ---
 
+### D. Legal & Compliance Checklist
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                 LEGAL REQUIREMENTS (Phase 1-2)                      │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  1. TERMS OF SERVICE                                               │
+│     ═══════════════                                                │
+│     - Update from crypto analytics to AI perception service         │
+│     - Define acceptable use (no abuse, no scraping)                │
+│     - Limit liability for AI accuracy                              │
+│     - Reserve right to change pricing                              │
+│     Deadline: Before accepting first paying customer                │
+│                                                                     │
+│  2. PRIVACY POLICY                                                 │
+│     ══════════════                                                 │
+│     - GDPR compliant (already have CookieBanner)                   │
+│     - Explain data collected: URLs, analysis results, usage        │
+│     - Third parties: Stripe, Supabase, AI providers                │
+│     - Data retention: 180 days for analyses                        │
+│     Deadline: Phase 1, Week 2                                      │
+│                                                                     │
+│  3. COOKIE CONSENT                                                 │
+│     ══════════════                                                 │
+│     - Already implemented (CookieBanner component)                 │
+│     - Verify analytics cookies covered                             │
+│     Deadline: Already done ✓                                       │
+│                                                                     │
+│  4. AI DISCLOSURE                                                  │
+│     ══════════════                                                 │
+│     - Clearly state scores are AI-generated approximations         │
+│     - No guarantee of accuracy                                     │
+│     - AI responses may change over time                            │
+│     Location: Results page footer                                  │
+│                                                                     │
+│  5. STRIPE COMPLIANCE                                              │
+│     ═════════════════                                              │
+│     - Display refund policy                                        │
+│     - Cancel anytime clause                                        │
+│     - Price displayed including taxes note                         │
+│     Deadline: Phase 3, Week 5                                      │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
 ## SIGNATURE
 
 This roadmap represents a comprehensive strategic plan for the AI Perception Engineering Agency project. It balances technical excellence with business viability, maintaining focus on the core value proposition while building for scale.
@@ -1016,12 +1300,26 @@ This roadmap represents a comprehensive strategic plan for the AI Perception Eng
 2. Cost discipline (break-even at 3 customers)
 3. Viral design (built-in sharing mechanisms)
 4. Technical robustness (caching, error handling, monitoring)
+5. **NEW: Security-first approach (SSRF prevention, rate limiting, prompt sanitization)**
+6. **NEW: Budget control ($100/month maximum pre-revenue)**
+
+**Technical Review Summary (v2.0):**
+- Added security architecture section
+- Added testing strategy with Vitest/Playwright
+- Added observability stack (Sentry, cost tracking)
+- Added budget constraint analysis
+- Deferred Google AI and Perplexity to Phase 4 (budget)
+- Added legal/compliance checklist
+- Added 2 new database tables for cost control
+- Expanded acceptance criteria with security requirements
 
 **Recommended Next Action:**
-Begin Phase 1, Week 1, Day 1: Database schema design and AI provider client setup.
+Begin Phase 1, Week 1, Day 1: Database schema design + RLS policies + Security (URL validator).
 
 ---
 
 *Document prepared by BCG Digital Ventures - Technology Strategy Practice*
+*Technical Review by: Senior Software Director - 300 years experience*
 *For: AI Perception Engineering Agency*
 *Date: November 25, 2024*
+*Version: 2.0 (Technical Review)*

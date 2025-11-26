@@ -2,13 +2,14 @@
 ## Executive Strategic Roadmap
 
 **Document Classification:** Strategic Planning
-**Version:** 4.0 (Technical + UX/UI + AI/Data Review)
+**Version:** 5.0 (Technical + UX/UI + AI/Data + Knowledge Graph/SEO Review)
 **Date:** November 25, 2024
 **Prepared by:** BCG Digital Ventures - Technology Strategy Practice
 **Reviewed by:**
 - Senior Software Director - Technical Architecture Review
 - Senior UX/UI Executive - User Experience & Interface Review
 - Senior AI & Data Engineer Director - AI/ML & Data Pipeline Review
+- Senior Knowledge Graph & SEO Architect - Structured Data & AI Discoverability Review
 
 ---
 
@@ -1461,6 +1462,563 @@ Based on industry best practices, we're adding these **fully automated** diagnos
 └─────────────────────────────────────────────────────────────┘
 ```
 
+### 2.22 Knowledge Graph & SEO Architecture (NEW - KG/SEO Review)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              KNOWLEDGE GRAPH & SEO GAPS IDENTIFIED                  │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  1. NO ENTITY EXTRACTION FROM ANALYZED URLS                        │
+│     ═══════════════════════════════════════                        │
+│     Problem: We analyze URLs but don't extract structured entities  │
+│     Impact: Can't build knowledge graph of brands → competitors     │
+│     Solution: Extract entities (org, person, product) from URLs     │
+│                                                                     │
+│  2. NO SCHEMA.ORG VALIDATION FOR CLIENT SITES                      │
+│     ════════════════════════════════════════                       │
+│     Problem: We check if Schema exists but don't validate quality   │
+│     Impact: Clients don't know HOW to fix their structured data     │
+│     Solution: Deep Schema.org validator with actionable fixes       │
+│                                                                     │
+│  3. NO WIKIDATA/DBPEDIA ENTITY LINKING                             │
+│     ═══════════════════════════════════                            │
+│     Problem: We check IF brand is in Wikidata, not HOW to add it   │
+│     Impact: Missed opportunity to guide clients on KG presence      │
+│     Solution: Provide Wikidata creation guide + template            │
+│                                                                     │
+│  4. NO SEMANTIC RELATIONSHIP MAPPING                               │
+│     ════════════════════════════════                               │
+│     Problem: Brand isolated, no connections to industry graph       │
+│     Impact: Can't show "Your brand vs industry knowledge network"   │
+│     Solution: Build industry knowledge graph with relationships     │
+│                                                                     │
+│  5. NO E-E-A-T SIGNALS ANALYSIS                                    │
+│     ═══════════════════════════                                    │
+│     Problem: Google/AI models use E-E-A-T but we don't measure it  │
+│     Impact: Missing key factor in why brands are/aren't recommended │
+│     Solution: E-E-A-T scoring (Experience, Expertise, Authority)    │
+│                                                                     │
+│  6. NO CITATION SOURCE TRACKING                                    │
+│     ═══════════════════════════                                    │
+│     Problem: AIs cite sources but we don't track which ones         │
+│     Impact: Can't tell clients WHERE to improve their presence      │
+│     Solution: Track citation sources per AI provider                │
+│                                                                     │
+│  7. NO BACKLINK/MENTION QUALITY ASSESSMENT                         │
+│     ═══════════════════════════════════                            │
+│     Problem: Share of Voice exists but not quality of mentions      │
+│     Impact: 10 mentions on spam sites ≠ 1 mention on NYTimes       │
+│     Solution: Authority scoring for mention sources                 │
+│                                                                     │
+│  8. NO CONTENT FRESHNESS SIGNALS                                   │
+│     ═════════════════════════════                                  │
+│     Problem: AI models prefer fresh, updated content                │
+│     Impact: Stale content gets deprioritized in AI recommendations  │
+│     Solution: Track content freshness, last update, publish dates   │
+│                                                                     │
+│  9. NO MULTI-LANGUAGE ENTITY RESOLUTION                            │
+│     ═══════════════════════════════════                            │
+│     Problem: "Apple" (company) vs "apple" (fruit) - no NER          │
+│     Impact: Ambiguous brand names cause incorrect analysis          │
+│     Solution: Named Entity Recognition with disambiguation          │
+│                                                                     │
+│  10. NO OWN SITE SEO/GEO OPTIMIZATION                              │
+│      ═══════════════════════════════                               │
+│      Problem: We help clients with GEO but our own site has none!  │
+│      Impact: AI models won't recommend US to potential customers    │
+│      Solution: Full GEO optimization for vectorialdata.com          │
+│                                                                     │
+│  11. NO PROGRAMMATIC SEO PAGES                                     │
+│      ═══════════════════════════                                   │
+│      Problem: No industry/location landing pages for SEO traffic    │
+│      Impact: Missing long-tail search traffic opportunity           │
+│      Solution: Generate /ai-perception/{industry}/{location} pages  │
+│                                                                     │
+│  12. NO STRUCTURED DATA FOR OUR OWN RESULTS                        │
+│      ══════════════════════════════════════                        │
+│      Problem: Analysis results have no Schema.org markup            │
+│      Impact: Results not rich-snippet eligible, poor sharing        │
+│      Solution: Add AnalysisResult schema to results pages           │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.23 Entity Extraction & Knowledge Graph (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                 ENTITY EXTRACTION ARCHITECTURE                      │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ENTITY TYPES TO EXTRACT:                                          │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ • Organization - Company, brand, agency                      │   │
+│  │ • Person - Founder, CEO, author (for E-E-A-T)               │   │
+│  │ • Product - Specific products/services offered               │   │
+│  │ • Location - HQ, service areas                               │   │
+│  │ • Industry - Normalized to taxonomy                          │   │
+│  │ • Technology - Tech stack, platforms used                    │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  EXTRACTION SOURCES:                                               │
+│  1. Website metadata (title, description, OG tags)                 │
+│  2. Schema.org structured data on site                             │
+│  3. AI-extracted from content                                      │
+│  4. Wikidata/DBpedia lookup                                        │
+│  5. LinkedIn Company API (if available)                            │
+│                                                                     │
+│  DATABASE TABLE: entities                                          │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id              UUID PRIMARY KEY                             │   │
+│  │ type            ENUM('organization','person','product',      │   │
+│  │                      'location','industry','technology')     │   │
+│  │ name            TEXT                                         │   │
+│  │ normalized_name TEXT (lowercase, no special chars)           │   │
+│  │ wikidata_id     TEXT (Q-number if found)                     │   │
+│  │ dbpedia_uri     TEXT (DBpedia URI if found)                  │   │
+│  │ aliases         TEXT[] (alternative names)                   │   │
+│  │ properties      JSONB (type-specific properties)             │   │
+│  │ confidence      DECIMAL (0-1, extraction confidence)         │   │
+│  │ source          TEXT ('website','ai','wikidata','manual')    │   │
+│  │ created_at      TIMESTAMPTZ                                  │   │
+│  │ updated_at      TIMESTAMPTZ                                  │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: entity_relationships                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id              UUID PRIMARY KEY                             │   │
+│  │ subject_id      UUID REFERENCES entities(id)                 │   │
+│  │ predicate       TEXT ('competes_with','subsidiary_of',       │   │
+│  │                       'founded_by','located_in','uses')      │   │
+│  │ object_id       UUID REFERENCES entities(id)                 │   │
+│  │ confidence      DECIMAL (0-1)                                │   │
+│  │ source          TEXT                                         │   │
+│  │ created_at      TIMESTAMPTZ                                  │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  RELATIONSHIP TYPES:                                               │
+│  ├─ competes_with    - Brand A competes with Brand B              │
+│  ├─ subsidiary_of    - Brand is owned by Parent Company           │
+│  ├─ founded_by       - Person founded Organization                │
+│  ├─ located_in       - Organization HQ in Location                │
+│  ├─ operates_in      - Organization serves Industry               │
+│  ├─ uses_technology  - Organization uses Technology               │
+│  └─ mentioned_with   - Entities frequently mentioned together     │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.24 Schema.org Deep Validation (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                 SCHEMA.ORG VALIDATION ENGINE                        │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  CURRENT STATE: Check if Schema.org exists (boolean)               │
+│  TARGET STATE: Full validation with actionable recommendations     │
+│                                                                     │
+│  VALIDATION LEVELS:                                                │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Level 1: PRESENCE                                            │   │
+│  │   • Does the site have ANY structured data?                  │   │
+│  │   • Detection: JSON-LD, Microdata, RDFa                      │   │
+│  │                                                               │   │
+│  │ Level 2: VALIDITY                                            │   │
+│  │   • Is the Schema syntactically correct?                     │   │
+│  │   • Are required properties present?                         │   │
+│  │   • Are property values in correct format?                   │   │
+│  │                                                               │   │
+│  │ Level 3: COMPLETENESS                                        │   │
+│  │   • Are recommended properties filled?                       │   │
+│  │   • Is there enough detail for AI to understand?            │   │
+│  │   • Score: 0-100 based on field coverage                    │   │
+│  │                                                               │   │
+│  │ Level 4: AI-READINESS                                        │   │
+│  │   • Does Schema help AI understand the business?             │   │
+│  │   • Are there relationship links (sameAs, mentions)?        │   │
+│  │   • Is there enough context for recommendations?            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  CRITICAL SCHEMAS FOR AI VISIBILITY:                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ MUST HAVE:                                                   │   │
+│  │ • Organization (name, url, logo, description, sameAs)       │   │
+│  │ • LocalBusiness (if applicable - address, geo, hours)       │   │
+│  │ • Product/Service (name, description, offers)               │   │
+│  │ • WebSite (name, url, potentialAction for sitelinks)       │   │
+│  │                                                               │   │
+│  │ RECOMMENDED:                                                 │   │
+│  │ • Person (for founder/CEO - builds E-E-A-T)                 │   │
+│  │ • Article/BlogPosting (for content freshness signals)       │   │
+│  │ • FAQPage (AI loves FAQ structured data)                    │   │
+│  │ • Review/AggregateRating (social proof)                     │   │
+│  │ • BreadcrumbList (site structure clarity)                   │   │
+│  │                                                               │   │
+│  │ ADVANCED:                                                    │   │
+│  │ • SoftwareApplication (for SaaS products)                   │   │
+│  │ • ProfessionalService (for agencies/consultants)            │   │
+│  │ • ItemList (for comparison/ranking pages)                   │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  OUTPUT: Schema Scorecard                                          │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Schema.org Score: 45/100                                     │   │
+│  │                                                               │   │
+│  │ ✓ Organization schema found                                  │   │
+│  │ ✗ Missing: sameAs links (Wikidata, LinkedIn, Crunchbase)    │   │
+│  │ ✗ Missing: LocalBusiness (you have physical locations)      │   │
+│  │ ✗ Missing: Product schema for your offerings                │   │
+│  │ ⚠ Description too short (50 chars, recommend 150+)         │   │
+│  │                                                               │   │
+│  │ TOP 3 FIXES (Impact Priority):                               │   │
+│  │ 1. Add sameAs links (+15 points)                            │   │
+│  │ 2. Add Product schema for main offering (+12 points)        │   │
+│  │ 3. Expand Organization description (+8 points)              │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.25 E-E-A-T Signals Analysis (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    E-E-A-T SCORING SYSTEM                           │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  E-E-A-T = Experience, Expertise, Authoritativeness, Trust         │
+│  (Google's quality framework, heavily influences AI recommendations)│
+│                                                                     │
+│  EXPERIENCE SIGNALS (0-25 points):                                 │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ • Years in business (from About page, Wikidata)             │   │
+│  │ • Customer testimonials present                              │   │
+│  │ • Case studies / portfolio                                   │   │
+│  │ • Team/founder bios with experience                          │   │
+│  │ • Industry awards / recognition                              │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  EXPERTISE SIGNALS (0-25 points):                                  │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ • Author bylines on content                                  │   │
+│  │ • Credentials / certifications displayed                     │   │
+│  │ • Technical depth of content                                 │   │
+│  │ • Original research / data                                   │   │
+│  │ • Speaking engagements / publications                        │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  AUTHORITATIVENESS SIGNALS (0-25 points):                          │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ • Backlinks from authoritative domains                       │   │
+│  │ • Mentions in industry publications                          │   │
+│  │ • Wikipedia/Wikidata presence                                │   │
+│  │ • Citations by other experts                                 │   │
+│  │ • Social proof (followers, engagement)                       │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  TRUST SIGNALS (0-25 points):                                      │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ • HTTPS (mandatory)                                          │   │
+│  │ • Privacy policy present                                     │   │
+│  │ • Contact information visible                                │   │
+│  │ • Physical address (for local businesses)                    │   │
+│  │ • BBB / Trust badges                                         │   │
+│  │ • Clear pricing / refund policy                              │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: eeat_scores                                       │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id              UUID PRIMARY KEY                             │   │
+│  │ analysis_id     UUID REFERENCES analyses(id)                 │   │
+│  │ experience_score INTEGER (0-25)                              │   │
+│  │ expertise_score  INTEGER (0-25)                              │   │
+│  │ authority_score  INTEGER (0-25)                              │   │
+│  │ trust_score      INTEGER (0-25)                              │   │
+│  │ total_score      INTEGER (0-100)                             │   │
+│  │ signals_found    JSONB (detailed breakdown)                  │   │
+│  │ recommendations  JSONB (how to improve each)                 │   │
+│  │ created_at       TIMESTAMPTZ                                 │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION NOTE:                                              │
+│  E-E-A-T is a qualitative framework. We approximate it by:         │
+│  1. Scraping key pages (About, Team, Contact, Blog)               │
+│  2. Checking for specific elements (bios, credentials, etc.)      │
+│  3. Cross-referencing with external signals (backlinks, Wikidata) │
+│  4. Using AI to assess content expertise level                     │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.26 Citation Source Tracking (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                 AI CITATION SOURCE ANALYSIS                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PROBLEM: AI models cite sources. We need to know WHICH sources.   │
+│                                                                     │
+│  WHY IT MATTERS:                                                   │
+│  • Perplexity ALWAYS cites sources                                 │
+│  • ChatGPT with Browse cites sources                               │
+│  • Knowing citation sources = knowing WHERE to improve presence    │
+│                                                                     │
+│  CITATION TYPES:                                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ • Direct URL citation (Perplexity style)                     │   │
+│  │ • Domain mention ("according to Forbes...")                  │   │
+│  │ • Named source ("G2 reviews show...")                        │   │
+│  │ • Implicit citation (clearly derived from specific source)   │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  HIGH-VALUE CITATION SOURCES TO TRACK:                             │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ TIER 1 (Highest Authority):                                  │   │
+│  │ • Wikipedia / Wikidata                                       │   │
+│  │ • News outlets (NYT, BBC, TechCrunch, Forbes)               │   │
+│  │ • Academic sources                                           │   │
+│  │                                                               │   │
+│  │ TIER 2 (Industry Authority):                                 │   │
+│  │ • G2, Capterra, TrustRadius (SaaS)                          │   │
+│  │ • Yelp, TripAdvisor (Local)                                 │   │
+│  │ • Industry publications                                      │   │
+│  │                                                               │   │
+│  │ TIER 3 (Social Proof):                                       │   │
+│  │ • Reddit discussions                                         │   │
+│  │ • Twitter/X mentions                                         │   │
+│  │ • LinkedIn posts                                             │   │
+│  │                                                               │   │
+│  │ TIER 4 (Company-Controlled):                                 │   │
+│  │ • Company website                                            │   │
+│  │ • Blog posts                                                 │   │
+│  │ • Press releases                                             │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: citation_sources                                  │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id              UUID PRIMARY KEY                             │   │
+│  │ ai_response_id  UUID REFERENCES ai_responses(id)             │   │
+│  │ source_url      TEXT                                         │   │
+│  │ source_domain   TEXT                                         │   │
+│  │ source_type     ENUM('direct','domain','named','implicit')   │   │
+│  │ authority_tier  INTEGER (1-4)                                │   │
+│  │ citation_text   TEXT (the actual citation)                   │   │
+│  │ sentiment       ENUM('positive','neutral','negative')        │   │
+│  │ created_at      TIMESTAMPTZ                                  │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  ACTIONABLE OUTPUT:                                                │
+│  "AI cited these sources when discussing your industry:            │
+│   • G2 Reviews (Tier 2) - You have 4.2 stars, competitors avg 4.5 │
+│   • TechCrunch (Tier 1) - No mentions of your brand found         │
+│   • Competitor blog (Tier 4) - They're getting cited, you're not  │
+│                                                                     │
+│   RECOMMENDATION: Focus on G2 reviews and pitch TechCrunch"        │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.27 Own Site GEO Optimization (NEW - Critical)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│          VECTORIALDATA.COM GEO SELF-OPTIMIZATION                    │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ⚠️ CRITICAL: We sell GEO services but our own site isn't GEO'd!   │
+│                                                                     │
+│  REQUIRED IMPLEMENTATIONS:                                         │
+│                                                                     │
+│  1. SCHEMA.ORG FOR OUR SITE                                        │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ {                                                            │   │
+│  │   "@context": "https://schema.org",                         │   │
+│  │   "@type": "SoftwareApplication",                           │   │
+│  │   "name": "AI Perception",                                  │   │
+│  │   "applicationCategory": "BusinessApplication",             │   │
+│  │   "operatingSystem": "Web",                                 │   │
+│  │   "description": "Discover how AI models perceive...",      │   │
+│  │   "offers": {                                                │   │
+│  │     "@type": "Offer",                                       │   │
+│  │     "price": "0",                                           │   │
+│  │     "priceCurrency": "USD"                                  │   │
+│  │   },                                                        │   │
+│  │   "aggregateRating": { ... },                               │   │
+│  │   "provider": {                                             │   │
+│  │     "@type": "Organization",                                │   │
+│  │     "name": "AI Perception Engineering Agency",             │   │
+│  │     "sameAs": [                                             │   │
+│  │       "https://twitter.com/aiperception",                   │   │
+│  │       "https://linkedin.com/company/aiperception",          │   │
+│  │       "https://www.wikidata.org/wiki/Q..."                  │   │
+│  │     ]                                                       │   │
+│  │   }                                                         │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  2. WIKIDATA ENTRY CREATION                                        │
+│     • Create Wikidata entry for "AI Perception Engineering Agency" │
+│     • Link to official website, founders, industry                 │
+│     • This is THE signal that AI models trust most                 │
+│                                                                     │
+│  3. FAQ PAGE WITH SCHEMA                                           │
+│     • "What is AI Perception Score?"                               │
+│     • "How does GEO differ from SEO?"                              │
+│     • "Which AI models do you analyze?"                            │
+│     • FAQ Schema = AI models LOVE to cite these                    │
+│                                                                     │
+│  4. EXPERT CONTENT STRATEGY                                        │
+│     • Blog posts answering AI-likely questions                     │
+│     • "Best [industry] in [city]" template pages                   │
+│     • Founder thought leadership (E-E-A-T)                         │
+│                                                                     │
+│  5. BACKLINK ACQUISITION PRIORITIES                                │
+│     • Submit to Product Hunt                                       │
+│     • Get featured in AI/marketing newsletters                     │
+│     • Guest posts on marketing/SEO blogs                           │
+│     • Crunchbase profile                                           │
+│                                                                     │
+│  6. SOCIAL PROOF SCHEMA                                            │
+│     • Aggregate reviews from early users                           │
+│     • Display testimonials with Person schema                      │
+│     • Case study pages with structured data                        │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.28 Programmatic SEO Pages (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                 PROGRAMMATIC SEO STRATEGY                           │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  OPPORTUNITY: Generate thousands of SEO-optimized landing pages    │
+│                                                                     │
+│  PAGE TEMPLATES:                                                   │
+│                                                                     │
+│  1. INDUSTRY PAGES (/ai-perception/{industry})                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ URL: /ai-perception/crm-software                             │   │
+│  │ Title: "AI Perception for CRM Software Companies"            │   │
+│  │ H1: "How AI Models Recommend CRM Software"                   │   │
+│  │                                                               │   │
+│  │ Content:                                                      │   │
+│  │ • Industry-specific AI perception stats                      │   │
+│  │ • Common challenges for CRM companies                        │   │
+│  │ • Example queries AI users ask                               │   │
+│  │ • CTA: "Check your CRM's AI Perception Score"               │   │
+│  │                                                               │   │
+│  │ Generate for: All 20 industries × sub-categories = ~200 pages│   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  2. LOCATION PAGES (/ai-perception/{industry}/{location})          │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ URL: /ai-perception/restaurants/mexico-city                  │   │
+│  │ Title: "AI Perception for Restaurants in Mexico City"        │   │
+│  │                                                               │   │
+│  │ Generate for: Top 50 cities × 20 industries = 1,000 pages   │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  3. COMPARISON PAGES (/compare/{brand-a}-vs-{brand-b})             │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ URL: /compare/hubspot-vs-salesforce-ai-perception            │   │
+│  │ Title: "HubSpot vs Salesforce: AI Perception Comparison"     │   │
+│  │                                                               │   │
+│  │ Generate for: Top competitors in each industry               │   │
+│  │ IMPORTANT: Use public data only, no defamation               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  4. "BEST OF" PAGES (/best/{industry}-{location})                  │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ URL: /best/project-management-software-2025                  │   │
+│  │ Title: "Best Project Management Software for AI Visibility"  │   │
+│  │                                                               │   │
+│  │ Content: Rankings based on our AI Perception Scores          │   │
+│  │ Update: Monthly with fresh data                              │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  • Use Next.js generateStaticParams for SSG                       │
+│  • Database-driven content generation                              │
+│  • Unique content per page (no thin content penalties)             │
+│  • Internal linking between related pages                          │
+│  • Sitemap.xml auto-generation                                     │
+│                                                                     │
+│  SEO TECHNICAL REQUIREMENTS:                                       │
+│  ├─ Canonical URLs                                                 │
+│  ├─ hreflang for multi-language (future)                          │
+│  ├─ Meta robots (index, follow)                                    │
+│  ├─ Open Graph + Twitter Cards                                     │
+│  ├─ Schema.org ItemList for rankings                              │
+│  └─ Breadcrumb schema                                              │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.29 Results Page Structured Data (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              ANALYSIS RESULTS SCHEMA.ORG                            │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PROBLEM: Results pages have no structured data                    │
+│  IMPACT: Can't be rich-snippeted, poor social sharing              │
+│                                                                     │
+│  SOLUTION: Custom Schema for AI Perception Results                 │
+│                                                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ {                                                            │   │
+│  │   "@context": "https://schema.org",                         │   │
+│  │   "@type": "AnalysisNewsArticle",                           │   │
+│  │   "headline": "AI Perception Score for [Brand]",            │   │
+│  │   "datePublished": "2024-11-25T10:30:00Z",                  │   │
+│  │   "author": {                                                │   │
+│  │     "@type": "Organization",                                │   │
+│  │     "name": "AI Perception"                                 │   │
+│  │   },                                                        │   │
+│  │   "about": {                                                 │   │
+│  │     "@type": "Organization",                                │   │
+│  │     "name": "[Analyzed Brand]",                             │   │
+│  │     "url": "[Analyzed URL]"                                 │   │
+│  │   },                                                        │   │
+│  │   "reviewRating": {                                         │   │
+│  │     "@type": "Rating",                                      │   │
+│  │     "ratingValue": 72,                                      │   │
+│  │     "bestRating": 100,                                      │   │
+│  │     "worstRating": 0                                        │   │
+│  │   },                                                        │   │
+│  │   "mainEntityOfPage": "[Results URL]"                       │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  SOCIAL SHARING OPTIMIZATION:                                      │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Open Graph:                                                  │   │
+│  │ <meta property="og:title" content="[Brand] scores 72/100    │   │
+│  │       on AI Perception" />                                   │   │
+│  │ <meta property="og:description" content="See how ChatGPT,   │   │
+│  │       Claude, and Gemini perceive [Brand]" />               │   │
+│  │ <meta property="og:image" content="[Dynamic score image]" />│   │
+│  │                                                               │   │
+│  │ Twitter Card:                                                │   │
+│  │ <meta name="twitter:card" content="summary_large_image" />  │   │
+│  │ <meta name="twitter:title" content="My AI Score is 72! 🎯" />│   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DYNAMIC OG IMAGE GENERATION:                                      │
+│  • Use @vercel/og for dynamic image generation                     │
+│  • Show score prominently with brand name                          │
+│  • Include provider logos (ChatGPT, Claude, etc.)                  │
+│  • Cache generated images                                          │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
 ---
 
 ## PART III: PHASED ROADMAP
@@ -1543,6 +2101,8 @@ Based on industry best practices, we're adding these **fully automated** diagnos
 | 5 | Integration testing | Test full analysis flow end-to-end | Claude |
 | 5 | **UX: Error messages** | Human-friendly error copy for all error types | Claude |
 | 5 | **AI: Prompt injection tests** | Adversarial test dataset (10+ cases) | Claude |
+| 5 | **KG: Schema.org extractor** | Extract structured data from analyzed URLs | Claude |
+| 5 | **SEO: Own site JSON-LD** | Add SoftwareApplication schema to our site | Claude |
 
 **NEW: Security Deliverables Week 1:**
 ```typescript
@@ -1606,6 +2166,9 @@ const SCORING_WEIGHTS = {
 | 5 | **UX: Mobile responsive** | Results page mobile-first responsive | Claude |
 | 5 | **AI: Golden dataset tests** | 10 known-good responses for drift detection baseline | Claude |
 | 5 | **AI: Adversarial prompt tests** | Test prompt injection attacks are sanitized | Claude |
+| 5 | **KG: Entity extraction** | Extract org/person/product entities from URLs | Claude |
+| 5 | **SEO: Results page schema** | Add Rating schema to analysis results | Claude |
+| 5 | **SEO: Dynamic OG images** | @vercel/og for shareable score images | Claude |
 
 **Acceptance Criteria Phase 1:**
 - [ ] User can enter URL and receive analysis
@@ -1631,6 +2194,11 @@ const SCORING_WEIGHTS = {
 - [ ] **NEW (AI/Data): Golden dataset baseline established (10 test cases)**
 - [ ] **NEW (AI/Data): Prompt injection tests pass (adversarial inputs sanitized)**
 - [ ] **NEW (AI/Data): Daily cost auto-pause at 95% budget threshold**
+- [ ] **NEW (KG/SEO): Schema.org extracted from analyzed URLs (if present)**
+- [ ] **NEW (KG/SEO): Entity extraction identifies org name, type, industry**
+- [ ] **NEW (KG/SEO): Own site has SoftwareApplication JSON-LD schema**
+- [ ] **NEW (KG/SEO): Results pages have Rating schema + dynamic OG images**
+- [ ] **NEW (KG/SEO): Social sharing generates branded score image**
 
 ---
 
@@ -1650,10 +2218,15 @@ const SCORING_WEIGHTS = {
 | 2 | **Share of Voice calc** | Run batch queries, calculate SOV | Claude |
 | 3 | **Knowledge Graph Check** | Wikidata API + Schema.org parser | Claude |
 | 3 | Competitor detection | Auto-detect competitors from AI responses | Claude |
+| 3 | **KG: Schema.org validator** | Deep validation with actionable recommendations | Claude |
+| 3 | **KG: E-E-A-T scoring** | Experience/Expertise/Authority/Trust analysis | Claude |
 | 4 | Competitor comparison | Side-by-side score comparison | Claude |
 | 4 | Enhanced recommendations | AI-generated actionable recommendations | Claude |
+| 4 | **KG: Citation source tracking** | Extract and categorize AI citation sources | Claude |
+| 4 | **KG: Wikidata link checker** | Check if brand exists, provide creation guide | Claude |
 | 5 | Performance optimization | Parallel AI queries, timeout handling | Claude |
 | 5 | **Cost dashboard (internal)** | Admin view of daily API costs | Claude |
+| 5 | **SEO: FAQ page with schema** | /faq page with FAQPage structured data | Claude |
 
 **Caching Strategy:**
 
@@ -1861,7 +2434,7 @@ const ALERT_THRESHOLDS = {
 └─────────────────────────────────────────────────────────────┘
 ```
 
-#### Week 8: Optimization & Documentation
+#### Week 8: Optimization & Documentation + Programmatic SEO
 
 | Day | Activity | Deliverable | Owner |
 |-----|----------|-------------|-------|
@@ -1869,11 +2442,16 @@ const ALERT_THRESHOLDS = {
 | 1 | Cost optimization | Further reduce API costs | Claude |
 | 2 | SEO optimization | Meta tags, structured data, sitemap | Claude |
 | 2 | GEO optimization | Make AI recommend US! | Claude |
+| 2 | **SEO: Programmatic industry pages** | /ai-perception/{industry} SSG pages | Claude |
 | 3 | Error monitoring | Sentry integration, alerting | Claude |
 | 3 | User feedback system | In-app feedback collection | Claude |
+| 3 | **SEO: Programmatic location pages** | /ai-perception/{industry}/{city} pages | Claude |
 | 4 | Documentation | User docs, API docs | Claude |
 | 4 | Onboarding flow | First-time user experience | Claude |
+| 4 | **SEO: Sitemap.xml auto-generation** | Include all programmatic pages | Claude |
+| 4 | **KG: Industry knowledge graph** | Build brand relationship graph per industry | Claude |
 | 5 | Launch retrospective | Document learnings, next steps | Both |
+| 5 | **SEO: Wikidata entry for AI Perception** | Create our own Wikidata presence | Alberto |
 
 ---
 
@@ -2244,6 +2822,29 @@ This roadmap represents a comprehensive strategic plan for the AI Perception Eng
 5. **Continuous quality** - Golden dataset detects AI model behavior changes
 6. **Security-first** - Prompt injection tests as part of CI/CD
 
+**Knowledge Graph & SEO Review Summary (v5.0):**
+- Identified 12 critical Knowledge Graph & SEO gaps
+- Added Entity Extraction & Knowledge Graph architecture (brand relationships)
+- Added Schema.org Deep Validation engine (4-level validation)
+- Added E-E-A-T Signals Analysis (Experience, Expertise, Authority, Trust)
+- Added Citation Source Tracking (where AIs get their information)
+- Added Own Site GEO Optimization requirements (practice what we preach)
+- Added Programmatic SEO Strategy (1,000+ industry/location pages)
+- Added Results Page Structured Data (Rating schema, dynamic OG images)
+- Added 4 new database tables: `entities`, `entity_relationships`, `eeat_scores`, `citation_sources`
+- Added 8 new KG/SEO tasks to Phase 1 (Week 1 + Week 2)
+- Added 9 new KG/SEO tasks to Phase 2-4
+- Expanded acceptance criteria with 5 KG/SEO requirements
+
+**Key Knowledge Graph & SEO Principles:**
+1. **Eat your own dog food** - Our site must be GEO-optimized before we sell GEO
+2. **Structured data everywhere** - Every page has appropriate Schema.org markup
+3. **Entity-first thinking** - Brands are entities in a knowledge graph, not just strings
+4. **Citation transparency** - Show clients WHERE AI gets its information
+5. **E-E-A-T is king** - Experience, Expertise, Authority, Trust drive AI recommendations
+6. **Programmatic scale** - Generate thousands of SEO pages from data
+7. **Wikidata is the source of truth** - Being in Wikidata = being in AI knowledge
+
 **Key UX Principles:**
 1. **No dead ends** - Every screen has a clear next action
 2. **Progress storytelling** - 30-second wait becomes engaging experience
@@ -2258,6 +2859,7 @@ Begin Phase 1, Week 1, Day 1:
 - UX: Design tokens (score colors, provider colors)
 - AI: Zod output schemas for all AI responses
 - AI: Industry taxonomy seed data (20 categories)
+- SEO: Own site JSON-LD SoftwareApplication schema
 
 ---
 
@@ -2265,6 +2867,7 @@ Begin Phase 1, Week 1, Day 1:
 *Technical Review by: Senior Software Director - 300 years experience*
 *UX/UI Review by: Senior UX/UI Executive - 300 years experience, IDEO/frog/Pentagram background*
 *AI/Data Review by: Senior AI & Data Engineer Director - 400 years experience, ex-Google AI/DeepMind/OpenAI*
+*KG/SEO Review by: Senior Knowledge Graph & SEO Architect - 333 years experience, ex-Google Search/Wikidata/Schema.org*
 *For: AI Perception Engineering Agency*
 *Date: November 25, 2024*
-*Version: 4.0 (Technical + UX/UI + AI/Data Review)*
+*Version: 5.0 (Technical + UX/UI + AI/Data + Knowledge Graph/SEO Review)*

@@ -2,7 +2,7 @@
 ## Executive Strategic Roadmap
 
 **Document Classification:** Strategic Planning
-**Version:** 13.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security Review)
+**Version:** 14.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps Review)
 **Date:** November 26, 2024
 **Prepared by:** BCG Digital Ventures - Technology Strategy Practice
 **Reviewed by:**
@@ -18,6 +18,7 @@
 - Senior Computational Linguist - NLP, Text Analysis & Language Understanding Review
 - Senior LLM Behavioral Researcher - Model Behavior, Drift Detection & Response Stability Review
 - Senior Adversarial AI Security Specialist - AI Attack Surface, Red Team & Security Hardening Review
+- Senior MLOps Engineer Director - ML Infrastructure, Model Serving & Production AI Systems Review
 
 ---
 
@@ -7384,6 +7385,848 @@ Based on industry best practices, we're adding these **fully automated** diagnos
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
+### 2.94 MLOps Architecture & Gap Analysis (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              MLOps GAP ANALYSIS & INFRASTRUCTURE                    │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  As a Senior MLOps Engineer with 333 years of experience at        │
+│  Google ML Platform, Netflix ML Platform, Uber Michelangelo,       │
+│  Meta AI Infra, Amazon SageMaker, and Databricks MLflow,           │
+│  I've identified 12 CRITICAL MLOps GAPS:                           │
+│                                                                     │
+│  GAP 1: NO ML MODEL REGISTRY                                       │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Status: MISSING                                              │   │
+│  │ Risk: HIGH - No versioning of prompts/configs as "models"    │   │
+│  │ Impact: Can't track what configuration produced results      │   │
+│  │ Solution: Treat prompts+params as "models" with versioning   │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  GAP 2: NO FEATURE STORE                                           │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Status: MISSING                                              │   │
+│  │ Risk: MEDIUM - Prompt variables computed ad-hoc              │   │
+│  │ Impact: Inconsistent features, no reuse across analyses      │   │
+│  │ Solution: Feature store for brand metadata, industry attrs   │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  GAP 3: NO EXPERIMENT TRACKING                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Status: PARTIAL (prompt versioning exists)                   │   │
+│  │ Risk: HIGH - Can't compare prompt experiments systematically │   │
+│  │ Impact: A/B tests without proper statistical analysis        │   │
+│  │ Solution: Lightweight experiment tracking with metrics       │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  GAP 4: NO MODEL SERVING ABSTRACTION                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Status: PARTIAL (AIOrchestrator exists)                      │   │
+│  │ Risk: MEDIUM - No unified serving layer                      │   │
+│  │ Impact: Inconsistent latency, no batching optimization       │   │
+│  │ Solution: Model Serving Layer with request coalescing        │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  GAP 5: NO SHADOW/CANARY DEPLOYMENT                                │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Status: MISSING                                              │   │
+│  │ Risk: HIGH - New prompts deployed 100% or 0%                 │   │
+│  │ Impact: Bad prompts affect all users immediately             │   │
+│  │ Solution: Traffic splitting for gradual prompt rollout       │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  GAP 6: NO INFERENCE PIPELINE ORCHESTRATION                        │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Status: MISSING                                              │   │
+│  │ Risk: MEDIUM - Ad-hoc async processing                       │   │
+│  │ Impact: No retry visibility, no dead letter queue            │   │
+│  │ Solution: DAG-based pipeline for multi-step inference        │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  GAP 7: NO ML-SPECIFIC OBSERVABILITY                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Status: PARTIAL (basic latency logging)                      │   │
+│  │ Risk: HIGH - No P99 latency, throughput, error rates by      │   │
+│  │ Impact: Can't detect performance degradation early           │   │
+│  │ Solution: ML metrics dashboard with SLO tracking             │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  GAP 8: NO EMBEDDING/VECTOR STORE                                  │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Status: MISSING                                              │   │
+│  │ Risk: MEDIUM - Can't do semantic similarity or RAG           │   │
+│  │ Impact: No intelligent caching, no brand similarity          │   │
+│  │ Solution: Supabase pgvector for embeddings                   │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  GAP 9: NO ARTIFACT MANAGEMENT                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Status: MISSING                                              │   │
+│  │ Risk: LOW - Prompts in DB but no artifact versioning         │   │
+│  │ Impact: Can't package/deploy prompts as immutable units      │   │
+│  │ Solution: Artifact store with checksums and metadata         │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  GAP 10: NO COST ATTRIBUTION BY MODEL                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Status: PARTIAL (provider-level tracking)                    │   │
+│  │ Risk: MEDIUM - Can't optimize cost per prompt type           │   │
+│  │ Impact: Don't know which prompts are expensive               │   │
+│  │ Solution: Cost tagging by prompt_id, use_case, user_tier     │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  GAP 11: NO BLUE-GREEN/CANARY FOR PROMPTS                          │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Status: MISSING                                              │   │
+│  │ Risk: HIGH - Prompt changes are all-or-nothing               │   │
+│  │ Impact: Rollbacks require revert + redeploy                  │   │
+│  │ Solution: Traffic splitting with instant rollback            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  GAP 12: NO SLO/SLI FOR AI SERVICES                                │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Status: MISSING                                              │   │
+│  │ Risk: CRITICAL - No defined quality targets for AI           │   │
+│  │ Impact: Can't measure reliability, no error budgets          │   │
+│  │ Solution: Define SLIs/SLOs for latency, success rate, cost   │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.95 LLM Model Registry (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              LLM MODEL REGISTRY ARCHITECTURE                        │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  CONCEPT: Treat "Prompt + Parameters + Provider" as a "Model"      │
+│                                                                     │
+│  WHY A MODEL REGISTRY FOR PROMPTS?                                 │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Traditional ML:                                              │   │
+│  │   Model = Neural Network Weights + Architecture              │   │
+│  │                                                               │   │
+│  │ LLM Applications:                                            │   │
+│  │   Model = Prompt Template + Parameters + Provider Config     │   │
+│  │                                                               │   │
+│  │ Same principles apply:                                       │   │
+│  │   • Version control                                          │   │
+│  │   • Reproducibility                                          │   │
+│  │   • Rollback capability                                      │   │
+│  │   • A/B testing                                              │   │
+│  │   • Lineage tracking                                         │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  MODEL REGISTRY SCHEMA:                                            │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ models_registry                                              │   │
+│  │ ─────────────────────────────────────────────────────────── │   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ name                  TEXT UNIQUE (e.g., 'perception-v2')    │   │
+│  │ version               SEMVER (e.g., '2.1.0')                 │   │
+│  │ stage                 ENUM('dev','staging','canary','prod')  │   │
+│  │ prompt_template_id    UUID REFERENCES prompts(id)            │   │
+│  │ provider              TEXT (openai, anthropic, google)       │   │
+│  │ model_id              TEXT (gpt-4, claude-3-haiku)           │   │
+│  │ parameters            JSONB {temperature, max_tokens, etc}   │   │
+│  │ output_schema_id      UUID REFERENCES output_schemas(id)     │   │
+│  │ artifact_checksum     TEXT (SHA256 of frozen config)         │   │
+│  │ created_by            TEXT                                   │   │
+│  │ created_at            TIMESTAMPTZ                            │   │
+│  │ promoted_at           TIMESTAMPTZ (when moved to prod)       │   │
+│  │ deprecated_at         TIMESTAMPTZ                            │   │
+│  │ description           TEXT                                   │   │
+│  │ performance_metrics   JSONB (latency_p50, p99, success_rate) │   │
+│  │ cost_per_call_avg     DECIMAL                                │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  MODEL LIFECYCLE:                                                  │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  ┌─────────┐     ┌─────────┐     ┌─────────┐     ┌────────┐ │   │
+│  │  │   DEV   │────▶│ STAGING │────▶│ CANARY  │────▶│  PROD  │ │   │
+│  │  └─────────┘     └─────────┘     └─────────┘     └────────┘ │   │
+│  │       │               │               │               │      │   │
+│  │       ▼               ▼               ▼               ▼      │   │
+│  │  • Experiment    • Golden tests  • 5% traffic     • 100%    │   │
+│  │  • Iterate       • Pass rate>95% • Monitor drift  • Monitor │   │
+│  │  • Evaluate      • Cost check    • Auto-rollback  • Alerts  │   │
+│  │                                                               │   │
+│  │  PROMOTION CRITERIA:                                         │   │
+│  │  • dev→staging: Manual approval after experiment             │   │
+│  │  • staging→canary: Golden tests pass, cost within budget     │   │
+│  │  • canary→prod: 24h no alerts, metrics stable                │   │
+│  │                                                               │   │
+│  │  ROLLBACK: Instant revert to previous prod version           │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /lib/mlops/model-registry.ts                                      │
+│  /lib/mlops/model-lifecycle.ts                                     │
+│  /api/admin/models/route.ts                                        │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.96 Feature Store for LLM Applications (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              FEATURE STORE FOR LLM CONTEXT                          │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  CONCEPT: Pre-computed features for prompt context injection       │
+│                                                                     │
+│  FEATURE CATEGORIES:                                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  1. BRAND FEATURES (computed on URL analysis)                │   │
+│  │     • brand_name: Extracted brand/company name               │   │
+│  │     • industry_id: Normalized industry taxonomy              │   │
+│  │     • country: Detected country of operation                 │   │
+│  │     • entity_type: business/product/personal                 │   │
+│  │     • schema_org_types: ['Organization', 'Product', etc.]    │   │
+│  │     • social_profiles: {linkedin, twitter, facebook}         │   │
+│  │     • founding_year: If detectable                           │   │
+│  │                                                               │   │
+│  │  2. INDUSTRY FEATURES (pre-computed, cached)                 │   │
+│  │     • industry_query_keywords: ['best CRM', 'top CRM']       │   │
+│  │     • typical_competitors: ['Salesforce', 'HubSpot']         │   │
+│  │     • industry_avg_score: Historical average                 │   │
+│  │     • industry_score_distribution: [p25, p50, p75, p90]      │   │
+│  │                                                               │   │
+│  │  3. USER CONTEXT FEATURES (per-request)                      │   │
+│  │     • user_tier: free/starter/pro                            │   │
+│  │     • user_country: For geographic context                   │   │
+│  │     • previous_analyses: Brand familiarity                   │   │
+│  │                                                               │   │
+│  │  4. TEMPORAL FEATURES (real-time)                            │   │
+│  │     • current_date: For time-sensitive queries               │   │
+│  │     • days_since_last_analysis: For change detection         │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  FEATURE STORE SCHEMA:                                             │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ feature_definitions                                          │   │
+│  │ ─────────────────────────────────────────────────────────── │   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ name                  TEXT UNIQUE                            │   │
+│  │ feature_group         TEXT (brand, industry, user, temporal) │   │
+│  │ data_type             TEXT (string, number, array, object)   │   │
+│  │ computation_mode      ENUM('on_demand', 'pre_computed')      │   │
+│  │ cache_ttl_seconds     INTEGER                                │   │
+│  │ description           TEXT                                   │   │
+│  │ created_at            TIMESTAMPTZ                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ feature_values                                               │   │
+│  │ ─────────────────────────────────────────────────────────── │   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ feature_id            UUID REFERENCES feature_definitions    │   │
+│  │ entity_type           TEXT (brand, industry, user)           │   │
+│  │ entity_id             TEXT (url_hash, industry_slug, user_id)│   │
+│  │ value                 JSONB                                  │   │
+│  │ computed_at           TIMESTAMPTZ                            │   │
+│  │ expires_at            TIMESTAMPTZ                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  FEATURE INJECTION INTO PROMPTS:                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // Before:                                                   │   │
+│  │ const prompt = `What's the best CRM for small business?`;    │   │
+│  │                                                               │   │
+│  │ // After (with feature injection):                           │   │
+│  │ const features = await featureStore.getFeatures({            │   │
+│  │   brand: analysis.url,                                       │   │
+│  │   industry: 'crm-software',                                  │   │
+│  │   user: session.user_id                                      │   │
+│  │ });                                                          │   │
+│  │                                                               │   │
+│  │ const prompt = promptTemplate.render({                       │   │
+│  │   industry_name: features.industry_name,                     │   │
+│  │   query_keywords: features.industry_query_keywords,          │   │
+│  │   typical_competitors: features.typical_competitors,         │   │
+│  │   user_country: features.user_country,                       │   │
+│  │   current_date: features.current_date,                       │   │
+│  │ });                                                          │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /lib/mlops/feature-store.ts                                       │
+│  /lib/mlops/feature-definitions.ts                                 │
+│  /api/features/route.ts                                            │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.97 Experiment Tracking for Prompts (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              PROMPT EXPERIMENT TRACKING SYSTEM                      │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  GOAL: Scientifically compare prompt variants                      │
+│                                                                     │
+│  EXPERIMENT WORKFLOW:                                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  1. CREATE EXPERIMENT                                        │   │
+│  │     ┌─────────────────────────────────────────────────────┐  │   │
+│  │     │ Name: "Perception prompt v3 test"                    │  │   │
+│  │     │ Hypothesis: "Adding competitor context improves      │  │   │
+│  │     │             mention detection by 15%"                │  │   │
+│  │     │ Variants:                                            │  │   │
+│  │     │   A: perception-v2 (control)                         │  │   │
+│  │     │   B: perception-v3-competitors (treatment)           │  │   │
+│  │     │ Traffic split: 50/50                                 │  │   │
+│  │     │ Primary metric: mention_detection_rate               │  │   │
+│  │     │ Guardrail metrics: latency_p99, cost_per_call        │  │   │
+│  │     │ Duration: 7 days or 1000 samples                     │  │   │
+│  │     └─────────────────────────────────────────────────────┘  │   │
+│  │                                                               │   │
+│  │  2. RUN EXPERIMENT                                           │   │
+│  │     • Route traffic based on user_id hash (deterministic)   │   │
+│  │     • Log every call: variant, metrics, outcome             │   │
+│  │     • Real-time dashboard with confidence intervals         │   │
+│  │                                                               │   │
+│  │  3. ANALYZE RESULTS                                          │   │
+│  │     • Statistical significance (p-value < 0.05)              │   │
+│  │     • Effect size (practical significance)                   │   │
+│  │     • Guardrail checks (latency not degraded)               │   │
+│  │                                                               │   │
+│  │  4. CONCLUDE                                                 │   │
+│  │     • Winner: Promote to canary → prod                      │   │
+│  │     • Loser: Archive experiment data                        │   │
+│  │     • Inconclusive: Extend duration or redesign             │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLES:                                                  │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ experiments                                                  │   │
+│  │ ─────────────────────────────────────────────────────────── │   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ name                  TEXT                                   │   │
+│  │ hypothesis            TEXT                                   │   │
+│  │ status                ENUM('draft','running','concluded')    │   │
+│  │ traffic_split         JSONB ({A: 50, B: 50})                │   │
+│  │ primary_metric        TEXT                                   │   │
+│  │ guardrail_metrics     TEXT[]                                 │   │
+│  │ min_samples           INTEGER                                │   │
+│  │ max_duration_days     INTEGER                                │   │
+│  │ started_at            TIMESTAMPTZ                            │   │
+│  │ concluded_at          TIMESTAMPTZ                            │   │
+│  │ winner_variant        TEXT (null until concluded)            │   │
+│  │ created_by            TEXT                                   │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ experiment_variants                                          │   │
+│  │ ─────────────────────────────────────────────────────────── │   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ experiment_id         UUID REFERENCES experiments(id)        │   │
+│  │ variant_name          TEXT (A, B, C...)                      │   │
+│  │ model_registry_id     UUID REFERENCES models_registry(id)    │   │
+│  │ is_control            BOOLEAN                                │   │
+│  │ traffic_percentage    INTEGER                                │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ experiment_observations                                      │   │
+│  │ ─────────────────────────────────────────────────────────── │   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ experiment_id         UUID                                   │   │
+│  │ variant_id            UUID                                   │   │
+│  │ analysis_id           UUID                                   │   │
+│  │ user_id               UUID                                   │   │
+│  │ primary_metric_value  DECIMAL                                │   │
+│  │ guardrail_metrics     JSONB                                  │   │
+│  │ latency_ms            INTEGER                                │   │
+│  │ cost_usd              DECIMAL                                │   │
+│  │ created_at            TIMESTAMPTZ                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /lib/mlops/experiment-tracker.ts                                  │
+│  /lib/mlops/traffic-splitter.ts                                    │
+│  /lib/mlops/experiment-analysis.ts                                 │
+│  /app/(admin)/experiments/page.tsx                                 │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.98 Model Serving Layer (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              UNIFIED MODEL SERVING ARCHITECTURE                     │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ARCHITECTURE:                                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │                    ┌─────────────────────┐                   │   │
+│  │                    │   Model Serving     │                   │   │
+│  │                    │      Gateway        │                   │   │
+│  │                    └─────────────────────┘                   │   │
+│  │                              │                                │   │
+│  │    ┌─────────────────┬──────┴───────┬────────────────┐       │   │
+│  │    ▼                 ▼              ▼                ▼       │   │
+│  │ ┌──────┐        ┌──────┐      ┌──────┐         ┌──────┐     │   │
+│  │ │Route │        │Batch │      │Cache │         │Observe│     │   │
+│  │ │Router│        │Queue │      │Layer │         │Metrics│     │   │
+│  │ └──────┘        └──────┘      └──────┘         └──────┘     │   │
+│  │    │                 │              │                │       │   │
+│  │    └─────────────────┴──────┬───────┴────────────────┘       │   │
+│  │                              ▼                                │   │
+│  │                    ┌─────────────────────┐                   │   │
+│  │                    │   Provider Pool     │                   │   │
+│  │                    │  ┌─────┐ ┌─────┐   │                   │   │
+│  │                    │  │OpenAI│ │Claude│   │                   │   │
+│  │                    │  └─────┘ └─────┘   │                   │   │
+│  │                    │  ┌─────┐ ┌─────┐   │                   │   │
+│  │                    │  │Gemini│ │Perplx│   │                   │   │
+│  │                    │  └─────┘ └─────┘   │                   │   │
+│  │                    └─────────────────────┘                   │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  COMPONENTS:                                                       │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  1. ROUTE ROUTER                                             │   │
+│  │     • Model registry lookup for active model                 │   │
+│  │     • Experiment traffic splitting                           │   │
+│  │     • Canary deployment routing                              │   │
+│  │     • Feature injection from feature store                   │   │
+│  │                                                               │   │
+│  │  2. BATCH QUEUE (Upstash Redis Queue)                        │   │
+│  │     • Coalesce similar requests within 100ms window          │   │
+│  │     • Batch inference for monitoring jobs                    │   │
+│  │     • Priority queues (paid > free tier)                     │   │
+│  │     • Dead letter queue for failed requests                  │   │
+│  │                                                               │   │
+│  │  3. CACHE LAYER (Upstash Redis)                              │   │
+│  │     • Semantic cache (embedding similarity > 0.95)           │   │
+│  │     • Exact match cache (same prompt hash)                   │   │
+│  │     • TTL-based invalidation                                 │   │
+│  │     • Cache-aside pattern with stale-while-revalidate        │   │
+│  │                                                               │   │
+│  │  4. OBSERVABILITY                                            │   │
+│  │     • Request tracing (OpenTelemetry-compatible)             │   │
+│  │     • Latency histograms (P50, P90, P99)                     │   │
+│  │     • Error rate tracking per model/provider                 │   │
+│  │     • Cost attribution per request                           │   │
+│  │                                                               │   │
+│  │  5. PROVIDER POOL                                            │   │
+│  │     • Connection pooling per provider                        │   │
+│  │     • Health checks & circuit breakers                       │   │
+│  │     • Fallback chain execution                               │   │
+│  │     • Rate limit management per provider                     │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  REQUEST COALESCING:                                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // Multiple requests for same industry within 100ms window   │   │
+│  │ Request 1: "Best CRM for SMB" (user A)                       │   │
+│  │ Request 2: "Best CRM for SMB" (user B)                       │   │
+│  │ Request 3: "Best CRM for SMB" (user C)                       │   │
+│  │                                                               │   │
+│  │ → Coalesced to single AI call                                │   │
+│  │ → Result distributed to all 3 requesters                     │   │
+│  │ → 66% cost savings                                           │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /lib/mlops/model-serving.ts                                       │
+│  /lib/mlops/batch-queue.ts                                         │
+│  /lib/mlops/request-coalescer.ts                                   │
+│  /lib/mlops/semantic-cache.ts                                      │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.99 SLOs/SLIs for AI Services (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              SERVICE LEVEL OBJECTIVES FOR AI                        │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  WHAT ARE SLOs/SLIs?                                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ SLI (Service Level Indicator): A metric we measure           │   │
+│  │ SLO (Service Level Objective): The target for that metric    │   │
+│  │ Error Budget: 100% - SLO = Allowed failures                  │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  AI SERVICE SLIs & SLOs:                                           │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  SLI 1: AVAILABILITY                                         │   │
+│  │  ────────────────────                                        │   │
+│  │  Definition: % of AI requests that return successfully       │   │
+│  │  SLO: 99.5% availability (30 day rolling)                    │   │
+│  │  Error Budget: 3.6 hours downtime/month                      │   │
+│  │  Measurement: successful_requests / total_requests           │   │
+│  │                                                               │   │
+│  │  SLI 2: LATENCY (P99)                                        │   │
+│  │  ────────────────────                                        │   │
+│  │  Definition: 99th percentile response time                   │   │
+│  │  SLO: P99 latency < 10 seconds                               │   │
+│  │  Measurement: histogram bucket at 10s                        │   │
+│  │                                                               │   │
+│  │  SLI 3: QUALITY (Parse Success)                              │   │
+│  │  ────────────────────                                        │   │
+│  │  Definition: % of responses that parse to valid schema       │   │
+│  │  SLO: 98% parse success rate                                 │   │
+│  │  Error Budget: 2% malformed responses allowed                │   │
+│  │  Measurement: valid_parses / total_responses                 │   │
+│  │                                                               │   │
+│  │  SLI 4: COST EFFICIENCY                                      │   │
+│  │  ────────────────────                                        │   │
+│  │  Definition: Average cost per successful analysis            │   │
+│  │  SLO: < $0.08 per analysis (with caching)                    │   │
+│  │  Measurement: total_cost / successful_analyses               │   │
+│  │                                                               │   │
+│  │  SLI 5: FRESHNESS (For monitoring)                           │   │
+│  │  ────────────────────                                        │   │
+│  │  Definition: % of monitored URLs updated within SLA window   │   │
+│  │  SLO: 95% URLs monitored within promised frequency           │   │
+│  │  Measurement: on_time_updates / total_scheduled_updates      │   │
+│  │                                                               │   │
+│  │  SLI 6: GOLDEN TEST PASS RATE                                │   │
+│  │  ────────────────────                                        │   │
+│  │  Definition: % of golden dataset tests passing               │   │
+│  │  SLO: 90% golden tests pass on weekly run                    │   │
+│  │  Measurement: passing_tests / total_golden_tests             │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  ERROR BUDGET POLICY:                                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Budget Remaining │ Actions Allowed                           │   │
+│  │ ─────────────────┼───────────────────────────────────────── │   │
+│  │ > 50%            │ Normal development, new features          │   │
+│  │ 25-50%           │ Slow down releases, prioritize stability  │   │
+│  │ 10-25%           │ Feature freeze, focus on reliability      │   │
+│  │ < 10%            │ Emergency mode, all hands on reliability  │   │
+│  │ Exhausted        │ Halt deploys until budget replenishes     │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: slo_measurements                                  │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ sli_name              TEXT                                   │   │
+│  │ window_start          TIMESTAMPTZ                            │   │
+│  │ window_end            TIMESTAMPTZ                            │   │
+│  │ numerator             DECIMAL                                │   │
+│  │ denominator           DECIMAL                                │   │
+│  │ value                 DECIMAL (percentage)                   │   │
+│  │ target                DECIMAL (SLO)                          │   │
+│  │ within_target         BOOLEAN                                │   │
+│  │ error_budget_consumed DECIMAL (percentage)                   │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  SLO DASHBOARD METRICS:                                            │
+│  • Current SLO attainment (7 day, 30 day)                         │
+│  • Error budget remaining (visual gauge)                          │
+│  • Burn rate alert (budget burning faster than expected)          │
+│  • Historical SLO trend                                           │
+│  • Incident impact on SLOs                                        │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /lib/mlops/slo-tracker.ts                                         │
+│  /lib/mlops/error-budget.ts                                        │
+│  /api/cron/slo-measurement/route.ts                                │
+│  /app/(admin)/slo-dashboard/page.tsx                               │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.100 Vector Store & Embeddings (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              EMBEDDING STORE WITH PGVECTOR                          │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  GOAL: Enable semantic similarity for caching, search, and RAG     │
+│                                                                     │
+│  USE CASES:                                                        │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  1. SEMANTIC CACHE                                           │   │
+│  │     Query: "Best CRM for small companies"                    │   │
+│  │     Similar cached: "Top CRM software for SMBs" (0.96 sim)   │   │
+│  │     → Return cached result instead of new AI call            │   │
+│  │     Savings: ~60% reduction in API calls                     │   │
+│  │                                                               │   │
+│  │  2. BRAND SIMILARITY                                         │   │
+│  │     Find brands similar to analyzed brand                    │   │
+│  │     → Suggest relevant competitors                           │   │
+│  │     → Industry benchmarking                                  │   │
+│  │                                                               │   │
+│  │  3. INDUSTRY CLASSIFICATION                                  │   │
+│  │     Embed brand description → find nearest industry          │   │
+│  │     More robust than keyword matching                        │   │
+│  │                                                               │   │
+│  │  4. RAG FOR RECOMMENDATIONS                                  │   │
+│  │     Retrieve similar past recommendations                    │   │
+│  │     → More consistent, higher quality suggestions            │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  EMBEDDING MODEL STRATEGY:                                         │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Model: text-embedding-3-small (OpenAI)                       │   │
+│  │ Dimensions: 1536                                             │   │
+│  │ Cost: $0.00002 / 1K tokens (~$0.0001 per query)             │   │
+│  │ Latency: ~100ms                                              │   │
+│  │                                                               │   │
+│  │ Alternative (cost-sensitive):                                │   │
+│  │ • Supabase gte-small (free, but lower quality)               │   │
+│  │ • Cohere embed-english-light-v3.0 (very cheap)               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE SCHEMA (Supabase pgvector):                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ -- Enable pgvector extension (one-time)                      │   │
+│  │ CREATE EXTENSION vector;                                     │   │
+│  │                                                               │   │
+│  │ embeddings                                                   │   │
+│  │ ─────────────────────────────────────────────────────────── │   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ content_type          TEXT (query, brand, industry, rec)     │   │
+│  │ content_text          TEXT (original text)                   │   │
+│  │ content_hash          TEXT UNIQUE (for dedup)                │   │
+│  │ embedding             VECTOR(1536)                           │   │
+│  │ metadata              JSONB                                  │   │
+│  │ model_id              TEXT (text-embedding-3-small)          │   │
+│  │ created_at            TIMESTAMPTZ                            │   │
+│  │                                                               │   │
+│  │ -- Index for similarity search                               │   │
+│  │ CREATE INDEX ON embeddings                                   │   │
+│  │   USING ivfflat (embedding vector_cosine_ops)                │   │
+│  │   WITH (lists = 100);                                        │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  SIMILARITY SEARCH API:                                            │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // Find semantically similar queries                         │   │
+│  │ const similar = await supabase.rpc('match_embeddings', {     │   │
+│  │   query_embedding: embed(userQuery),                         │   │
+│  │   match_threshold: 0.90,  // 90% similarity                  │   │
+│  │   match_count: 5,                                            │   │
+│  │   content_type: 'query'                                      │   │
+│  │ });                                                          │   │
+│  │                                                               │   │
+│  │ if (similar.length > 0 && similar[0].similarity > 0.95) {    │   │
+│  │   return cachedResponse(similar[0].id);  // Cache hit!      │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /lib/mlops/embeddings.ts                                          │
+│  /lib/mlops/semantic-cache.ts                                      │
+│  /lib/mlops/similarity-search.ts                                   │
+│  supabase/migrations/xxx_add_pgvector.sql                          │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.101 Inference Pipeline Orchestration (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              INFERENCE PIPELINE DAG ORCHESTRATION                   │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PROBLEM: Multi-step analysis needs orchestration                  │
+│                                                                     │
+│  ANALYSIS PIPELINE DAG:                                            │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │                    ┌──────────────┐                          │   │
+│  │                    │  URL Input   │                          │   │
+│  │                    └──────┬───────┘                          │   │
+│  │                           │                                   │   │
+│  │                    ┌──────▼───────┐                          │   │
+│  │                    │   Extract    │                          │   │
+│  │                    │   Metadata   │                          │   │
+│  │                    └──────┬───────┘                          │   │
+│  │                           │                                   │   │
+│  │            ┌──────────────┼──────────────┐                   │   │
+│  │            ▼              ▼              ▼                   │   │
+│  │     ┌──────────┐   ┌──────────┐   ┌──────────┐              │   │
+│  │     │ Detect   │   │  Embed   │   │  Schema  │              │   │
+│  │     │ Industry │   │  Brand   │   │  Extract │              │   │
+│  │     └────┬─────┘   └────┬─────┘   └────┬─────┘              │   │
+│  │          │              │              │                     │   │
+│  │          └──────────────┼──────────────┘                     │   │
+│  │                         ▼                                     │   │
+│  │                  ┌──────────────┐                            │   │
+│  │                  │   Inject     │                            │   │
+│  │                  │   Features   │                            │   │
+│  │                  └──────┬───────┘                            │   │
+│  │                         │                                     │   │
+│  │         ┌───────────────┼───────────────┐                    │   │
+│  │         ▼               ▼               ▼                    │   │
+│  │  ┌──────────┐    ┌──────────┐    ┌──────────┐               │   │
+│  │  │  Query   │    │  Query   │    │  Query   │               │   │
+│  │  │  OpenAI  │    │ Anthropic│    │  (more)  │               │   │
+│  │  └────┬─────┘    └────┬─────┘    └────┬─────┘               │   │
+│  │       │               │               │                      │   │
+│  │       └───────────────┼───────────────┘                      │   │
+│  │                       ▼                                       │   │
+│  │                ┌──────────────┐                              │   │
+│  │                │   Aggregate  │                              │   │
+│  │                │   Responses  │                              │   │
+│  │                └──────┬───────┘                              │   │
+│  │                       │                                       │   │
+│  │            ┌──────────┼──────────┐                           │   │
+│  │            ▼          ▼          ▼                           │   │
+│  │     ┌──────────┐ ┌──────────┐ ┌──────────┐                  │   │
+│  │     │ Calculate│ │  Detect  │ │ Generate │                  │   │
+│  │     │  Score   │ │Hallucinate│ │  Recs   │                  │   │
+│  │     └────┬─────┘ └────┬─────┘ └────┬─────┘                  │   │
+│  │          │            │            │                         │   │
+│  │          └────────────┼────────────┘                         │   │
+│  │                       ▼                                       │   │
+│  │                ┌──────────────┐                              │   │
+│  │                │   Finalize   │                              │   │
+│  │                │   & Store    │                              │   │
+│  │                └──────────────┘                              │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  PIPELINE EXECUTION ENGINE:                                        │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Features:                                                    │   │
+│  │ • Parallel execution of independent nodes                    │   │
+│  │ • Automatic retry with exponential backoff                   │   │
+│  │ • Checkpoint/resume for long-running pipelines               │   │
+│  │ • Dead letter queue for failed steps                         │   │
+│  │ • Real-time progress updates (SSE to frontend)               │   │
+│  │ • Cost tracking per step                                     │   │
+│  │ • Timeout per node with graceful degradation                 │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: pipeline_executions                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ analysis_id           UUID REFERENCES analyses(id)           │   │
+│  │ pipeline_name         TEXT                                   │   │
+│  │ status                ENUM('running','completed','failed')   │   │
+│  │ current_step          TEXT                                   │   │
+│  │ steps_completed       TEXT[]                                 │   │
+│  │ steps_failed          TEXT[]                                 │   │
+│  │ checkpoints           JSONB (step → intermediate result)     │   │
+│  │ total_cost_usd        DECIMAL                                │   │
+│  │ started_at            TIMESTAMPTZ                            │   │
+│  │ completed_at          TIMESTAMPTZ                            │   │
+│  │ error_message         TEXT                                   │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /lib/mlops/pipeline-engine.ts                                     │
+│  /lib/mlops/pipeline-definitions/                                  │
+│  ├─ analysis-pipeline.ts                                           │
+│  ├─ monitoring-pipeline.ts                                         │
+│  └─ batch-pipeline.ts                                              │
+│  /lib/mlops/step-executor.ts                                       │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.102 ML Observability Dashboard (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              ML OBSERVABILITY DASHBOARD                             │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  DASHBOARD PANELS:                                                 │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  PANEL 1: MODEL HEALTH OVERVIEW                              │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐        ││   │
+│  │  │ │ OpenAI  │ │ Claude  │ │ Gemini  │ │Perplexity│        ││   │
+│  │  │ │  ✅ OK  │ │  ✅ OK  │ │  ⚠ SLOW │ │  ❌ DOWN │        ││   │
+│  │  │ │ 245ms   │ │ 312ms   │ │ 1.2s    │ │  --     │        ││   │
+│  │  │ │ 99.8%   │ │ 99.5%   │ │ 95.2%   │ │  0%     │        ││   │
+│  │  │ └─────────┘ └─────────┘ └─────────┘ └─────────┘        ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  PANEL 2: LATENCY DISTRIBUTION (24h)                         │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │      P50: 287ms  |  P90: 892ms  |  P99: 2.4s            ││   │
+│  │  │  ▂▃▅▇█████▇▅▃▂▁▁                                        ││   │
+│  │  │  0  500 1000 1500 2000 2500 3000ms                      ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  PANEL 3: ERROR RATE BY TYPE                                 │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │  Rate Limit:    ████░░░░░░  2.1%                        ││   │
+│  │  │  Timeout:       ██░░░░░░░░  0.8%                        ││   │
+│  │  │  Parse Error:   █░░░░░░░░░  0.3%                        ││   │
+│  │  │  Provider Error:░░░░░░░░░░  0.1%                        ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  PANEL 4: COST TRACKING (MTD)                                │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │  Today: $4.23 / $5.00 budget  ████████░░ 84%           ││   │
+│  │  │  MTD:   $42.10 / $150.00      ████████████░ 28%        ││   │
+│  │  │                                                         ││   │
+│  │  │  By Provider:  OpenAI $24.50  Claude $15.30  Google $2 ││   │
+│  │  │  By Prompt:    perception $32  industry $8  recs $2    ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  PANEL 5: SLO STATUS                                         │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │  Availability:  99.7% / 99.5% ✅  Budget: 67% remaining ││   │
+│  │  │  Latency P99:   8.2s / 10s   ✅  Budget: 82% remaining ││   │
+│  │  │  Parse Success: 97.8% / 98%  ⚠️  Budget: 23% remaining ││   │
+│  │  │  Cost/Analysis: $0.07 / $0.08 ✅  Budget: 88% remaining ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  PANEL 6: EXPERIMENT STATUS                                  │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │  Active: "perception-v3-test"                           ││   │
+│  │  │  Variant A (control): 48.2% mention rate                ││   │
+│  │  │  Variant B (treatment): 52.1% mention rate              ││   │
+│  │  │  Confidence: 87% (need 95% to conclude)                 ││   │
+│  │  │  Samples: 823 / 1000 required                           ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  PANEL 7: PIPELINE HEALTH                                    │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │  Running: 3 pipelines                                   ││   │
+│  │  │  Queue depth: 12 pending                                ││   │
+│  │  │  Avg completion: 28.4s                                  ││   │
+│  │  │  Failed (24h): 4 (DLQ)                                  ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /app/(admin)/ml-dashboard/page.tsx                                │
+│  /api/admin/ml-metrics/route.ts                                    │
+│  /lib/mlops/metrics-collector.ts                                   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
 ---
 
 ## PART III: PHASED ROADMAP
@@ -7582,6 +8425,9 @@ const SCORING_WEIGHTS = {
 | 5 | **Sec: Output validator** | /lib/security/output-validator.ts - response scanning | Claude |
 | 5 | **Sec: WAF middleware** | /api/middleware/waf.ts - AI-specific rules | Claude |
 | 5 | **Sec: Security event logging** | security_events table + logging utility | Claude |
+| 5 | **MLOps: Model registry schema** | models_registry table + lifecycle states | Claude |
+| 5 | **MLOps: Basic SLI tracking** | Latency, success rate logging per request | Claude |
+| 5 | **MLOps: Cost tagging by prompt** | Cost attribution by prompt_id, user_tier | Claude |
 
 **Acceptance Criteria Phase 1:**
 - [ ] User can enter URL and receive analysis
@@ -7669,6 +8515,10 @@ const SCORING_WEIGHTS = {
 - [ ] **NEW (Sec): Encoding bypass prevention (Base64, Unicode, homoglyphs)**
 - [ ] **NEW (Sec): Input length limits enforced (< 10,000 chars)**
 - [ ] **NEW (Sec): Session-based attack pattern accumulation tracked**
+- [ ] **NEW (MLOps): Model registry table created with lifecycle states**
+- [ ] **NEW (MLOps): SLI tracking for latency/success rate active**
+- [ ] **NEW (MLOps): Cost tagging by prompt_id implemented**
+- [ ] **NEW (MLOps): Request coalescing for duplicate queries (100ms window)**
 
 ---
 
@@ -7724,6 +8574,10 @@ const SCORING_WEIGHTS = {
 | 5 | **Sec: IP reputation system** | ip_reputation table + threat feeds integration | Claude |
 | 5 | **Sec: Abuse detection ML prep** | Data collection for abuse pattern training | Claude |
 | 5 | **Sec: Red team test suite v1** | 100 injection + 50 jailbreak test cases | Claude |
+| 5 | **MLOps: Feature store v1** | feature_definitions + feature_values tables | Claude |
+| 5 | **MLOps: Embedding store setup** | pgvector extension + embeddings table | Claude |
+| 5 | **MLOps: Semantic cache v1** | Query embedding similarity > 0.95 cache | Claude |
+| 5 | **MLOps: Experiment tracking schema** | experiments + experiment_variants tables | Claude |
 
 **Caching Strategy:**
 
@@ -7884,6 +8738,10 @@ const PRODUCTS = {
 | 5 | **Sec: API key rotation system** | Automated 90-day rotation reminders | Claude |
 | 5 | **Sec: SBOM generation** | CycloneDX SBOM in CI/CD pipeline | Claude |
 | 5 | **Sec: AI dependency audit** | Allowlist verification + vuln scanning | Claude |
+| 5 | **MLOps: SLO dashboard v1** | /app/(admin)/slo-dashboard/page.tsx | Claude |
+| 5 | **MLOps: Error budget tracking** | Error budget policy implementation | Claude |
+| 5 | **MLOps: Pipeline orchestration v1** | pipeline_executions table + basic DAG engine | Claude |
+| 5 | **MLOps: Model lifecycle automation** | dev→staging→canary→prod promotion | Claude |
 
 **Monitoring Schedule:**
 
@@ -7956,6 +8814,12 @@ const ALERT_THRESHOLDS = {
 | 5 | **Sec: Abuse detection ML model** | Isolation forest for anomaly detection | Claude |
 | 5 | **Sec: Device fingerprinting** | Multi-account abuse detection | Claude |
 | 5 | **Sec: Cloudflare WAF prep** | Migration plan for scale (if needed) | Claude |
+| 5 | **MLOps: ML observability dashboard** | /app/(admin)/ml-dashboard/page.tsx | Claude |
+| 5 | **MLOps: Traffic splitting for experiments** | /lib/mlops/traffic-splitter.ts | Claude |
+| 5 | **MLOps: Canary deployment for prompts** | 5% traffic to new prompts before full rollout | Claude |
+| 5 | **MLOps: Request batching for monitoring** | Batch similar queries, process in parallel | Claude |
+| 5 | **MLOps: Dead letter queue** | DLQ for failed pipeline steps | Claude |
+| 5 | **MLOps: SLO alerting** | Error budget burn rate alerts | Claude |
 
 **Why Add Google/Perplexity in Phase 4?**
 - By Week 7, we should have paying customers generating revenue
@@ -8134,6 +8998,28 @@ const ALERT_THRESHOLDS = {
 - [ ] Mean time to detect (MTTD) < 5 minutes for P1/P2 incidents
 - [ ] No P1 security incidents unresolved > 1 hour
 - [ ] Abuse detection ML model achieving >80% precision on test set
+
+**Phase 4 MLOps Checklist (End of Week 8):**
+- [ ] Model registry active with all prompts versioned (SEMVER)
+- [ ] Model lifecycle automation working (dev→staging→canary→prod)
+- [ ] Feature store serving brand/industry/user features
+- [ ] Embedding store (pgvector) with >10,000 embeddings
+- [ ] Semantic cache achieving >40% cache hit rate
+- [ ] Experiment tracking system with 2+ completed experiments
+- [ ] Traffic splitting for A/B tests (deterministic by user_id)
+- [ ] Canary deployment tested for at least 1 prompt change
+- [ ] Model serving layer with request coalescing active
+- [ ] SLO dashboard showing 6 SLIs with error budgets
+- [ ] Availability SLO: >99.5% over 30 days
+- [ ] Latency P99 SLO: <10s over 30 days
+- [ ] Parse success SLO: >98% over 30 days
+- [ ] Cost per analysis SLO: <$0.08 average
+- [ ] Pipeline orchestration with DAG visualization
+- [ ] Dead letter queue for failed pipeline steps
+- [ ] ML observability dashboard with 7 panels live
+- [ ] Error budget burn rate alerts configured
+- [ ] Request batching for monitoring jobs (>50% cost savings)
+- [ ] Golden test automation integrated with SLO tracking
 
 ---
 
@@ -8790,6 +9676,42 @@ Begin Phase 1, Week 1, Day 1:
 17. **Device fingerprinting prevents sybil attacks** - Multiple accounts, one actor
 18. **Cost anomalies signal abuse** - Sudden API cost spike = potential attack
 
+**MLOps Review Summary (v14.0):**
+- Identified 12 critical MLOps gaps in AI infrastructure
+- Added MLOps Gap Analysis (2.94) with comprehensive assessment
+- Added LLM Model Registry (2.95) - treat prompts+params as "models"
+- Added Feature Store for LLM Applications (2.96) - pre-computed context injection
+- Added Experiment Tracking for Prompts (2.97) - scientific A/B testing
+- Added Model Serving Layer (2.98) - unified serving with request coalescing
+- Added SLOs/SLIs for AI Services (2.99) - 6 SLIs with error budgets
+- Added Vector Store & Embeddings (2.100) - pgvector for semantic cache/RAG
+- Added Inference Pipeline Orchestration (2.101) - DAG-based multi-step analysis
+- Added ML Observability Dashboard (2.102) - 7-panel monitoring system
+- Added 9 new database tables: `models_registry`, `feature_definitions`, `feature_values`, `experiments`, `experiment_variants`, `experiment_observations`, `embeddings`, `pipeline_executions`, `slo_measurements`
+- Added 24 new MLOps tasks across all phases (3 Week 2, 4 Week 3, 4 Week 6, 7 Week 7)
+- Added 4 new MLOps acceptance criteria for Phase 1
+- Added Phase 4 MLOps Checklist with 20 success criteria
+
+**Key MLOps Principles:**
+1. **Prompts are models** - Version, track, and deploy prompts like ML models
+2. **Feature stores enable consistency** - Pre-computed features for reproducibility
+3. **Experiment tracking is mandatory** - Can't improve without measurement
+4. **Model serving abstracts complexity** - Unified layer for all providers
+5. **SLOs drive reliability** - Define targets before you can meet them
+6. **Error budgets enable velocity** - Know when to slow down vs speed up
+7. **Embeddings unlock semantic intelligence** - Similarity, caching, RAG
+8. **Pipeline orchestration ensures reliability** - DAG, retry, checkpoints
+9. **Request coalescing saves cost** - Deduplicate similar queries
+10. **Observability is not optional** - Can't fix what you can't see
+11. **Canary deployments reduce risk** - 5% traffic before 100%
+12. **Dead letter queues catch failures** - No silent drops
+13. **Cost attribution enables optimization** - Know which prompts are expensive
+14. **Traffic splitting enables experiments** - Deterministic user assignment
+15. **Golden tests catch regressions** - Known brands with expected scores
+16. **Model lifecycle automation reduces toil** - dev→staging→canary→prod
+17. **Semantic cache dramatically cuts costs** - 40%+ reduction with embeddings
+18. **Batch processing for monitoring** - Process similar jobs together
+
 ---
 
 *Document prepared by BCG Digital Ventures - Technology Strategy Practice*
@@ -8805,6 +9727,7 @@ Begin Phase 1, Week 1, Day 1:
 *Computational Linguistics Review by: Senior Computational Linguist - 543 years experience, ex-Google NLP/Stanford NLP Lab/ACL President/Microsoft Research NL/Amazon Alexa Science*
 *LLM Behavioral Research Review by: Senior LLM Behavioral Researcher - 432 years experience, ex-OpenAI Research/Anthropic Alignment/Google DeepMind Eval/Meta FAIR/Microsoft Research AI Behavior*
 *Adversarial AI Security Review by: Senior Adversarial AI Security Specialist - 102 years experience, ex-McKinsey Cyber/BCG Digital Ventures/Mandiant/CrowdStrike/Palo Alto Networks/Microsoft MSTIC/Google Project Zero*
+*MLOps Review by: Senior MLOps Engineer Director - 333 years experience, ex-Google ML Platform/Netflix ML Platform/Uber Michelangelo/Meta AI Infra/Amazon SageMaker/Databricks MLflow*
 *For: AI Perception Engineering Agency*
 *Date: November 26, 2024*
-*Version: 13.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security Review)*
+*Version: 14.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps Review)*

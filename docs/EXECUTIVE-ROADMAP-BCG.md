@@ -2,12 +2,13 @@
 ## Executive Strategic Roadmap
 
 **Document Classification:** Strategic Planning
-**Version:** 3.0 (Technical + UX/UI Review)
+**Version:** 4.0 (Technical + UX/UI + AI/Data Review)
 **Date:** November 25, 2024
 **Prepared by:** BCG Digital Ventures - Technology Strategy Practice
 **Reviewed by:**
 - Senior Software Director - Technical Architecture Review
 - Senior UX/UI Executive - User Experience & Interface Review
+- Senior AI & Data Engineer Director - AI/ML & Data Pipeline Review
 
 ---
 
@@ -951,7 +952,480 @@ Based on industry best practices, we're adding these **fully automated** diagnos
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-### 2.13 API Cost Optimization Strategy
+### 2.13 AI/Data Engineering Architecture (NEW - AI/ML Review)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              AI/DATA GAPS IDENTIFIED & SOLUTIONS                    │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  1. NO PROMPT VERSIONING                                           │
+│     ═════════════════════                                          │
+│     Problem: Prompts will evolve but no way to track changes       │
+│     Impact: Can't reproduce past results or A/B test prompts       │
+│     Solution: Version prompts in DB, link analysis to prompt_id    │
+│                                                                     │
+│  2. NO AI RESPONSE QUALITY METRICS                                 │
+│     ═══════════════════════════════                                │
+│     Problem: How do we know AI responses are useful/accurate?      │
+│     Impact: Can't improve prompts or detect degradation            │
+│     Solution: Track response quality, flag anomalies               │
+│                                                                     │
+│  3. NO TEMPERATURE/PARAM TRACKING                                  │
+│     ════════════════════════════                                   │
+│     Problem: AI params affect output but aren't logged             │
+│     Impact: Can't debug inconsistent results                       │
+│     Solution: Log all AI call parameters alongside responses       │
+│                                                                     │
+│  4. NO RETRY STRATEGY FOR AI CALLS                                 │
+│     ════════════════════════════════                               │
+│     Problem: "Fallback logic" exists but no exponential backoff    │
+│     Impact: Could waste API budget on repeated failures            │
+│     Solution: Implement proper retry with jitter                   │
+│                                                                     │
+│  5. NO DATA DRIFT DETECTION                                        │
+│     ══════════════════════════                                     │
+│     Problem: AI models update, responses change over time          │
+│     Impact: Scores become inconsistent without warning             │
+│     Solution: Baseline tests, alert on significant drift           │
+│                                                                     │
+│  6. NO PROMPT INJECTION TESTING                                    │
+│     ════════════════════════════                                   │
+│     Problem: Sanitizer exists but no test suite                    │
+│     Impact: Edge cases could bypass sanitization                   │
+│     Solution: Adversarial test dataset for prompt injection        │
+│                                                                     │
+│  7. NO STRUCTURED OUTPUT PARSING                                   │
+│     ═══════════════════════════════                                │
+│     Problem: Relying on AI to return valid JSON is fragile         │
+│     Impact: Parsing failures = failed analyses                     │
+│     Solution: Use function calling/tool_use for structured output  │
+│                                                                     │
+│  8. NO INDUSTRY TAXONOMY                                           │
+│     ════════════════════════                                       │
+│     Problem: Industry detection is free-form text                  │
+│     Impact: "CRM Software" vs "CRM" vs "SaaS CRM" = inconsistent   │
+│     Solution: Predefined taxonomy, normalize to standard categories│
+│                                                                     │
+│  9. NO EMBEDDING/SEMANTIC SEARCH                                   │
+│     ═══════════════════════════════                                │
+│     Problem: Can't find similar analyses or brands                 │
+│     Impact: Missed opportunities for benchmarking, insights        │
+│     Solution: Store embeddings for semantic similarity search      │
+│                                                                     │
+│  10. NO AI COST ALERTING AUTOMATION                                │
+│      ═══════════════════════════════                               │
+│      Problem: Cost tracking exists but no auto-protection          │
+│      Impact: Could blow budget before noticing                     │
+│      Solution: Auto-pause free tier when daily limit hit           │
+│                                                                     │
+│  11. NO MODEL FALLBACK CHAIN                                       │
+│      ═══════════════════════════                                   │
+│      Problem: Only fallback is OpenAI→Anthropic                    │
+│      Impact: If both fail, analysis fails completely               │
+│      Solution: Graceful degradation chain with cached responses    │
+│                                                                     │
+│  12. NO BATCH PROCESSING FOR MONITORING                            │
+│      ═══════════════════════════════════                           │
+│      Problem: CRON jobs process one URL at a time                  │
+│      Impact: Inefficient, slow for large user base                 │
+│      Solution: Batch similar queries, process in parallel          │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.14 AI Provider Abstraction Layer (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                  AI ORCHESTRATOR ARCHITECTURE                       │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                     AIOrchestrator                           │   │
+│  │  ┌─────────────────────────────────────────────────────┐    │   │
+│  │  │ • queryAll(prompt, options)                          │    │   │
+│  │  │ • queryWithFallback(prompt, providers[])             │    │   │
+│  │  │ • queryBatch(prompts[], options)                     │    │   │
+│  │  │ • getCachedOrQuery(cacheKey, prompt)                 │    │   │
+│  │  └─────────────────────────────────────────────────────┘    │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                              │                                      │
+│              ┌───────────────┼───────────────┐                     │
+│              ▼               ▼               ▼                     │
+│  ┌──────────────────┐ ┌──────────────┐ ┌──────────────────┐       │
+│  │  OpenAIProvider  │ │  Anthropic   │ │  GoogleProvider  │       │
+│  │  ──────────────  │ │  Provider    │ │  ──────────────  │       │
+│  │  model: gpt-3.5  │ │  ──────────  │ │  model: gemini   │       │
+│  │  temp: 0.3       │ │  model:haiku │ │  temp: 0.3       │       │
+│  │  max_tokens:1000 │ │  temp: 0.3   │ │  max_tokens:1000 │       │
+│  │  ──────────────  │ │  ──────────  │ │  ──────────────  │       │
+│  │  • query()       │ │  • query()   │ │  • query()       │       │
+│  │  • parseResponse │ │  • parse..   │ │  • parseResponse │       │
+│  │  • calculateCost │ │  • calc..    │ │  • calculateCost │       │
+│  └──────────────────┘ └──────────────┘ └──────────────────┘       │
+│                                                                     │
+│  PROVIDER INTERFACE:                                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ interface AIProvider {                                       │   │
+│  │   name: string;                                              │   │
+│  │   model: string;                                             │   │
+│  │   query(prompt: string, options: QueryOptions): AIResponse;  │   │
+│  │   parseStructured<T>(response: string, schema: ZodSchema<T>);│   │
+│  │   calculateCost(tokens_in: number, tokens_out: number): USD; │   │
+│  │   healthCheck(): Promise<boolean>;                           │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  QUERY OPTIONS:                                                    │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ interface QueryOptions {                                     │   │
+│  │   temperature?: number;        // 0.0-1.0, default 0.3      │   │
+│  │   maxTokens?: number;          // default 1000              │   │
+│  │   timeout?: number;            // ms, default 30000         │   │
+│  │   retries?: number;            // default 3                 │   │
+│  │   useCache?: boolean;          // default true              │   │
+│  │   cacheTTL?: number;           // seconds, default 86400    │   │
+│  │   structuredOutput?: ZodSchema; // for type-safe parsing    │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.15 Prompt Management System (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    PROMPT VERSIONING & MANAGEMENT                   │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  DATABASE TABLE: prompts                                           │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id              UUID PRIMARY KEY                             │   │
+│  │ name            TEXT UNIQUE (e.g., 'industry_detection_v2') │   │
+│  │ version         INTEGER                                      │   │
+│  │ template        TEXT (prompt with {variables})               │   │
+│  │ variables       JSONB (expected variables)                   │   │
+│  │ output_schema   JSONB (expected JSON structure)              │   │
+│  │ is_active       BOOLEAN                                      │   │
+│  │ created_at      TIMESTAMPTZ                                  │   │
+│  │ performance_metrics JSONB (avg_latency, success_rate)        │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  PROMPT TYPES (Initial Set):                                       │
+│  ├─ industry_detection    - Detect industry from URL metadata      │
+│  ├─ perception_query      - Ask AI about recommendations           │
+│  ├─ response_extraction   - Parse AI response for brand mentions   │
+│  ├─ recommendation_gen    - Generate actionable recommendations    │
+│  ├─ sentiment_analysis    - Extract sentiment from context         │
+│  └─ hallucination_check   - Verify AI claims vs reality           │
+│                                                                     │
+│  VERSIONING RULES:                                                 │
+│  • NEVER modify active prompts in place                            │
+│  • Create new version, test, then activate                         │
+│  • Keep last 5 versions for rollback                               │
+│  • Track which prompt_id was used for each analysis                │
+│                                                                     │
+│  A/B TESTING SUPPORT:                                              │
+│  • Multiple prompts can be active with weights                     │
+│  • Track conversion/quality by prompt version                      │
+│  • Auto-promote winning variants                                   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.16 Structured Output Parsing (NEW - Critical)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              STRUCTURED OUTPUT WITH ZOD VALIDATION                  │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PROBLEM: AI returns text, parsing to JSON is fragile              │
+│                                                                     │
+│  SOLUTION: Use OpenAI function_calling / Anthropic tool_use        │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // Define expected output with Zod                           │   │
+│  │ const IndustryDetectionSchema = z.object({                   │   │
+│  │   industry: z.string(),                                      │   │
+│  │   subIndustry: z.string(),                                   │   │
+│  │   country: z.string(),                                       │   │
+│  │   entityType: z.enum(['business','personal','product']),     │   │
+│  │   competitors: z.array(z.string()).max(5),                   │   │
+│  │   confidence: z.number().min(0).max(1),                      │   │
+│  │ });                                                          │   │
+│  │                                                               │   │
+│  │ // Use with OpenAI function calling                          │   │
+│  │ const response = await openai.chat.completions.create({      │   │
+│  │   model: 'gpt-3.5-turbo',                                    │   │
+│  │   messages: [...],                                           │   │
+│  │   functions: [{                                              │   │
+│  │     name: 'detect_industry',                                 │   │
+│  │     parameters: zodToJsonSchema(IndustryDetectionSchema)     │   │
+│  │   }],                                                        │   │
+│  │   function_call: { name: 'detect_industry' }                 │   │
+│  │ });                                                          │   │
+│  │                                                               │   │
+│  │ // Parse and validate                                        │   │
+│  │ const result = IndustryDetectionSchema.parse(                │   │
+│  │   JSON.parse(response.choices[0].message.function_call.args) │   │
+│  │ );                                                           │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  BENEFITS:                                                         │
+│  • Type-safe outputs (TypeScript inference)                        │
+│  • Validation errors are clear (Zod messages)                      │
+│  • No regex parsing of AI text                                     │
+│  • Works with OpenAI, Anthropic, Google                            │
+│                                                                     │
+│  SCHEMAS TO DEFINE (Phase 1):                                      │
+│  ├─ IndustryDetectionSchema                                        │
+│  ├─ PerceptionQuerySchema                                          │
+│  ├─ BrandMentionSchema                                             │
+│  ├─ RecommendationSchema                                           │
+│  └─ SentimentAnalysisSchema                                        │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.17 Industry Taxonomy (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    STANDARDIZED INDUSTRY TAXONOMY                   │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PROBLEM: Free-form industry detection creates inconsistency       │
+│  "CRM Software" vs "CRM" vs "Customer Relationship Management"     │
+│                                                                     │
+│  SOLUTION: Predefined taxonomy with normalization                  │
+│                                                                     │
+│  TOP-LEVEL CATEGORIES (20):                                        │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ • Technology & Software    • Healthcare & Medical           │   │
+│  │ • Finance & Banking        • Education & Training           │   │
+│  │ • E-commerce & Retail      • Real Estate                    │   │
+│  │ • Travel & Hospitality     • Food & Restaurant              │   │
+│  │ • Legal Services           • Marketing & Advertising        │   │
+│  │ • Manufacturing            • Construction                   │   │
+│  │ • Transportation           • Energy & Utilities             │   │
+│  │ • Entertainment & Media    • Professional Services          │   │
+│  │ • Non-profit               • Government                     │   │
+│  │ • Agriculture              • Other                          │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  SUB-CATEGORIES (Example: Technology & Software):                  │
+│  ├─ SaaS / Cloud Software                                          │
+│  ├─ CRM & Sales Tools                                              │
+│  ├─ Marketing Technology                                           │
+│  ├─ HR & Recruiting Software                                       │
+│  ├─ Project Management                                             │
+│  ├─ Developer Tools                                                │
+│  ├─ Cybersecurity                                                  │
+│  ├─ AI & Machine Learning                                          │
+│  ├─ Data & Analytics                                               │
+│  └─ IT Services & Consulting                                       │
+│                                                                     │
+│  DATABASE TABLE: industries                                        │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id              UUID PRIMARY KEY                             │   │
+│  │ slug            TEXT UNIQUE ('technology-software')          │   │
+│  │ name            TEXT ('Technology & Software')               │   │
+│  │ parent_id       UUID REFERENCES industries(id) (nullable)    │   │
+│  │ query_keywords  TEXT[] (for prompt generation)               │   │
+│  │ competitors_seed TEXT[] (common competitors)                 │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  NORMALIZATION FLOW:                                               │
+│  1. AI detects free-form industry                                  │
+│  2. Map to nearest taxonomy category (embedding similarity)        │
+│  3. Store normalized industry_id, not free text                    │
+│  4. Use taxonomy for benchmarking, SOV calculations                │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.18 Retry & Circuit Breaker Pattern (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                 RESILIENT AI API CALLS                              │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  RETRY STRATEGY (Per Provider):                                    │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ const RETRY_CONFIG = {                                       │   │
+│  │   maxRetries: 3,                                             │   │
+│  │   baseDelay: 1000,      // 1 second                         │   │
+│  │   maxDelay: 30000,      // 30 seconds max                   │   │
+│  │   backoffMultiplier: 2, // exponential                      │   │
+│  │   jitter: 0.2,          // ±20% randomization               │   │
+│  │   retryableErrors: [                                         │   │
+│  │     'rate_limit_exceeded',                                   │   │
+│  │     'timeout',                                               │   │
+│  │     'internal_server_error',                                 │   │
+│  │     'service_unavailable',                                   │   │
+│  │   ],                                                         │   │
+│  │   nonRetryableErrors: [                                      │   │
+│  │     'invalid_api_key',                                       │   │
+│  │     'content_policy_violation',                              │   │
+│  │     'context_length_exceeded',                               │   │
+│  │   ],                                                         │   │
+│  │ };                                                           │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  CIRCUIT BREAKER (Per Provider):                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ States: CLOSED → OPEN → HALF_OPEN → CLOSED                   │   │
+│  │                                                               │   │
+│  │ CLOSED (normal operation):                                   │   │
+│  │   - Track failure count                                      │   │
+│  │   - If failures > 5 in 60s → OPEN                           │   │
+│  │                                                               │   │
+│  │ OPEN (provider down):                                        │   │
+│  │   - Return cached response or skip provider                  │   │
+│  │   - After 30s → HALF_OPEN                                   │   │
+│  │                                                               │   │
+│  │ HALF_OPEN (testing):                                         │   │
+│  │   - Allow 1 request through                                  │   │
+│  │   - If success → CLOSED                                      │   │
+│  │   - If fail → OPEN (reset timer)                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  FALLBACK CHAIN:                                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ 1. Try primary provider (OpenAI)                             │   │
+│  │    ↓ fail                                                    │   │
+│  │ 2. Try secondary provider (Anthropic)                        │   │
+│  │    ↓ fail                                                    │   │
+│  │ 3. Try cached response (if available, even if stale)         │   │
+│  │    ↓ no cache                                                │   │
+│  │ 4. Return partial result (mark provider as unavailable)      │   │
+│  │    ↓ all providers fail                                      │   │
+│  │ 5. Queue for retry, notify user of delay                     │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.19 Data Quality & Drift Detection (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                 AI RESPONSE QUALITY MONITORING                      │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  QUALITY METRICS (Per Response):                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ • Response length (tokens)                                   │   │
+│  │ • Structured output parse success (boolean)                  │   │
+│  │ • Contains expected fields (completeness score 0-1)          │   │
+│  │ • Latency (ms)                                               │   │
+│  │ • Confidence score (if provided by AI)                       │   │
+│  │ • Anomaly flag (unusual response pattern)                    │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: ai_response_quality                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id              UUID PRIMARY KEY                             │   │
+│  │ ai_response_id  UUID REFERENCES ai_responses(id)             │   │
+│  │ parse_success   BOOLEAN                                      │   │
+│  │ completeness    DECIMAL (0-1)                                │   │
+│  │ latency_ms      INTEGER                                      │   │
+│  │ confidence      DECIMAL (0-1, nullable)                      │   │
+│  │ anomaly_score   DECIMAL (0-1, higher = more unusual)         │   │
+│  │ anomaly_reasons JSONB                                        │   │
+│  │ created_at      TIMESTAMPTZ                                  │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DRIFT DETECTION (Weekly CRON):                                    │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ GOLDEN DATASET: 20 known brands with expected scores         │   │
+│  │                                                               │   │
+│  │ For each golden brand:                                       │   │
+│  │   1. Run fresh analysis                                      │   │
+│  │   2. Compare score to baseline                               │   │
+│  │   3. If |diff| > 15 points → FLAG                           │   │
+│  │                                                               │   │
+│  │ ALERTS:                                                      │   │
+│  │   • >20% golden tests drift → Email Alberto                 │   │
+│  │   • >50% drift → Pause new analyses, investigate            │   │
+│  │                                                               │   │
+│  │ CAUSES TO CHECK:                                             │   │
+│  │   • AI model updated (OpenAI/Anthropic)                      │   │
+│  │   • Prompt accidentally changed                              │   │
+│  │   • Parsing logic broken                                     │   │
+│  │   • Cache returning stale data                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  ANOMALY DETECTION RULES:                                          │
+│  ├─ Response < 50 tokens → Likely incomplete                       │
+│  ├─ Response > 3000 tokens → Likely verbose/off-topic             │
+│  ├─ No brand mentions in any response → Unusual for industry      │
+│  ├─ All providers disagree completely → Needs review              │
+│  ├─ Score changed > 30 points in 24h → Investigate                │
+│  └─ Parse failure after 3 retries → Mark for manual review        │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.20 Cost Protection & Auto-Scaling (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                 AUTOMATED COST PROTECTION                           │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  DAILY BUDGET LIMITS:                                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ const DAILY_LIMITS = {                                       │   │
+│  │   total: 5.00,          // $5/day max (pre-revenue)         │   │
+│  │   perProvider: {                                             │   │
+│  │     openai: 2.50,                                            │   │
+│  │     anthropic: 2.50,                                         │   │
+│  │     google: 0.00,       // Free tier only initially         │   │
+│  │     perplexity: 0.00,   // Deferred to Phase 4              │   │
+│  │   },                                                         │   │
+│  │   warningThreshold: 0.7, // Alert at 70%                    │   │
+│  │   pauseThreshold: 0.95,  // Pause free tier at 95%          │   │
+│  │ };                                                           │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  AUTOMATED ACTIONS:                                                │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ At 70% daily budget:                                         │   │
+│  │   → Log warning                                              │   │
+│  │   → Increase cache TTL (24h → 48h)                          │   │
+│  │   → Prioritize paid user requests                           │   │
+│  │                                                               │   │
+│  │ At 90% daily budget:                                         │   │
+│  │   → Email alert to Alberto                                   │   │
+│  │   → Queue free user requests (delay 1h)                      │   │
+│  │                                                               │   │
+│  │ At 95% daily budget:                                         │   │
+│  │   → Pause all free tier analyses                             │   │
+│  │   → Show message: "High demand, try again in X hours"       │   │
+│  │   → Continue serving paid users                              │   │
+│  │                                                               │   │
+│  │ At 100% daily budget:                                        │   │
+│  │   → Pause ALL new analyses                                   │   │
+│  │   → Serve only cached results                                │   │
+│  │   → Auto-resume at midnight UTC                              │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  • Check budget before each AI call                                │
+│  • Use Upstash Redis for real-time cost tracking                  │
+│  • Increment: INCRBY daily_cost_{date} {cost_usd}                 │
+│  • TTL: 48 hours (auto-cleanup)                                   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.21 API Cost Optimization Strategy
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -1046,24 +1520,29 @@ Based on industry best practices, we're adding these **fully automated** diagnos
 
 | Day | Activity | Deliverable | Owner |
 |-----|----------|-------------|-------|
-| 1 | Database schema design | Migration files for new tables + RLS policies | Claude |
+| 1 | Database schema design | Migration files for all tables + RLS policies | Claude |
 | 1 | Set up AI provider clients | `/lib/ai/` with OpenAI + Anthropic ONLY (budget) | Claude |
 | 1 | **Security: URL validator** | `/lib/security/url-validator.ts` - SSRF prevention | Claude |
 | 1 | **UX: Design tokens** | Score colors, provider colors in globals.css | Claude |
+| 1 | **AI: Zod output schemas** | Type-safe schemas for all AI responses | Claude |
 | 2 | URL analysis service | `/lib/url-analyzer.ts` - extract metadata from URLs | Claude |
-| 2 | Industry detection | `/lib/industry-detector.ts` - classify business type | Claude |
+| 2 | Industry detection | `/lib/industry-detector.ts` - classify to taxonomy | Claude |
 | 2 | **Security: Rate limiting** | Upstash rate limit middleware | Claude |
 | 2 | **UX: ScoreCircle component** | Animated score display with color coding | Claude |
-| 3 | Prompt engineering | `/lib/prompts/` - optimized prompts for each AI | Claude |
+| 2 | **AI: Industry taxonomy seed** | 20 categories + sub-categories in DB | Claude |
+| 3 | Prompt engineering | `/lib/prompts/` - versioned prompts in DB | Claude |
 | 3 | **Security: Prompt sanitizer** | `/lib/ai/prompt-sanitizer.ts` - prevent injection | Claude |
-| 3 | Response parser | `/lib/ai/response-parser.ts` - extract mentions, sentiment | Claude |
+| 3 | Response parser | `/lib/ai/response-parser.ts` - with function calling | Claude |
 | 3 | **UX: ProgressBar component** | Multi-step progress with labels | Claude |
+| 3 | **AI: Retry with backoff** | Exponential backoff + jitter for AI calls | Claude |
 | 4 | Scoring algorithm | `/lib/scoring.ts` - calculate 0-100 score | Claude |
-| 4 | **Cost tracking table** | `api_cost_tracking` table + logging | Claude |
+| 4 | **Cost tracking + protection** | Daily budget limits, auto-pause at 95% | Claude |
 | 4 | **UX: EmptyState component** | Reusable empty state with illustration + CTA | Claude |
+| 4 | **AI: Circuit breaker** | Per-provider circuit breaker pattern | Claude |
 | 5 | **Unit tests setup** | Vitest config + first 20 unit tests | Claude |
 | 5 | Integration testing | Test full analysis flow end-to-end | Claude |
 | 5 | **UX: Error messages** | Human-friendly error copy for all error types | Claude |
+| 5 | **AI: Prompt injection tests** | Adversarial test dataset (10+ cases) | Claude |
 
 **NEW: Security Deliverables Week 1:**
 ```typescript
@@ -1120,9 +1599,13 @@ const SCORING_WEIGHTS = {
 | 4 | **UX: Loading experience** | Progress storytelling with rotating facts | Claude |
 | 4 | Error handling | Human-friendly messages + recovery actions | Claude |
 | 4 | **Fallback logic** | If OpenAI fails → use Anthropic only (no crash) | Claude |
+| 4 | **AI: Structured output parsing** | Function calling with Zod validation on all AI responses | Claude |
+| 4 | **AI: Response quality logging** | Log completeness, latency, confidence per response | Claude |
 | 5 | **Integration tests** | 20+ tests for API routes | Claude |
 | 5 | End-to-end testing | Full user flow with Playwright | Claude |
 | 5 | **UX: Mobile responsive** | Results page mobile-first responsive | Claude |
+| 5 | **AI: Golden dataset tests** | 10 known-good responses for drift detection baseline | Claude |
+| 5 | **AI: Adversarial prompt tests** | Test prompt injection attacks are sanitized | Claude |
 
 **Acceptance Criteria Phase 1:**
 - [ ] User can enter URL and receive analysis
@@ -1140,6 +1623,14 @@ const SCORING_WEIGHTS = {
 - [ ] **NEW (UX): Score reveal has count-up animation**
 - [ ] **NEW (UX): Error messages are human-friendly with recovery actions**
 - [ ] **NEW (UX): Results page works on mobile (< 640px)**
+- [ ] **NEW (AI/Data): All AI responses parsed with Zod schemas (100% type-safe)**
+- [ ] **NEW (AI/Data): Response quality metrics logged (completeness, latency)**
+- [ ] **NEW (AI/Data): Industry normalized to taxonomy (20 top categories)**
+- [ ] **NEW (AI/Data): Retry with exponential backoff on AI failures (max 3)**
+- [ ] **NEW (AI/Data): Circuit breaker active per provider (open after 5 consecutive failures)**
+- [ ] **NEW (AI/Data): Golden dataset baseline established (10 test cases)**
+- [ ] **NEW (AI/Data): Prompt injection tests pass (adversarial inputs sanitized)**
+- [ ] **NEW (AI/Data): Daily cost auto-pause at 95% budget threshold**
 
 ---
 
@@ -1732,6 +2223,27 @@ This roadmap represents a comprehensive strategic plan for the AI Perception Eng
 - Added 15+ new UX tasks across all phases
 - Expanded acceptance criteria with UX requirements
 
+**AI/Data Engineering Review Summary (v4.0):**
+- Identified 12 critical AI/Data gaps in original architecture
+- Added AI Provider Abstraction Layer (AIOrchestrator pattern)
+- Added Prompt Management System with versioning and A/B testing support
+- Added Structured Output Parsing with Zod + function calling
+- Added Industry Taxonomy (20 top-level categories for consistency)
+- Added Retry & Circuit Breaker Pattern (exponential backoff + jitter)
+- Added Data Quality & Drift Detection (golden dataset + anomaly scoring)
+- Added Cost Protection & Auto-Scaling (automated pause at budget thresholds)
+- Added 3 new database tables: `prompts`, `industries`, `ai_response_quality`
+- Added 7 new AI/Data tasks to Phase 1 (Week 1 + Week 2)
+- Expanded acceptance criteria with 8 AI/Data requirements
+
+**Key AI/Data Engineering Principles:**
+1. **Type-safe outputs** - Every AI response validated with Zod schema
+2. **Graceful degradation** - Circuit breakers prevent cascade failures
+3. **Cost predictability** - Automated budget controls, never surprise bills
+4. **Data consistency** - Industry taxonomy prevents "CRM" vs "CRM Software" drift
+5. **Continuous quality** - Golden dataset detects AI model behavior changes
+6. **Security-first** - Prompt injection tests as part of CI/CD
+
 **Key UX Principles:**
 1. **No dead ends** - Every screen has a clear next action
 2. **Progress storytelling** - 30-second wait becomes engaging experience
@@ -1744,12 +2256,15 @@ Begin Phase 1, Week 1, Day 1:
 - Database schema design + RLS policies
 - Security: URL validator
 - UX: Design tokens (score colors, provider colors)
+- AI: Zod output schemas for all AI responses
+- AI: Industry taxonomy seed data (20 categories)
 
 ---
 
 *Document prepared by BCG Digital Ventures - Technology Strategy Practice*
 *Technical Review by: Senior Software Director - 300 years experience*
 *UX/UI Review by: Senior UX/UI Executive - 300 years experience, IDEO/frog/Pentagram background*
+*AI/Data Review by: Senior AI & Data Engineer Director - 400 years experience, ex-Google AI/DeepMind/OpenAI*
 *For: AI Perception Engineering Agency*
 *Date: November 25, 2024*
-*Version: 3.0 (Technical + UX/UI Review)*
+*Version: 4.0 (Technical + UX/UI + AI/Data Review)*

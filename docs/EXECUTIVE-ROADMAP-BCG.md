@@ -2,7 +2,7 @@
 ## Executive Strategic Roadmap
 
 **Document Classification:** Strategic Planning
-**Version:** 18.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering + Backend Engineering + Data Visualization + CTO/CAIO Executive Review)
+**Version:** 19.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering + Backend Engineering + Data Visualization + CTO/CAIO Executive + COO Operations Review)
 **Date:** November 26, 2024
 **Prepared by:** BCG Digital Ventures - Technology Strategy Practice
 **Reviewed by:**
@@ -23,6 +23,7 @@
 - Senior Backend Engineer (Python/Rust) - API Design, Concurrency, Error Handling & Reliability Review
 - Senior Data Visualization Specialist - Chart Design, Accessibility, Animation & Responsive Visualization Review
 - **Senior CTO / Chief AI Officer** - Executive Strategy, Governance, Unit Economics, Investor Readiness & Scalability Review
+- **Senior COO (Chief Operating Officer)** - Operations Architecture, SLAs, Automation, Queue Management, User Lifecycle & Operational Efficiency Review
 
 ---
 
@@ -12678,6 +12679,503 @@ omArchive(userId);                           │   │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
+### 2.141 COO Operations Architecture Gap Analysis (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              COO OPERATIONS GAP ANALYSIS (17 Critical Gaps)         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  As COO with 1300 years experience (ex-McKinsey Ops, Amazon, Uber,  │
+│  Airbnb, Toyota Production System), I identify these operational    │
+│  gaps that will limit scalability and efficiency:                   │
+│                                                                     │
+│  CATEGORY A: PROCESS & WORKFLOW GAPS (Gaps 1-5)                    │
+│  ═══════════════════════════════════════════════                   │
+│                                                                     │
+│  GAP 1: NO OPERATIONAL PLAYBOOK                                    │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Current: Runbooks exist for incidents, but no daily ops book │   │
+│  │ Risk: Inconsistent operations, tribal knowledge              │   │
+│  │ Fix: Create comprehensive Operations Manual with all SOPs    │   │
+│  │ Location: /docs/ops/OPERATIONS-MANUAL.md                     │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  GAP 2: NO CUSTOMER SUPPORT PROCESS                                │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Current: Vision says "zero support needed" but reality differs│   │
+│  │ Risk: Users churn when issues arise and no response          │   │
+│  │ Fix: Define support tiers, SLAs, escalation paths            │   │
+│  │ Target: <24h response, <4h for paid users                    │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  GAP 3: NO ONBOARDING OPERATIONS                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Current: UX covers onboarding, but no operational workflow   │   │
+│  │ Risk: No tracking of onboarding completion, drop-off points  │   │
+│  │ Fix: Define onboarding funnel, track completion, automate    │   │
+│  │ Metrics: Time-to-first-analysis, onboarding completion rate  │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  GAP 4: NO CHURN PREVENTION WORKFLOW                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Current: No proactive identification of at-risk customers    │   │
+│  │ Risk: Churn happens silently, no recovery attempts           │   │
+│  │ Fix: Churn signals, automated intervention, win-back flows   │   │
+│  │ Signals: No login 14d, no analysis 30d, score unchanged 60d  │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  GAP 5: NO BILLING OPERATIONS                                      │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Current: Stripe integration planned, but no ops process      │   │
+│  │ Risk: Failed payments not handled, refunds manual            │   │
+│  │ Fix: Dunning automation, refund policy, failed payment flows │   │
+│  │ Recovery: 3-email dunning sequence, card update reminders    │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  CATEGORY B: SLA & PERFORMANCE GAPS (Gaps 6-9)                     │
+│  ═══════════════════════════════════════════════                   │
+│                                                                     │
+│  GAP 6: NO DEFINED SLAS                                            │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Current: "Analysis in 30s" but no formal SLA framework       │   │
+│  │ Risk: No accountability, no compensation for failures        │   │
+│  │ Fix: Define internal SLOs and external SLAs per plan         │   │
+│  │ Example: Pro plan = 99.9% uptime SLA, <30s analysis time     │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  GAP 7: NO CAPACITY PLANNING                                       │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Current: No forecast of system capacity vs demand            │   │
+│  │ Risk: Surprise outages when traffic spikes                   │   │
+│  │ Fix: Monthly capacity review, scaling triggers               │   │
+│  │ Metrics: Current utilization, headroom, cost per user        │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  GAP 8: NO QUEUE MANAGEMENT                                        │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Current: Queue system mentioned but no depth management      │   │
+│  │ Risk: Queues grow unbounded during spikes                    │   │
+│  │ Fix: Queue depth monitoring, backpressure, priority queues   │   │
+│  │ Queues: priority(paid)→standard(free)→batch(monitoring)      │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  GAP 9: NO LATENCY BUDGETS                                         │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Current: Total time target (30s) but no per-step budgets     │   │
+│  │ Risk: Can't identify which step is slow                      │   │
+│  │ Fix: Allocate latency budget per operation                   │   │
+│  │ Budget: URL 2s + Metadata 1s + AI calls 20s + Score 2s       │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  CATEGORY C: AUTOMATION GAPS (Gaps 10-13)                          │
+│  ═══════════════════════════════════════════                       │
+│                                                                     │
+│  GAP 10: NO SELF-HEALING AUTOMATION                                │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Current: Alerts exist, but human must intervene              │   │
+│  │ Risk: Founder becomes on-call bottleneck                     │   │
+│  │ Fix: Auto-remediation for common issues                      │   │
+│  │ Examples: Auto-scale, auto-failover, auto-restart            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  GAP 11: NO SCHEDULED MAINTENANCE PROCESS                          │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Current: No maintenance windows defined                      │   │
+│  │ Risk: Changes happen ad-hoc, users surprised                 │   │
+│  │ Fix: Weekly maintenance window, change communication         │   │
+│  │ Window: Sundays 2-4 AM UTC (lowest traffic)                  │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  GAP 12: NO AUTOMATED REPORTING                                    │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Current: Manual review of metrics                            │   │
+│  │ Risk: Founder spends time on reports, not strategy           │   │
+│  │ Fix: Automated daily/weekly/monthly reports                  │   │
+│  │ Reports: Daily ops, Weekly summary, Monthly business review  │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  GAP 13: NO USER LIFECYCLE AUTOMATION                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Current: Manual tracking of user stages                      │   │
+│  │ Risk: Opportunities missed, no personalized engagement       │   │
+│  │ Fix: Automated lifecycle stage transitions and triggers      │   │
+│  │ Stages: New→Activated→Engaged→Power User→At-Risk             │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  CATEGORY D: OPERATIONAL EFFICIENCY GAPS (Gaps 14-17)              │
+│  ═══════════════════════════════════════════════════               │
+│                                                                     │
+│  GAP 14: NO COST PER OPERATION TRACKING                            │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Current: Total API cost tracked, but not per operation       │   │
+│  │ Risk: Can't optimize high-cost operations                    │   │
+│  │ Fix: Track cost per: analysis, cache miss, provider, feature │   │
+│  │ Target: Cost per analysis <$0.04 (from $0.08)                │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  GAP 15: NO OPERATIONAL EFFICIENCY METRICS                         │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Current: Product metrics exist, ops efficiency not measured  │   │
+│  │ Risk: Inefficiencies compound without visibility             │   │
+│  │ Fix: Track automation rate, manual intervention rate, MTTR   │   │
+│  │ Target: 95% operations automated, <5 manual actions/day      │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  GAP 16: NO VENDOR OPERATIONS MANAGEMENT                           │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Current: Vendor risk assessed but no ops relationship mgmt   │   │
+│  │ Risk: Vendor issues surprise us, no proactive monitoring     │   │
+│  │ Fix: Vendor status monitoring, SLA tracking, relationship    │   │
+│  │ Tool: Vendor status dashboard aggregating all providers      │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  GAP 17: NO OPERATIONAL RUNBOOK AUTOMATION                         │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Current: Runbooks are documentation, not executable          │   │
+│  │ Risk: Manual execution slow, error-prone                     │   │
+│  │ Fix: Executable runbooks with one-click remediation          │   │
+│  │ Implementation: /scripts/runbooks/ with CLI commands         │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.142 Customer Support Operations (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                  CUSTOMER SUPPORT OPERATIONS                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Zero support needed is the goal. Excellent support    │
+│              is the backup."                                        │
+│                                                                     │
+│  1. SUPPORT TIERS                                                  │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Tier │ Channel   │ Response SLA │ Resolution SLA │ Plan     ││
+│     ├──────┼───────────┼──────────────┼────────────────┼──────────┤│
+│     │ T0   │ Self-serv │ Instant      │ Instant        │ All      ││
+│     │ T1   │ Email     │ <24h/<4h     │ <72h/<24h      │ All/Pro+ ││
+│     │ T2   │ Live chat │ <2h          │ <8h            │ Pro+     ││
+│     │ T3   │ Video     │ <24h         │ Scheduled      │ Ent      ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. SUPPORT CATEGORIES & ROUTING                                   │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Category    │ Priority │ Auto-Response     │ Escalation     ││
+│     ├─────────────┼──────────┼───────────────────┼────────────────┤│
+│     │ Billing     │ High     │ FAQ link          │ After 24h      ││
+│     │ Can't login │ High     │ Reset link        │ After 2h       ││
+│     │ Bug report  │ Medium   │ Ack + ticket      │ After 48h      ││
+│     │ Feature req │ Low      │ Ack + roadmap     │ None           ││
+│     │ How to use  │ Low      │ Help article      │ None           ││
+│     │ Security    │ Critical │ Ack + alert       │ Immediate      ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. SELF-SERVICE INFRASTRUCTURE (Target: 90% resolution)           │
+│     • Help Center: /help with 36 articles                          │
+│     • In-App Tooltips: Contextual help on every feature            │
+│     • Video Tutorials: 5 short videos (<2 min each)                │
+│     • AI Chatbot (Phase 4): Claude-powered support bot             │
+│     • Status Page: Real-time service status                        │
+│                                                                     │
+│  4. SUPPORT METRICS                                                │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Metric              │ Target  │ Alert If                    ││
+│     ├─────────────────────┼─────────┼─────────────────────────────┤│
+│     │ Self-service rate   │ >90%    │ <80%                        ││
+│     │ First response time │ <4h     │ >12h                        ││
+│     │ Resolution time     │ <24h    │ >48h                        ││
+│     │ CSAT                │ >4.5/5  │ <4.0/5                      ││
+│     │ Ticket volume       │ <5/day  │ >15/day                     ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  DATABASE: support_tickets (id, user_id, category, priority,       │
+│            status, subject, description, first_response_at,        │
+│            resolved_at, csat_rating)                               │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.143 Service Level Agreements (SLA) Framework (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                  SERVICE LEVEL AGREEMENTS (SLA)                      │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "What gets measured gets managed."                      │
+│                                                                     │
+│  1. INTERNAL SLOs                                                  │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Service       │ SLO Target │ Error Budget │ Measurement     ││
+│     ├───────────────┼────────────┼──────────────┼─────────────────┤│
+│     │ API Uptime    │ 99.9%      │ 43.8 min/mo  │ Health checks   ││
+│     │ Analysis Time │ P95 <30s   │ 5% >30s      │ Request logs    ││
+│     │ Analysis P99  │ P99 <45s   │ 1% >45s      │ Request logs    ││
+│     │ Error Rate    │ <1%        │ 1%           │ Error tracking  ││
+│     │ Cache Hit     │ >60%       │ N/A          │ Cache metrics   ││
+│     │ AI Success    │ >98%       │ 2%           │ AI response log ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. EXTERNAL SLAs (Customer-Facing)                                │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │              │ Free  │ Starter │ Pro    │ Enterprise        ││
+│     ├──────────────┼───────┼─────────┼────────┼───────────────────┤│
+│     │ Uptime SLA   │ -     │ 99.5%   │ 99.9%  │ 99.95%            ││
+│     │ Analysis SLA │ -     │ <45s    │ <30s   │ <20s              ││
+│     │ Support SLA  │ -     │ <24h    │ <4h    │ <1h               ││
+│     │ SLA Credits  │ -     │ -       │ 10%    │ 25%               ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. SLA CREDIT POLICY                                              │
+│     • 99.9-99.5% uptime: 10% credit                               │
+│     • 99.5-99.0% uptime: 25% credit                               │
+│     • <99.0% uptime: 50% credit                                    │
+│     Exclusions: Scheduled maintenance, vendor outages, force majeure│
+│                                                                     │
+│  4. LATENCY BUDGET BREAKDOWN (30s total)                           │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Step               │ Budget │ P95 Target │ Alert If          ││
+│     ├────────────────────┼────────┼────────────┼───────────────────┤│
+│     │ URL Fetch          │ 2s     │ 1.5s       │ >3s               ││
+│     │ Metadata Extract   │ 1s     │ 0.5s       │ >2s               ││
+│     │ Industry Detection │ 0.5s   │ 0.3s       │ >1s               ││
+│     │ AI Call (OpenAI)   │ 10s    │ 8s         │ >15s              ││
+│     │ AI Call (Anthropic)│ 10s    │ 8s         │ >15s              ││
+│     │ Score Calculation  │ 0.5s   │ 0.3s       │ >1s               ││
+│     │ DB + Response      │ 1s     │ 0.5s       │ >2s               ││
+│     │ Buffer             │ 5s     │ -          │ For spikes        ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  DATABASE: sla_metrics_hourly (hour, uptime_pct, requests_total,   │
+│            latency_p50/p95/p99, error_budget_consumed)             │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.144 Queue & Capacity Management (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                  QUEUE & CAPACITY MANAGEMENT                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Graceful degradation beats catastrophic failure"       │
+│                                                                     │
+│  1. QUEUE ARCHITECTURE                                             │
+│     Priority Queue (P0): Enterprise → <20s latency                 │
+│     Standard Queue (P1): Paid users → <30s latency                 │
+│     Free Queue (P2): Free tier → <45s latency                      │
+│     Batch Queue (P3): Monitoring → <5min latency                   │
+│                                                                     │
+│  2. BACKPRESSURE LEVELS                                            │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Level │ Queue % │ Action                                     ││
+│     ├───────┼─────────┼────────────────────────────────────────────┤│
+│     │ L1    │ >50%    │ Increase polling interval for free tier    ││
+│     │ L2    │ >75%    │ Pause free tier, rate limit signups        ││
+│     │ L3    │ >90%    │ 429 for non-paid, maintenance mode         ││
+│     │ L4    │ Circuit │ Cached-only, disable AI calls              ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. CAPACITY PLANNING                                              │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Resource         │ Current │ Max   │ Scale Trigger          ││
+│     ├──────────────────┼─────────┼───────┼────────────────────────┤│
+│     │ Vercel Functions │ 1000/mo │ 10K   │ 70% utilization        ││
+│     │ Supabase Conn    │ 50      │ 200   │ 80% pool used          ││
+│     │ AI Calls/min     │ 50      │ 200   │ Rate limit warnings    ││
+│     │ Redis Memory     │ 256MB   │ 1GB   │ 70% memory             ││
+│     │ DB Storage       │ 500MB   │ 8GB   │ 60% storage            ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. AUTO-SCALING TRIGGERS                                          │
+│     Scale Up: Queue >100 for >5min, P95 >40s, Error >5%            │
+│     Scale Down: Queue <20 for >30min, Off-peak hours               │
+│                                                                     │
+│  DATABASE: capacity_metrics (timestamp, queue_p0/p1/p2/p3_depth,   │
+│            active_workers, db_connections, backpressure_level)     │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.145 Operational Automation Framework (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                  OPERATIONAL AUTOMATION FRAMEWORK                    │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "If it happens more than twice, automate it"            │
+│                                                                     │
+│  1. AUTOMATION TARGETS                                             │
+│     User Ops: 20%→95% | Support: 30%→90% | Billing: 50%→99%        │
+│     Monitoring: 60%→95% | Deployment: 80%→99% | Reporting: 10%→90% │
+│                                                                     │
+│  2. CRON JOBS SCHEDULE                                             │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Job                  │ Schedule     │ Description            ││
+│     ├──────────────────────┼──────────────┼────────────────────────┤│
+│     │ daily-metrics-rollup │ 0 1 * * *    │ Aggregate daily metrics││
+│     │ dunning-check        │ 0 9 * * *    │ Check failed payments  ││
+│     │ churn-risk-check     │ 0 10 * * *   │ Identify at-risk users ││
+│     │ capacity-check       │ */15 * * * * │ Every 15 min capacity  ││
+│     │ sla-rollup           │ 0 * * * *    │ Hourly SLA calculation ││
+│     │ vendor-status-check  │ */5 * * * *  │ Every 5 min vendor ping││
+│     │ cost-alert           │ 0 */4 * * *  │ Every 4h cost check    ││
+│     │ cleanup-old-data     │ 0 3 * * 0    │ Weekly data cleanup    ││
+│     │ weekly-report        │ 0 9 * * 1    │ Monday 9 AM report     ││
+│     │ monthly-report       │ 0 9 1 * *    │ 1st of month report    ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. SELF-HEALING AUTOMATIONS                                       │
+│     Auto-Failover: Provider error >50% → Route to backup           │
+│     Auto-Cost-Control: Daily cost >80% → Increase cache TTL        │
+│     Auto-Cleanup: Weekly → Archive old data, vacuum tables         │
+│                                                                     │
+│  4. AUTOMATED REPORTS                                              │
+│     Daily (7AM→Slack): Key metrics, SLA, costs, errors             │
+│     Weekly (Mon 9AM→Email): WoW comparison, funnel, capacity       │
+│     Monthly (1st→PDF): MRR, retention, unit economics, forecast    │
+│                                                                     │
+│  DATABASE: automation_executions (id, job_name, trigger_type,      │
+│            status, records_processed, errors, duration_ms)         │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.146 User Lifecycle Operations (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    USER LIFECYCLE OPERATIONS                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Every interaction is an opportunity to retain or lose" │
+│                                                                     │
+│  1. LIFECYCLE STAGES                                               │
+│     Anonymous→Signed Up→Activated→Engaged→Power User               │
+│         ↓         ↓          ↓         ↓         ↓                 │
+│     Bounced    Dormant   At-Risk   Churning   Churned              │
+│                                                                     │
+│  2. STAGE TRIGGERS                                                 │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Stage     │ Definition            │ Entry Trigger           ││
+│     ├───────────┼───────────────────────┼─────────────────────────┤│
+│     │ Signed Up │ Created account       │ Registration            ││
+│     │ Activated │ First analysis done   │ First analysis          ││
+│     │ Engaged   │ >3 analyses, <14d ago │ 3rd analysis            ││
+│     │ Power User│ Paid + active         │ Subscription + usage    ││
+│     │ At-Risk   │ No activity 14d       │ Inactivity timer        ││
+│     │ Churning  │ Cancelled/no activity │ Cancel or 30d idle      ││
+│     │ Dormant   │ Signup, never active  │ 7d no first analysis    ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. AUTOMATED LIFECYCLE EMAILS                                     │
+│     NOT ACTIVATED: Day 0 welcome, Day 1 help, Day 3 education,     │
+│                    Day 7 nudge, Day 14 → Dormant                   │
+│     AT-RISK: Day 14 "we miss you", Day 21 competitors,             │
+│              Day 25 special offer, Day 28 last chance              │
+│     CHURNING: Exit survey, Day 7 things changed, Day 30 win-back   │
+│                                                                     │
+│  4. ONBOARDING FUNNEL TARGETS                                      │
+│     Landing→Signup: >15% | Signup→1st: >70% | 1st→2nd: >50%        │
+│     Free→Paid (M1): >5% | Paid M1→M2: >90%                         │
+│                                                                     │
+│  DATABASE: user_lifecycle (user_id, current_stage, stage_entered_at│
+│            first_analysis_at, last_analysis_at, total_analyses,    │
+│            churn_risk_score, lifecycle_emails_sent)                │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.147 Vendor Operations & Status Monitoring (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                  VENDOR OPERATIONS & STATUS MONITORING               │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Know about vendor issues before your users do"         │
+│                                                                     │
+│  1. VENDOR STATUS MONITORING                                       │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Vendor    │ Status URL            │ Check │ Alert            ││
+│     ├───────────┼───────────────────────┼───────┼──────────────────┤│
+│     │ OpenAI    │ status.openai.com     │ 5 min │ Slack            ││
+│     │ Anthropic │ status.anthropic.com  │ 5 min │ Slack            ││
+│     │ Vercel    │ vercel-status.com     │ 5 min │ Slack            ││
+│     │ Supabase  │ status.supabase.com   │ 5 min │ Slack            ││
+│     │ Stripe    │ status.stripe.com     │ 5 min │ Slack            ││
+│     │ Upstash   │ status.upstash.com    │ 15min │ Slack            ││
+│     │ Resend    │ resend.com/status     │ 15min │ Slack            ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. PROACTIVE HEALTH CHECKS (Beyond status pages)                  │
+│     OpenAI/Anthropic: Minimal prompt every 5 min, track latency    │
+│     Supabase: Simple SELECT every 1 min, monitor pool              │
+│     Upstash: PING every 1 min, monitor memory                      │
+│                                                                     │
+│  3. VENDOR PERFORMANCE TRACKING (Monthly)                          │
+│     Uptime, Avg Latency, P99 Latency, Error Rate, Incidents, Cost  │
+│                                                                     │
+│  4. VENDOR SLA TRACKING                                            │
+│     Track promised vs actual SLAs, claim credits when breached     │
+│                                                                     │
+│  DATABASE: vendor_health_checks (timestamp, vendor, status,        │
+│            latency_ms, error_message)                              │
+│  DATABASE: vendor_incidents (vendor, incident_id, severity,        │
+│            started_at, resolved_at, our_impact, credit_claimed)    │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.148 Operational Efficiency Metrics (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                  OPERATIONAL EFFICIENCY METRICS                      │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "You can't improve what you don't measure"              │
+│                                                                     │
+│  1. OPERATIONAL EFFICIENCY KPIs                                    │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ KPI                     │ Formula          │ Target          ││
+│     ├─────────────────────────┼──────────────────┼─────────────────┤│
+│     │ Automation Rate         │ Auto/Total ops   │ >95%            ││
+│     │ Manual Intervention Rate│ Manual/Total     │ <5%             ││
+│     │ Mean Time to Detect     │ Avg detect time  │ <5 min          ││
+│     │ Mean Time to Resolve    │ Avg resolve time │ <1 hour         ││
+│     │ Self-Healing Rate       │ Auto-fixed/Issues│ >80%            ││
+│     │ First-Time Resolution   │ Resolved 1st try │ >90%            ││
+│     │ Ops Cost/User           │ Ops cost/MAU     │ <$0.10          ││
+│     │ Ops Time/Revenue        │ Hrs/$1000 MRR    │ <2 hrs          ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. COST EFFICIENCY METRICS                                        │
+│     Cost per analysis: <$0.04 | Cost per MAU: <$0.50               │
+│     Infrastructure/Revenue: <15% | AI cost/Revenue: <10%           │
+│     Cache hit rate: >60% | Wasted compute: <5%                     │
+│                                                                     │
+│  3. OPERATIONAL HEALTH SCORE (0-100)                               │
+│     Uptime: 25% | Latency: 20% | Automation: 20%                   │
+│     Cost Efficiency: 15% | Incident Rate: 10% | User Sat: 10%      │
+│                                                                     │
+│  4. FOUNDER TIME TRACKING (Weekly targets)                         │
+│     Strategy/Vision: >40% | Product: >20% | Customer calls: <15%   │
+│     Support tickets: <5% | Ops firefighting: <5% | Admin: <5%      │
+│     GOAL: Move from 30% ops → 5% ops over 6 months                 │
+│                                                                     │
+│  DATABASE: ops_efficiency_daily (date, automation_rate,            │
+│            manual_interventions, mttr_minutes, self_healing_rate,  │
+│            cost_per_analysis, ops_health_score, founder_ops_hours) │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
 ---
 
 ## PART III: PHASED ROADMAP
@@ -12892,6 +13390,12 @@ const SCORING_WEIGHTS = {
 | 5 | **Viz: Sparkline component** | /components/charts/Sparkline.tsx - compact trend indicator | Claude |
 | 5 | **Viz: ChartSkeleton** | /components/charts/shared/ChartSkeleton.tsx - loading states | Claude |
 | 5 | **Viz: useResponsiveChart hook** | /components/charts/hooks/useResponsiveChart.ts | Claude |
+| 5 | **Ops: SLA framework foundation** | sla_metrics_hourly table + /lib/sla/calculator.ts | Claude |
+| 5 | **Ops: Support ticket schema** | support_tickets table + self-service categorization | Claude |
+| 5 | **Ops: Queue priority system** | /lib/queue/priority-queue.ts - P0-P3 classification | Claude |
+| 5 | **Ops: User lifecycle table** | user_lifecycle table + stage tracking (Anonymous→Power User) | Claude |
+| 5 | **Ops: Automation scheduler** | /lib/automation/scheduler.ts + automation_executions log | Claude |
+| 5 | **Ops: Vendor health checks** | vendor_health_checks table + status page integration | Claude |
 | 5 | **Exec: Unit economics tracking** | user_cohorts table + CAC/LTV calculation | Claude |
 | 5 | **Exec: Cost tracking foundation** | cost_events table for API/infra spend tracking | Claude |
 | 5 | **Exec: AI Governance policy draft** | /docs/legal/ai-governance-policy.md v1 | Claude |
@@ -13077,6 +13581,12 @@ const SCORING_WEIGHTS = {
 | 5 | **Exec: Incident severity definitions** | /docs/ops/incident-severity.md - SEV1-4 levels | Claude |
 | 5 | **Exec: Executive metrics foundation** | executive_metrics_daily table + first 5 metrics | Claude |
 | 5 | **Exec: AI incident logging** | ai_incidents table for governance tracking | Claude |
+| 5 | **Ops: Backpressure controller** | /lib/queue/backpressure.ts - L1-L4 degradation levels | Claude |
+| 5 | **Ops: Capacity monitoring** | /lib/capacity/monitor.ts - utilization tracking | Claude |
+| 5 | **Ops: Lifecycle email triggers** | Automated stage-based emails (signup→churn prevention) | Claude |
+| 5 | **Ops: Self-healing framework** | /lib/automation/self-healing.ts - auto-failover logic | Claude |
+| 5 | **Ops: Vendor incident tracking** | vendor_incidents table + SLA credit claiming | Claude |
+| 5 | **Ops: Ops efficiency baseline** | ops_efficiency_daily table + first metrics | Claude |
 
 **Caching Strategy:**
 
@@ -13124,6 +13634,11 @@ const CACHE_TTL = {
 | 5 | **Exec: Runbook templates** | /docs/ops/runbooks/ - Service Down, API Outage templates | Claude |
 | 5 | **Exec: Postmortem template** | /docs/ops/postmortem-template.md | Claude |
 | 5 | **Exec: production_incidents table** | DB table for incident logging | Claude |
+| 5 | **Ops: SLA dashboard v1** | /app/(admin)/sla-dashboard/page.tsx - internal metrics view | Claude |
+| 5 | **Ops: Churn prediction signals** | /lib/lifecycle/churn-predictor.ts - risk scoring | Claude |
+| 5 | **Ops: Automated weekly reports** | /lib/automation/reports.ts - KPI summary generation | Claude |
+| 5 | **Ops: Ops health score calc** | /lib/ops/health-scorer.ts - weighted ops metrics | Claude |
+| 5 | **Ops: OPERATIONS-MANUAL draft** | /docs/ops/OPERATIONS-MANUAL.md - runbook index | Claude |
 
 **Freemium Gating Rules:**
 
@@ -13352,6 +13867,12 @@ const ALERT_THRESHOLDS = {
 | 5 | **Exec: Competitive moat analysis** | /docs/strategy/competitive-moat.md assessment | Claude |
 | 5 | **Exec: Team scaling triggers** | /docs/hr/scaling-triggers.md MRR-based hiring plan | Alberto |
 | 5 | **Exec: SOC 2 gap assessment** | /docs/security/soc2-gap-analysis.md initial review | Claude |
+| 5 | **Ops: SLA external dashboard** | Public status page + uptime history | Claude |
+| 5 | **Ops: Capacity auto-scaler prep** | Scaling trigger documentation + thresholds | Claude |
+| 5 | **Ops: Win-back automation** | /lib/lifecycle/win-back.ts - churned user flow | Claude |
+| 5 | **Ops: Founder time tracking** | Track ops overhead vs automation progress | Claude |
+| 5 | **Ops: Ops dashboard v1** | /app/(admin)/ops-dashboard/page.tsx - full ops view | Claude |
+| 5 | **Ops: Vendor status dashboard** | /app/(admin)/vendor-status/page.tsx | Claude |
 
 **Why Add Google/Perplexity in Phase 4?**
 - By Week 7, we should have paying customers generating revenue
@@ -13423,6 +13944,11 @@ const ALERT_THRESHOLDS = {
 | 5 | **PR: Testimonial collection** | Request testimonials from 10 happy users | Alberto |
 | 5 | **PR: Competitor PR analysis** | Competitive PR positioning matrix | Claude |
 | 5 | **PR: Influencer partnerships** | Identify 5 KOLs for partnership discussions | Alberto |
+| 5 | **Ops: Automation rate milestone** | Target >80% automation on recurring ops | Claude |
+| 5 | **Ops: Self-healing validation** | Verify auto-failover working across providers | Claude |
+| 5 | **Ops: OPERATIONS-MANUAL complete** | Full /docs/ops/OPERATIONS-MANUAL.md published | Claude |
+| 5 | **Ops: Monthly ops report automation** | /lib/automation/reports.ts - monthly exec summary | Claude |
+| 5 | **Ops: Support SLA validation** | Verify T0-T3 response times meeting targets | Claude |
 
 **Phase 4 Dev Checklist (End of Week 8):**
 - [ ] Feature flags on Vercel Edge Config
@@ -13659,6 +14185,32 @@ const ALERT_THRESHOLDS = {
 - [ ] Enterprise security FAQ prepared for sales conversations
 - [ ] 3-month runway maintained at all times (financial health)
 - [ ] Monthly investor update cadence established (if applicable)
+
+**Phase 4 COO Operations Checklist (End of Week 8):**
+- [ ] Support Operations: 90%+ self-service resolution rate (T0 tier)
+- [ ] SLA Framework: Internal SLOs defined (99.9% uptime, P95 <30s analysis)
+- [ ] SLA Framework: External SLAs per plan (Free/Starter/Pro/Enterprise)
+- [ ] SLA Dashboard: Real-time uptime, error rates, latency visible
+- [ ] Queue Management: P0-P3 priority queue system active
+- [ ] Backpressure: L1-L4 degradation levels implemented
+- [ ] Capacity Monitoring: All vendor utilization tracked (Vercel, Supabase, AI, Redis)
+- [ ] Capacity Alerts: 70%/85% warning/critical thresholds configured
+- [ ] Automation Rate: >80% of recurring ops automated
+- [ ] CRON Jobs: 10 scheduled jobs running reliably (collect-prices, monitor-urls, etc.)
+- [ ] Self-Healing: Auto-failover, auto-cost-control, auto-cleanup active
+- [ ] Automated Reports: Daily/weekly/monthly reports generating
+- [ ] User Lifecycle: All stages tracked (Anonymous→Signed Up→Activated→Engaged→Power User)
+- [ ] Lifecycle Emails: 6+ automated emails (welcome, activation, upgrade, risk, win-back, churned)
+- [ ] Churn Prevention: At-risk signals detected, intervention triggered
+- [ ] Vendor Monitoring: 7 vendors health-checked (OpenAI, Anthropic, Vercel, Supabase, Stripe, Upstash, Resend)
+- [ ] Vendor Incidents: Logging + SLA credit claiming process documented
+- [ ] Ops Efficiency KPIs: Automation rate, MTTR, self-healing rate tracked
+- [ ] Cost Efficiency: <$0.04/analysis, <15% infrastructure-to-revenue ratio
+- [ ] Ops Health Score: Composite score (0-100) calculated daily
+- [ ] Founder Time Tracking: <2 hrs/week on manual ops, targeting <30 min/week
+- [ ] OPERATIONS-MANUAL: Complete runbook index published (/docs/ops/OPERATIONS-MANUAL.md)
+- [ ] Ops Dashboard: /app/(admin)/ops-dashboard/page.tsx live with all ops metrics
+- [ ] Vendor Status Dashboard: /app/(admin)/vendor-status/page.tsx live
 
 ---
 
@@ -14525,6 +15077,48 @@ Begin Phase 1, Week 1, Day 1:
 17. **Investors want metrics** - Automated dashboards beat manual slide decks
 18. **Monthly cadence builds trust** - Regular updates even when news is mixed
 
+**COO Operations Review Summary (v19.0):**
+- Identified 17 critical Operations gaps across 4 categories:
+  - Category A: Process & Workflow Gaps (5 gaps)
+  - Category B: SLA & Performance Gaps (4 gaps)
+  - Category C: Automation Gaps (4 gaps)
+  - Category D: Operational Efficiency Gaps (4 gaps)
+- Added COO Operations Architecture Gap Analysis (2.141) with comprehensive assessment
+- Added Customer Support Operations (2.142) - tiered support T0-T3, self-service infrastructure
+- Added Service Level Agreements (SLA) Framework (2.143) - internal SLOs, external SLAs, latency budgets
+- Added Queue & Capacity Management (2.144) - P0-P3 priority queues, L1-L4 backpressure levels
+- Added Operational Automation Framework (2.145) - 10 CRON jobs, self-healing, automated reports
+- Added User Lifecycle Operations (2.146) - stages, triggers, churn prevention, automated emails
+- Added Vendor Operations & Status Monitoring (2.147) - 7 vendors, health checks, incident tracking
+- Added Operational Efficiency Metrics (2.148) - KPIs, cost efficiency, ops health score
+- Added 6 new Ops tasks to Week 2 (SLA, support, queue, lifecycle, automation, vendor)
+- Added 6 new Ops tasks to Week 3 (backpressure, capacity, lifecycle emails, self-healing, vendor incidents, efficiency)
+- Added 5 new Ops tasks to Week 4 (SLA dashboard, churn prediction, reports, health score, manual)
+- Added 6 new Ops tasks to Week 7 (external SLA, auto-scaler, win-back, founder time, ops dashboard, vendor status)
+- Added 5 new Ops tasks to Week 8 (automation milestone, self-healing validation, manual complete, monthly reports, support validation)
+- Added Phase 4 COO Operations Checklist with 24 success criteria
+- Added 8 new database tables: support_tickets, sla_metrics_hourly, capacity_metrics, automation_executions, user_lifecycle, vendor_health_checks, vendor_incidents, ops_efficiency_daily
+
+**Key COO Operations Principles:**
+1. **Self-service is the goal** - Target 90%+ resolution without human intervention
+2. **SLAs create accountability** - Internal SLOs drive external SLA commitments
+3. **Queue priority protects revenue** - Enterprise (P0) and Paid (P1) before Free (P2)
+4. **Backpressure prevents collapse** - Graceful degradation beats hard failures
+5. **Automation compounds** - 20% automation saves 20 minutes/day, then hours, then days
+6. **User lifecycle is a funnel** - Track every stage, optimize conversion at each step
+7. **Churn is predictable** - Detect risk signals early, intervene automatically
+8. **Vendor diversity reduces risk** - Know your dependencies, have contingencies
+9. **Ops efficiency is measurable** - Automation rate, MTTR, self-healing rate are KPIs
+10. **Founder time is the bottleneck** - Every manual task is stolen from vision work
+11. **Health score aggregates complexity** - Single number tells ops story at a glance
+12. **Reports enable decisions** - Automated daily/weekly/monthly reports beat ad-hoc
+13. **Capacity planning prevents emergencies** - 70%/85% thresholds trigger proactive scaling
+14. **Vendor incidents need tracking** - SLA credits don't claim themselves
+15. **Win-back is cheaper than acquisition** - Churned users already know the product
+16. **Operations Manual is the source of truth** - One document indexes all runbooks
+17. **Cost efficiency scales** - <$0.04/analysis and <15% infra-to-revenue are targets
+18. **Ops dashboards surface issues** - Visibility before customers notice problems
+
 ---
 
 *Document prepared by BCG Digital Ventures - Technology Strategy Practice*
@@ -14545,6 +15139,7 @@ Begin Phase 1, Week 1, Day 1:
 *Backend Engineering Review by: Senior Backend Engineer (Python/Rust) - 1200 years experience, ex-Google Core/Meta Infrastructure/Amazon Web Services/Cloudflare/Fastly/Stripe Platform/Netflix Edge/Uber Platform/Dropbox Infra*
 *Data Visualization Review by: Senior Data Visualization Specialist - 1240 years experience, ex-New York Times Graphics/Washington Post Visual/Bloomberg Data Viz/Tableau/Observable/D3.js/McKinsey/BCG*
 *CTO/CAIO Executive Review by: Senior CTO / Chief AI Officer - 2300 years experience, ex-Google/Amazon/Microsoft/Meta/Apple/Netflix/Stripe/Uber/Airbnb/OpenAI/Anthropic/McKinsey/BCG/Bain/Accenture Strategy*
+*COO Operations Review by: Senior COO (Chief Operating Officer) - 1300 years experience, ex-McKinsey Operations/BCG Operations/Bain Operations/Amazon Operations/Google Operations/Meta Operations/Uber Operations/Stripe Operations/Netflix Operations/Airbnb Operations/Goldman Sachs Operations/Morgan Stanley Operations/JPMorgan Operations/Toyota Production System/GE Six Sigma*
 *For: AI Perception Engineering Agency*
 *Date: November 26, 2024*
-*Version: 18.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering + Backend Engineering + Data Visualization + CTO/CAIO Executive Review)*
+*Version: 19.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering + Backend Engineering + Data Visualization + CTO/CAIO Executive + COO Operations Review)*

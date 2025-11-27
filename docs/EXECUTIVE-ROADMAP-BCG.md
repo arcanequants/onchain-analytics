@@ -17467,6 +17467,869 @@ omArchive(userId);                           │   │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
+### 2.189 Semantic Audit Architecture Gap Analysis (NEW - Lead Semantic Auditor Review)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│       SEMANTIC AUDIT GAPS IDENTIFIED (18 Critical Findings)         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  CATEGORY A: SCHEMA CONSISTENCY GAPS (5 gaps)                       │
+│  ═══════════════════════════════════════════                        │
+│                                                                     │
+│  A.1 INCONSISTENT ENUM DEFINITIONS                                  │
+│      Finding: Same concept has different enum values across tables  │
+│      Evidence:                                                      │
+│      - provider: 'pplx' (line 382) vs 'perplexity' (line 3518)     │
+│      - sentiment: 3 values (388) vs 4 values with 'mixed' (3519)   │
+│      - severity: (minor,moderate,severe) vs (yellow,orange,red)    │
+│      - status: Different values per context, no canonical list      │
+│      Impact: JOIN failures, inconsistent reporting, ETL errors      │
+│      Solution: Centralized enum registry with canonical values      │
+│                                                                     │
+│  A.2 NO SEMANTIC DATA DICTIONARY                                    │
+│      Finding: 90+ tables but no formal data dictionary              │
+│      Impact: Ambiguous column meanings, duplicate concepts          │
+│      Solution: Formal data dictionary with definitions + owners     │
+│                                                                     │
+│  A.3 INCONSISTENT NAMING CONVENTIONS                                │
+│      Finding: Mixed naming patterns across schemas                  │
+│      Evidence:                                                      │
+│      - snake_case vs camelCase mixing                              │
+│      - 'id' vs 'entity_id' vs 'brand_id' inconsistency            │
+│      - 'created_at' vs 'creation_date' vs 'date_created'          │
+│      Impact: Developer confusion, query errors, maintenance cost   │
+│      Solution: Canonical naming convention + linter rules          │
+│                                                                     │
+│  A.4 MISSING AUDIT COLUMNS                                          │
+│      Finding: Many tables lack standard audit columns               │
+│      Required: created_at, updated_at, created_by, version         │
+│      Impact: No change tracking, compliance gaps, debugging hard   │
+│      Solution: Base table template with mandatory audit columns    │
+│                                                                     │
+│  A.5 NO SOFT DELETE STANDARD                                        │
+│      Finding: No consistent deletion strategy across tables         │
+│      Impact: Orphan records, broken references, GDPR issues        │
+│      Solution: Soft delete with deleted_at + archive policy        │
+│                                                                     │
+│  CATEGORY B: REFERENTIAL INTEGRITY GAPS (4 gaps)                    │
+│  ═══════════════════════════════════════════════                    │
+│                                                                     │
+│  B.1 MISSING FOREIGN KEY DOCUMENTATION                              │
+│      Finding: FK relationships implied but not enforced/documented  │
+│      Evidence: Many UUID columns "REFERENCES" without ON DELETE     │
+│      Impact: Orphan records possible, cascade behavior undefined   │
+│      Solution: Explicit FK constraints with ON DELETE/UPDATE rules │
+│                                                                     │
+│  B.2 NO ORPHAN RECORD DETECTION                                     │
+│      Finding: No automated check for orphaned records               │
+│      Impact: Data rot, storage waste, query performance impact     │
+│      Solution: Weekly orphan detection job + cleanup automation    │
+│                                                                     │
+│  B.3 CIRCULAR REFERENCE RISK                                        │
+│      Finding: Some tables may create circular FK dependencies       │
+│      Impact: Cascade delete failures, migration complexity         │
+│      Solution: Dependency graph validation in CI/CD                │
+│                                                                     │
+│  B.4 JSONB FOREIGN KEY BLINDNESS                                    │
+│      Finding: UUIDs stored in JSONB columns bypass FK constraints   │
+│      Evidence: option_a_id, option_b_id as UUID in JSONB snapshots │
+│      Impact: No referential integrity for JSONB-embedded references│
+│      Solution: Validation layer for JSONB UUID references          │
+│                                                                     │
+│  CATEGORY C: SEMANTIC TYPING GAPS (5 gaps)                          │
+│  ═════════════════════════════════════════                          │
+│                                                                     │
+│  C.1 NO SEMANTIC TYPE REGISTRY                                      │
+│      Finding: Business concepts lack formal type definitions        │
+│      Evidence: "score" means different things (0-100, 0-10, 1-5)   │
+│      Impact: Score confusion across tables, invalid comparisons    │
+│      Solution: Type alias registry with range constraints          │
+│                                                                     │
+│  C.2 NO UNIT STANDARDIZATION                                        │
+│      Finding: Time/money units inconsistent across columns          │
+│      Evidence: latency_ms vs duration (seconds?) vs load_speed_ms  │
+│      Impact: Calculation errors, wrong unit assumptions            │
+│      Solution: Unit suffix convention + conversion utilities       │
+│                                                                     │
+│  C.3 AMBIGUOUS NULL SEMANTICS                                       │
+│      Finding: NULL means different things per column                │
+│      Evidence: score=NULL (not calculated? or 0? or error?)        │
+│      Impact: Incorrect aggregations, misleading analytics          │
+│      Solution: Explicit nullable semantics documentation           │
+│                                                                     │
+│  C.4 NO DOMAIN VOCABULARY CONTROL                                   │
+│      Finding: Same concept has multiple column names                │
+│      Evidence: user_id, profile_id, author_id (all reference user) │
+│      Impact: Unclear data lineage, redundant indexes               │
+│      Solution: Canonical vocabulary with alias mapping             │
+│                                                                     │
+│  C.5 ENUM VS LOOKUP TABLE INCONSISTENCY                             │
+│      Finding: Some categorizations use ENUM, others use FK to table │
+│      Evidence: industry as ENUM (some) vs FK to industries table   │
+│      Impact: Cannot add categories without migration vs easy add   │
+│      Solution: Decision framework for ENUM vs lookup table         │
+│                                                                     │
+│  CATEGORY D: DATA QUALITY VALIDATION GAPS (4 gaps)                  │
+│  ════════════════════════════════════════════════                   │
+│                                                                     │
+│  D.1 NO CHECK CONSTRAINTS                                           │
+│      Finding: Score ranges, percentages not enforced at DB level   │
+│      Evidence: score INTEGER (0-100) but no CHECK (score >= 0)     │
+│      Impact: Invalid data can enter DB, data quality degradation   │
+│      Solution: CHECK constraints on all bounded numeric columns    │
+│                                                                     │
+│  D.2 NO DATA QUALITY MONITORS                                       │
+│      Finding: No automated data quality checks running              │
+│      Impact: Silent data corruption, late detection of issues      │
+│      Solution: Great Expectations-style DQ rules + alerting        │
+│                                                                     │
+│  D.3 NO SEMANTIC VALIDATION RULES                                   │
+│      Finding: Business rules not enforced at data layer            │
+│      Evidence: score_before < score_after not validated            │
+│      Impact: Nonsense data accepted, analytics unreliable          │
+│      Solution: Trigger-based or application-layer validation       │
+│                                                                     │
+│  D.4 NO DATA FRESHNESS MONITORING                                   │
+│      Finding: No check if data is stale beyond expected interval   │
+│      Impact: Stale data served as fresh, user trust erosion        │
+│      Solution: Freshness SLOs with automated staleness alerts      │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.190 Canonical Enum Registry (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              CENTRALIZED ENUM DEFINITIONS                            │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PHILOSOPHY: "One definition, many usages"                          │
+│                                                                     │
+│  CANONICAL ENUM DEFINITIONS:                                        │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  -- Provider enum (canonical)                                │   │
+│  │  CREATE TYPE ai_provider AS ENUM (                           │   │
+│  │    'openai',      -- GPT models                              │   │
+│  │    'anthropic',   -- Claude models                           │   │
+│  │    'google',      -- Gemini models                           │   │
+│  │    'perplexity'   -- Perplexity models (NOT 'pplx')         │   │
+│  │  );                                                          │   │
+│  │                                                               │   │
+│  │  -- Sentiment enum (canonical, 4 values)                     │   │
+│  │  CREATE TYPE sentiment_type AS ENUM (                        │   │
+│  │    'positive',                                               │   │
+│  │    'neutral',                                                │   │
+│  │    'negative',                                               │   │
+│  │    'mixed'       -- Contains both positive and negative     │   │
+│  │  );                                                          │   │
+│  │                                                               │   │
+│  │  -- Severity enum (canonical, 4 levels)                      │   │
+│  │  CREATE TYPE severity_level AS ENUM (                        │   │
+│  │    'info',       -- Informational, no action needed          │   │
+│  │    'warning',    -- Attention recommended                    │   │
+│  │    'error',      -- Action required                          │   │
+│  │    'critical'    -- Immediate action required                │   │
+│  │  );                                                          │   │
+│  │                                                               │   │
+│  │  -- Status enum (generic lifecycle)                          │   │
+│  │  CREATE TYPE status_type AS ENUM (                           │   │
+│  │    'pending',    -- Awaiting processing                      │   │
+│  │    'processing', -- Currently being processed                │   │
+│  │    'completed',  -- Successfully finished                    │   │
+│  │    'failed',     -- Processing failed                        │   │
+│  │    'cancelled'   -- Cancelled by user/system                 │   │
+│  │  );                                                          │   │
+│  │                                                               │   │
+│  │  -- Subscription status (specific)                           │   │
+│  │  CREATE TYPE subscription_status AS ENUM (                   │   │
+│  │    'active',                                                 │   │
+│  │    'past_due',                                               │   │
+│  │    'cancelled',                                              │   │
+│  │    'paused',                                                 │   │
+│  │    'trialing'                                                │   │
+│  │  );                                                          │   │
+│  │                                                               │   │
+│  │  -- Plan tier enum                                           │   │
+│  │  CREATE TYPE plan_tier AS ENUM (                             │   │
+│  │    'free',                                                   │   │
+│  │    'starter',                                                │   │
+│  │    'pro',                                                    │   │
+│  │    'enterprise'                                              │   │
+│  │  );                                                          │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  ENUM MIGRATION PLAN:                                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Step 1: Create canonical enum types                          │   │
+│  │ Step 2: Add new columns using canonical types                │   │
+│  │ Step 3: Migrate data with mapping (pplx → perplexity)       │   │
+│  │ Step 4: Drop old columns                                     │   │
+│  │ Step 5: Rename new columns to original names                 │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  ENUM MAPPING (Legacy → Canonical):                                 │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ 'pplx'           → 'perplexity'                             │   │
+│  │ 'minor'          → 'warning'                                 │   │
+│  │ 'moderate'       → 'error'                                   │   │
+│  │ 'severe'         → 'critical'                                │   │
+│  │ 'yellow'         → 'warning'                                 │   │
+│  │ 'orange'         → 'error'                                   │   │
+│  │ 'red'            → 'critical'                                │   │
+│  │ 'canceled'       → 'cancelled' (British spelling standard)  │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                    │
+│  /migrations/001_canonical_enums.sql                                │
+│  /lib/types/enums.ts - TypeScript enum exports                      │
+│  /lib/validation/enum-validators.ts                                 │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.191 Semantic Data Dictionary (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              FORMAL DATA DICTIONARY                                  │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  DATABASE TABLE: data_dictionary                                    │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ table_name            TEXT NOT NULL                          │   │
+│  │ column_name           TEXT NOT NULL                          │   │
+│  │ data_type             TEXT NOT NULL                          │   │
+│  │ semantic_type         TEXT (business type alias)             │   │
+│  │ definition            TEXT NOT NULL (what this column means) │   │
+│  │ example_values        TEXT[] (sample valid values)           │   │
+│  │ allowed_values        TEXT[] (if constrained)                │   │
+│  │ unit                  TEXT (ms, usd, percent, etc.)          │   │
+│  │ nullable_semantics    TEXT (what NULL means for this column) │   │
+│  │ default_value         TEXT                                   │   │
+│  │ business_owner        TEXT (who owns this data)              │   │
+│  │ technical_owner       TEXT (who maintains schema)            │   │
+│  │ pii_classification    TEXT (none, internal, confidential)    │   │
+│  │ retention_policy      TEXT (forever, 90d, 1y, etc.)          │   │
+│  │ source_system         TEXT (where data originates)           │   │
+│  │ update_frequency      TEXT (real-time, daily, on-demand)     │   │
+│  │ created_at            TIMESTAMPTZ                            │   │
+│  │ updated_at            TIMESTAMPTZ                            │   │
+│  │ UNIQUE(table_name, column_name)                              │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  EXAMPLE ENTRIES:                                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ table_name: analyses                                         │   │
+│  │ column_name: overall_score                                   │   │
+│  │ semantic_type: perception_score                              │   │
+│  │ definition: "Weighted aggregate AI perception score (0-100) │   │
+│  │              calculated from individual provider scores"     │   │
+│  │ example_values: ['72', '85', '45']                          │   │
+│  │ allowed_values: NULL (range constraint instead)              │   │
+│  │ unit: 'points'                                               │   │
+│  │ nullable_semantics: 'NULL = analysis not yet completed'     │   │
+│  │ ─────────────────────────────────────────────────────────── │   │
+│  │ table_name: api_cost_tracking                                │   │
+│  │ column_name: cost_usd                                        │   │
+│  │ semantic_type: monetary_amount                               │   │
+│  │ definition: "Cost in US dollars for this API call"           │   │
+│  │ unit: 'USD'                                                  │   │
+│  │ nullable_semantics: 'NULL = cost not yet calculated'        │   │
+│  │ ─────────────────────────────────────────────────────────── │   │
+│  │ table_name: ai_responses                                     │   │
+│  │ column_name: latency_ms                                      │   │
+│  │ semantic_type: duration_milliseconds                         │   │
+│  │ definition: "Time in milliseconds from request to response" │   │
+│  │ unit: 'milliseconds'                                         │   │
+│  │ nullable_semantics: 'NULL = latency not measured'           │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  SEMANTIC TYPE ALIASES:                                             │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Type Alias             │ Base Type    │ Constraints         │   │
+│  │ ───────────────────────┼──────────────┼──────────────────── │   │
+│  │ perception_score       │ INTEGER      │ 0-100               │   │
+│  │ confidence_score       │ DECIMAL      │ 0.0-1.0             │   │
+│  │ rating_5star           │ INTEGER      │ 1-5                 │   │
+│  │ rating_10point         │ INTEGER      │ 1-10                │   │
+│  │ percentage             │ DECIMAL      │ 0.0-100.0           │   │
+│  │ probability            │ DECIMAL      │ 0.0-1.0             │   │
+│  │ monetary_amount        │ DECIMAL(10,6)│ >= 0                │   │
+│  │ duration_milliseconds  │ INTEGER      │ >= 0                │   │
+│  │ duration_seconds       │ DECIMAL      │ >= 0                │   │
+│  │ token_count            │ INTEGER      │ >= 0                │   │
+│  │ position_rank          │ INTEGER      │ 1-10 or NULL        │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                    │
+│  /migrations/002_data_dictionary.sql                                │
+│  /scripts/seed-data-dictionary.ts                                   │
+│  /app/(admin)/data-dictionary/page.tsx                              │
+│  /lib/validation/semantic-types.ts                                  │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.192 Naming Convention Standard (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              CANONICAL NAMING CONVENTIONS                            │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  TABLE NAMING:                                                      │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Rule                        │ Example                       │   │
+│  │ ────────────────────────────┼────────────────────────────── │   │
+│  │ snake_case, plural          │ analyses, ai_responses        │   │
+│  │ No prefixes (tbl_, db_)     │ users NOT tbl_users           │   │
+│  │ Domain noun first           │ brand_corrections NOT         │   │
+│  │                             │ correction_brands             │   │
+│  │ Junction tables: noun_noun  │ user_analyses, brand_tags     │   │
+│  │ History tables: _history    │ score_history, price_history  │   │
+│  │ Log tables: _log            │ audit_log, error_log          │   │
+│  │ Cache tables: _cache        │ analysis_cache, score_cache   │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  COLUMN NAMING:                                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Rule                        │ Example                       │   │
+│  │ ────────────────────────────┼────────────────────────────── │   │
+│  │ snake_case always           │ created_at NOT createdAt      │   │
+│  │ Primary key: id             │ id (UUID)                     │   │
+│  │ Foreign key: entity_id      │ user_id, analysis_id          │   │
+│  │ Boolean: is_, has_, can_    │ is_active, has_paid, can_edit │   │
+│  │ Timestamps: _at suffix      │ created_at, updated_at        │   │
+│  │ Counts: _count suffix       │ token_count, analysis_count   │   │
+│  │ Duration: _ms, _seconds     │ latency_ms, duration_seconds  │   │
+│  │ Money: _usd, _amount        │ cost_usd, total_amount        │   │
+│  │ Percentage: _pct, _rate     │ cache_hit_pct, churn_rate     │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  STANDARD AUDIT COLUMNS (Required for all tables):                  │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Column          │ Type        │ Purpose                     │   │
+│  │ ────────────────┼─────────────┼──────────────────────────── │   │
+│  │ id              │ UUID        │ Primary key (uuid_generate) │   │
+│  │ created_at      │ TIMESTAMPTZ │ Row creation time           │   │
+│  │ updated_at      │ TIMESTAMPTZ │ Last modification time      │   │
+│  │ created_by      │ UUID        │ User who created (nullable) │   │
+│  │ deleted_at      │ TIMESTAMPTZ │ Soft delete marker (nullable)│  │
+│  │ version         │ INTEGER     │ Optimistic locking counter  │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  FOREIGN KEY COLUMN PATTERN:                                        │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ -- Canonical FK definition                                   │   │
+│  │ user_id UUID REFERENCES users(id)                           │   │
+│  │   ON DELETE CASCADE    -- or SET NULL, RESTRICT             │   │
+│  │   ON UPDATE CASCADE                                          │   │
+│  │   DEFERRABLE INITIALLY DEFERRED,                            │   │
+│  │                                                               │   │
+│  │ -- Required comment for FK behavior                          │   │
+│  │ COMMENT ON COLUMN table.user_id IS                           │   │
+│  │   'FK to users. CASCADE: deleting user deletes this row';   │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  LINTER RULES (eslint-plugin-sql):                                  │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ {                                                            │   │
+│  │   "rules": {                                                 │   │
+│  │     "sql/table-naming": ["error", "snake_case_plural"],     │   │
+│  │     "sql/column-naming": ["error", "snake_case"],           │   │
+│  │     "sql/require-created-at": "error",                      │   │
+│  │     "sql/require-updated-at": "error",                      │   │
+│  │     "sql/no-camel-case": "error",                           │   │
+│  │     "sql/fk-must-have-on-delete": "error"                   │   │
+│  │   }                                                          │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                    │
+│  /docs/standards/NAMING-CONVENTIONS.md                              │
+│  /scripts/lint-sql.ts                                               │
+│  /migrations/base-table-template.sql                                │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.193 Referential Integrity Framework (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              REFERENTIAL INTEGRITY MANAGEMENT                        │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  FK BEHAVIOR DECISION MATRIX:                                       │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Parent-Child Relationship    │ ON DELETE │ ON UPDATE        │   │
+│  │ ────────────────────────────┼───────────┼────────────────── │   │
+│  │ User → Analyses (owns)       │ CASCADE   │ CASCADE          │   │
+│  │ Analysis → AI_Responses      │ CASCADE   │ CASCADE          │   │
+│  │ User → Subscriptions         │ CASCADE   │ CASCADE          │   │
+│  │ Analysis → Recommendations   │ CASCADE   │ CASCADE          │   │
+│  │ Industry → Brands (belongs)  │ SET NULL  │ CASCADE          │   │
+│  │ User → Audit_Log (logged by) │ SET NULL  │ CASCADE          │   │
+│  │ Brand → Competitors (detects)│ SET NULL  │ CASCADE          │   │
+│  │ Provider → AI_Responses      │ RESTRICT  │ CASCADE          │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  ORPHAN DETECTION QUERIES:                                          │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ -- Find orphaned ai_responses (no parent analysis)          │   │
+│  │ SELECT ar.id, ar.analysis_id, ar.created_at                 │   │
+│  │ FROM ai_responses ar                                         │   │
+│  │ LEFT JOIN analyses a ON ar.analysis_id = a.id               │   │
+│  │ WHERE a.id IS NULL;                                          │   │
+│  │                                                               │   │
+│  │ -- Find orphaned recommendations                             │   │
+│  │ SELECT r.id, r.analysis_id, r.created_at                    │   │
+│  │ FROM recommendations r                                       │   │
+│  │ LEFT JOIN analyses a ON r.analysis_id = a.id                │   │
+│  │ WHERE a.id IS NULL;                                          │   │
+│  │                                                               │   │
+│  │ -- Generic orphan finder (parameterized)                    │   │
+│  │ CREATE OR REPLACE FUNCTION find_orphans(                    │   │
+│  │   child_table TEXT,                                          │   │
+│  │   fk_column TEXT,                                            │   │
+│  │   parent_table TEXT                                          │   │
+│  │ ) RETURNS TABLE (orphan_id UUID, orphan_created_at TIMESTAMPTZ)│ │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: orphan_detection_log                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ detection_run_id      UUID                                   │   │
+│  │ table_name            TEXT                                   │   │
+│  │ fk_column             TEXT                                   │   │
+│  │ parent_table          TEXT                                   │   │
+│  │ orphan_count          INTEGER                                │   │
+│  │ orphan_ids            UUID[]                                 │   │
+│  │ action_taken          TEXT (reported, archived, deleted)     │   │
+│  │ detected_at           TIMESTAMPTZ                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  JSONB REFERENCE VALIDATOR:                                         │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // Validate UUIDs embedded in JSONB point to existing rows  │   │
+│  │                                                               │   │
+│  │ function validateJsonbReferences(                            │   │
+│  │   data: Record<string, any>,                                │   │
+│  │   schema: JsonbRefSchema                                     │   │
+│  │ ): ValidationResult {                                        │   │
+│  │   const errors: RefError[] = [];                            │   │
+│  │                                                               │   │
+│  │   for (const [path, config] of Object.entries(schema)) {    │   │
+│  │     const value = get(data, path);                          │   │
+│  │     if (value && isUUID(value)) {                           │   │
+│  │       const exists = await checkExists(config.table, value);│   │
+│  │       if (!exists) {                                         │   │
+│  │         errors.push({                                        │   │
+│  │           path,                                              │   │
+│  │           value,                                             │   │
+│  │           expectedTable: config.table                        │   │
+│  │         });                                                  │   │
+│  │       }                                                      │   │
+│  │     }                                                        │   │
+│  │   }                                                          │   │
+│  │   return { valid: errors.length === 0, errors };            │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                    │
+│  /lib/data-quality/orphan-detector.ts                               │
+│  /lib/data-quality/jsonb-ref-validator.ts                           │
+│  /api/cron/detect-orphans/route.ts (weekly)                         │
+│  /app/(admin)/data-quality/orphans/page.tsx                         │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.194 Data Quality Check Constraints (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              DATABASE CHECK CONSTRAINTS                              │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  SCORE CONSTRAINTS:                                                 │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ -- Perception scores must be 0-100                          │   │
+│  │ ALTER TABLE analyses                                         │   │
+│  │   ADD CONSTRAINT chk_overall_score_range                    │   │
+│  │   CHECK (overall_score IS NULL OR                           │   │
+│  │          (overall_score >= 0 AND overall_score <= 100));    │   │
+│  │                                                               │   │
+│  │ ALTER TABLE ai_responses                                     │   │
+│  │   ADD CONSTRAINT chk_ai_score_range                         │   │
+│  │   CHECK (score IS NULL OR (score >= 0 AND score <= 100));   │   │
+│  │                                                               │   │
+│  │ -- Confidence must be 0.0-1.0                               │   │
+│  │ ALTER TABLE ai_responses                                     │   │
+│  │   ADD CONSTRAINT chk_confidence_range                       │   │
+│  │   CHECK (confidence IS NULL OR                              │   │
+│  │          (confidence >= 0.0 AND confidence <= 1.0));        │   │
+│  │                                                               │   │
+│  │ -- Rating must be 1-5                                        │   │
+│  │ ALTER TABLE user_feedback                                    │   │
+│  │   ADD CONSTRAINT chk_rating_range                           │   │
+│  │   CHECK (rating IS NULL OR (rating >= 1 AND rating <= 5));  │   │
+│  │                                                               │   │
+│  │ -- Position must be 1-10                                     │   │
+│  │ ALTER TABLE ai_responses                                     │   │
+│  │   ADD CONSTRAINT chk_position_range                         │   │
+│  │   CHECK (position IS NULL OR                                │   │
+│  │          (position >= 1 AND position <= 10));               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  MONETARY CONSTRAINTS:                                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ -- Cost cannot be negative                                   │   │
+│  │ ALTER TABLE api_cost_tracking                                │   │
+│  │   ADD CONSTRAINT chk_cost_non_negative                      │   │
+│  │   CHECK (cost_usd >= 0);                                    │   │
+│  │                                                               │   │
+│  │ -- Token counts non-negative                                 │   │
+│  │ ALTER TABLE api_cost_tracking                                │   │
+│  │   ADD CONSTRAINT chk_tokens_non_negative                    │   │
+│  │   CHECK (tokens_input >= 0 AND tokens_output >= 0);         │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  TEMPORAL CONSTRAINTS:                                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ -- completed_at must be after created_at                    │   │
+│  │ ALTER TABLE analyses                                         │   │
+│  │   ADD CONSTRAINT chk_completed_after_created                │   │
+│  │   CHECK (completed_at IS NULL OR completed_at >= created_at);│  │
+│  │                                                               │   │
+│  │ -- valid_to must be after valid_from                        │   │
+│  │ ALTER TABLE entity_relationships                             │   │
+│  │   ADD CONSTRAINT chk_valid_range                            │   │
+│  │   CHECK (valid_to IS NULL OR valid_to >= valid_from);       │   │
+│  │                                                               │   │
+│  │ -- Latency must be positive                                  │   │
+│  │ ALTER TABLE ai_responses                                     │   │
+│  │   ADD CONSTRAINT chk_latency_positive                       │   │
+│  │   CHECK (latency_ms IS NULL OR latency_ms > 0);             │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  BUSINESS LOGIC CONSTRAINTS:                                        │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ -- URL must start with http:// or https://                  │   │
+│  │ ALTER TABLE analyses                                         │   │
+│  │   ADD CONSTRAINT chk_url_protocol                           │   │
+│  │   CHECK (url ~ '^https?://');                               │   │
+│  │                                                               │   │
+│  │ -- Email format validation                                   │   │
+│  │ ALTER TABLE user_profiles                                    │   │
+│  │   ADD CONSTRAINT chk_email_format                           │   │
+│  │   CHECK (email ~ '^[^@]+@[^@]+\.[^@]+$');                   │   │
+│  │                                                               │   │
+│  │ -- Percentage columns must be 0-100                          │   │
+│  │ ALTER TABLE daily_cost_summary                               │   │
+│  │   ADD CONSTRAINT chk_cache_hit_rate                         │   │
+│  │   CHECK (cache_hit_rate >= 0 AND cache_hit_rate <= 100);    │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                    │
+│  /migrations/003_check_constraints.sql                              │
+│  /docs/standards/DATA-CONSTRAINTS.md                                │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.195 Automated Data Quality Rules (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              DATA QUALITY EXPECTATION ENGINE                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PHILOSOPHY: "Trust but verify - continuously"                      │
+│                                                                     │
+│  DATABASE TABLE: data_quality_rules                                 │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ rule_name             TEXT NOT NULL UNIQUE                   │   │
+│  │ table_name            TEXT NOT NULL                          │   │
+│  │ rule_type             TEXT (completeness, validity, freshness)│  │
+│  │ rule_sql              TEXT NOT NULL (query returning failures)│  │
+│  │ severity              TEXT (info, warning, error, critical)  │   │
+│  │ threshold_pct         DECIMAL (acceptable failure %)         │   │
+│  │ alert_channel         TEXT (slack, email, pagerduty)         │   │
+│  │ enabled               BOOLEAN DEFAULT true                   │   │
+│  │ schedule_cron         TEXT (cron expression)                 │   │
+│  │ last_run_at           TIMESTAMPTZ                            │   │
+│  │ last_result           JSONB                                  │   │
+│  │ created_at            TIMESTAMPTZ                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: data_quality_results                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ rule_id               UUID REFERENCES data_quality_rules     │   │
+│  │ run_id                UUID (groups rules in same batch)      │   │
+│  │ passed                BOOLEAN                                │   │
+│  │ total_rows            INTEGER                                │   │
+│  │ failed_rows           INTEGER                                │   │
+│  │ failure_pct           DECIMAL                                │   │
+│  │ sample_failures       JSONB (sample of failed row IDs)       │   │
+│  │ execution_time_ms     INTEGER                                │   │
+│  │ executed_at           TIMESTAMPTZ                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  EXAMPLE RULES:                                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Rule: analyses_completeness                                  │   │
+│  │ Type: completeness                                           │   │
+│  │ SQL: SELECT id FROM analyses                                 │   │
+│  │      WHERE status = 'completed'                              │   │
+│  │      AND overall_score IS NULL                               │   │
+│  │ Threshold: 0% (no completed analysis should lack score)     │   │
+│  │ ─────────────────────────────────────────────────────────── │   │
+│  │ Rule: ai_responses_latency_outliers                          │   │
+│  │ Type: validity                                               │   │
+│  │ SQL: SELECT id FROM ai_responses                             │   │
+│  │      WHERE latency_ms > 30000                               │   │
+│  │ Threshold: 5% (allow some slow responses)                   │   │
+│  │ ─────────────────────────────────────────────────────────── │   │
+│  │ Rule: daily_cost_freshness                                   │   │
+│  │ Type: freshness                                              │   │
+│  │ SQL: SELECT 1 FROM daily_cost_summary                        │   │
+│  │      WHERE date = CURRENT_DATE - 1                          │   │
+│  │      HAVING COUNT(*) = 0                                    │   │
+│  │ Threshold: 0% (yesterday must have summary)                 │   │
+│  │ ─────────────────────────────────────────────────────────── │   │
+│  │ Rule: enum_value_validity                                    │   │
+│  │ Type: validity                                               │   │
+│  │ SQL: SELECT id FROM ai_responses                             │   │
+│  │      WHERE provider NOT IN ('openai','anthropic',            │   │
+│  │                             'google','perplexity')           │   │
+│  │ Threshold: 0% (only canonical values allowed)               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DQ RUNNER:                                                         │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ async function runDataQualityChecks() {                     │   │
+│  │   const rules = await getEnabledRules();                    │   │
+│  │   const runId = uuid();                                      │   │
+│  │   const results = [];                                        │   │
+│  │                                                               │   │
+│  │   for (const rule of rules) {                               │   │
+│  │     const start = Date.now();                               │   │
+│  │     const failures = await sql.raw(rule.rule_sql);          │   │
+│  │     const totalRows = await countTable(rule.table_name);    │   │
+│  │                                                               │   │
+│  │     const result = {                                         │   │
+│  │       rule_id: rule.id,                                      │   │
+│  │       run_id: runId,                                         │   │
+│  │       passed: (failures.length / totalRows) * 100            │   │
+│  │               <= rule.threshold_pct,                        │   │
+│  │       failed_rows: failures.length,                          │   │
+│  │       failure_pct: (failures.length / totalRows) * 100,     │   │
+│  │       execution_time_ms: Date.now() - start,                │   │
+│  │     };                                                       │   │
+│  │                                                               │   │
+│  │     if (!result.passed && rule.severity >= 'error') {       │   │
+│  │       await sendAlert(rule, result);                        │   │
+│  │     }                                                        │   │
+│  │                                                               │   │
+│  │     results.push(result);                                    │   │
+│  │   }                                                          │   │
+│  │                                                               │   │
+│  │   await saveResults(results);                               │   │
+│  │   return results;                                            │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                    │
+│  /lib/data-quality/rule-runner.ts                                   │
+│  /lib/data-quality/rules-registry.ts                                │
+│  /api/cron/data-quality/route.ts (hourly)                           │
+│  /app/(admin)/data-quality/page.tsx                                 │
+│  /app/(admin)/data-quality/rules/page.tsx                           │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.196 Schema Version Control & Migration Audit (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              SCHEMA EVOLUTION GOVERNANCE                             │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  DATABASE TABLE: schema_migrations_audit                            │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ migration_id          TEXT NOT NULL                          │   │
+│  │ migration_name        TEXT NOT NULL                          │   │
+│  │ direction             TEXT (up, down)                        │   │
+│  │ executed_sql          TEXT (actual SQL run)                  │   │
+│  │ tables_affected       TEXT[]                                 │   │
+│  │ columns_added         JSONB                                  │   │
+│  │ columns_removed       JSONB                                  │   │
+│  │ indexes_changed       JSONB                                  │   │
+│  │ constraints_changed   JSONB                                  │   │
+│  │ backward_compatible   BOOLEAN                                │   │
+│  │ rollback_sql          TEXT                                   │   │
+│  │ executed_by           TEXT                                   │   │
+│  │ environment           TEXT (dev, staging, prod)              │   │
+│  │ execution_time_ms     INTEGER                                │   │
+│  │ executed_at           TIMESTAMPTZ                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  BACKWARD COMPATIBILITY CHECKS:                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // Run before migration to detect breaking changes          │   │
+│  │                                                               │   │
+│  │ function checkBackwardCompatibility(migration: Migration) {  │   │
+│  │   const issues: Issue[] = [];                               │   │
+│  │                                                               │   │
+│  │   // Breaking: Column removal without deprecation period    │   │
+│  │   if (migration.dropsColumn) {                              │   │
+│  │     issues.push({                                            │   │
+│  │       severity: 'breaking',                                  │   │
+│  │       message: `Dropping column ${migration.column} breaks  │   │
+│  │                 existing queries`                            │   │
+│  │     });                                                      │   │
+│  │   }                                                          │   │
+│  │                                                               │   │
+│  │   // Breaking: NOT NULL without default on existing column  │   │
+│  │   if (migration.addsNotNull && !migration.hasDefault) {     │   │
+│  │     issues.push({                                            │   │
+│  │       severity: 'breaking',                                  │   │
+│  │       message: 'Adding NOT NULL without default will fail'   │   │
+│  │     });                                                      │   │
+│  │   }                                                          │   │
+│  │                                                               │   │
+│  │   // Breaking: Enum value removal                            │   │
+│  │   if (migration.removesEnumValue) {                         │   │
+│  │     issues.push({                                            │   │
+│  │       severity: 'breaking',                                  │   │
+│  │       message: 'Removing enum value breaks existing data'   │   │
+│  │     });                                                      │   │
+│  │   }                                                          │   │
+│  │                                                               │   │
+│  │   // Warning: Column rename (requires code change)          │   │
+│  │   if (migration.renamesColumn) {                            │   │
+│  │     issues.push({                                            │   │
+│  │       severity: 'warning',                                   │   │
+│  │       message: 'Column rename requires application update'  │   │
+│  │     });                                                      │   │
+│  │   }                                                          │   │
+│  │                                                               │   │
+│  │   return issues;                                             │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  MIGRATION REVIEW CHECKLIST (Pre-deployment):                       │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ □ Backward compatible OR coordinated deploy with code       │   │
+│  │ □ Rollback SQL provided and tested                          │   │
+│  │ □ Data dictionary updated for new columns                   │   │
+│  │ □ Check constraints added for bounded values                │   │
+│  │ □ Indexes added for new FK columns                          │   │
+│  │ □ Naming conventions followed                               │   │
+│  │ □ Audit columns included (created_at, updated_at)          │   │
+│  │ □ ON DELETE/UPDATE behavior documented for FKs             │   │
+│  │ □ DQ rules created for new columns                          │   │
+│  │ □ Migration tested on prod-sized data sample               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                    │
+│  /lib/migrations/compatibility-checker.ts                           │
+│  /lib/migrations/migration-auditor.ts                               │
+│  /scripts/pre-migration-check.ts                                    │
+│  /app/(admin)/schema/migrations/page.tsx                            │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.197 Semantic Audit Dashboard (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              SEMANTIC HEALTH DASHBOARD                               │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  DASHBOARD: /app/(admin)/semantic-audit/page.tsx                    │
+│                                                                     │
+│  METRICS DISPLAYED:                                                  │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  ┌─────────────────┐  ┌─────────────────┐  ┌───────────────┐│   │
+│  │  │ SCHEMA HEALTH   │  │ DATA QUALITY    │  │ NAMING SCORE  ││   │
+│  │  │     94/100      │  │    97.2%        │  │   89/100      ││   │
+│  │  │  ↑ 2 from last  │  │  ↓ 0.3% today   │  │  +5 this week ││   │
+│  │  └─────────────────┘  └─────────────────┘  └───────────────┘│   │
+│  │                                                               │   │
+│  │  ENUM CONSISTENCY                                             │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ ● provider: 4 canonical values, 0 legacy values         ││   │
+│  │  │ ● sentiment: 4 canonical values, 12 rows with 'mixed'   ││   │
+│  │  │ ⚠ severity: 2 patterns detected (canonical + legacy)    ││   │
+│  │  │ ● status: 5 canonical values, migration pending         ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  ORPHAN RECORD REPORT                                         │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ Table            │ Orphans │ Last Check │ Action        ││   │
+│  │  │ ai_responses     │ 0       │ 2h ago     │ OK            ││   │
+│  │  │ recommendations  │ 3       │ 2h ago     │ [Review]      ││   │
+│  │  │ user_feedback    │ 0       │ 2h ago     │ OK            ││   │
+│  │  │ preference_pairs │ 0       │ 2h ago     │ OK            ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  DATA QUALITY RULE STATUS                                     │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ ● 45 rules passing                                       ││   │
+│  │  │ ⚠ 2 rules warning (within threshold)                    ││   │
+│  │  │ ✗ 0 rules failing                                        ││   │
+│  │  │ ○ 3 rules disabled                                       ││   │
+│  │  │                                                           ││   │
+│  │  │ Next scheduled run: in 45 minutes                        ││   │
+│  │  │ [Run Now] [View All Rules]                               ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  RECENT SCHEMA CHANGES                                        │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ 2h ago  │ Added column: user_feedback.metadata          ││   │
+│  │  │ 1d ago  │ Created table: preference_pairs               ││   │
+│  │  │ 3d ago  │ Added constraint: chk_score_range             ││   │
+│  │  │ 5d ago  │ Created index: idx_analyses_user_id           ││   │
+│  │  │ [View Full Migration History]                            ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  SEMANTIC HEALTH SCORE CALCULATION:                                 │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ score = (                                                    │   │
+│  │   enum_consistency_pct * 0.20 +                             │   │
+│  │   naming_convention_pct * 0.15 +                            │   │
+│  │   fk_integrity_pct * 0.20 +                                 │   │
+│  │   dq_rules_passing_pct * 0.25 +                             │   │
+│  │   documentation_coverage_pct * 0.10 +                       │   │
+│  │   constraint_coverage_pct * 0.10                            │   │
+│  │ )                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                    │
+│  /app/(admin)/semantic-audit/page.tsx                               │
+│  /lib/semantic-audit/health-calculator.ts                           │
+│  /lib/semantic-audit/enum-auditor.ts                                │
+│  /lib/semantic-audit/naming-auditor.ts                              │
+│  /api/admin/semantic-health/route.ts                                │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
 ---
 
 ## PART III: PHASED ROADMAP
@@ -17568,6 +18431,10 @@ omArchive(userId);                           │   │
 | 5 | **CL: Negation scope detector** | /lib/nlp/negation.ts - detect "NOT recommend" patterns | Claude |
 | 5 | **CL: Hedge/certainty scorer** | /lib/nlp/certainty.ts - "might" vs "definitely" confidence | Claude |
 | 5 | **CL: Basic coreference** | /lib/nlp/coreference.ts - resolve "it", "they", "the company" | Claude |
+| 5 | **SemAudit: Canonical enum types** | /migrations/001_canonical_enums.sql - provider, sentiment, severity | Claude |
+| 5 | **SemAudit: Enum TypeScript exports** | /lib/types/enums.ts - type-safe enum definitions | Claude |
+| 5 | **SemAudit: Naming convention doc** | /docs/standards/NAMING-CONVENTIONS.md - table/column rules | Claude |
+| 5 | **SemAudit: Base table template** | /migrations/base-table-template.sql - audit columns standard | Claude |
 
 **NEW: Security Deliverables Week 1:**
 ```typescript
@@ -17983,6 +18850,11 @@ const CACHE_TTL = {
 | 5 | **RLHF: Score calibration service** | /lib/scoring/calibration.ts - industry-adjusted scores | Claude |
 | 5 | **RLHF: recommendation_outcomes table** | Track if users implemented recommendations | Claude |
 | 5 | **RLHF: Outcome tracking UI** | "Did this help?" prompt after 7 days | Claude |
+| 5 | **SemAudit: Data dictionary table** | /migrations/002_data_dictionary.sql - column metadata | Claude |
+| 5 | **SemAudit: Seed data dictionary** | /scripts/seed-data-dictionary.ts - initial 50 columns | Claude |
+| 5 | **SemAudit: CHECK constraints** | /migrations/003_check_constraints.sql - score ranges, non-negative | Claude |
+| 5 | **SemAudit: FK ON DELETE rules** | Document ON DELETE behavior for all FK relationships | Claude |
+| 5 | **SemAudit: Orphan detection query** | /lib/data-quality/orphan-detector.ts - find orphaned records | Claude |
 
 **Freemium Gating Rules:**
 
@@ -18330,6 +19202,15 @@ const ALERT_THRESHOLDS = {
 | 5 | **RLHF: Correction review UI** | /app/(admin)/rlhf/corrections/page.tsx - approve/reject | Claude |
 | 5 | **RLHF: Feedback incentive system** | Gamification for quality feedback (badges, tier unlocks) | Claude |
 | 5 | **RLHF: RLHF monthly report** | Automated feedback quality + model improvement metrics | Claude |
+| 5 | **SemAudit: DQ rules table** | /migrations/004_data_quality_rules.sql - rule definitions | Claude |
+| 5 | **SemAudit: DQ rule runner** | /lib/data-quality/rule-runner.ts - execute DQ checks | Claude |
+| 5 | **SemAudit: DQ cron job** | /api/cron/data-quality/route.ts - hourly DQ runs | Claude |
+| 5 | **SemAudit: DQ dashboard** | /app/(admin)/data-quality/page.tsx - rule status + alerts | Claude |
+| 5 | **SemAudit: Schema migrations audit** | /migrations/005_schema_audit.sql - migration tracking | Claude |
+| 5 | **SemAudit: Backward compat checker** | /lib/migrations/compatibility-checker.ts | Claude |
+| 5 | **SemAudit: Semantic health dashboard** | /app/(admin)/semantic-audit/page.tsx - unified health view | Claude |
+| 5 | **SemAudit: Enum consistency monitor** | /lib/semantic-audit/enum-auditor.ts - detect legacy values | Claude |
+| 5 | **SemAudit: JSONB ref validator** | /lib/data-quality/jsonb-ref-validator.ts - validate embedded UUIDs | Claude |
 
 **Phase 4 Dev Checklist (End of Week 8):**
 - [ ] Feature flags on Vercel Edge Config
@@ -18726,6 +19607,40 @@ const ALERT_THRESHOLDS = {
 - [ ] Dashboard: Loop latency metrics (feedback → model update)
 - [ ] Incentives: Feedback quality gamification active
 - [ ] Reports: Monthly RLHF improvement report automated
+
+**Phase 4 Semantic Audit & Data Quality Checklist (End of Week 8):**
+- [ ] Enums: Canonical enum types created (ai_provider, sentiment_type, severity_level, status_type)
+- [ ] Enums: Legacy values migrated (pplx → perplexity, minor/moderate/severe → canonical)
+- [ ] Enums: TypeScript enum exports at /lib/types/enums.ts
+- [ ] Enums: 0 non-canonical enum values in production data
+- [ ] Naming: NAMING-CONVENTIONS.md document published
+- [ ] Naming: SQL linter rules configured and passing
+- [ ] Naming: Base table template with audit columns available
+- [ ] Naming: All new tables follow snake_case_plural convention
+- [ ] Dictionary: data_dictionary table created with 50+ column definitions
+- [ ] Dictionary: Semantic type aliases defined (perception_score, confidence_score, etc.)
+- [ ] Dictionary: NULL semantics documented for all nullable columns
+- [ ] Dictionary: Unit suffix convention enforced (_ms, _usd, _pct)
+- [ ] Integrity: FK ON DELETE/UPDATE behavior documented for all relationships
+- [ ] Integrity: orphan_detection_log table capturing weekly scans
+- [ ] Integrity: 0 orphaned records in core tables (ai_responses, recommendations)
+- [ ] Integrity: JSONB reference validator active for embedded UUIDs
+- [ ] Constraints: CHECK constraints added for all score columns (0-100)
+- [ ] Constraints: CHECK constraints for confidence (0.0-1.0)
+- [ ] Constraints: CHECK constraints for non-negative (cost_usd, tokens)
+- [ ] Constraints: Temporal constraints (completed_at >= created_at)
+- [ ] DQ Rules: data_quality_rules table with 20+ rules defined
+- [ ] DQ Rules: data_quality_results storing hourly check results
+- [ ] DQ Rules: 95%+ DQ rule pass rate on core tables
+- [ ] DQ Rules: Alert system firing on critical rule failures
+- [ ] Migrations: schema_migrations_audit tracking all deployments
+- [ ] Migrations: Backward compatibility checker in CI/CD pipeline
+- [ ] Migrations: Rollback SQL documented for all migrations
+- [ ] Dashboard: Semantic health dashboard at /admin/semantic-audit
+- [ ] Dashboard: Schema health score > 90/100
+- [ ] Dashboard: Data quality percentage > 98%
+- [ ] Dashboard: Naming convention score > 85/100
+- [ ] Audit: Weekly semantic audit report automated
 
 ---
 
@@ -19804,6 +20719,47 @@ Begin Phase 1, Week 1, Day 1:
 15. **HOTL + RLHF = alignment** - Human-on-the-loop requires human feedback
 16. **Self-improving > static** - Systems that learn from users compound advantage
 
+**Semantic Audit & Data Quality Specialist Review Summary (v24.0):**
+- Identified 18 critical semantic gaps across 4 categories:
+  - Category A: Schema Consistency Gaps (5 gaps)
+  - Category B: Referential Integrity Gaps (4 gaps)
+  - Category C: Semantic Typing Gaps (5 gaps)
+  - Category D: Data Quality Validation Gaps (4 gaps)
+- Added Semantic Audit Architecture Gap Analysis (2.189) with 18 finding details
+- Added Canonical Enum Registry (2.190) - provider, sentiment, severity, status standardization
+- Added Semantic Data Dictionary (2.191) - formal column definitions + semantic types
+- Added Naming Convention Standard (2.192) - table/column naming rules + linter config
+- Added Referential Integrity Framework (2.193) - FK behavior matrix + orphan detection
+- Added Data Quality Check Constraints (2.194) - score/confidence/temporal constraints
+- Added Automated Data Quality Rules (2.195) - Great Expectations-style DQ engine
+- Added Schema Version Control & Migration Audit (2.196) - backward compatibility checks
+- Added Semantic Audit Dashboard (2.197) - unified semantic health monitoring UI
+- Added 4 new SemAudit tasks to Week 1 (enums, naming doc, base template)
+- Added 5 new SemAudit tasks to Week 4 (data dictionary, CHECK constraints, orphan detection)
+- Added 10 new SemAudit tasks to Week 7-8 (DQ rules, migration audit, dashboards)
+- Added Phase 4 Semantic Audit & Data Quality Checklist with 32 success criteria
+- Added 6 new database tables: data_dictionary, orphan_detection_log, data_quality_rules, data_quality_results, schema_migrations_audit
+
+**Key Semantic Audit & Data Quality Principles:**
+1. **One enum definition, many usages** - Canonical enum registry prevents inconsistency
+2. **Data dictionary = institutional memory** - Column meanings survive team turnover
+3. **Naming conventions reduce cognitive load** - snake_case always, no exceptions
+4. **Audit columns are not optional** - created_at, updated_at, deleted_at everywhere
+5. **Soft delete protects against accidental loss** - Hard delete is irreversible
+6. **ON DELETE must be explicit** - Implicit CASCADE is dangerous
+7. **Orphan records are technical debt** - Detect early, clean regularly
+8. **JSONB is FK-blind** - Validate embedded UUIDs at application layer
+9. **Semantic types prevent score confusion** - perception_score ≠ confidence_score
+10. **Units in column names** - latency_ms, cost_usd, cache_hit_pct
+11. **NULL semantics must be documented** - NULL = unknown ≠ NULL = not applicable
+12. **CHECK constraints at DB level** - Don't trust application validation alone
+13. **Data quality is continuous** - Hourly checks, not one-time audits
+14. **Schema changes need review** - Backward compatibility is a contract
+15. **Migrations are auditable** - Track who changed what when
+16. **Semantic health is measurable** - Dashboard makes invisible visible
+17. **Enum migration requires mapping** - Legacy values don't disappear magically
+18. **Quality > quantity in constraints** - Cover critical paths first
+
 ---
 
 *Document prepared by BCG Digital Ventures - Technology Strategy Practice*
@@ -19829,6 +20785,7 @@ Begin Phase 1, Week 1, Day 1:
 *CEO Strategic Review by: Senior CEO (Chief Executive Officer) - 6500 years experience, ex-Apple/Google/Amazon/Microsoft/Meta/Netflix/Stripe/Airbnb/Uber/OpenAI/Anthropic/Sequoia/a16z/Benchmark/Accel/McKinsey/BCG/Bain/Goldman Sachs/Morgan Stanley/SpaceX/Tesla*
 *Internal Tools & DX Review by: Senior Director Internal Tools & UX Engineer - 578 years experience, ex-Stripe Internal Tools/Notion Platform/Figma Plugins/Retool/Vercel Dashboard/Linear/Raycast/Meta Internal Tools/Google Admin Console/AWS Console*
 *RLHF & Feedback Loop Review by: Senior RLHF Specialist Director - 433 years experience, ex-OpenAI RLHF/Anthropic Constitutional AI/Google DeepMind Reward/Meta FAIR Human Feedback/Microsoft Research Alignment/Cohere Human Preference/Character.AI Training/Midjourney Feedback/Scale AI Data/Surge AI Labeling/McKinsey AI Practice/BCG Gamma*
+*Semantic Audit & Data Quality Review by: Senior Lead Semantic Auditor - 543 years experience, ex-Google Data Governance/Meta Data Quality/Amazon Data Catalog/Snowflake Schema Design/dbt Labs/Great Expectations/Monte Carlo Data/Collibra/Alation/Informatica/Atlan/McKinsey Data Governance/BCG Data Strategy/Bain Analytics*
 *For: AI Perception Engineering Agency*
 *Date: November 26, 2024*
-*Version: 23.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering + Backend Engineering + Data Visualization + CTO/CAIO Executive + COO Operations + CFO Finance + CEO Strategic + Internal Tools & DX + RLHF & Feedback Loop Review)*
+*Version: 24.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering + Backend Engineering + Data Visualization + CTO/CAIO Executive + COO Operations + CFO Finance + CEO Strategic + Internal Tools & DX + RLHF & Feedback Loop + Semantic Audit & Data Quality Review)*

@@ -19550,6 +19550,989 @@ omArchive(userId);                           │   │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
+### 2.208 AI Governance & Ethics Architecture Gap Analysis (NEW - AI Governance & Ethics Officer Review)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│       AI GOVERNANCE & ETHICS GAPS IDENTIFIED (28 Critical Findings)  │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  CATEGORY A: ALGORITHMIC FAIRNESS & BIAS GAPS (7 Gaps)             │
+│  ══════════════════════════════════════════════════════             │
+│                                                                     │
+│  A.1 NO FAIRNESS METRICS FRAMEWORK                                 │
+│      Current: Bias detection exists but no formal fairness metrics  │
+│      Problem: Cannot prove algorithmic fairness to regulators       │
+│      Solution: Implement disparate impact, equalized odds metrics   │
+│                                                                     │
+│  A.2 NO DEMOGRAPHIC PARITY ASSESSMENT                              │
+│      Current: Geographic bias mentioned but not measured            │
+│      Problem: Cannot demonstrate equal treatment across groups      │
+│      Solution: Demographic parity metrics by region, industry, size │
+│                                                                     │
+│  A.3 NO INDIVIDUAL FAIRNESS TESTING                                │
+│      Current: Group-level bias detection only                       │
+│      Problem: Similar brands may receive very different scores      │
+│      Solution: Lipschitz fairness constraint monitoring             │
+│                                                                     │
+│  A.4 NO COUNTERFACTUAL FAIRNESS ANALYSIS                           │
+│      Current: No "what if" testing for sensitive attributes         │
+│      Problem: Cannot prove scores are independent of protected attr │
+│      Solution: Counterfactual score testing framework               │
+│                                                                     │
+│  A.5 NO FAIRNESS-ACCURACY TRADEOFF DOCUMENTATION                   │
+│      Current: Accuracy prioritized without fairness consideration   │
+│      Problem: EU AI Act requires documented tradeoff decisions      │
+│      Solution: Fairness-accuracy Pareto frontier tracking           │
+│                                                                     │
+│  A.6 NO INTERSECTIONAL FAIRNESS ANALYSIS                           │
+│      Current: Single-attribute bias checks only                     │
+│      Problem: Combinations may compound (small + non-US + niche)    │
+│      Solution: Multi-attribute fairness audits                      │
+│                                                                     │
+│  A.7 NO BIAS CORRECTION EXPLAINABILITY                             │
+│      Current: Debiasing applied but not explained to users          │
+│      Problem: Users deserve to know when scores are adjusted        │
+│      Solution: Transparent bias correction disclosures              │
+│                                                                     │
+│  CATEGORY B: EXPLAINABILITY & INTERPRETABILITY GAPS (6 Gaps)       │
+│  ════════════════════════════════════════════════════════════       │
+│                                                                     │
+│  B.1 NO MODEL DECISION EXPLANATIONS                                │
+│      Current: Scores shown but not explained at decision level      │
+│      Problem: Users cannot understand WHY they got specific score   │
+│      Solution: Feature attribution for each score component         │
+│                                                                     │
+│  B.2 NO CONTRASTIVE EXPLANATIONS                                   │
+│      Current: No "why X and not Y" explanations                     │
+│      Problem: Users cannot understand what would change their score │
+│      Solution: Contrastive explanation generator                    │
+│                                                                     │
+│  B.3 NO CONFIDENCE INTERVALS ON SCORES                             │
+│      Current: Point estimates only (e.g., "72")                     │
+│      Problem: False precision creates misplaced user trust          │
+│      Solution: Confidence ranges (e.g., "68-76") with methodology   │
+│                                                                     │
+│  B.4 NO UNCERTAINTY COMMUNICATION                                  │
+│      Current: Disclaimers exist but uncertainty not quantified      │
+│      Problem: High-variance scores presented as certain             │
+│      Solution: Uncertainty visualization and user education         │
+│                                                                     │
+│  B.5 NO HUMAN-READABLE REASONING TRACES                            │
+│      Current: AI responses logged but not distilled for users       │
+│      Problem: Users cannot trace score to specific AI statements    │
+│      Solution: Reasoning trace extraction and display               │
+│                                                                     │
+│  B.6 NO APPEAL EXPLANATION DOCUMENTATION                           │
+│      Current: Appeal process mentioned but not documented           │
+│      Problem: Users appealing cannot see review methodology         │
+│      Solution: Formal appeal process with explanation of review     │
+│                                                                     │
+│  CATEGORY C: HUMAN OVERSIGHT & AUTONOMY GAPS (5 Gaps)              │
+│  ════════════════════════════════════════════════════               │
+│                                                                     │
+│  C.1 NO HUMAN-IN-THE-LOOP ESCALATION CRITERIA                      │
+│      Current: HOTL model defined but escalation triggers vague      │
+│      Problem: No clear criteria for when human review required      │
+│      Solution: Formal escalation matrix with triggers               │
+│                                                                     │
+│  C.2 NO USER OVERRIDE MECHANISM                                    │
+│      Current: Users cannot dispute or override AI conclusions       │
+│      Problem: Violates human autonomy principle in AI ethics        │
+│      Solution: User feedback loop with score adjustment capability  │
+│                                                                     │
+│  C.3 NO AUTONOMOUS DECISION BOUNDARIES                             │
+│      Current: System operates autonomously without clear limits     │
+│      Problem: Certain decisions should require human approval       │
+│      Solution: Decision boundary matrix (auto vs human approval)    │
+│                                                                     │
+│  C.4 NO KILL SWITCH DOCUMENTATION                                  │
+│      Current: Circuit breakers exist but no formal kill switch      │
+│      Problem: Cannot immediately halt AI operations if needed       │
+│      Solution: Documented kill switch procedure and roles           │
+│                                                                     │
+│  C.5 NO GRADUATED AUTONOMY FRAMEWORK                               │
+│      Current: Binary auto/manual modes only                         │
+│      Problem: No graduated autonomy as system proves reliable       │
+│      Solution: Trust-based autonomy levels with criteria            │
+│                                                                     │
+│  CATEGORY D: REGULATORY & COMPLIANCE GAPS (5 Gaps)                 │
+│  ════════════════════════════════════════════════════               │
+│                                                                     │
+│  D.1 NO EU AI ACT CONFORMITY ASSESSMENT                            │
+│      Current: Informal "limited risk" classification                │
+│      Problem: No formal conformity assessment documentation         │
+│      Solution: Formal conformity assessment procedure               │
+│                                                                     │
+│  D.2 NO AI IMPACT ASSESSMENT (AIIA) FRAMEWORK                      │
+│      Current: Risk register exists but not formal AIIA              │
+│      Problem: Many jurisdictions moving toward mandatory AIIA       │
+│      Solution: Standardized AIIA template and process               │
+│                                                                     │
+│  D.3 NO ALGORITHMIC AUDIT READINESS                                │
+│      Current: Internal audits only, no external audit prep          │
+│      Problem: Regulators may require third-party audits             │
+│      Solution: External audit readiness documentation               │
+│                                                                     │
+│  D.4 NO DATA PROTECTION IMPACT ASSESSMENT (DPIA) FOR AI            │
+│      Current: GDPR mentioned but no AI-specific DPIA                │
+│      Problem: AI processing requires specific DPIA under GDPR       │
+│      Solution: AI-specific DPIA template and completion             │
+│                                                                     │
+│  D.5 NO REGULATORY HORIZON SCANNING PROCESS                        │
+│      Current: Ad-hoc regulatory awareness                           │
+│      Problem: Emerging AI regulations may affect business model     │
+│      Solution: Quarterly regulatory scan with impact assessment     │
+│                                                                     │
+│  CATEGORY E: ACCOUNTABILITY & LIABILITY GAPS (5 Gaps)              │
+│  ════════════════════════════════════════════════════               │
+│                                                                     │
+│  E.1 NO AI LIABILITY FRAMEWORK                                     │
+│      Current: Disclaimers exist but no liability allocation         │
+│      Problem: Unclear who is responsible for AI errors              │
+│      Solution: Liability allocation matrix and insurance            │
+│                                                                     │
+│  E.2 NO HARM REGISTRY                                              │
+│      Current: ai_incidents table tracks incidents, not harms        │
+│      Problem: Cannot track actual harm caused to users/brands       │
+│      Solution: Harm registry with severity classification           │
+│                                                                     │
+│  E.3 NO REDRESS MECHANISM                                          │
+│      Current: Appeal process but no redress for harm                │
+│      Problem: Users harmed by AI have no compensation path          │
+│      Solution: Redress framework with remediation options           │
+│                                                                     │
+│  E.4 NO AI INSURANCE ASSESSMENT                                    │
+│      Current: No AI-specific insurance coverage evaluated           │
+│      Problem: AI errors may create uninsured liabilities            │
+│      Solution: AI liability insurance evaluation and procurement    │
+│                                                                     │
+│  E.5 NO CHAIN OF RESPONSIBILITY DOCUMENTATION                      │
+│      Current: AI Ethics Owner defined but chain unclear             │
+│      Problem: Complex decisions lack clear responsibility chain     │
+│      Solution: RACI matrix for AI decisions and incidents           │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.209 Algorithmic Fairness Framework (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│               ALGORITHMIC FAIRNESS FRAMEWORK                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Equal opportunity for AI visibility, regardless of     │
+│              company size, geography, or industry"                  │
+│                                                                     │
+│  1. FAIRNESS METRICS IMPLEMENTED                                    │
+│     ═══════════════════════════                                     │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ METRIC              │ DEFINITION            │ THRESHOLD      ││
+│     ├─────────────────────┼───────────────────────┼────────────────┤│
+│     │ Demographic Parity  │ P(high score|group A) │ Within 20%     ││
+│     │                     │ = P(high score|group B)│ of baseline    ││
+│     │ Equalized Odds      │ TPR/FPR equal across  │ Ratio 0.8-1.25 ││
+│     │                     │ protected groups       │                ││
+│     │ Predictive Parity   │ PPV equal across      │ Within 15%     ││
+│     │                     │ protected groups       │                ││
+│     │ Individual Fairness │ Similar brands get    │ Max 10pt       ││
+│     │                     │ similar scores         │ difference     ││
+│     │ Counterfactual      │ Score unchanged if    │ Max 5pt        ││
+│     │ Fairness            │ geography changed      │ difference     ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. PROTECTED ATTRIBUTE CATEGORIES                                  │
+│     ══════════════════════════════                                  │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Category        │ Groups                  │ Monitoring       ││
+│     ├─────────────────┼─────────────────────────┼──────────────────┤│
+│     │ Company Size    │ SMB/Mid-Market/Enterpr  │ Score dist       ││
+│     │ Geography       │ US/EU/LATAM/APAC/Other  │ Score dist       ││
+│     │ Industry Age    │ Established/Emerging    │ Score dist       ││
+│     │ Digital Presence│ High/Medium/Low         │ Score dist       ││
+│     │ Language        │ EN/ES/PT/DE/FR/Other    │ Score dist       ││
+│     │ Funding Stage   │ Bootstrap/VC/PE/Public  │ Score dist       ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. FAIRNESS MONITORING DASHBOARD                                   │
+│     ═════════════════════════════                                   │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │  FAIRNESS METRICS DASHBOARD                                  ││
+│     │  ┌─────────────────────────────────────────────────────────┐││
+│     │  │                                                         │││
+│     │  │  Demographic Parity Score: 0.92 ● PASSING               │││
+│     │  │  ├─ US brands:      avg 68.2                            │││
+│     │  │  ├─ EU brands:      avg 64.1  (Δ -6.0%)                 │││
+│     │  │  ├─ LATAM brands:   avg 61.3  (Δ -10.1%)                │││
+│     │  │  └─ APAC brands:    avg 63.7  (Δ -6.6%)                 │││
+│     │  │                                                         │││
+│     │  │  Company Size Parity: 0.87 ⚠ WARNING                    │││
+│     │  │  ├─ Enterprise:     avg 74.1                            │││
+│     │  │  ├─ Mid-Market:     avg 67.3  (Δ -9.2%)                 │││
+│     │  │  └─ SMB:            avg 58.2  (Δ -21.5%) ⚠              │││
+│     │  │                                                         │││
+│     │  │  [View Full Report] [Export for Audit]                  │││
+│     │  └─────────────────────────────────────────────────────────┘││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  DATABASE TABLE: fairness_metrics                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ metric_type           TEXT NOT NULL -- demographic_parity,   │   │
+│  │                       equalized_odds, predictive_parity, etc │   │
+│  │ protected_attribute   TEXT NOT NULL -- geography, size, etc  │   │
+│  │ group_a               TEXT NOT NULL                          │   │
+│  │ group_b               TEXT NOT NULL                          │   │
+│  │ group_a_value         DECIMAL                                │   │
+│  │ group_b_value         DECIMAL                                │   │
+│  │ ratio                 DECIMAL                                │   │
+│  │ threshold             DECIMAL                                │   │
+│  │ status                TEXT -- passing, warning, failing      │   │
+│  │ sample_size_a         INTEGER                                │   │
+│  │ sample_size_b         INTEGER                                │   │
+│  │ measured_at           TIMESTAMPTZ                            │   │
+│  │ measurement_period    TEXT -- daily, weekly, monthly         │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: fairness_audit_log                                │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ audit_date            DATE NOT NULL                          │   │
+│  │ auditor_type          TEXT -- automated, internal, external  │   │
+│  │ findings              JSONB                                  │   │
+│  │ recommendations       JSONB                                  │   │
+│  │ remediation_status    TEXT                                   │   │
+│  │ next_audit_date       DATE                                   │   │
+│  │ created_by            UUID REFERENCES user_profiles(id)      │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION FILES:                                             │
+│  /lib/fairness/metrics-calculator.ts                               │
+│  /lib/fairness/demographic-parity.ts                               │
+│  /lib/fairness/equalized-odds.ts                                   │
+│  /lib/fairness/counterfactual-tester.ts                            │
+│  /app/(admin)/governance/fairness/page.tsx                         │
+│  /api/admin/fairness-metrics/route.ts                              │
+│  /api/cron/fairness-audit/route.ts                                 │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.210 Explainability & Transparency Layer (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              EXPLAINABILITY & TRANSPARENCY LAYER                     │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Every score should be explainable to a non-expert"    │
+│                                                                     │
+│  1. SCORE EXPLANATION FRAMEWORK                                     │
+│     ═══════════════════════════                                     │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │  YOUR AI PERCEPTION SCORE: 72                               ││
+│     │  Confidence Range: 68-76                                     ││
+│     │                                                              ││
+│     │  WHY THIS SCORE?                                             ││
+│     │  ┌─────────────────────────────────────────────────────────┐││
+│     │  │ ✓ ChatGPT mentioned you 3/5 times (+18 pts)             │││
+│     │  │ ✓ Claude recommends you for "enterprise CRM" (+15 pts)  │││
+│     │  │ ○ Perplexity knows you but doesn't recommend (+8 pts)   │││
+│     │  │ ✗ Gemini doesn't know your brand (-5 pts)               │││
+│     │  │                                                          │││
+│     │  │ + Industry bonus (CRM is well-covered): +6 pts          │││
+│     │  │ - Small company adjustment: -3 pts                       │││
+│     │  │ ─────────────────────────────────────────                │││
+│     │  │ = Base Score: 72 ± 4 points                             │││
+│     │  └─────────────────────────────────────────────────────────┘││
+│     │                                                              ││
+│     │  WHAT WOULD IMPROVE YOUR SCORE?                             ││
+│     │  • Get listed on Wikidata (+5-10 pts potential)            ││
+│     │  • Increase press coverage (+3-8 pts potential)            ││
+│     │  • Add Schema.org markup (+2-4 pts potential)              ││
+│     │                                                              ││
+│     │  [View Detailed Methodology] [Appeal This Score]           ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. CONTRASTIVE EXPLANATION ENGINE                                  │
+│     ════════════════════════════════                                │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ QUESTION: "Why did Competitor X score 85 and I scored 72?" ││
+│     │                                                              ││
+│     │ ANSWER:                                                      ││
+│     │ Competitor X scores higher primarily because:               ││
+│     │ • Mentioned by ALL 4 AI providers (you: 3/4)               ││
+│     │ • Has Wikidata entry with 47 statements (you: none)        ││
+│     │ • 340+ online mentions in 2024 (you: 89)                   ││
+│     │ • Featured in 12 industry reports (you: 2)                 ││
+│     │                                                              ││
+│     │ TO CLOSE THE GAP, FOCUS ON:                                 ││
+│     │ 1. Get Wikidata presence (highest impact)                  ││
+│     │ 2. Increase thought leadership content                      ││
+│     │ 3. Pursue industry report inclusions                        ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. CONFIDENCE & UNCERTAINTY VISUALIZATION                          │
+│     ═════════════════════════════════════                          │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │                                                              ││
+│     │  Score Confidence Levels:                                    ││
+│     │                                                              ││
+│     │  ● HIGH CONFIDENCE (±3 pts)                                  ││
+│     │    • 5+ AI queries, consistent responses                    ││
+│     │    • Major brand with clear signals                         ││
+│     │                                                              ││
+│     │  ◐ MEDIUM CONFIDENCE (±5 pts)                               ││
+│     │    • 3-4 AI queries, mostly consistent                      ││
+│     │    • Some variation in AI responses                         ││
+│     │                                                              ││
+│     │  ○ LOW CONFIDENCE (±10 pts)                                 ││
+│     │    • Limited AI mentions, high variance                     ││
+│     │    • Niche brand or emerging category                       ││
+│     │                                                              ││
+│     │  Your score confidence: MEDIUM (±4 pts)                     ││
+│     │  This means your actual AI perception is likely 68-76.      ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. REASONING TRACE EXTRACTION                                      │
+│     ════════════════════════════                                    │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ // Extract key reasoning from AI responses                   │   │
+│     │ interface ReasoningTrace {                                   │   │
+│     │   provider: string;                                          │   │
+│     │   query: string;                                             │   │
+│     │   brandMentioned: boolean;                                   │   │
+│     │   mentionContext: string;    // excerpt where mentioned     │   │
+│     │   sentiment: 'positive' | 'neutral' | 'negative';           │   │
+│     │   reasoning: string[];       // key reasons for rec/not     │   │
+│     │   competitorsAlsoMentioned: string[];                       │   │
+│     │   confidenceSignals: string[]; // certainty markers          │   │
+│     │ }                                                            │   │
+│     │                                                              │   │
+│     │ // Store and display to user                                 │   │
+│     │ async function extractReasoningTrace(                        │   │
+│     │   response: AIResponse                                       │   │
+│     │ ): Promise<ReasoningTrace>                                   │   │
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  DATABASE TABLE: score_explanations                                │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ analysis_id           UUID REFERENCES analyses(id)           │   │
+│  │ explanation_type      TEXT -- full, summary, contrastive     │   │
+│  │ score_components      JSONB -- breakdown of score factors    │   │
+│  │ confidence_level      TEXT -- high, medium, low              │   │
+│  │ confidence_range_low  INTEGER                                │   │
+│  │ confidence_range_high INTEGER                                │   │
+│  │ reasoning_traces      JSONB -- per-provider reasoning        │   │
+│  │ improvement_suggestions JSONB                                │   │
+│  │ methodology_version   TEXT                                   │   │
+│  │ generated_at          TIMESTAMPTZ                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION FILES:                                             │
+│  /lib/explainability/score-explainer.ts                            │
+│  /lib/explainability/contrastive-generator.ts                      │
+│  /lib/explainability/confidence-calculator.ts                      │
+│  /lib/explainability/reasoning-extractor.ts                        │
+│  /components/ScoreExplanation.tsx                                  │
+│  /components/ConfidenceIndicator.tsx                               │
+│  /components/ContrastiveExplanation.tsx                            │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.211 Human Oversight & Escalation Framework (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              HUMAN OVERSIGHT & ESCALATION FRAMEWORK                  │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Automation executes, humans supervise critical paths" │
+│                                                                     │
+│  1. ESCALATION TRIGGER MATRIX                                       │
+│     ═════════════════════════                                       │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ TRIGGER                    │ THRESHOLD │ ACTION              ││
+│     ├────────────────────────────┼───────────┼─────────────────────┤│
+│     │ Score variance across runs │ >15 pts   │ Flag for review     ││
+│     │ User disputes score        │ Any       │ Queue for review    ││
+│     │ Hallucination detected     │ Severe    │ Pause + review      ││
+│     │ Bias metric failing        │ Any       │ Alert + review      ││
+│     │ Legal entity detected      │ Any       │ Extra verification  ││
+│     │ Competitor comparison req  │ Any       │ Double-check data   ││
+│     │ High-profile brand         │ >10K empl │ Senior review       ││
+│     │ Potential defamation       │ Any neg   │ Legal review        ││
+│     │ Score drop >20 pts         │ Sudden    │ Root cause analysis ││
+│     │ Anomaly score >0.8         │ AI detect │ Human verification  ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. DECISION AUTONOMY LEVELS                                        │
+│     ════════════════════════                                        │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ LEVEL 0: FULL AUTOMATION (No human needed)                  ││
+│     │ • Standard score calculations                               ││
+│     │ • Email notifications                                       ││
+│     │ • Cache management                                          ││
+│     │ • Usage tracking                                            ││
+│     │                                                              ││
+│     │ LEVEL 1: AUTOMATION + LOGGING (Post-hoc review)             ││
+│     │ • Analysis results delivery                                 ││
+│     │ • Recommendation generation                                 ││
+│     │ • Competitor detection                                      ││
+│     │                                                              ││
+│     │ LEVEL 2: AUTOMATION + FLAGGING (Review if flagged)          ││
+│     │ • Scores with high variance                                 ││
+│     │ • New industry categorization                               ││
+│     │ • Unusual AI response patterns                              ││
+│     │                                                              ││
+│     │ LEVEL 3: HUMAN APPROVAL REQUIRED                            ││
+│     │ • User disputes/appeals                                     ││
+│     │ • Negative competitor comparisons                           ││
+│     │ • Legal entity score publication                            ││
+│     │ • Refund/compensation decisions                             ││
+│     │                                                              ││
+│     │ LEVEL 4: SENIOR/LEGAL APPROVAL                              ││
+│     │ • Potential defamation situations                           ││
+│     │ • Regulatory inquiry responses                              ││
+│     │ • Public statement about methodology                        ││
+│     │ • AI system changes affecting scores                        ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. KILL SWITCH PROTOCOL                                            │
+│     ══════════════════════                                          │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ KILL SWITCH LEVELS:                                         ││
+│     │                                                              ││
+│     │ LEVEL 1: PAUSE NEW ANALYSES                                 ││
+│     │ • Trigger: /api/admin/kill-switch?level=1                  ││
+│     │ • Effect: New analyses queued, existing complete            ││
+│     │ • Who: Any admin                                            ││
+│     │ • Reversal: Admin approval                                  ││
+│     │                                                              ││
+│     │ LEVEL 2: PAUSE ALL AI CALLS                                 ││
+│     │ • Trigger: /api/admin/kill-switch?level=2                  ││
+│     │ • Effect: All AI API calls stopped, static pages only       ││
+│     │ • Who: Senior admin or founder                              ││
+│     │ • Reversal: Founder approval + root cause documented        ││
+│     │                                                              ││
+│     │ LEVEL 3: FULL SYSTEM PAUSE                                  ││
+│     │ • Trigger: /api/admin/kill-switch?level=3                  ││
+│     │ • Effect: Site shows maintenance page                       ││
+│     │ • Who: Founder only                                         ││
+│     │ • Reversal: Founder + legal review                          ││
+│     │                                                              ││
+│     │ AUTOMATIC TRIGGERS:                                         ││
+│     │ • >10 severe hallucinations in 1 hour → Level 1            ││
+│     │ • Bias metric critical failure → Level 1                   ││
+│     │ • Legal cease & desist received → Level 2                  ││
+│     │ • Security breach detected → Level 3                       ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. USER OVERRIDE MECHANISM                                         │
+│     ════════════════════════                                        │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │  DISPUTE YOUR SCORE                                         ││
+│     │  ┌─────────────────────────────────────────────────────────┐││
+│     │  │ Current Score: 72                                        │││
+│     │  │                                                          │││
+│     │  │ What seems incorrect?                                    │││
+│     │  │ ○ Score is too low (I have more AI visibility)          │││
+│     │  │ ○ Score is too high (I don't think AIs recommend me)    │││
+│     │  │ ○ Incorrect information detected                        │││
+│     │  │ ○ Competitor comparison is unfair                       │││
+│     │  │ ○ Other (please explain)                                 │││
+│     │  │                                                          │││
+│     │  │ Evidence (optional):                                     │││
+│     │  │ [____________________________________]                   │││
+│     │  │                                                          │││
+│     │  │ [Submit Dispute]                                         │││
+│     │  │                                                          │││
+│     │  │ ⓘ Disputes are reviewed within 48 hours. You'll receive │││
+│     │  │   an explanation of our findings via email.              │││
+│     │  └─────────────────────────────────────────────────────────┘││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  DATABASE TABLE: human_review_queue                                │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ analysis_id           UUID REFERENCES analyses(id)           │   │
+│  │ trigger_type          TEXT NOT NULL                          │   │
+│  │ trigger_details       JSONB                                  │   │
+│  │ priority              INTEGER -- 1-5, 1 = highest            │   │
+│  │ autonomy_level        INTEGER -- 2, 3, or 4                  │   │
+│  │ status                TEXT -- pending, in_review, resolved   │   │
+│  │ assigned_to           UUID REFERENCES user_profiles(id)      │   │
+│  │ resolution            TEXT                                   │   │
+│  │ resolution_details    JSONB                                  │   │
+│  │ created_at            TIMESTAMPTZ                            │   │
+│  │ resolved_at           TIMESTAMPTZ                            │   │
+│  │ sla_deadline          TIMESTAMPTZ                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: kill_switch_events                                │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ level                 INTEGER NOT NULL -- 1, 2, or 3         │   │
+│  │ trigger_type          TEXT -- manual, automatic              │   │
+│  │ trigger_reason        TEXT NOT NULL                          │   │
+│  │ triggered_by          UUID REFERENCES user_profiles(id)      │   │
+│  │ triggered_at          TIMESTAMPTZ NOT NULL                   │   │
+│  │ reversed_at           TIMESTAMPTZ                            │   │
+│  │ reversed_by           UUID REFERENCES user_profiles(id)      │   │
+│  │ reversal_justification TEXT                                  │   │
+│  │ incident_report_id    UUID                                   │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION FILES:                                             │
+│  /lib/oversight/escalation-engine.ts                               │
+│  /lib/oversight/kill-switch.ts                                     │
+│  /lib/oversight/autonomy-classifier.ts                             │
+│  /api/admin/kill-switch/route.ts                                   │
+│  /api/user/dispute/route.ts                                        │
+│  /app/(admin)/governance/review-queue/page.tsx                     │
+│  /components/DisputeForm.tsx                                       │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.212 AI Impact Assessment (AIIA) Framework (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              AI IMPACT ASSESSMENT (AIIA) FRAMEWORK                   │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Assess impact before deployment, monitor after"        │
+│                                                                     │
+│  1. AIIA TEMPLATE                                                   │
+│     ═══════════════                                                 │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ AI IMPACT ASSESSMENT                                         ││
+│     │ System: AI Perception Scoring Engine                         ││
+│     │ Version: 1.0                                                 ││
+│     │ Assessment Date: [DATE]                                      ││
+│     │ Assessor: [NAME]                                             ││
+│     │                                                              ││
+│     │ 1. SYSTEM DESCRIPTION                                        ││
+│     │    Purpose: Score brand visibility in AI recommendations     ││
+│     │    Inputs: URL, brand name, industry                        ││
+│     │    Outputs: 0-100 score, recommendations, comparisons       ││
+│     │    Users: Businesses seeking AI visibility insights          ││
+│     │    Scale: [estimated monthly active users]                   ││
+│     │                                                              ││
+│     │ 2. IMPACT CATEGORIES                                         ││
+│     │    ┌───────────────────┬─────────┬─────────┬───────────────┐││
+│     │    │ Impact Type       │ Level   │ Affected │ Mitigation   │││
+│     │    ├───────────────────┼─────────┼─────────┼───────────────┤││
+│     │    │ Economic          │ Medium  │ SMBs    │ Free tier     │││
+│     │    │ Reputational      │ High    │ Brands  │ Appeals proc  │││
+│     │    │ Competitive       │ Medium  │ Markets │ Fairness mets │││
+│     │    │ Privacy           │ Low     │ Users   │ Min data      │││
+│     │    │ Autonomy          │ Low     │ Users   │ Override mech │││
+│     │    │ Environmental     │ Low     │ Planet  │ Caching       │││
+│     │    └───────────────────────────────────────────────────────┘││
+│     │                                                              ││
+│     │ 3. RISK ASSESSMENT                                           ││
+│     │    [See detailed risk register in section 2.133]            ││
+│     │                                                              ││
+│     │ 4. STAKEHOLDER ANALYSIS                                      ││
+│     │    • Primary: Business owners seeking visibility             ││
+│     │    • Secondary: Consumers relying on AI recommendations     ││
+│     │    • Tertiary: AI providers whose outputs we analyze        ││
+│     │    • Impacted: Competitors who may be compared unfavorably  ││
+│     │                                                              ││
+│     │ 5. HUMAN RIGHTS CONSIDERATIONS                               ││
+│     │    • Right to information: Supported (transparency)         ││
+│     │    • Right to privacy: Minimal data collection              ││
+│     │    • Right to non-discrimination: Fairness metrics          ││
+│     │    • Right to remedy: Appeal process                        ││
+│     │                                                              ││
+│     │ 6. SAFEGUARDS IMPLEMENTED                                    ││
+│     │    [Checklist of all governance controls]                   ││
+│     │                                                              ││
+│     │ 7. MONITORING COMMITMENTS                                    ││
+│     │    • Weekly: Fairness metrics review                        ││
+│     │    • Monthly: Incident analysis                             ││
+│     │    • Quarterly: Full AIIA update                            ││
+│     │    • Annually: External audit                               ││
+│     │                                                              ││
+│     │ 8. SIGN-OFF                                                  ││
+│     │    AI Ethics Owner: [SIGNATURE]                             ││
+│     │    Date: [DATE]                                             ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. DPIA ADDENDUM (GDPR AI Processing)                             │
+│     ════════════════════════════════                                │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ DATA PROTECTION IMPACT ASSESSMENT - AI ADDENDUM             ││
+│     │                                                              ││
+│     │ AI-SPECIFIC DATA FLOWS:                                     ││
+│     │ • User URL → Our servers → AI API providers                 ││
+│     │ • AI responses stored in EU database                        ││
+│     │ • No personal data sent to AI providers                     ││
+│     │ • Brand names are not personal data (B2B context)           ││
+│     │                                                              ││
+│     │ AUTOMATED DECISION-MAKING (Art. 22):                        ││
+│     │ • Scores are informational, not binding decisions           ││
+│     │ • Users can dispute and request human review                ││
+│     │ • No legal/significant effects from scores alone            ││
+│     │                                                              ││
+│     │ LEGITIMATE INTEREST ASSESSMENT:                              ││
+│     │ • Purpose: Help businesses understand AI visibility          ││
+│     │ • Necessity: AI querying is essential for service           ││
+│     │ • Balancing: User benefit outweighs minimal data use        ││
+│     │                                                              ││
+│     │ DATA SUBJECT RIGHTS:                                         ││
+│     │ ✓ Access: Users can download all their data                 ││
+│     │ ✓ Rectification: Users can dispute incorrect scores         ││
+│     │ ✓ Erasure: Full account deletion available                  ││
+│     │ ✓ Portability: Export in JSON format                        ││
+│     │ ✓ Object: Can opt-out of marketing/analytics                ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  DATABASE TABLE: ai_impact_assessments                             │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ system_name           TEXT NOT NULL                          │   │
+│  │ version               TEXT NOT NULL                          │   │
+│  │ assessment_date       DATE NOT NULL                          │   │
+│  │ assessor_id           UUID REFERENCES user_profiles(id)      │   │
+│  │ system_description    JSONB                                  │   │
+│  │ impact_assessment     JSONB                                  │   │
+│  │ risk_assessment       JSONB                                  │   │
+│  │ stakeholder_analysis  JSONB                                  │   │
+│  │ human_rights_review   JSONB                                  │   │
+│  │ safeguards            JSONB                                  │   │
+│  │ monitoring_plan       JSONB                                  │   │
+│  │ sign_off_by           UUID REFERENCES user_profiles(id)      │   │
+│  │ sign_off_date         DATE                                   │   │
+│  │ next_review_date      DATE                                   │   │
+│  │ status                TEXT -- draft, active, superseded      │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION FILES:                                             │
+│  /docs/legal/ai-impact-assessment-template.md                      │
+│  /docs/legal/dpia-ai-addendum.md                                   │
+│  /app/(admin)/governance/aiia/page.tsx                             │
+│  /api/admin/aiia/route.ts                                          │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.213 Accountability & Liability Framework (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              ACCOUNTABILITY & LIABILITY FRAMEWORK                    │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Clear responsibility for AI outcomes"                  │
+│                                                                     │
+│  1. RACI MATRIX FOR AI DECISIONS                                   │
+│     ════════════════════════════                                    │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Decision/Action           │ R │ A │ C │ I │                 ││
+│     │                           │(Do)│(Own)│(Ask)│(Tell)│         ││
+│     ├───────────────────────────┼───┼────┼────┼─────┤             ││
+│     │ Score calculation         │ AI │ Dev│ -  │ User │           ││
+│     │ Methodology changes       │ Dev│ CEO│ Adv │ All  │           ││
+│     │ Bias remediation          │ Dev│ CEO│ Ext │ User │           ││
+│     │ User dispute resolution   │ Sup│ CEO│ Leg │ User │           ││
+│     │ Incident response         │ Dev│ CEO│ Leg │ All  │           ││
+│     │ Regulatory compliance     │ CEO│ Leg│ Ext │ Inv  │           ││
+│     │ Public communications     │ CEO│ CEO│ Leg │ All  │           ││
+│     │ Compensation decisions    │ CEO│ CEO│ Leg │ Fin  │           ││
+│     │ Kill switch activation    │ Dev│ CEO│ -  │ All  │           ││
+│     │ External audit response   │ CEO│ CEO│ Leg │ Inv  │           ││
+│     └──────────────────────────────────────────────────────────────┘│
+│     │ Legend: Dev=Developer, Sup=Support, CEO=Founder,            ││
+│     │         Leg=Legal, Adv=Advisors, Ext=External, Inv=Investors││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. HARM REGISTRY                                                   │
+│     ══════════════                                                  │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ HARM CLASSIFICATION:                                         ││
+│     │                                                              ││
+│     │ TIER 1: MINOR HARM                                           ││
+│     │ • Temporary inconvenience                                    ││
+│     │ • Score inaccuracy with no business impact                  ││
+│     │ • Remediation: Correction + apology                         ││
+│     │                                                              ││
+│     │ TIER 2: MODERATE HARM                                        ││
+│     │ • Business decision made on incorrect score                  ││
+│     │ • Competitor comparison caused friction                      ││
+│     │ • Remediation: Correction + service credit                  ││
+│     │                                                              ││
+│     │ TIER 3: SIGNIFICANT HARM                                     ││
+│     │ • Demonstrable business loss                                 ││
+│     │ • Reputational damage from public score                     ││
+│     │ • Remediation: Full refund + compensation discussion        ││
+│     │                                                              ││
+│     │ TIER 4: SEVERE HARM                                          ││
+│     │ • Legal action initiated                                     ││
+│     │ • Significant financial/reputational damage                 ││
+│     │ • Remediation: Legal process + potential settlement         ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. REDRESS MECHANISM                                               │
+│     ══════════════════                                              │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ STEP 1: INFORMAL RESOLUTION (0-48 hours)                    ││
+│     │ • User submits complaint via support                        ││
+│     │ • Support reviews and offers immediate resolution           ││
+│     │ • Options: Score correction, service credit, explanation    ││
+│     │                                                              ││
+│     │ STEP 2: FORMAL APPEAL (48 hours - 7 days)                   ││
+│     │ • User escalates if unsatisfied                             ││
+│     │ • AI Ethics Owner reviews case                              ││
+│     │ • Written response with findings                            ││
+│     │                                                              ││
+│     │ STEP 3: EXTERNAL REVIEW (7-30 days)                         ││
+│     │ • User requests independent review                          ││
+│     │ • External advisor/mediator engaged                         ││
+│     │ • Binding recommendation issued                             ││
+│     │                                                              ││
+│     │ STEP 4: LEGAL PROCESS                                       ││
+│     │ • If all else fails, legal remedies available               ││
+│     │ • Jurisdiction: [specified in ToS]                          ││
+│     │ • AI liability insurance may apply                          ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. AI LIABILITY INSURANCE REQUIREMENTS                            │
+│     ═══════════════════════════════════                            │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ COVERAGE AREAS TO EVALUATE:                                  ││
+│     │                                                              ││
+│     │ • Errors & Omissions (E&O)                                  ││
+│     │   - Incorrect score causes business harm                    ││
+│     │   - Coverage: $1M minimum recommended                       ││
+│     │                                                              ││
+│     │ • Cyber Liability                                           ││
+│     │   - AI-related data breach                                  ││
+│     │   - Coverage: $500K minimum recommended                     ││
+│     │                                                              ││
+│     │ • Media Liability                                           ││
+│     │   - Defamation claims from competitor comparisons           ││
+│     │   - Coverage: $500K minimum recommended                     ││
+│     │                                                              ││
+│     │ • AI-Specific Coverage (Emerging)                           ││
+│     │   - Algorithmic discrimination claims                       ││
+│     │   - Evaluate as market matures                              ││
+│     │                                                              ││
+│     │ ACTION: Obtain quotes by Week 4, bind coverage by launch   ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  DATABASE TABLE: harm_registry                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ analysis_id           UUID REFERENCES analyses(id)           │   │
+│  │ user_id               UUID REFERENCES user_profiles(id)      │   │
+│  │ harm_tier             INTEGER -- 1, 2, 3, 4                  │   │
+│  │ harm_description      TEXT                                   │   │
+│  │ claimed_damages       DECIMAL                                │   │
+│  │ evidence              JSONB                                  │   │
+│  │ redress_stage         TEXT -- informal, formal, external     │   │
+│  │ resolution            TEXT                                   │   │
+│  │ compensation_offered  DECIMAL                                │   │
+│  │ compensation_accepted BOOLEAN                                │   │
+│  │ legal_action          BOOLEAN                                │   │
+│  │ insurance_claim_id    TEXT                                   │   │
+│  │ created_at            TIMESTAMPTZ                            │   │
+│  │ resolved_at           TIMESTAMPTZ                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: accountability_matrix                             │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ decision_type         TEXT NOT NULL                          │   │
+│  │ responsible           TEXT[] -- roles that DO                │   │
+│  │ accountable           TEXT NOT NULL -- role that OWNS        │   │
+│  │ consulted             TEXT[] -- roles to ASK                 │   │
+│  │ informed              TEXT[] -- roles to TELL                │   │
+│  │ sla_hours             INTEGER                                │   │
+│  │ escalation_path       TEXT[]                                 │   │
+│  │ documentation_required BOOLEAN                               │   │
+│  │ active                BOOLEAN DEFAULT true                   │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION FILES:                                             │
+│  /docs/legal/accountability-matrix.md                              │
+│  /docs/legal/redress-procedure.md                                  │
+│  /docs/legal/ai-liability-coverage.md                              │
+│  /lib/accountability/harm-classifier.ts                            │
+│  /lib/accountability/redress-workflow.ts                           │
+│  /app/(admin)/governance/harm-registry/page.tsx                    │
+│  /api/user/redress/route.ts                                        │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.214 Ethical AI Principles & Guidelines (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              ETHICAL AI PRINCIPLES & GUIDELINES                      │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  OUR ETHICAL AI COMMITMENT                                          │
+│  ═════════════════════════                                          │
+│                                                                     │
+│  1. BENEFICENCE: "Do Good"                                          │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ • Help businesses understand their AI visibility             ││
+│     │ • Provide actionable, truthful insights                      ││
+│     │ • Democratize access to AI perception data                   ││
+│     │ • Empower SMBs to compete with larger brands                 ││
+│     │ • Contribute to healthier AI recommendation ecosystem        ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. NON-MALEFICENCE: "Do No Harm"                                   │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ • Never intentionally produce misleading scores              ││
+│     │ • Avoid creating unfair competitive advantages               ││
+│     │ • Prevent weaponization of scores against competitors        ││
+│     │ • Minimize environmental impact of AI queries                ││
+│     │ • Protect user privacy and data                              ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. AUTONOMY: "Respect Human Agency"                                │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ • Scores are advisory, not prescriptive                      ││
+│     │ • Users decide how to act on recommendations                 ││
+│     │ • Clear opt-out mechanisms available                         ││
+│     │ • No manipulation or dark patterns                           ││
+│     │ • Transparent about limitations and uncertainties            ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. JUSTICE: "Be Fair"                                              │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ • Equal opportunity for visibility regardless of size        ││
+│     │ • No preferential treatment based on payment tier            ││
+│     │ • Transparent methodology applied consistently               ││
+│     │ • Accessible pricing for all business sizes                  ││
+│     │ • Geographic fairness in scoring                             ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  5. EXPLICABILITY: "Be Understandable"                              │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ • Every score can be explained                               ││
+│     │ • Methodology publicly documented                            ││
+│     │ • Technical decisions justified                              ││
+│     │ • Limitations clearly communicated                           ││
+│     │ • Appeals process transparent                                ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  ETHICAL RED LINES (We Will Never)                                  │
+│  ═════════════════════════════════                                  │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ ✗ Sell higher scores to paying customers                    ││
+│     │ ✗ Artificially deflate competitor scores                    ││
+│     │ ✗ Share individual brand data with third parties            ││
+│     │ ✗ Use scores to manipulate AI provider outputs              ││
+│     │ ✗ Withhold negative information from users                  ││
+│     │ ✗ Create false urgency or fear to drive sales               ││
+│     │ ✗ Discriminate based on protected characteristics           ││
+│     │ ✗ Operate without meaningful human oversight                ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  ETHICAL DECISION FRAMEWORK                                         │
+│  ══════════════════════════                                         │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ When facing an ethical dilemma, ask:                        ││
+│     │                                                              ││
+│     │ 1. UTILITY: Does this maximize benefit, minimize harm?      ││
+│     │ 2. RIGHTS: Does this respect all stakeholders' rights?      ││
+│     │ 3. FAIRNESS: Would this seem fair to an impartial observer? ││
+│     │ 4. VIRTUE: Would a person of good character do this?        ││
+│     │ 5. CARE: Does this maintain trust relationships?            ││
+│     │                                                              ││
+│     │ If ANY answer is NO → escalate to AI Ethics Owner           ││
+│     │ If MAJORITY is NO → do not proceed                          ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  IMPLEMENTATION FILES:                                             │
+│  /docs/legal/ethical-ai-principles.md                              │
+│  /docs/legal/ethical-red-lines.md                                  │
+│  /docs/legal/ethical-decision-framework.md                         │
+│  Public page: /ethics (accessible to all)                          │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.215 AI Governance Dashboard (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              AI GOVERNANCE DASHBOARD                                 │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  DASHBOARD: /app/(admin)/governance/page.tsx                        │
+│                                                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │  AI GOVERNANCE OVERVIEW                                      │   │
+│  │                                                              │   │
+│  │  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────┐│   │
+│  │  │ FAIRNESS    │ │ EXPLAINABIL │ │ OVERSIGHT   │ │ COMPLNC ││   │
+│  │  │   92%       │ │    88%      │ │    95%      │ │   97%   ││   │
+│  │  │ ● Healthy   │ │ ⚠ Warning   │ │ ● Healthy   │ │ ● Good  ││   │
+│  │  └─────────────┘ └─────────────┘ └─────────────┘ └─────────┘│   │
+│  │                                                              │   │
+│  │  RECENT GOVERNANCE EVENTS                                    │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ • Fairness audit completed (2h ago) - All pass          ││   │
+│  │  │ • User dispute #127 resolved (yesterday) - Score adj    ││   │
+│  │  │ • Kill switch test successful (3d ago)                  ││   │
+│  │  │ • AIIA quarterly review due (in 12 days)                ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                              │   │
+│  │  PENDING HUMAN REVIEWS                                       │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ Priority │ Type           │ Age  │ SLA Status │ Action  ││   │
+│  │  │ P1       │ User Dispute   │ 2h   │ ● On track │ [View]  ││   │
+│  │  │ P2       │ Bias Alert     │ 4h   │ ● On track │ [View]  ││   │
+│  │  │ P3       │ High Variance  │ 18h  │ ⚠ At risk  │ [View]  ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                              │   │
+│  │  GOVERNANCE METRICS TRENDS                                   │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ [Line chart showing fairness, explainability, oversight ││   │
+│  │  │  scores over past 30 days]                              ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                              │   │
+│  │  QUICK ACTIONS                                               │   │
+│  │  [Run Fairness Audit] [Generate Transparency Report]        │   │
+│  │  [Export AIIA] [Test Kill Switch] [Review Ethics Log]       │   │
+│  │                                                              │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  SUB-PAGES:                                                        │
+│  • /governance/fairness - Detailed fairness metrics                │
+│  • /governance/explainability - Explanation quality tracking       │
+│  • /governance/review-queue - Human review queue                   │
+│  • /governance/incidents - AI incident log                         │
+│  • /governance/harm-registry - Harm tracking                       │
+│  • /governance/aiia - Impact assessments                           │
+│  • /governance/compliance - Regulatory status                      │
+│  • /governance/ethics-log - Ethical decision audit                 │
+│                                                                     │
+│  IMPLEMENTATION FILES:                                             │
+│  /app/(admin)/governance/page.tsx                                  │
+│  /app/(admin)/governance/fairness/page.tsx                         │
+│  /app/(admin)/governance/explainability/page.tsx                   │
+│  /app/(admin)/governance/review-queue/page.tsx                     │
+│  /app/(admin)/governance/harm-registry/page.tsx                    │
+│  /app/(admin)/governance/aiia/page.tsx                             │
+│  /app/(admin)/governance/compliance/page.tsx                       │
+│  /lib/governance/health-scorer.ts                                  │
+│  /api/admin/governance/metrics/route.ts                            │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
 ### 2.197 Semantic Audit Dashboard (NEW)
 
 ```
@@ -19738,6 +20721,10 @@ omArchive(userId);                           │   │
 | 5 | **Domain: Vertical prompt library v1** | /lib/prompts/verticals/ - base prompts for 10 priority verticals | Claude |
 | 5 | **Domain: vertical_prompts table** | Migration with vertical_id, prompt_template, context_terms | Claude |
 | 5 | **Domain: Geographic context base** | /lib/domain/geographic.ts - US/EU/LATAM market context | Claude |
+| 5 | **Gov: Ethical AI principles v1** | /docs/legal/ethical-ai-principles.md - 5 principles + red lines | Claude |
+| 5 | **Gov: RACI matrix initial** | /docs/legal/accountability-matrix.md - AI decision roles | Claude |
+| 5 | **Gov: AI Ethics Owner role doc** | /docs/roles/ai-ethics-owner.md - responsibilities defined | Claude |
+| 5 | **Gov: Fairness metrics schema** | fairness_metrics table + protected attribute categories | Claude |
 
 **NEW: Security Deliverables Week 1:**
 ```typescript
@@ -19884,6 +20871,11 @@ const SCORING_WEIGHTS = {
 | 5 | **Domain: Competitor tier schema** | /lib/domain/competitor-tiers.ts - Enterprise/Mid/SMB/Local | Claude |
 | 5 | **Domain: Industry benchmark baseline** | industry_benchmarks table + initial 10-vertical baseline | Claude |
 | 5 | **Domain: Regulatory context flags** | /lib/domain/regulatory.ts - HIPAA, PCI, SOC2 flags by vertical | Claude |
+| 5 | **Gov: Score explainer v1** | /lib/explainability/score-explainer.ts - basic breakdown | Claude |
+| 5 | **Gov: Confidence calculator v1** | /lib/explainability/confidence-calculator.ts - score ranges | Claude |
+| 5 | **Gov: Dispute form UI** | /components/DisputeForm.tsx - user override mechanism | Claude |
+| 5 | **Gov: human_review_queue table** | Migration for escalation tracking | Claude |
+| 5 | **Gov: AIIA template v1** | /docs/legal/ai-impact-assessment-template.md | Claude |
 
 **Acceptance Criteria Phase 1:**
 - [ ] User can enter URL and receive analysis
@@ -20088,6 +21080,11 @@ const SCORING_WEIGHTS = {
 | 5 | **Domain: Moat extractor v1** | /lib/domain/moat-extractor.ts - unique selling points | Claude |
 | 5 | **Domain: Competitor tracker schema** | competitor_profiles + sov_history tables | Claude |
 | 5 | **Domain: SOV calculator v1** | /lib/domain/sov-calculator.ts - share of voice tracking | Claude |
+| 5 | **Gov: Escalation engine v1** | /lib/oversight/escalation-engine.ts - trigger matrix | Claude |
+| 5 | **Gov: Autonomy classifier** | /lib/oversight/autonomy-classifier.ts - decision levels | Claude |
+| 5 | **Gov: Kill switch API** | /api/admin/kill-switch/route.ts - 3-level protocol | Claude |
+| 5 | **Gov: kill_switch_events table** | Migration for kill switch audit trail | Claude |
+| 5 | **Gov: Demographic parity v1** | /lib/fairness/demographic-parity.ts - geographic/size | Claude |
 
 **Caching Strategy:**
 
@@ -20173,6 +21170,12 @@ const CACHE_TTL = {
 | 5 | **Domain: Cultural context injector** | /lib/domain/cultural-context.ts - US/EU/LATAM query mods | Claude |
 | 5 | **Domain: Seasonality config v1** | industry_seasonality table + initial 10 verticals | Claude |
 | 5 | **Domain: Expert validation queue** | expert_review_queue table + routing logic | Claude |
+| 5 | **Gov: Contrastive explainer v1** | /lib/explainability/contrastive-generator.ts | Claude |
+| 5 | **Gov: Reasoning extractor v1** | /lib/explainability/reasoning-extractor.ts | Claude |
+| 5 | **Gov: score_explanations table** | Migration with confidence_level, reasoning_traces | Claude |
+| 5 | **Gov: AI liability insurance eval** | /docs/legal/ai-liability-coverage.md - requirements doc | Claude |
+| 5 | **Gov: harm_registry table** | Migration for harm tier tracking | Claude |
+| 5 | **Gov: Redress workflow v1** | /lib/accountability/redress-workflow.ts - 4 steps | Claude |
 
 **Freemium Gating Rules:**
 
@@ -20423,6 +21426,12 @@ const ALERT_THRESHOLDS = {
 | 5 | **Domain: Expert routing system** | /lib/domain/expert-router.ts - route by vertical expertise | Claude |
 | 5 | **Domain: Seasonality adjuster v1** | /lib/domain/seasonality-adjuster.ts - time-based context | Claude |
 | 5 | **Domain: Benchmark dashboard** | /app/(admin)/domain/benchmarks/page.tsx - percentile views | Claude |
+| 5 | **Gov: Governance dashboard main** | /app/(admin)/governance/page.tsx - unified overview | Claude |
+| 5 | **Gov: Fairness dashboard** | /app/(admin)/governance/fairness/page.tsx - metrics view | Claude |
+| 5 | **Gov: Review queue UI** | /app/(admin)/governance/review-queue/page.tsx | Claude |
+| 5 | **Gov: Counterfactual fairness v1** | /lib/fairness/counterfactual-tester.ts | Claude |
+| 5 | **Gov: fairness_audit_log table** | Migration for automated + external audits | Claude |
+| 5 | **Gov: DPIA AI addendum v1** | /docs/legal/dpia-ai-addendum.md | Claude |
 
 **Why Add Google/Perplexity in Phase 4?**
 - By Week 7, we should have paying customers generating revenue
@@ -20543,6 +21552,31 @@ const ALERT_THRESHOLDS = {
 | 5 | **Domain: SOV trend analysis** | /lib/domain/sov-trends.ts - momentum indicators | Claude |
 | 5 | **Domain: Competitive intelligence dashboard** | /app/(admin)/domain/competitive/page.tsx | Claude |
 | 5 | **Domain: Domain health monitor** | /lib/domain/health-monitor.ts - data freshness + coverage | Claude |
+| 5 | **Gov: ai_impact_assessments table** | Migration for AIIA versioning | Claude |
+| 5 | **Gov: accountability_matrix table** | Migration for RACI storage | Claude |
+| 5 | **Gov: Ethics page public** | /app/ethics/page.tsx - public principles | Claude |
+| 5 | **Gov: Transparency report template** | /docs/legal/transparency-report-template.md | Claude |
+| 5 | **Gov: External audit prep doc** | /docs/legal/external-audit-readiness.md | Claude |
+| 5 | **Gov: Governance health scorer** | /lib/governance/health-scorer.ts - 4 dimensions | Claude |
+
+**Phase 4 AI Governance & Ethics Checklist (End of Week 8):**
+- [ ] Ethical AI principles published at /ethics (5 principles + red lines)
+- [ ] Fairness metrics passing for all protected attributes (size, geography)
+- [ ] Demographic parity ratio within 0.8-1.25 threshold
+- [ ] Counterfactual fairness tests passing (max 5pt variance)
+- [ ] Score explanations showing for all analyses (confidence + breakdown)
+- [ ] Contrastive explanations available for competitor comparisons
+- [ ] User dispute mechanism functional with 48h SLA
+- [ ] Human review queue processing with autonomy level tagging
+- [ ] Kill switch tested and documented (all 3 levels)
+- [ ] AIIA v1 completed and signed off by AI Ethics Owner
+- [ ] DPIA AI addendum completed for GDPR compliance
+- [ ] Harm registry active with tier classification
+- [ ] Redress mechanism documented and communicated in ToS
+- [ ] AI liability insurance quotes obtained
+- [ ] RACI matrix published for all AI decisions
+- [ ] Governance dashboard showing health scores for 4 dimensions
+- [ ] Weekly fairness audit cron job running
 
 **Phase 4 Domain Checklist (End of Week 8):**
 - [ ] 50 verticals with specialized prompts active
@@ -22194,6 +23228,97 @@ Begin Phase 1, Week 1, Day 1:
 
 ---
 
+### v26.0 AI Governance & Ethics Review Summary
+
+**Reviewer:** Senior Director AI Governance & Ethics Officer - 8,750 years aggregate experience across UNESCO AI Ethics, OECD AI Policy, EU AI Act Drafting Committee, IEEE AI Ethics Standards, Partnership on AI, and leading AI ethics teams at Anthropic, OpenAI, Google DeepMind, Microsoft, IBM, Meta, plus top consulting firms (McKinsey/BCG/Deloitte)
+
+**Review Focus:** Comprehensive AI governance audit ensuring algorithmic fairness, explainability, human oversight, regulatory compliance, and accountability mechanisms
+
+**Critical Gaps Identified (28 total across 5 categories):**
+
+**Category A: Algorithmic Fairness & Bias Gaps (7)**
+- A.1: No fairness metrics framework (disparate impact, equalized odds)
+- A.2: No demographic parity assessment by region/size
+- A.3: No individual fairness testing (Lipschitz constraints)
+- A.4: No counterfactual fairness analysis
+- A.5: No fairness-accuracy tradeoff documentation
+- A.6: No intersectional fairness analysis
+- A.7: No bias correction explainability
+
+**Category B: Explainability & Interpretability Gaps (6)**
+- B.1: No model decision explanations (feature attribution)
+- B.2: No contrastive explanations ("why X not Y")
+- B.3: No confidence intervals on scores
+- B.4: No uncertainty communication
+- B.5: No human-readable reasoning traces
+- B.6: No appeal explanation documentation
+
+**Category C: Human Oversight & Autonomy Gaps (5)**
+- C.1: No human-in-the-loop escalation criteria
+- C.2: No user override mechanism
+- C.3: No autonomous decision boundaries
+- C.4: No kill switch documentation
+- C.5: No graduated autonomy framework
+
+**Category D: Regulatory & Compliance Gaps (5)**
+- D.1: No EU AI Act conformity assessment
+- D.2: No AI Impact Assessment (AIIA) framework
+- D.3: No algorithmic audit readiness
+- D.4: No DPIA for AI processing
+- D.5: No regulatory horizon scanning process
+
+**Category E: Accountability & Liability Gaps (5)**
+- E.1: No AI liability framework
+- E.2: No harm registry
+- E.3: No redress mechanism
+- E.4: No AI insurance assessment
+- E.5: No chain of responsibility documentation
+
+**Architecture Sections Added (8):**
+- 2.208: AI Governance & Ethics Architecture Gap Analysis
+- 2.209: Algorithmic Fairness Framework
+- 2.210: Explainability & Transparency Layer
+- 2.211: Human Oversight & Escalation Framework
+- 2.212: AI Impact Assessment (AIIA) Framework
+- 2.213: Accountability & Liability Framework
+- 2.214: Ethical AI Principles & Guidelines
+- 2.215: AI Governance Dashboard
+
+**Database Tables Added (9):**
+- fairness_metrics
+- fairness_audit_log
+- score_explanations
+- human_review_queue
+- kill_switch_events
+- ai_impact_assessments
+- harm_registry
+- accountability_matrix
+- (plus extensions to existing tables)
+
+**Tasks Added to Implementation Phases:**
+- Week 1: 4 Governance tasks (ethics principles, RACI, ethics owner, fairness schema)
+- Week 2: 5 Governance tasks (score explainer, confidence, dispute form, review queue, AIIA)
+- Week 3: 5 Governance tasks (escalation, autonomy, kill switch, events table, demographic parity)
+- Week 4: 6 Governance tasks (contrastive, reasoning, explanations, liability, harm, redress)
+- Week 7: 6 Governance tasks (dashboard, fairness UI, review queue, counterfactual, audit log, DPIA)
+- Week 8: 6 Governance tasks (AIIA table, accountability table, ethics page, transparency, audit prep, health scorer)
+
+**Phase 4 AI Governance Checklist Added:** 17 success criteria for governance validation
+
+**Key AI Governance & Ethics Principles:**
+1. **Fairness is measurable** - Demographic parity, equalized odds, counterfactual fairness are computable
+2. **Every score needs explanation** - Users deserve to know WHY, not just WHAT
+3. **Confidence beats false precision** - "68-76" is more honest than "72"
+4. **Human oversight is non-negotiable** - Kill switch + escalation matrix + review queue
+5. **Autonomy requires boundaries** - Clear levels for what AI can decide alone
+6. **Document tradeoffs explicitly** - Fairness vs accuracy decisions must be recorded
+7. **AIIA before deployment** - Impact assessment is preventive medicine
+8. **Redress is a right** - Users harmed by AI deserve a compensation path
+9. **Liability requires clarity** - RACI matrix for every AI decision type
+10. **Governance is competitive advantage** - Enterprise customers demand it
+
+---
+
 *Document prepared by BCG Digital Ventures - Technology Strategy Practice*
 *Technical Review by: Senior Software Director - 300 years experience*
 *UX/UI Review by: Senior UX/UI Executive - 300 years experience, IDEO/frog/Pentagram background*
@@ -22219,6 +23344,7 @@ Begin Phase 1, Week 1, Day 1:
 *RLHF & Feedback Loop Review by: Senior RLHF Specialist Director - 433 years experience, ex-OpenAI RLHF/Anthropic Constitutional AI/Google DeepMind Reward/Meta FAIR Human Feedback/Microsoft Research Alignment/Cohere Human Preference/Character.AI Training/Midjourney Feedback/Scale AI Data/Surge AI Labeling/McKinsey AI Practice/BCG Gamma*
 *Semantic Audit & Data Quality Review by: Senior Lead Semantic Auditor - 543 years experience, ex-Google Data Governance/Meta Data Quality/Amazon Data Catalog/Snowflake Schema Design/dbt Labs/Great Expectations/Monte Carlo Data/Collibra/Alation/Informatica/Atlan/McKinsey Data Governance/BCG Data Strategy/Bain Analytics*
 *Domain Expert Review by: Senior Director Domain Experts - 12,340 years aggregate experience, all top consulting firms (McKinsey/BCG/Bain/Deloitte/Accenture), Fortune 500 industry leaders, specialized research centers (MIT Media Lab/Stanford HAI/Harvard Business School/INSEAD/Wharton), vertical expertise across Healthcare/SaaS/Legal/Finance/Restaurant/Retail/Manufacturing/Real Estate/Education/Professional Services*
+*AI Governance & Ethics Review by: Senior Director AI Governance & Ethics Officer - 8,750 years aggregate experience, ex-UNESCO AI Ethics/OECD AI Policy/EU AI Act Drafting Committee/IEEE AI Ethics Standards/Partnership on AI/Anthropic Safety/OpenAI Policy/Google DeepMind Ethics/Microsoft Responsible AI/IBM AI Ethics Board/Meta AI Responsibility/WEF AI Governance Council/Harvard Berkman Klein/Stanford HAI Policy/MIT AI Policy Forum/McKinsey AI Ethics/BCG AI Responsibility/Deloitte AI Governance*
 *For: AI Perception Engineering Agency*
 *Date: November 26, 2024*
-*Version: 25.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering + Backend Engineering + Data Visualization + CTO/CAIO Executive + COO Operations + CFO Finance + CEO Strategic + Internal Tools & DX + RLHF & Feedback Loop + Semantic Audit & Data Quality + Domain Expert Review)*
+*Version: 26.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering + Backend Engineering + Data Visualization + CTO/CAIO Executive + COO Operations + CFO Finance + CEO Strategic + Internal Tools & DX + RLHF & Feedback Loop + Semantic Audit & Data Quality + Domain Expert + AI Governance & Ethics Review)*

@@ -25,6 +25,7 @@
 - **Senior CTO / Chief AI Officer** - Executive Strategy, Governance, Unit Economics, Investor Readiness & Scalability Review
 - **Senior COO (Chief Operating Officer)** - Operations Architecture, SLAs, Automation, Queue Management, User Lifecycle & Operational Efficiency Review
 - **Senior CFO (Chief Financial Officer)** - Cash Flow, Revenue Recognition, Pricing Strategy, Cost Analysis, Financial Controls, SaaS Metrics, Cohort Analysis & Three-Statement Model Review
+- **Senior CEO (Chief Executive Officer)** - Vision/Mission, 3-Year Strategy, OKRs, PMF Validation, Customer Segmentation, PLG, Founder Sustainability, CEO Dashboard & Strategic Risk Review
 
 ---
 
@@ -14195,6 +14196,1099 @@ omArchive(userId);                           │   │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
+### 2.159 CEO Strategic Architecture Gap Analysis (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│         CEO STRATEGIC GAPS IDENTIFIED (25 Critical)                  │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  REVIEWER: Chief Executive Officer                                   │
+│  EXPERIENCE: 6500 years (Apple, Google, Amazon, Microsoft, Meta,    │
+│              Netflix, Stripe, Airbnb, Uber, OpenAI, Anthropic,      │
+│              Sequoia, a16z, Benchmark, Accel, McKinsey, BCG, Bain,  │
+│              Goldman Sachs, Morgan Stanley, SpaceX, Tesla)          │
+│  METHODOLOGY: Holistic CEO strategic review - Vision, Execution,     │
+│               People, Capital, Market, and Exit                      │
+│                                                                     │
+│  ═══════════════════════════════════════════════════════════════   │
+│            CATEGORY A: VISION & STRATEGY GAPS (Gaps 1-5)            │
+│  ═══════════════════════════════════════════════════════════════   │
+│                                                                     │
+│  GAP 1: NO MISSION/VISION STATEMENT DOCUMENT                        │
+│  ═══════════════════════════════════════════                        │
+│  Current: Vision informally stated ("Claude ejecuta, Alberto es     │
+│           visionario") but no formal mission/vision document        │
+│  Problem: Team alignment, investor communication, culture-building   │
+│           all require articulated mission/vision                     │
+│  Impact: Inconsistent messaging, difficulty hiring for culture fit  │
+│  Solution: One-page Mission/Vision/Values document with North Star  │
+│                                                                     │
+│  GAP 2: NO 3-5 YEAR STRATEGIC PLAN                                  │
+│  ═════════════════════════════════                                  │
+│  Current: 8-week tactical roadmap, no long-term strategic vision    │
+│  Problem: Investors, board members, and employees need directional  │
+│           clarity beyond quarterly execution                         │
+│  Impact: Reactive decisions, unclear product evolution, missed bets │
+│  Solution: 3-year strategic plan with annual milestones             │
+│                                                                     │
+│  GAP 3: NO OKR/GOAL-SETTING FRAMEWORK                               │
+│  ════════════════════════════════════                               │
+│  Current: Tasks exist, but no objectives-driven goal hierarchy      │
+│  Problem: Activity ≠ progress; need measurable outcomes             │
+│  Impact: Busy but not effective, wrong priorities, unclear success  │
+│  Solution: Quarterly OKRs with weekly tracking                      │
+│                                                                     │
+│  GAP 4: NO PRODUCT-MARKET FIT VALIDATION FRAMEWORK                  │
+│  ═════════════════════════════════════════════════                  │
+│  Current: PMF assumed via market analysis, not validated            │
+│  Problem: Building features without confirming PMF is wasteful      │
+│  Impact: Premature scaling, wasted resources, delayed pivot         │
+│  Solution: PMF scorecard with retention, NPS, "very disappointed"   │
+│            survey (Sean Ellis test: >40% = PMF)                     │
+│                                                                     │
+│  GAP 5: NO PIVOT TRIGGERS DEFINED                                   │
+│  ═══════════════════════════════                                    │
+│  Current: No criteria for when to pivot strategy/product            │
+│  Problem: Sunk cost fallacy, emotional attachment to failing ideas  │
+│  Impact: Waste runway on non-viable paths, delayed necessary pivots │
+│  Solution: Pre-defined pivot triggers with decision framework       │
+│                                                                     │
+│  ═══════════════════════════════════════════════════════════════   │
+│            CATEGORY B: MARKET & GROWTH GAPS (Gaps 6-10)             │
+│  ═══════════════════════════════════════════════════════════════   │
+│                                                                     │
+│  GAP 6: NO CUSTOMER SEGMENTATION STRATEGY                           │
+│  ═══════════════════════════════════════                            │
+│  Current: Generic targeting ("businesses who want AI visibility")   │
+│  Problem: Different segments have different needs, willingness to   │
+│           pay, and acquisition channels                              │
+│  Impact: Inefficient marketing, wrong pricing, missed niches        │
+│  Solution: ICP (Ideal Customer Profile) per segment with personas   │
+│                                                                     │
+│  GAP 7: NO MARKET EXPANSION ROADMAP                                 │
+│  ══════════════════════════════════                                 │
+│  Current: Launch in English, Spanish mentioned as future            │
+│  Problem: No prioritized market expansion sequence                   │
+│  Impact: Ad-hoc international growth, wasted localization           │
+│  Solution: Market prioritization matrix (TAM, competition, CAC)     │
+│                                                                     │
+│  GAP 8: NO PRODUCT-LED GROWTH (PLG) STRATEGY                        │
+│  ═══════════════════════════════════════════                        │
+│  Current: Freemium mentioned, but no PLG optimization               │
+│  Problem: Viral loops, activation, expansion not systematized       │
+│  Impact: Slower organic growth, higher CAC dependency               │
+│  Solution: PLG playbook with activation metrics, aha moments        │
+│                                                                     │
+│  GAP 9: NO ENTERPRISE SALES MOTION DEFINED                          │
+│  ═════════════════════════════════════════                          │
+│  Current: Enterprise pricing exists, no sales process               │
+│  Problem: Enterprise requires demos, pilots, procurement navigation │
+│  Impact: Missed high-ACV deals, long sales cycles without process   │
+│  Solution: Enterprise sales playbook with qualification criteria    │
+│                                                                     │
+│  GAP 10: NO STRATEGIC PARTNERSHIP FRAMEWORK                         │
+│  ═══════════════════════════════════════════                        │
+│  Current: Partnerships mentioned vaguely, no strategy               │
+│  Problem: Channel partners, integrations, co-marketing need process │
+│  Impact: Opportunistic deals, inconsistent terms, wasted effort     │
+│  Solution: Partnership tiers with criteria, terms, co-marketing     │
+│                                                                     │
+│  ═══════════════════════════════════════════════════════════════   │
+│            CATEGORY C: PEOPLE & ORGANIZATION GAPS (Gaps 11-15)      │
+│  ═══════════════════════════════════════════════════════════════   │
+│                                                                     │
+│  GAP 11: NO FOUNDER SUCCESSION PLAN                                 │
+│  ══════════════════════════════════                                 │
+│  Current: Single founder, no documentation for bus factor           │
+│  Problem: If founder incapacitated, business stops                   │
+│  Impact: Single point of failure, uninsurable risk                  │
+│  Solution: Key-person documentation, password vault, succession doc │
+│                                                                     │
+│  GAP 12: NO COMPANY CULTURE DOCUMENTATION                           │
+│  ═══════════════════════════════════════                            │
+│  Current: Culture exists implicitly, not documented                 │
+│  Problem: Can't hire for culture fit without defined culture        │
+│  Impact: Bad hires, culture drift, misalignment                     │
+│  Solution: Culture doc with values, behaviors, anti-patterns        │
+│                                                                     │
+│  GAP 13: NO FIRST 10 HIRES PLAYBOOK                                 │
+│  ════════════════════════════════                                   │
+│  Current: Scaling triggers exist (GAP 8 CTO), no hiring playbook    │
+│  Problem: First hires define culture; mistakes are costly           │
+│  Impact: Wrong hires, slow ramp, founder time on recruiting         │
+│  Solution: First 10 hires sequence with JDs, comp, interview        │
+│                                                                     │
+│  GAP 14: NO ADVISORY BOARD STRATEGY                                 │
+│  ═════════════════════════════════                                  │
+│  Current: No formal advisors mentioned                              │
+│  Problem: Solo founder lacks diverse perspectives, domain expertise │
+│  Impact: Blind spots, slower learning, missed connections           │
+│  Solution: 3-5 advisor targets with equity guidelines, meeting cadence│
+│                                                                     │
+│  GAP 15: NO FOUNDER WELL-BEING FRAMEWORK                            │
+│  ═══════════════════════════════════════                            │
+│  Current: "Alberto is visionario" but no burnout prevention         │
+│  Problem: Solo founder burnout is #1 startup killer                 │
+│  Impact: Health issues, bad decisions, abandonment                  │
+│  Solution: Founder sustainability framework (breaks, metrics, support)│
+│                                                                     │
+│  ═══════════════════════════════════════════════════════════════   │
+│            CATEGORY D: CAPITAL & FUNDRAISING GAPS (Gaps 16-19)      │
+│  ═══════════════════════════════════════════════════════════════   │
+│                                                                     │
+│  GAP 16: NO FUNDRAISING DECISION FRAMEWORK                          │
+│  ═══════════════════════════════════════════                        │
+│  Current: Investor readiness exists, no decision criteria           │
+│  Problem: When to raise? How much? What terms?                      │
+│  Impact: Raise too early (dilution) or too late (desperation)       │
+│  Solution: Fundraising decision tree with timing triggers           │
+│                                                                     │
+│  GAP 17: NO BOOTSTRAPPING VS VC ANALYSIS                            │
+│  ═══════════════════════════════════════                            │
+│  Current: Path not explicitly chosen                                │
+│  Problem: Different paths require different strategies              │
+│  Impact: Strategy mismatch, wrong expectations                      │
+│  Solution: Explicit path decision with implications documented      │
+│                                                                     │
+│  GAP 18: NO TERM SHEET KNOWLEDGE BASE                               │
+│  ════════════════════════════════════                               │
+│  Current: No documentation on term negotiation                      │
+│  Problem: First-time founders get bad terms                         │
+│  Impact: Excessive dilution, bad control terms, founder traps       │
+│  Solution: Term sheet cheat sheet with red flags                    │
+│                                                                     │
+│  GAP 19: NO INVESTOR TARGET LIST                                    │
+│  ═══════════════════════════════                                    │
+│  Current: Generic "investors" mentioned                             │
+│  Problem: Spray-and-pray fundraising is inefficient                 │
+│  Impact: Wrong investors, wasted meetings, bad fit                  │
+│  Solution: Tiered investor list (A/B/C) with thesis match           │
+│                                                                     │
+│  ═══════════════════════════════════════════════════════════════   │
+│            CATEGORY E: EXECUTION & RISK GAPS (Gaps 20-25)           │
+│  ═══════════════════════════════════════════════════════════════   │
+│                                                                     │
+│  GAP 20: NO DECISION-MAKING FRAMEWORK                               │
+│  ════════════════════════════════════                               │
+│  Current: Ad-hoc decisions                                          │
+│  Problem: Solo founder + AI assistant needs decision protocol       │
+│  Impact: Inconsistent decisions, analysis paralysis                 │
+│  Solution: Decision framework (reversible vs irreversible, RAPID)   │
+│                                                                     │
+│  GAP 21: NO STRATEGIC RISK REGISTER                                 │
+│  ═══════════════════════════════                                    │
+│  Current: Vendor risk exists, no comprehensive risk register        │
+│  Problem: Market, regulatory, competitive risks not tracked         │
+│  Impact: Surprised by predictable events                            │
+│  Solution: Strategic risk register with mitigation plans            │
+│                                                                     │
+│  GAP 22: NO REGULATORY HORIZON SCANNING                             │
+│  ══════════════════════════════════                                 │
+│  Current: AI Act mentioned, no systematic tracking                  │
+│  Problem: AI regulations evolving rapidly globally                  │
+│  Impact: Non-compliance, market access lost, legal liability        │
+│  Solution: Regulatory watch list with impact assessment             │
+│                                                                     │
+│  GAP 23: NO COMPETITIVE RESPONSE PLAYBOOK                           │
+│  ══════════════════════════════════════                             │
+│  Current: Defensive moat strategy exists, no competitive response   │
+│  Problem: When competitor launches feature, what's the response?    │
+│  Impact: Reactive, inconsistent competitive positioning             │
+│  Solution: Competitor response playbook with scenarios              │
+│                                                                     │
+│  GAP 24: NO CEO METRICS DASHBOARD                                   │
+│  ═════════════════════════════                                      │
+│  Current: Executive metrics exist, no CEO-specific view             │
+│  Problem: CEO needs different lens than CFO/COO/CTO                 │
+│  Impact: Wrong focus, missed signals, delayed course corrections    │
+│  Solution: CEO dashboard with 7 key metrics for daily review        │
+│                                                                     │
+│  GAP 25: NO EXIT READINESS ONGOING MAINTENANCE                      │
+│  ═══════════════════════════════════════════                        │
+│  Current: Exit strategy mentioned (GAP 18 CTO), not maintained      │
+│  Problem: Exit readiness decays without regular updates             │
+│  Impact: Scramble during acquisition discussions                    │
+│  Solution: Quarterly exit readiness checklist review                │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.160 Mission/Vision/Values Framework (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                 MISSION / VISION / VALUES FRAMEWORK                  │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Culture eats strategy for breakfast" - Peter Drucker   │
+│                                                                     │
+│  1. MISSION STATEMENT (Why we exist)                                │
+│     ═════════════════════════════════                               │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ "Empowering every business to be discovered and recommended  ││
+│     │  by AI systems, ensuring no brand becomes invisible in the   ││
+│     │  AI-first world."                                            ││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. VISION STATEMENT (Where we're going)                            │
+│     ════════════════════════════════════                            │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ 2025: The go-to tool for AI Perception measurement          ││
+│     │ 2027: The standard for GEO (Generative Engine Optimization) ││
+│     │ 2030: Every marketing dashboard includes AI Perception Score││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. NORTH STAR METRIC                                               │
+│     ═══════════════════                                             │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ "Brands with improved AI perception after using our tool"    ││
+│     │                                                              ││
+│     │ Metrics that compose it:                                     ││
+│     │ • % users with score improvement after 30 days              ││
+│     │ • Absolute score points improved (avg)                       ││
+│     │ • User retention at 90 days (engaged = value delivered)      ││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. CORE VALUES (How we work)                                       │
+│     ═══════════════════════════                                     │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ VALUE 1: TRUTH OVER COMFORT                                  ││
+│     │ • We show real scores, even when uncomfortable               ││
+│     │ • We acknowledge AI limitations openly                       ││
+│     │ • We correct mistakes publicly                               ││
+│     │ Anti-pattern: Sugar-coating bad news, hiding limitations     ││
+│     │                                                              ││
+│     │ VALUE 2: SPEED OVER PERFECTION                               ││
+│     │ • Ship fast, iterate faster                                  ││
+│     │ • 80% solution today beats 100% next month                   ││
+│     │ • Reversible decisions made quickly                          ││
+│     │ Anti-pattern: Analysis paralysis, gold-plating               ││
+│     │                                                              ││
+│     │ VALUE 3: CUSTOMER OBSESSION                                  ││
+│     │ • Every feature starts with customer problem                 ││
+│     │ • User feedback drives roadmap                               ││
+│     │ • Support is product intelligence                            ││
+│     │ Anti-pattern: Building for vanity, ignoring feedback         ││
+│     │                                                              ││
+│     │ VALUE 4: LEAN BY DEFAULT                                     ││
+│     │ • Every expense must justify ROI                             ││
+│     │ • Automation > hiring                                        ││
+│     │ • Simple > complex                                           ││
+│     │ Anti-pattern: Premature scaling, empire building             ││
+│     │                                                              ││
+│     │ VALUE 5: AI-AUGMENTED EXCELLENCE                             ││
+│     │ • Use AI (Claude) as force multiplier                        ││
+│     │ • Human judgment for strategy, AI for execution              ││
+│     │ • Embrace AI tools that accelerate us                        ││
+│     │ Anti-pattern: AI avoidance, manual when automated exists     ││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  5. STRATEGIC PRIORITIES (2024-2025)                                │
+│     ════════════════════════════════                                │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Priority │ Focus Area          │ Success Metric              ││
+│     ├──────────┼─────────────────────┼─────────────────────────────┤│
+│     │ P1       │ Product-Market Fit  │ >40% "very disappointed"    ││
+│     │ P2       │ Revenue Growth      │ $50K MRR by Month 6         ││
+│     │ P3       │ Operational Efficiency│ <5% founder time on ops   ││
+│     │ P4       │ Brand Authority     │ #1 GEO tool in awareness    ││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  DOCUMENTATION:                                                     │
+│  /docs/company/mission-vision-values.md                             │
+│  /docs/company/north-star.md                                        │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.161 3-Year Strategic Plan Framework (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    3-YEAR STRATEGIC PLAN (2025-2027)                 │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Plan in years, execute in weeks, review quarterly"     │
+│                                                                     │
+│  1. STRATEGIC TIMELINE                                              │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │                                                              ││
+│     │  2025 Q1-Q2: FOUNDATION                                      ││
+│     │  ═══════════════════════                                     ││
+│     │  • Launch MVP (Week 4)                                       ││
+│     │  • First revenue (Week 6)                                    ││
+│     │  • 500 paying customers                                      ││
+│     │  • $30K MRR                                                  ││
+│     │  • Validate PMF (>40% Sean Ellis)                            ││
+│     │                                                              ││
+│     │  2025 Q3-Q4: TRACTION                                        ││
+│     │  ═══════════════════                                         ││
+│     │  • 2,000 paying customers                                    ││
+│     │  • $100K MRR                                                 ││
+│     │  • First enterprise customer                                 ││
+│     │  • First hire (engineer)                                     ││
+│     │  • Spanish language launch                                   ││
+│     │  • Series Seed consideration                                 ││
+│     │                                                              ││
+│     │  2026: GROWTH                                                ││
+│     │  ═══════════                                                 ││
+│     │  • 10,000 paying customers                                   ││
+│     │  • $500K MRR / $6M ARR                                       ││
+│     │  • 5-person team                                             ││
+│     │  • API for integrations                                      ││
+│     │  • Agency partner program                                    ││
+│     │  • SOC 2 Type I certification                                ││
+│     │  • Portuguese language launch                                ││
+│     │                                                              ││
+│     │  2027: SCALE                                                 ││
+│     │  ════════════                                                ││
+│     │  • 50,000 paying customers                                   ││
+│     │  • $2M MRR / $24M ARR                                        ││
+│     │  • 20-person team                                            ││
+│     │  • Multiple product lines                                    ││
+│     │  • International offices                                     ││
+│     │  • Series A or profitable                                    ││
+│     │                                                              ││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. STRATEGIC BETS                                                  │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ BET 1: AI search will dominate discovery by 2027             ││
+│     │ Confidence: 90%                                              ││
+│     │ Hedge: Traditional SEO tools partnership                     ││
+│     │                                                              ││
+│     │ BET 2: SMBs will pay for AI visibility tools                 ││
+│     │ Confidence: 75%                                              ││
+│     │ Hedge: Enterprise focus if SMB doesn't convert               ││
+│     │                                                              ││
+│     │ BET 3: GEO becomes recognized category by 2026               ││
+│     │ Confidence: 70%                                              ││
+│     │ Hedge: Position as "AI marketing intelligence" if GEO fails  ││
+│     │                                                              ││
+│     │ BET 4: Multi-model analysis remains valuable                 ││
+│     │ Confidence: 80%                                              ││
+│     │ Hedge: Focus on dominant model if consolidation occurs       ││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. STRATEGIC OPTIONS (DECISION POINTS)                             │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Decision Point      │ Trigger          │ Options              ││
+│     ├─────────────────────┼──────────────────┼──────────────────────┤│
+│     │ Raise seed round    │ PMF + $30K MRR   │ Raise / Bootstrap    ││
+│     │ Enterprise pivot    │ SMB CAC > $100   │ Upmarket / Double SMB││
+│     │ Geographic expansion│ $100K MRR        │ LATAM / EU / Stay US ││
+│     │ Acquisition offer   │ Any serious offer│ Sell / Continue      ││
+│     │ New product line    │ $300K MRR        │ Expand / Focus       ││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. RESOURCE ALLOCATION                                             │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Area               │ 2025   │ 2026   │ 2027                  ││
+│     ├────────────────────┼────────┼────────┼───────────────────────┤│
+│     │ Product/Engineering│ 70%    │ 50%    │ 40%                   ││
+│     │ Sales/Marketing    │ 20%    │ 35%    │ 40%                   ││
+│     │ Operations         │ 10%    │ 10%    │ 15%                   ││
+│     │ G&A                │ 0%     │ 5%     │ 5%                    ││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  DOCUMENTATION:                                                     │
+│  /docs/strategy/3-year-plan.md                                      │
+│  /docs/strategy/strategic-bets.md                                   │
+│  /docs/strategy/decision-points.md                                  │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.162 OKR Framework (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                       OKR FRAMEWORK                                  │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Objectives inspire, Key Results measure"               │
+│                                                                     │
+│  1. OKR STRUCTURE                                                   │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ ANNUAL OBJECTIVES (3-5)                                      ││
+│     │ └── QUARTERLY OBJECTIVES (2-3 per annual)                    ││
+│     │     └── KEY RESULTS (3-5 per objective)                      ││
+│     │         └── WEEKLY INITIATIVES (tasks that move KRs)         ││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. Q1 2025 OKRs (EXAMPLE)                                          │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ OBJECTIVE 1: Launch MVP that users love                      ││
+│     │ ───────────────────────────────────────                      ││
+│     │ KR1: 1,000 free users signed up                              ││
+│     │ KR2: 50 paying customers (5% conversion)                     ││
+│     │ KR3: NPS > 40 from first 100 users                          ││
+│     │ KR4: < 2% Day-7 churn                                        ││
+│     │                                                              ││
+│     │ OBJECTIVE 2: Achieve initial revenue milestone               ││
+│     │ ───────────────────────────────────────────                  ││
+│     │ KR1: $10K MRR by end of Q1                                   ││
+│     │ KR2: LTV:CAC > 3:1 on first cohort                          ││
+│     │ KR3: < 5% monthly revenue churn                              ││
+│     │                                                              ││
+│     │ OBJECTIVE 3: Establish market presence                       ││
+│     │ ───────────────────────────────────────                      ││
+│     │ KR1: 5,000 monthly website visitors                          ││
+│     │ KR2: Featured in 3 industry publications                     ││
+│     │ KR3: 500 Twitter followers                                   ││
+│     │ KR4: #1 Google result for "AI Perception Score"              ││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. OKR CADENCE                                                     │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Frequency  │ Activity                  │ Duration             ││
+│     ├────────────┼───────────────────────────┼──────────────────────┤│
+│     │ Annually   │ Set annual objectives     │ 2 hours              ││
+│     │ Quarterly  │ Set quarterly OKRs        │ 1 hour               ││
+│     │ Monthly    │ Review progress, adjust   │ 30 min               ││
+│     │ Weekly     │ Update KR scores          │ 15 min               ││
+│     │ Daily      │ Check initiatives progress│ 5 min                ││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. SCORING                                                         │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Score │ Meaning         │ Action                             ││
+│     ├───────┼─────────────────┼────────────────────────────────────┤│
+│     │ 0.0   │ No progress     │ Re-evaluate KR viability           ││
+│     │ 0.3   │ Some progress   │ Investigate blockers               ││
+│     │ 0.5   │ Halfway         │ On track, continue                 ││
+│     │ 0.7   │ Nearly there    │ Strong performance                 ││
+│     │ 1.0   │ Achieved        │ Celebrate, was goal ambitious?     ││
+│     │ 1.0+  │ Exceeded        │ Goal too easy? Raise next quarter  ││
+│     └─────────────────────────────────────────────────────────────┘│
+│     Sweet spot: Average 0.6-0.7 means ambitious but achievable     │
+│                                                                     │
+│  DATABASE:                                                          │
+│  ├─ objectives (id, title, type:annual/quarterly, period, status)   │
+│  ├─ key_results (id, objective_id, description, target, actual, score)│
+│  └─ okr_check_ins (id, key_result_id, score, notes, week)           │
+│                                                                     │
+│  IMPLEMENTATION:                                                    │
+│  /app/(admin)/okrs/page.tsx                                         │
+│  /lib/okr/tracker.ts                                                │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.163 Product-Market Fit Validation Framework (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                PRODUCT-MARKET FIT VALIDATION                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "PMF is not a milestone, it's a state to maintain"      │
+│                                                                     │
+│  1. SEAN ELLIS TEST (Primary PMF Indicator)                         │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Question: "How would you feel if you could no longer use     ││
+│     │           AI Perception?"                                    ││
+│     │                                                              ││
+│     │ Responses:        │ Score    │ PMF Indicator                 ││
+│     │ Very disappointed │ >40%     │ PMF ACHIEVED                  ││
+│     │ Somewhat disappointed│ 25-40% │ Close, optimize activation   ││
+│     │ Not disappointed  │ <25%     │ No PMF, pivot or iterate      ││
+│     │                                                              ││
+│     │ Survey timing: After 3+ analyses completed                   ││
+│     │ Sample size: Minimum 100 responses for validity              ││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. PMF SCORECARD (Multi-metric)                                    │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Metric               │ No PMF  │ Emerging │ Strong PMF       ││
+│     ├──────────────────────┼─────────┼──────────┼──────────────────┤│
+│     │ Sean Ellis score     │ <25%    │ 25-40%   │ >40%             ││
+│     │ D30 Retention        │ <10%    │ 10-30%   │ >30%             ││
+│     │ Organic signup %     │ <20%    │ 20-40%   │ >40%             ││
+│     │ Free→Paid conv.      │ <2%     │ 2-5%     │ >5%              ││
+│     │ Monthly churn        │ >10%    │ 5-10%    │ <5%              ││
+│     │ NPS                  │ <20     │ 20-40    │ >40              ││
+│     │ Referral rate        │ <5%     │ 5-15%    │ >15%             ││
+│     │ Support tickets/user │ >0.5/mo │ 0.2-0.5  │ <0.2/mo          ││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. "AHA MOMENT" IDENTIFICATION                                     │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Hypothesis: Users who do X within Y days retain at Z%        ││
+│     │                                                              ││
+│     │ Test candidates:                                             ││
+│     │ • First analysis completed within 24 hours                   ││
+│     │ • Competitor comparison viewed                               ││
+│     │ • Score improvement seen on re-analysis                      ││
+│     │ • Alert configured for monitoring                            ││
+│     │ • Dashboard visited 3+ times in first week                   ││
+│     │                                                              ││
+│     │ Analysis: Cohort retention curves by behavior                ││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. PIVOT TRIGGERS                                                  │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Trigger                    │ Threshold │ Response            ││
+│     ├────────────────────────────┼───────────┼─────────────────────┤│
+│     │ Sean Ellis after 500 users │ <25%      │ Major pivot         ││
+│     │ D30 retention             │ <10%      │ Activation focus     ││
+│     │ Free→Paid after 1K free   │ <1%       │ Value prop pivot     ││
+│     │ Monthly churn 3+ months   │ >15%      │ Product rethink      ││
+│     │ CAC exceeds LTV           │ CAC > LTV │ Channel/pricing pivot││
+│     │ No growth after $5K MRR   │ Flat 3mo  │ GTM pivot            ││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  5. PMF MONITORING DASHBOARD                                        │
+│     • Weekly PMF scorecard update                                   │
+│     • Monthly Sean Ellis survey (ongoing)                           │
+│     • Quarterly deep dive on retention curves                       │
+│     • Alerts when any metric enters "No PMF" zone                   │
+│                                                                     │
+│  DATABASE:                                                          │
+│  ├─ pmf_surveys (user_id, response, timestamp, context)             │
+│  ├─ aha_moment_tracking (user_id, event, timestamp, converted)      │
+│  └─ pmf_scorecard_snapshots (date, metrics_json)                    │
+│                                                                     │
+│  IMPLEMENTATION:                                                    │
+│  /app/(admin)/pmf-dashboard/page.tsx                                │
+│  /lib/analytics/pmf-tracker.ts                                      │
+│  /api/surveys/pmf/route.ts                                          │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.164 Customer Segmentation & ICP Framework (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              CUSTOMER SEGMENTATION & ICP FRAMEWORK                   │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "If you're marketing to everyone, you're marketing to   │
+│              no one"                                                │
+│                                                                     │
+│  1. SEGMENT DEFINITIONS                                             │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ SEGMENT 1: LOCAL SERVICE BUSINESSES                          ││
+│     │ ───────────────────────────────────────                      ││
+│     │ Who: Restaurants, dentists, lawyers, plumbers, salons        ││
+│     │ Size: 1-10 employees, $100K-$2M revenue                      ││
+│     │ Pain: "Am I showing up when people ask AI for recommendations?"││
+│     │ Budget: $29-79/month (price sensitive)                       ││
+│     │ Buyer: Owner or office manager                               ││
+│     │ Channel: Google Ads, Local SEO blogs, Facebook groups        ││
+│     │ Messaging: "Do AI assistants recommend your business?"       ││
+│     │                                                              ││
+│     │ SEGMENT 2: DIGITAL AGENCIES                                  ││
+│     │ ───────────────────────────────────                          ││
+│     │ Who: SEO agencies, marketing agencies, PR firms              ││
+│     │ Size: 5-50 employees, $500K-$10M revenue                     ││
+│     │ Pain: "How do I prove AI visibility to my clients?"          ││
+│     │ Budget: $199-499/month (per client markup)                   ││
+│     │ Buyer: Agency owner, Head of SEO, Account Director           ││
+│     │ Channel: SEO Twitter, Agency newsletters, conferences        ││
+│     │ Messaging: "Add AI Perception to your service offering"      ││
+│     │                                                              ││
+│     │ SEGMENT 3: E-COMMERCE / DTC BRANDS                           ││
+│     │ ─────────────────────────────────────                        ││
+│     │ Who: Shopify brands, DTC products, online retailers          ││
+│     │ Size: $1M-$50M revenue                                       ││
+│     │ Pain: "Why don't AIs recommend my products?"                 ││
+│     │ Budget: $79-199/month (ROI focused)                          ││
+│     │ Buyer: CMO, Head of Growth, Founder                          ││
+│     │ Channel: DTC Twitter, Shopify ecosystem, e-commerce blogs    ││
+│     │ Messaging: "Get your products recommended by ChatGPT"        ││
+│     │                                                              ││
+│     │ SEGMENT 4: B2B SAAS COMPANIES                                ││
+│     │ ─────────────────────────────────                            ││
+│     │ Who: Software companies, B2B startups                        ││
+│     │ Size: $1M-$100M ARR                                          ││
+│     │ Pain: "We dominate SEO but invisible in AI recommendations"  ││
+│     │ Budget: $199-999/month (enterprise ready)                    ││
+│     │ Buyer: CMO, VP Marketing, CEO                                ││
+│     │ Channel: SaaS Twitter, podcasts, Product Hunt                ││
+│     │ Messaging: "AI is the new search. Are you optimizing for it?"││
+│     │                                                              ││
+│     │ SEGMENT 5: ENTERPRISE (FUTURE)                               ││
+│     │ ───────────────────────────────                              ││
+│     │ Who: Fortune 500, large brands                               ││
+│     │ Size: $100M+ revenue                                         ││
+│     │ Pain: "Brand reputation across AI platforms at scale"        ││
+│     │ Budget: $2K-10K/month (procurement process)                  ││
+│     │ Buyer: VP Digital, Chief Digital Officer                     ││
+│     │ Channel: Enterprise sales, conferences, analysts             ││
+│     │ Messaging: "Enterprise AI brand intelligence"                ││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. IDEAL CUSTOMER PROFILE (ICP) - YEAR 1 FOCUS                     │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ PRIMARY ICP: Digital Marketing Agencies                      ││
+│     │                                                              ││
+│     │ Characteristics:                                             ││
+│     │ • 10-50 employees                                            ││
+│     │ • Offers SEO as a service                                    ││
+│     │ • Has 20-100 active clients                                  ││
+│     │ • Based in US, UK, or Canada                                 ││
+│     │ • Active on SEO Twitter/LinkedIn                             ││
+│     │                                                              ││
+│     │ Why Primary:                                                 ││
+│     │ • High LTV (multiple seats, low churn)                       ││
+│     │ • Channel partners (bring their clients)                     ││
+│     │ • Influencers (spread word to ecosystem)                     ││
+│     │ • Early adopters (love new tools)                            ││
+│     │ • Can articulate value (understand GEO concept)              ││
+│     │                                                              ││
+│     │ SECONDARY ICP: E-Commerce Brands ($5M-$50M)                  ││
+│     │ TERTIARY ICP: B2B SaaS ($5M-$50M ARR)                        ││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. PERSONA CARDS                                                   │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ PERSONA: "Agency Alex"                                       ││
+│     │ ─────────────────────                                        ││
+│     │ Role: Head of SEO at 30-person agency                        ││
+│     │ Age: 32                                                      ││
+│     │ Goals:                                                       ││
+│     │ • Differentiate agency from competitors                      ││
+│     │ • Prove value to clients with new metrics                    ││
+│     │ • Stay ahead of industry trends                              ││
+│     │ Frustrations:                                                ││
+│     │ • Clients ask about AI visibility, no good answer            ││
+│     │ • Hard to measure "AI optimization" results                  ││
+│     │ • Competitors might offer this first                         ││
+│     │ Buying trigger:                                              ││
+│     │ • Client asks "Do AIs recommend us?"                         ││
+│     │ • Sees competitor offering GEO services                      ││
+│     │ • Hears about GEO on podcast/Twitter                         ││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  DATABASE:                                                          │
+│  ├─ customer_segments (id, name, criteria_json, priority)           │
+│  ├─ customer_personas (id, segment_id, name, profile_json)          │
+│  └─ user_segment_assignment (user_id, segment_id, confidence)       │
+│                                                                     │
+│  IMPLEMENTATION:                                                    │
+│  /docs/marketing/customer-segmentation.md                           │
+│  /docs/marketing/personas/                                          │
+│  /lib/analytics/segment-classifier.ts                               │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.165 Product-Led Growth (PLG) Playbook (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    PRODUCT-LED GROWTH PLAYBOOK                       │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "The product is the primary driver of acquisition,      │
+│              retention, and expansion"                               │
+│                                                                     │
+│  1. PLG METRICS                                                     │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Metric              │ Definition          │ Target            ││
+│     ├─────────────────────┼─────────────────────┼───────────────────┤│
+│     │ Time-to-Value (TTV) │ First analysis done │ < 5 minutes       ││
+│     │ Activation Rate     │ 3+ analyses done    │ > 40%             ││
+│     │ Viral Coefficient   │ Invites * conversion│ > 0.3             ││
+│     │ Product-Qualified   │ Heavy free user     │ > 20% of free     ││
+│     │ Self-Serve Revenue  │ No sales touch      │ > 80%             ││
+│     │ Expansion Revenue   │ Upgrades + seats    │ > 20% of revenue  ││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. ACTIVATION FUNNEL                                               │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Step               │ Action              │ Target Conversion  ││
+│     ├────────────────────┼─────────────────────┼────────────────────┤│
+│     │ 1. Sign Up         │ Email/Google auth   │ 100% (baseline)    ││
+│     │ 2. First Analysis  │ Enter URL, get score│ 80%                ││
+│     │ 3. View Results    │ See full breakdown  │ 90%                ││
+│     │ 4. Second Analysis │ Try competitor URL  │ 50%                ││
+│     │ 5. Return Visit    │ Come back Day 2-7   │ 30%                ││
+│     │ 6. Upgrade Prompt  │ Hit free limit      │ 10% upgrade        ││
+│     │ 7. Paid Conversion │ Checkout complete   │ 5% of signups      ││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. VIRAL LOOPS                                                     │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ LOOP 1: SCORE SHARING                                        ││
+│     │ ─────────────────────                                        ││
+│     │ Trigger: User completes analysis                             ││
+│     │ Action: "Share your score" with pre-filled tweet             ││
+│     │ Incentive: None needed (bragging rights)                     ││
+│     │ Expected: 5% share, 10% of shares convert                    ││
+│     │                                                              ││
+│     │ LOOP 2: COMPETITOR TAGGING                                   ││
+│     │ ─────────────────────────                                    ││
+│     │ Trigger: User analyzes competitor                            ││
+│     │ Action: "Share comparison" tagging competitor                ││
+│     │ Incentive: Extra free analysis                               ││
+│     │ Expected: 3% share, competitor checks own score              ││
+│     │                                                              ││
+│     │ LOOP 3: BADGE EMBEDDING                                      ││
+│     │ ───────────────────────                                      ││
+│     │ Trigger: User achieves score > 70                            ││
+│     │ Action: "Add badge to website" with embed code               ││
+│     │ Incentive: Social proof for their business                   ││
+│     │ Expected: 2% embed, each badge = 0.5 signups/month           ││
+│     │                                                              ││
+│     │ LOOP 4: REFERRAL PROGRAM                                     ││
+│     │ ────────────────────────                                     ││
+│     │ Trigger: Active user (5+ analyses)                           ││
+│     │ Action: "Invite friends, get free month"                     ││
+│     │ Incentive: 1 month free per paid referral                    ││
+│     │ Expected: 10% refer, 30% convert = 3% viral                  ││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. UPGRADE TRIGGERS                                                │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Trigger              │ Upgrade Prompt                        ││
+│     ├──────────────────────┼───────────────────────────────────────┤│
+│     │ 5th free analysis    │ "You've hit your limit. Upgrade for  ││
+│     │                      │  unlimited analyses"                  ││
+│     │ View competitor      │ "Unlock competitor comparison with   ││
+│     │                      │  Starter plan"                        ││
+│     │ Try to export        │ "Export PDF reports with Pro plan"   ││
+│     │ Enable monitoring    │ "Get alerts when your score changes" ││
+│     │ High engagement      │ "You love AI Perception! Go Pro for ││
+│     │                      │  more insights"                       ││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  5. PRODUCT-QUALIFIED LEADS (PQL)                                   │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ PQL Score = weighted sum of:                                 ││
+│     │ • Analyses completed (2 pts each, max 20)                    ││
+│     │ • Days active (1 pt each, max 14)                            ││
+│     │ • Competitor analyses (5 pts each, max 15)                   ││
+│     │ • Features explored (3 pts each)                             ││
+│     │ • Company size (from email domain lookup)                    ││
+│     │                                                              ││
+│     │ PQL Threshold: Score > 30 = Product-Qualified Lead           ││
+│     │ Action: Trigger in-app upgrade prompt + email sequence       ││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  DATABASE:                                                          │
+│  ├─ viral_events (user_id, type, share_url, conversions)            │
+│  ├─ pql_scores (user_id, score, factors_json, updated_at)           │
+│  └─ upgrade_triggers (user_id, trigger_type, shown_at, converted)   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.166 Founder Sustainability Framework (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                 FOUNDER SUSTAINABILITY FRAMEWORK                     │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "A burned-out founder builds a burned-out company"      │
+│                                                                     │
+│  1. BURNOUT RISK INDICATORS                                         │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Indicator           │ Warning    │ Danger    │ Current       ││
+│     ├─────────────────────┼────────────┼───────────┼───────────────┤│
+│     │ Hours/week working  │ > 50       │ > 70      │ Track weekly  ││
+│     │ Days off in month   │ < 4        │ < 2       │ Track monthly ││
+│     │ Sleep hours/night   │ < 7        │ < 5       │ Self-report   ││
+│     │ Response time decay │ Slower     │ Much slower│ Monitor      ││
+│     │ Decision quality    │ Declining  │ Poor      │ Reflect weekly││
+│     │ Enthusiasm level    │ Low        │ Gone      │ Self-assess   ││
+│     │ Isolation           │ < 2 social │ None      │ Track weekly  ││
+│     │ Physical health     │ Declining  │ Issues    │ Self-monitor  ││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. SUSTAINABILITY PRACTICES                                        │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ DAILY NON-NEGOTIABLES:                                       ││
+│     │ • 7+ hours sleep                                             ││
+│     │ • 30 min exercise or walk                                    ││
+│     │ • 1 hour no-screen time                                      ││
+│     │ • End work by 8 PM                                           ││
+│     │                                                              ││
+│     │ WEEKLY NON-NEGOTIABLES:                                      ││
+│     │ • 1 full day off (no work)                                   ││
+│     │ • 1 social interaction (non-work)                            ││
+│     │ • 1 hour strategic thinking (not execution)                  ││
+│     │ • Review burnout indicators                                  ││
+│     │                                                              ││
+│     │ MONTHLY NON-NEGOTIABLES:                                     ││
+│     │ • 1 hobby activity (not work-related)                        ││
+│     │ • Review if working on right problems                        ││
+│     │ • Check energy levels trend                                  ││
+│     │                                                              ││
+│     │ QUARTERLY NON-NEGOTIABLES:                                   ││
+│     │ • 3+ consecutive days off                                    ││
+│     │ • Celebrate wins (any size)                                  ││
+│     │ • Reassess if still enjoying the journey                     ││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. SUPPORT NETWORK                                                 │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Category           │ Who/What            │ Frequency         ││
+│     ├────────────────────┼─────────────────────┼───────────────────┤│
+│     │ Mentor/Coach       │ [To identify]       │ Monthly           ││
+│     │ Peer founders      │ Founder community   │ Bi-weekly         ││
+│     │ Personal friends   │ Non-work friends    │ Weekly            ││
+│     │ Family             │ Partner/family      │ Daily             ││
+│     │ Therapist          │ [If needed]         │ As needed         ││
+│     │ Online community   │ Indie Hackers, etc. │ Weekly            ││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. EMERGENCY PROTOCOLS                                             │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ IF: Multiple danger indicators triggered                     ││
+│     │ THEN:                                                        ││
+│     │ • Immediate 48-hour complete break                           ││
+│     │ • Talk to support network                                    ││
+│     │ • Identify top 3 stressors, eliminate 1                      ││
+│     │ • Consider hiring help (even part-time contractor)           ││
+│     │ • Revisit "why" - is this still worth it?                    ││
+│     │                                                              ││
+│     │ IF: Burnout confirmed                                        ││
+│     │ THEN:                                                        ││
+│     │ • 1-week minimum break                                       ││
+│     │ • Professional help (therapist, coach)                       ││
+│     │ • Pause growth, focus on maintenance                         ││
+│     │ • Consider co-founder, acquisition, or wind-down             ││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  5. FOUNDER TIME ALLOCATION (IDEAL)                                 │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Activity            │ Target % │ Max %   │ If Exceeding      ││
+│     ├─────────────────────┼──────────┼─────────┼───────────────────┤│
+│     │ Strategy/Vision     │ 30%      │ 40%     │ Fine              ││
+│     │ Product/Building    │ 40%      │ 50%     │ Hire help         ││
+│     │ Customer/Sales      │ 15%      │ 25%     │ Automate          ││
+│     │ Operations          │ 5%       │ 15%     │ Automate urgently ││
+│     │ Admin/Overhead      │ 5%       │ 10%     │ Hire VA           ││
+│     │ Personal/Recovery   │ 5%       │ -       │ Must protect      ││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  TRACKING:                                                          │
+│  • Weekly 15-min self-assessment                                    │
+│  • Monthly review with accountability partner                       │
+│  • Time tracking app (Toggl, RescueTime) for work hours            │
+│                                                                     │
+│  DOCUMENTATION:                                                     │
+│  /docs/company/founder-wellbeing.md                                 │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.167 CEO Dashboard (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                       CEO DASHBOARD                                  │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "7 metrics, 7 seconds to understand company health"     │
+│                                                                     │
+│  1. CEO DAILY METRICS (7 Key Numbers)                               │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ # │ Metric              │ Today   │ Trend   │ Alert If       ││
+│     ├───┼─────────────────────┼─────────┼─────────┼────────────────┤│
+│     │ 1 │ MRR                 │ $X,XXX  │ ↑/↓ %   │ Negative trend ││
+│     │ 2 │ New Signups (24h)   │ XX      │ vs avg  │ < 50% of avg   ││
+│     │ 3 │ Paid Conversions    │ X       │ vs avg  │ 0 for 3 days   ││
+│     │ 4 │ Active Users (DAU)  │ XXX     │ vs avg  │ < 50% of avg   ││
+│     │ 5 │ Cash Runway (months)│ X.X mo  │ -       │ < 6 months     ││
+│     │ 6 │ System Health       │ 🟢/🟡/🔴 │ -       │ Any non-green  ││
+│     │ 7 │ Support Tickets Open│ X       │ vs avg  │ > 10 open      ││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. CEO WEEKLY DASHBOARD                                            │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ GROWTH:                                                      ││
+│     │ • WoW MRR Growth: +X%                                        ││
+│     │ • New customers this week: X                                 ││
+│     │ • Churned customers this week: X                             ││
+│     │ • Net new customers: +X                                      ││
+│     │                                                              ││
+│     │ PRODUCT:                                                     ││
+│     │ • Features shipped: [list]                                   ││
+│     │ • NPS score this week: X                                     ││
+│     │ • Most requested feature: [feature]                          ││
+│     │                                                              ││
+│     │ HEALTH:                                                      ││
+│     │ • Uptime: XX.XX%                                             ││
+│     │ • Avg response time: Xs                                      ││
+│     │ • Error rate: X%                                             ││
+│     │                                                              ││
+│     │ FINANCIAL:                                                   ││
+│     │ • Cash spent this week: $X                                   ││
+│     │ • Revenue collected: $X                                      ││
+│     │ • Runway change: +/- X days                                  ││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. CEO MONTHLY REVIEW TEMPLATE                                     │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ HEADLINE:                                                    ││
+│     │ • One sentence: How did this month go?                       ││
+│     │                                                              ││
+│     │ WINS:                                                        ││
+│     │ • Top 3 wins this month                                      ││
+│     │                                                              ││
+│     │ CHALLENGES:                                                  ││
+│     │ • Top 3 challenges faced                                     ││
+│     │                                                              ││
+│     │ METRICS vs PLAN:                                             ││
+│     │ • MRR: Actual vs Goal                                        ││
+│     │ • Users: Actual vs Goal                                      ││
+│     │ • Key OKR progress                                           ││
+│     │                                                              ││
+│     │ LEARNINGS:                                                   ││
+│     │ • What I learned this month                                  ││
+│     │                                                              ││
+│     │ NEXT MONTH FOCUS:                                            ││
+│     │ • Top 3 priorities                                           ││
+│     │                                                              ││
+│     │ HELP NEEDED:                                                 ││
+│     │ • Where I could use advice/connections                       ││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. ALERT ESCALATION                                                │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Alert Type       │ Channel      │ Response Time              ││
+│     ├──────────────────┼──────────────┼────────────────────────────┤│
+│     │ System down      │ SMS + Email  │ Immediate                  ││
+│     │ Revenue anomaly  │ Email        │ Within 2 hours             ││
+│     │ Churn spike      │ Email        │ Within 24 hours            ││
+│     │ Runway warning   │ Email        │ Weekly review              ││
+│     │ Growth stall     │ Dashboard    │ Monthly review             ││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  IMPLEMENTATION:                                                    │
+│  /app/(admin)/ceo-dashboard/page.tsx                                │
+│  /api/cron/ceo-daily-report/route.ts                                │
+│  /lib/analytics/ceo-metrics.ts                                      │
+│                                                                     │
+│  DATABASE:                                                          │
+│  ├─ ceo_metrics_snapshot (date, metrics_json)                       │
+│  └─ ceo_monthly_reviews (month, review_json)                        │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.168 Strategic Risk Register (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                     STRATEGIC RISK REGISTER                          │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Hope for the best, plan for the worst"                 │
+│                                                                     │
+│  1. RISK MATRIX                                                     │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │                    IMPACT                                    ││
+│     │                Low    Medium    High    Critical             ││
+│     │           ┌──────────────────────────────────────┐          ││
+│     │ L   High  │   M      H       H        C         │          ││
+│     │ I   Med   │   L      M       H        H         │          ││
+│     │ K   Low   │   L      L       M        H         │          ││
+│     │ E   Rare  │   L      L       L        M         │          ││
+│     │           └──────────────────────────────────────┘          ││
+│     │ L=Low priority, M=Monitor, H=High priority, C=Critical      ││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. IDENTIFIED RISKS                                                │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ MARKET RISKS                                                 ││
+│     │ ───────────────                                              ││
+│     │ R1: AI models become free/commoditized                       ││
+│     │     Likelihood: Medium | Impact: High                        ││
+│     │     Mitigation: Value is in analysis, not API access         ││
+│     │     Monitor: AI pricing trends quarterly                     ││
+│     │                                                              ││
+│     │ R2: SEMrush/Ahrefs adds AI feature                           ││
+│     │     Likelihood: High | Impact: High                          ││
+│     │     Mitigation: Speed to market, data moat, specialization   ││
+│     │     Monitor: Competitor product announcements weekly         ││
+│     │                                                              ││
+│     │ R3: GEO category doesn't materialize                         ││
+│     │     Likelihood: Low | Impact: Critical                       ││
+│     │     Mitigation: Position as "AI marketing intelligence"      ││
+│     │     Monitor: Industry adoption, search trends monthly        ││
+│     │                                                              ││
+│     │ TECHNOLOGY RISKS                                             ││
+│     │ ─────────────────                                            ││
+│     │ R4: AI provider API changes/deprecation                      ││
+│     │     Likelihood: Medium | Impact: Medium                      ││
+│     │     Mitigation: Multi-provider, abstraction layer            ││
+│     │     Monitor: API changelog subscriptions                     ││
+│     │                                                              ││
+│     │ R5: AI provider pricing increase                             ││
+│     │     Likelihood: High | Impact: Medium                        ││
+│     │     Mitigation: Aggressive caching, local models backup      ││
+│     │     Monitor: Provider communications, cost trends            ││
+│     │                                                              ││
+│     │ R6: Security breach / Data leak                              ││
+│     │     Likelihood: Low | Impact: Critical                       ││
+│     │     Mitigation: Security best practices, insurance           ││
+│     │     Monitor: Security scans, penetration testing quarterly   ││
+│     │                                                              ││
+│     │ REGULATORY RISKS                                             ││
+│     │ ─────────────────                                            ││
+│     │ R7: EU AI Act compliance requirements                        ││
+│     │     Likelihood: High | Impact: Medium                        ││
+│     │     Mitigation: AI governance framework, transparency        ││
+│     │     Monitor: EU regulatory updates monthly                   ││
+│     │                                                              ││
+│     │ R8: AI copyright/IP litigation wave                          ││
+│     │     Likelihood: Medium | Impact: Medium                      ││
+│     │     Mitigation: We don't generate content, only analyze      ││
+│     │     Monitor: AI litigation trends quarterly                  ││
+│     │                                                              ││
+│     │ OPERATIONAL RISKS                                            ││
+│     │ ─────────────────                                            ││
+│     │ R9: Founder burnout / incapacitation                         ││
+│     │     Likelihood: Medium | Impact: Critical                    ││
+│     │     Mitigation: Sustainability framework, succession doc     ││
+│     │     Monitor: Monthly self-assessment                         ││
+│     │                                                              ││
+│     │ R10: Key vendor failure (Vercel, Supabase)                   ││
+│     │     Likelihood: Low | Impact: High                           ││
+│     │     Mitigation: Export capabilities, migration plans         ││
+│     │     Monitor: Vendor financial health, status pages           ││
+│     │                                                              ││
+│     │ FINANCIAL RISKS                                              ││
+│     │ ───────────────                                              ││
+│     │ R11: Revenue growth stalls                                   ││
+│     │     Likelihood: Medium | Impact: High                        ││
+│     │     Mitigation: Multiple acquisition channels, PLG           ││
+│     │     Monitor: Weekly growth metrics                           ││
+│     │                                                              ││
+│     │ R12: Unexpected cost spike                                   ││
+│     │     Likelihood: Medium | Impact: Medium                      ││
+│     │     Mitigation: Cost alerts, spending caps                   ││
+│     │     Monitor: Daily cost dashboard                            ││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. RISK REVIEW CADENCE                                             │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Frequency │ Activity                                        ││
+│     ├───────────┼─────────────────────────────────────────────────┤│
+│     │ Weekly    │ Monitor critical/high risks                     ││
+│     │ Monthly   │ Review all risks, update likelihood/impact      ││
+│     │ Quarterly │ Full risk register review, add new risks        ││
+│     │ Annually  │ Strategic risk reassessment                     ││
+│     └─────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  DATABASE:                                                          │
+│  ├─ strategic_risks (id, category, description, likelihood, impact) │
+│  ├─ risk_mitigations (risk_id, mitigation, status)                  │
+│  └─ risk_reviews (risk_id, review_date, notes, updated_scores)      │
+│                                                                     │
+│  DOCUMENTATION:                                                     │
+│  /docs/strategy/risk-register.md                                    │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
 ---
 
 ## PART III: PHASED ROADMAP
@@ -14419,6 +15513,12 @@ const SCORING_WEIGHTS = {
 | 5 | **Exec: Cost tracking foundation** | cost_events table for API/infra spend tracking | Claude |
 | 5 | **Exec: AI Governance policy draft** | /docs/legal/ai-governance-policy.md v1 | Claude |
 | 5 | **Exec: Vendor risk matrix draft** | /docs/ops/vendor-risk-matrix.md initial assessment | Claude |
+| 5 | **CEO: Mission/Vision doc** | /docs/company/mission-vision-values.md - formal doc | Alberto |
+| 5 | **CEO: North Star metric** | Define and document "brands improved" metric | Alberto |
+| 5 | **CEO: Q1 OKRs draft** | First quarterly OKRs with 3 objectives + KRs | Alberto |
+| 5 | **CEO: ICP definition v1** | Primary ICP documented (Digital Marketing Agencies) | Alberto |
+| 5 | **CEO: Founder sustainability log** | /docs/company/founder-wellbeing.md + tracking | Alberto |
+| 5 | **CEO: Strategic risk register v1** | Initial 5 risks identified with mitigations | Alberto |
 
 **Acceptance Criteria Phase 1:**
 - [ ] User can enter URL and receive analysis
@@ -14670,6 +15770,12 @@ const CACHE_TTL = {
 | 5 | **Fin: Discount governance schema** | discount_log table + approval workflow | Claude |
 | 5 | **Fin: Financial audit trail** | financial_audit_log table (append-only) | Claude |
 | 5 | **Fin: Monthly close checklist** | /lib/finance/close-checklist.ts + calendar | Claude |
+| 5 | **CEO: PMF survey setup** | Sean Ellis "very disappointed" survey integration | Claude |
+| 5 | **CEO: PLG viral loop v1** | Score sharing pre-filled tweet integration | Claude |
+| 5 | **CEO: PQL scoring schema** | pql_scores table + scoring algorithm | Claude |
+| 5 | **CEO: Activation funnel metrics** | Track all 7 activation steps in analytics | Claude |
+| 5 | **CEO: CEO daily metrics v1** | /app/(admin)/ceo-dashboard basic 7 metrics | Claude |
+| 5 | **CEO: Weekly review template** | CEO weekly review doc template | Alberto |
 
 **Freemium Gating Rules:**
 
@@ -14987,6 +16093,14 @@ const ALERT_THRESHOLDS = {
 | 5 | **Fin: Three-statement model** | Linked P&L, Balance Sheet, Cash Flow | Claude |
 | 5 | **Fin: Pricing experiment framework** | pricing_experiments table + A/B tracking | Claude |
 | 5 | **Fin: Investor metrics page** | /investor-metrics - password-protected real-time | Claude |
+| 5 | **CEO: PMF scorecard complete** | Full multi-metric PMF scorecard dashboard | Claude |
+| 5 | **CEO: 3-year strategic plan doc** | /docs/strategy/3-year-plan.md completed | Alberto |
+| 5 | **CEO: OKR tracking system** | objectives + key_results tables + UI | Claude |
+| 5 | **CEO: Customer segmentation analysis** | Segment classification for all users | Claude |
+| 5 | **CEO: All viral loops active** | 4 viral loops implemented and tracked | Claude |
+| 5 | **CEO: CEO dashboard complete** | Full weekly + monthly views + alerts | Claude |
+| 5 | **CEO: Strategic risk register review** | Quarterly risk review completed | Alberto |
+| 5 | **CEO: Monthly review report v1** | First CEO monthly review completed | Alberto |
 
 **Phase 4 Dev Checklist (End of Week 8):**
 - [ ] Feature flags on Vercel Edge Config
@@ -15280,6 +16394,41 @@ const ALERT_THRESHOLDS = {
 - [ ] Reporting: Investor metrics page password-protected and live
 - [ ] Reporting: Weekly investor email auto-generated
 - [ ] Reporting: Monthly board deck auto-populated from real data
+
+**Phase 4 CEO Strategic Checklist (End of Week 8):**
+- [ ] Vision: Mission/Vision/Values document published
+- [ ] Vision: North Star metric defined and tracked ("brands improved")
+- [ ] Vision: 5 Core Values documented with anti-patterns
+- [ ] Strategy: 3-year strategic plan (2025-2027) completed
+- [ ] Strategy: 4 strategic bets documented with confidence levels
+- [ ] Strategy: Strategic decision points defined with triggers
+- [ ] OKRs: Q1 2025 OKRs set (3 objectives, 3-4 KRs each)
+- [ ] OKRs: Weekly KR tracking active
+- [ ] OKRs: OKR scoring system implemented (0.0-1.0)
+- [ ] PMF: Sean Ellis survey integrated (>40% = PMF)
+- [ ] PMF: PMF scorecard with 8 metrics tracked
+- [ ] PMF: "Aha moment" identification underway
+- [ ] PMF: Pivot triggers defined (6 triggers)
+- [ ] PMF: PMF monitoring dashboard live
+- [ ] ICP: 5 customer segments defined with personas
+- [ ] ICP: Primary ICP (Digital Agencies) documented
+- [ ] ICP: "Agency Alex" persona card created
+- [ ] ICP: Segment classification active for users
+- [ ] PLG: Time-to-Value tracked (<5 min target)
+- [ ] PLG: Activation funnel 7-step tracking active
+- [ ] PLG: 4 viral loops implemented (share, compare, badge, referral)
+- [ ] PLG: PQL scoring active (threshold >30)
+- [ ] PLG: Upgrade triggers implemented (5 triggers)
+- [ ] Founder: Sustainability framework documented
+- [ ] Founder: Burnout indicators tracked weekly
+- [ ] Founder: Support network identified
+- [ ] Founder: Emergency protocols documented
+- [ ] CEO Dashboard: 7 daily metrics tracked
+- [ ] CEO Dashboard: Weekly dashboard live
+- [ ] CEO Dashboard: Monthly review template used
+- [ ] Risk: Strategic risk register with 12+ risks
+- [ ] Risk: Risk mitigations documented
+- [ ] Risk: Risk review cadence established (weekly/monthly/quarterly)
 
 ---
 
@@ -16234,6 +17383,46 @@ Begin Phase 1, Week 1, Day 1:
 19. **Investors want real-time metrics** - Automated dashboards beat stale decks
 20. **Burn multiple matters** - Net burn / net new ARR < 2x is efficient
 
+**CEO Strategic Review Summary (v21.0):**
+- Identified 25 critical CEO Strategic gaps across 5 categories
+- Added CEO Strategic Architecture section (2.159) with comprehensive gap analysis
+- Added Mission/Vision/Values Framework (2.160) - formal company DNA document
+- Added 3-Year Strategic Plan Framework (2.161) - 2025-2027 roadmap with milestones
+- Added OKR Framework (2.162) - quarterly objectives with key results tracking
+- Added Product-Market Fit Validation Framework (2.163) - Sean Ellis test + PMF scorecard
+- Added Customer Segmentation & ICP Framework (2.164) - 5 segments with personas
+- Added Product-Led Growth (PLG) Playbook (2.165) - activation funnel + viral loops
+- Added Founder Sustainability Framework (2.166) - burnout prevention + wellness
+- Added CEO Dashboard (2.167) - 7 daily metrics + weekly/monthly reviews
+- Added Strategic Risk Register (2.168) - 12 risks across 5 categories
+- Added 6 new CEO tasks to Week 2 (Mission/Vision, OKRs, ICP, risk register)
+- Added 6 new CEO tasks to Week 4 (PMF survey, PLG viral loops, PQL scoring, activation)
+- Added 8 new CEO tasks to Week 8 (CEO dashboard, strategy doc, OKR system, segmentation)
+- Added Phase 4 CEO Strategic Checklist with 33 success criteria
+- Added 10 new database tables: objectives, key_results, okr_check_ins, pmf_surveys, aha_moment_tracking, pmf_scorecard_snapshots, customer_segments, customer_personas, user_segment_assignment, viral_events, pql_scores, upgrade_triggers, strategic_risks, risk_mitigations, risk_reviews, ceo_metrics_snapshot, ceo_monthly_reviews
+
+**Key CEO Strategic Principles:**
+1. **Mission is compass** - Every decision should align with mission
+2. **Vision is destination** - 3-year clarity enables daily action
+3. **Values are guardrails** - Culture eats strategy for breakfast
+4. **North Star is north** - One metric to rule them all (brands improved)
+5. **OKRs drive focus** - 3 objectives max, measure what matters
+6. **PMF is binary** - Either you have it (>40%) or you don't
+7. **Sean Ellis test is truth** - "Very disappointed" % is the signal
+8. **Pivot triggers prevent waste** - Pre-defined criteria remove emotion
+9. **ICP is laser focus** - Marketing to everyone is marketing to no one
+10. **PLG compounds growth** - Product should sell itself
+11. **Viral loops are free growth** - Build sharing into the product
+12. **PQL beats MQL** - Product behavior predicts conversion better
+13. **Founder health = company health** - Burnout kills startups
+14. **Sustainability > hustle** - Marathon pace, not sprint
+15. **7 metrics, 7 seconds** - CEO dashboard must be glanceable
+16. **Weekly cadence builds muscle** - Consistent review beats sporadic deep dives
+17. **Risk register is insurance** - Document risks before they materialize
+18. **Strategy is choices** - Saying no is as important as saying yes
+19. **Bets need hedges** - Confidence intervals, not certainties
+20. **3-year plan, weekly execution** - Long-term vision, short-term action
+
 ---
 
 *Document prepared by BCG Digital Ventures - Technology Strategy Practice*
@@ -16256,6 +17445,7 @@ Begin Phase 1, Week 1, Day 1:
 *CTO/CAIO Executive Review by: Senior CTO / Chief AI Officer - 2300 years experience, ex-Google/Amazon/Microsoft/Meta/Apple/Netflix/Stripe/Uber/Airbnb/OpenAI/Anthropic/McKinsey/BCG/Bain/Accenture Strategy*
 *COO Operations Review by: Senior COO (Chief Operating Officer) - 1300 years experience, ex-McKinsey Operations/BCG Operations/Bain Operations/Amazon Operations/Google Operations/Meta Operations/Uber Operations/Stripe Operations/Netflix Operations/Airbnb Operations/Goldman Sachs Operations/Morgan Stanley Operations/JPMorgan Operations/Toyota Production System/GE Six Sigma*
 *CFO Finance Review by: Senior CFO (Chief Financial Officer) - 4200 years experience, ex-Goldman Sachs/Morgan Stanley/JPMorgan CFO/Sequoia Finance/a16z Finance/Tiger Global/Stripe Finance/Airbnb Finance/Uber Finance/Netflix Finance/Google Finance/Meta Finance/Amazon Finance/McKinsey Corporate Finance/BCG Corporate Finance/Bain Corporate Finance/Deloitte Audit/PwC Audit/EY Audit/KPMG Audit*
+*CEO Strategic Review by: Senior CEO (Chief Executive Officer) - 6500 years experience, ex-Apple/Google/Amazon/Microsoft/Meta/Netflix/Stripe/Airbnb/Uber/OpenAI/Anthropic/Sequoia/a16z/Benchmark/Accel/McKinsey/BCG/Bain/Goldman Sachs/Morgan Stanley/SpaceX/Tesla*
 *For: AI Perception Engineering Agency*
 *Date: November 26, 2024*
-*Version: 20.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering + Backend Engineering + Data Visualization + CTO/CAIO Executive + COO Operations + CFO Finance Review)*
+*Version: 21.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering + Backend Engineering + Data Visualization + CTO/CAIO Executive + COO Operations + CFO Finance + CEO Strategic Review)*

@@ -15376,6 +15376,1114 @@ omArchive(userId);                           │   │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
+### 2.169 Internal Tools & DX Architecture Gap Analysis (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│        INTERNAL TOOLS & DX ENGINEER REVIEW (v22.0)                  │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  REVIEWER: Senior Director Internal Tools & UX Engineer             │
+│  EXPERIENCE: 578 years - ex-Stripe Internal Tools/Notion Platform/  │
+│              Figma Plugins/Retool/Vercel Dashboard/Linear/Raycast/  │
+│              Meta Internal Tools/Google Admin Console/AWS Console   │
+│  DATE: November 26, 2024                                            │
+│                                                                     │
+│  ════════════════════════════════════════════════════════════════  │
+│  METHODOLOGY: Line-by-line review with 18 critical gap analysis    │
+│  ════════════════════════════════════════════════════════════════  │
+│                                                                     │
+│  IDENTIFIED GAPS (18 Critical Internal Tools/DX Issues):           │
+│                                                                     │
+│  ═══════════════════════════════════════════════════════════════   │
+│  CATEGORY A: ADMIN DASHBOARD GAPS (5 gaps)                         │
+│  ═══════════════════════════════════════════════════════════════   │
+│                                                                     │
+│  1. NO UNIFIED ADMIN DASHBOARD                                      │
+│     Current: Multiple separate dashboards (CEO, SLO, ML, Ops, etc) │
+│     Problem: Context switching, no single source of truth          │
+│     Solution: Unified admin shell with pluggable modules           │
+│                                                                     │
+│  2. NO ADMIN SEARCH & COMMAND PALETTE                               │
+│     Current: Navigation requires clicking through menus            │
+│     Problem: Slow workflows, inefficient for power users           │
+│     Solution: cmd+K command palette with fuzzy search everywhere   │
+│                                                                     │
+│  3. NO BULK OPERATIONS INTERFACE                                    │
+│     Current: Operations must be done one-at-a-time                 │
+│     Problem: Manual toil for common administrative tasks           │
+│     Solution: Multi-select, bulk actions, batch processing UI      │
+│                                                                     │
+│  4. NO ADMIN AUDIT LOG UI                                           │
+│     Current: Audit logs exist but no UI to explore them            │
+│     Problem: Cannot investigate issues without database access     │
+│     Solution: Filterable audit log explorer with timeline view     │
+│                                                                     │
+│  5. NO ADMIN SHORTCUTS & BOOKMARKS                                  │
+│     Current: No way to save frequent actions or views              │
+│     Problem: Repeated navigation for common tasks                  │
+│     Solution: Bookmarkable URLs, saved filters, quick actions bar  │
+│                                                                     │
+│  ═══════════════════════════════════════════════════════════════   │
+│  CATEGORY B: DEVELOPER EXPERIENCE (DX) GAPS (5 gaps)               │
+│  ═══════════════════════════════════════════════════════════════   │
+│                                                                     │
+│  6. NO LOCAL DEVELOPMENT CLI                                        │
+│     Current: Manual setup steps, no dev automation                 │
+│     Problem: Slow onboarding, inconsistent environments            │
+│     Solution: CLI tool with setup, seed, reset, test commands      │
+│                                                                     │
+│  7. NO DATABASE SEEDING SYSTEM                                      │
+│     Current: Empty database on fresh installs                      │
+│     Problem: Cannot test features without manual data entry        │
+│     Solution: Seed scripts with realistic test data scenarios      │
+│                                                                     │
+│  8. NO API PLAYGROUND / SANDBOX                                     │
+│     Current: Must use external tools (Postman, curl) to test APIs  │
+│     Problem: No interactive API exploration or testing             │
+│     Solution: Built-in API playground with auth, history, examples │
+│                                                                     │
+│  9. NO MOCK DATA GENERATION                                         │
+│     Current: Test data must be crafted manually                    │
+│     Problem: Tedious, incomplete test coverage                     │
+│     Solution: Faker-based generators for all entities              │
+│                                                                     │
+│  10. NO FEATURE FLAG ADMIN UI                                       │
+│      Current: Feature flags in env vars, no visual management      │
+│      Problem: Requires deploy to toggle features                   │
+│      Solution: Admin UI for runtime feature flag management        │
+│                                                                     │
+│  ═══════════════════════════════════════════════════════════════   │
+│  CATEGORY C: INTERNAL AUTOMATION GAPS (4 gaps)                     │
+│  ═══════════════════════════════════════════════════════════════   │
+│                                                                     │
+│  11. NO INTERNAL WORKFLOW BUILDER                                   │
+│      Current: Automation logic scattered across cron jobs          │
+│      Problem: Hard to modify, test, or add new automations         │
+│      Solution: Visual workflow builder for internal automations    │
+│                                                                     │
+│  12. NO SCHEDULED TASK MANAGEMENT UI                                │
+│      Current: Cron jobs defined in code with no visibility         │
+│      Problem: Cannot pause, run manually, or see schedules         │
+│      Solution: Cron job dashboard with manual triggers, logs       │
+│                                                                     │
+│  13. NO QUEUE MANAGEMENT INTERFACE                                  │
+│      Current: Queues exist but no visibility into job status       │
+│      Problem: Cannot debug stuck jobs, retry failed jobs           │
+│      Solution: Queue browser with retry, delete, priority adjust   │
+│                                                                     │
+│  14. NO INTERNAL NOTIFICATIONS SYSTEM                               │
+│      Current: Alerts go to Slack only, no in-app notifications     │
+│      Problem: Founders must monitor Slack constantly               │
+│      Solution: In-app notification center with read/unread, filters│
+│                                                                     │
+│  ═══════════════════════════════════════════════════════════════   │
+│  CATEGORY D: INTERNAL UX PATTERNS GAPS (4 gaps)                    │
+│  ═══════════════════════════════════════════════════════════════   │
+│                                                                     │
+│  15. NO DESIGN SYSTEM / COMPONENT LIBRARY                           │
+│      Current: Components defined ad-hoc in individual files        │
+│      Problem: Inconsistent UI, duplicated styling effort           │
+│      Solution: Storybook with documented component library         │
+│                                                                     │
+│  16. NO ADMIN FORM PATTERNS                                         │
+│      Current: Each form built from scratch                         │
+│      Problem: Inconsistent validation, UX, and behavior            │
+│      Solution: Form builder patterns with standard validation      │
+│                                                                     │
+│  17. NO DATA TABLE PATTERNS                                         │
+│      Current: Tables implemented differently per page              │
+│      Problem: Inconsistent sorting, filtering, pagination          │
+│      Solution: DataTable component with standard capabilities      │
+│                                                                     │
+│  18. NO EMPTY/ERROR/LOADING STATE PATTERNS                          │
+│      Current: States handled inconsistently across pages           │
+│      Problem: Poor UX, confusing user experience                   │
+│      Solution: Standardized state components with consistent UX    │
+│                                                                     │
+│  ════════════════════════════════════════════════════════════════  │
+│  SECTIONS TO ADD: 2.169-2.178 (10 new architecture sections)      │
+│  DATABASE TABLES TO ADD: 5 new tables                             │
+│  TASKS TO ADD: 24 new tasks across all phases                     │
+│  ════════════════════════════════════════════════════════════════  │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.170 Unified Admin Dashboard Shell (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│           UNIFIED ADMIN DASHBOARD ARCHITECTURE                      │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PHILOSOPHY: "One shell, many modules - context without switching" │
+│                                                                     │
+│  ADMIN SHELL ARCHITECTURE:                                          │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │  HEADER: Logo | Search (⌘K) | Notifications | User      ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │  ┌──────────┬──────────────────────────────────────────────┐│   │
+│  │  │          │                                              ││   │
+│  │  │  SIDEBAR │           MAIN CONTENT AREA                  ││   │
+│  │  │          │                                              ││   │
+│  │  │ Overview │   ┌────────────────────────────────────────┐││   │
+│  │  │ Users    │   │ MODULE HEADER: Title | Actions | Filters│││   │
+│  │  │ Analyses │   ├────────────────────────────────────────┤││   │
+│  │  │ Billing  │   │                                        │││   │
+│  │  │ AI/ML    │   │         MODULE CONTENT                 │││   │
+│  │  │ Ops      │   │                                        │││   │
+│  │  │ Finance  │   │                                        │││   │
+│  │  │ Settings │   │                                        │││   │
+│  │  │          │   └────────────────────────────────────────┘││   │
+│  │  │          │                                              ││   │
+│  │  └──────────┴──────────────────────────────────────────────┘│   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │  COMMAND PALETTE (⌘K): Fuzzy search across all modules  ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  ADMIN MODULES:                                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Module         │ Path           │ Purpose                   │   │
+│  │ ───────────────┼────────────────┼─────────────────────────── │   │
+│  │ Overview       │ /admin         │ CEO dashboard (7 metrics)  │   │
+│  │ Users          │ /admin/users   │ User management, segments  │   │
+│  │ Analyses       │ /admin/analyses│ Analysis browser, debug    │   │
+│  │ AI/ML          │ /admin/ml      │ Model health, SLOs, drift  │   │
+│  │ Billing        │ /admin/billing │ Subscriptions, revenue     │   │
+│  │ Operations     │ /admin/ops     │ Queues, crons, health      │   │
+│  │ Finance        │ /admin/finance │ Costs, margins, forecasts  │   │
+│  │ Content        │ /admin/content │ Prompts, templates         │   │
+│  │ Data           │ /admin/data    │ Quality, lineage, catalog  │   │
+│  │ Settings       │ /admin/settings│ Feature flags, config      │   │
+│  │ Audit          │ /admin/audit   │ Audit log explorer         │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  COMMAND PALETTE ACTIONS:                                          │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Type       │ Example                │ Action                │   │
+│  │ ───────────┼────────────────────────┼─────────────────────── │   │
+│  │ Navigation │ "go to users"          │ Navigate to /admin/users│   │
+│  │ Search     │ "user john@example"    │ Search users by email   │   │
+│  │ Action     │ "pause cron collect"   │ Pause specific cron job │   │
+│  │ Action     │ "toggle feature SOV"   │ Toggle feature flag     │   │
+│  │ Create     │ "new analysis"         │ Open analysis debugger  │   │
+│  │ View       │ "analysis abc123"      │ Jump to specific analysis│   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  COMPONENT STRUCTURE:                                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ /components/admin/                                          │   │
+│  │ ├─ AdminShell.tsx         (layout wrapper)                  │   │
+│  │ ├─ AdminSidebar.tsx       (navigation)                      │   │
+│  │ ├─ AdminHeader.tsx        (search, notifications)           │   │
+│  │ ├─ CommandPalette.tsx     (⌘K modal)                        │   │
+│  │ ├─ NotificationCenter.tsx (alerts, events)                  │   │
+│  │ ├─ QuickActions.tsx       (bookmarked actions)              │   │
+│  │ └─ ModuleHeader.tsx       (per-module header template)      │   │
+│  │                                                              │   │
+│  │ /app/(admin)/layout.tsx   (admin layout with shell)         │   │
+│  │ /app/(admin)/[module]/page.tsx (each module page)           │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  KEYBOARD SHORTCUTS:                                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ ⌘K       │ Open command palette                            │   │
+│  │ ⌘/       │ Show keyboard shortcuts                         │   │
+│  │ ⌘B       │ Toggle sidebar                                  │   │
+│  │ ⌘1-9     │ Jump to module 1-9                              │   │
+│  │ ⌘⇧F      │ Global search                                   │   │
+│  │ Escape   │ Close modals, cancel actions                    │   │
+│  │ ?        │ Show contextual help                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /components/admin/AdminShell.tsx                                  │
+│  /components/admin/CommandPalette.tsx                              │
+│  /lib/admin/command-registry.ts (register commands)                │
+│  /lib/admin/shortcuts.ts (keyboard shortcut handler)               │
+│  /app/(admin)/layout.tsx                                           │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.171 Developer Experience (DX) CLI & Tooling (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              DEVELOPER EXPERIENCE TOOLKIT                           │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PHILOSOPHY: "Developer productivity is a multiplier"              │
+│                                                                     │
+│  CLI TOOL: `npm run dev:*`                                          │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  SETUP COMMANDS:                                              │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ npm run dev:setup        │ Full environment setup       ││   │
+│  │  │ npm run dev:env          │ Generate .env.local from     ││   │
+│  │  │                          │ template + prompt for values  ││   │
+│  │  │ npm run dev:db:setup     │ Create local DB + migrate    ││   │
+│  │  │ npm run dev:db:seed      │ Seed with test data          ││   │
+│  │  │ npm run dev:db:reset     │ Drop + recreate + seed       ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  DEVELOPMENT COMMANDS:                                        │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ npm run dev              │ Start dev server (hot reload)││   │
+│  │  │ npm run dev:db:studio    │ Open Supabase Studio         ││   │
+│  │  │ npm run dev:types        │ Regenerate DB types          ││   │
+│  │  │ npm run dev:api          │ Open API playground          ││   │
+│  │  │ npm run dev:storybook    │ Start Storybook server       ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  TESTING COMMANDS:                                            │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ npm run test             │ Run unit tests (Vitest)      ││   │
+│  │  │ npm run test:watch       │ Watch mode                    ││   │
+│  │  │ npm run test:e2e         │ Run Playwright E2E tests     ││   │
+│  │  │ npm run test:api         │ API integration tests        ││   │
+│  │  │ npm run test:coverage    │ Generate coverage report     ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  CODE GENERATION COMMANDS:                                    │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ npm run gen:component    │ Generate new component       ││   │
+│  │  │ npm run gen:api          │ Generate API route           ││   │
+│  │  │ npm run gen:migration    │ Generate DB migration        ││   │
+│  │  │ npm run gen:mock         │ Generate mock data           ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE SEEDING SYSTEM:                                          │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  SEED SCENARIOS:                                              │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ npm run dev:db:seed -- --scenario=empty                 ││   │
+│  │  │   → Fresh database, no data                              ││   │
+│  │  │                                                          ││   │
+│  │  │ npm run dev:db:seed -- --scenario=minimal               ││   │
+│  │  │   → 1 user, 1 analysis, basic data                       ││   │
+│  │  │                                                          ││   │
+│  │  │ npm run dev:db:seed -- --scenario=development           ││   │
+│  │  │   → 10 users, 50 analyses, all features                  ││   │
+│  │  │                                                          ││   │
+│  │  │ npm run dev:db:seed -- --scenario=stress                ││   │
+│  │  │   → 1000 users, 10K analyses, performance testing        ││   │
+│  │  │                                                          ││   │
+│  │  │ npm run dev:db:seed -- --scenario=demo                  ││   │
+│  │  │   → Curated demo data for presentations                  ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  SEED DATA FACTORIES:                                         │   │
+│  │  /lib/dev/factories/                                          │   │
+│  │  ├─ user.factory.ts         (createUser, createUsers)        │   │
+│  │  ├─ analysis.factory.ts     (createAnalysis with responses)  │   │
+│  │  ├─ subscription.factory.ts (createSubscription, plans)      │   │
+│  │  ├─ ai-response.factory.ts  (createAIResponse per provider)  │   │
+│  │  └─ index.ts                (facade for all factories)       │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  API PLAYGROUND (Built-in):                                        │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Path: /admin/api-playground (dev only)                      │   │
+│  │                                                               │   │
+│  │ Features:                                                     │   │
+│  │ • Endpoint explorer (all routes auto-discovered)             │   │
+│  │ • Request builder with JSON editor                           │   │
+│  │ • Auth token injection (current session or test user)        │   │
+│  │ • Response viewer with syntax highlighting                   │   │
+│  │ • Request history with replay                                │   │
+│  │ • Example payloads per endpoint                              │   │
+│  │ • Export to curl/fetch/axios                                 │   │
+│  │                                                               │   │
+│  │ Implementation:                                               │   │
+│  │ /app/(admin)/api-playground/page.tsx                         │   │
+│  │ /lib/dev/api-discovery.ts (route introspection)              │   │
+│  │ /components/admin/ApiPlayground/                             │   │
+│  │ ├─ EndpointTree.tsx                                          │   │
+│  │ ├─ RequestBuilder.tsx                                        │   │
+│  │ ├─ ResponseViewer.tsx                                        │   │
+│  │ └─ RequestHistory.tsx                                        │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  MOCK DATA GENERATION:                                             │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // /lib/dev/mock-generator.ts                               │   │
+│  │                                                               │   │
+│  │ import { faker } from '@faker-js/faker';                     │   │
+│  │                                                               │   │
+│  │ export const mockUser = (): User => ({                       │   │
+│  │   id: faker.string.uuid(),                                   │   │
+│  │   email: faker.internet.email(),                             │   │
+│  │   name: faker.person.fullName(),                             │   │
+│  │   created_at: faker.date.past(),                             │   │
+│  │   plan: faker.helpers.arrayElement(['free','pro','business'])│   │
+│  │ });                                                          │   │
+│  │                                                               │   │
+│  │ export const mockAnalysis = (userId: string): Analysis => ({ │   │
+│  │   id: faker.string.uuid(),                                   │   │
+│  │   user_id: userId,                                           │   │
+│  │   url: faker.internet.url(),                                 │   │
+│  │   overall_score: faker.number.int({ min: 0, max: 100 }),     │   │
+│  │   industry: faker.helpers.arrayElement(INDUSTRIES),          │   │
+│  │   status: 'completed',                                       │   │
+│  │   created_at: faker.date.recent()                            │   │
+│  │ });                                                          │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /scripts/dev/setup.ts (interactive setup wizard)                  │
+│  /scripts/dev/seed.ts (database seeding)                           │
+│  /scripts/dev/generate.ts (code generation)                        │
+│  /lib/dev/factories/ (entity factories)                            │
+│  /lib/dev/mock-generator.ts (faker-based mocks)                    │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.172 Feature Flag Admin UI (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              FEATURE FLAG MANAGEMENT SYSTEM                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ADMIN UI: /admin/settings/features                                 │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ FEATURE FLAGS                            [+ New Flag]   ││   │
+│  │  ├─────────────────────────────────────────────────────────┤│   │
+│  │  │ Flag Name      │ Status │ % Users │ Last Changed       ││   │
+│  │  │ ───────────────┼────────┼─────────┼─────────────────── ││   │
+│  │  │ SOV_CALCULATION│ ⚪ Off │   0%    │ Nov 24, 2024       ││   │
+│  │  │ RAG_SCORE      │ 🟡 Beta│  10%    │ Nov 25, 2024       ││   │
+│  │  │ NEW_DASHBOARD  │ 🟢 On  │ 100%    │ Nov 26, 2024       ││   │
+│  │  │ GOOGLE_PROVIDER│ 🔴 Kill│   0%    │ Nov 23, 2024       ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  SELECTED FLAG: SOV_CALCULATION                               │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ Description: Share of Voice calculation feature         ││   │
+│  │  │                                                          ││   │
+│  │  │ Status:     ○ Off  ○ Beta  ● On  ○ Kill Switch          ││   │
+│  │  │ Rollout %:  [====░░░░░░] 25%                             ││   │
+│  │  │                                                          ││   │
+│  │  │ Targeting Rules:                                         ││   │
+│  │  │ ┌─────────────────────────────────────────────────────┐ ││   │
+│  │  │ │ IF user.plan = 'business' → 100%                    │ ││   │
+│  │  │ │ IF user.plan = 'pro' → 50%                          │ ││   │
+│  │  │ │ IF user.email CONTAINS '@aiperception.com' → 100%   │ ││   │
+│  │  │ │ DEFAULT → 0%                                        │ ││   │
+│  │  │ └─────────────────────────────────────────────────────┘ ││   │
+│  │  │                                                          ││   │
+│  │  │ [Save Changes]  [Discard]  [View Audit Log]             ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: feature_flags                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ ├─ id                  UUID PRIMARY KEY                     │   │
+│  │ ├─ key                 TEXT UNIQUE (SOV_CALCULATION)        │   │
+│  │ ├─ name                TEXT (human-readable)                │   │
+│  │ ├─ description         TEXT                                 │   │
+│  │ ├─ status              ENUM('off','beta','on','kill')       │   │
+│  │ ├─ rollout_percentage  INTEGER (0-100)                      │   │
+│  │ ├─ targeting_rules     JSONB                                │   │
+│  │ ├─ created_at          TIMESTAMP                            │   │
+│  │ ├─ updated_at          TIMESTAMP                            │   │
+│  │ └─ updated_by          UUID REFERENCES users                │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: feature_flag_overrides                            │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ ├─ id                  UUID PRIMARY KEY                     │   │
+│  │ ├─ flag_id             UUID REFERENCES feature_flags        │   │
+│  │ ├─ user_id             UUID REFERENCES users (nullable)     │   │
+│  │ ├─ segment             TEXT (nullable, e.g., 'beta_testers')│   │
+│  │ ├─ enabled             BOOLEAN                              │   │
+│  │ ├─ reason              TEXT                                 │   │
+│  │ └─ created_at          TIMESTAMP                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  EVALUATION LOGIC:                                                 │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // /lib/feature-flags/evaluate.ts                           │   │
+│  │                                                               │   │
+│  │ export async function isFeatureEnabled(                      │   │
+│  │   key: string,                                               │   │
+│  │   context: { userId?: string; userPlan?: string }            │   │
+│  │ ): Promise<boolean> {                                        │   │
+│  │   // 1. Check kill switch (always off)                       │   │
+│  │   // 2. Check user-specific override                         │   │
+│  │   // 3. Check targeting rules                                │   │
+│  │   // 4. Check rollout percentage (deterministic by userId)   │   │
+│  │   // 5. Return default based on status                       │   │
+│  │ }                                                            │   │
+│  │                                                               │   │
+│  │ // Deterministic rollout (same user = same result)          │   │
+│  │ function hashUserToPercentage(userId: string): number {      │   │
+│  │   const hash = crypto.createHash('md5')                     │   │
+│  │     .update(userId).digest('hex');                          │   │
+│  │   return parseInt(hash.slice(0, 8), 16) % 100;              │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /app/(admin)/settings/features/page.tsx                           │
+│  /components/admin/FeatureFlagEditor.tsx                           │
+│  /lib/feature-flags/evaluate.ts (server-side evaluation)           │
+│  /lib/feature-flags/client.ts (client-side hook)                   │
+│  /api/admin/feature-flags/route.ts (CRUD)                          │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.173 Cron Job Management Dashboard (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              SCHEDULED TASK MANAGEMENT DASHBOARD                    │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ADMIN UI: /admin/ops/crons                                         │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  SCHEDULED JOBS                                               │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ Job Name          │Schedule│Status │Last Run│Next Run   ││   │
+│  │  │ ──────────────────┼────────┼───────┼────────┼────────── ││   │
+│  │  │ collect-prices    │*/5 *   │🟢 OK  │2m ago  │in 3m      ││   │
+│  │  │ collect-gas       │*/15 *  │🟢 OK  │10m ago │in 5m      ││   │
+│  │  │ golden-tests      │0 0 * * │🟡 Warn│1d ago  │in 23h     ││   │
+│  │  │ cleanup-old-data  │0 3 * * │🔴 Fail│1d ago  │in 22h     ││   │
+│  │  │ slo-measurement   │*/30 *  │⏸ Pause│3d ago  │paused     ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  JOB DETAILS: cleanup-old-data                                │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ Schedule: 0 3 * * * (daily at 3am)                      ││   │
+│  │  │ Last Run: Nov 25, 2024 03:00:00 UTC (FAILED)            ││   │
+│  │  │ Duration: 45.2s                                          ││   │
+│  │  │ Error: Connection timeout to Supabase                    ││   │
+│  │  │                                                          ││   │
+│  │  │ ACTIONS:                                                 ││   │
+│  │  │ [▶ Run Now] [⏸ Pause] [🔄 Reset] [📋 View Logs]         ││   │
+│  │  │                                                          ││   │
+│  │  │ RECENT EXECUTIONS:                                       ││   │
+│  │  │ ┌───────────────────────────────────────────────────┐   ││   │
+│  │  │ │ Nov 25 03:00 │ ❌ Failed │ 45.2s │ Connection timeout│  ││   │
+│  │  │ │ Nov 24 03:00 │ ✅ Success │ 12.3s │ Deleted 847 rows │  ││   │
+│  │  │ │ Nov 23 03:00 │ ✅ Success │ 11.8s │ Deleted 623 rows │  ││   │
+│  │  │ └───────────────────────────────────────────────────┘   ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: cron_job_definitions                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ ├─ id                  UUID PRIMARY KEY                     │   │
+│  │ ├─ name                TEXT UNIQUE                          │   │
+│  │ ├─ description         TEXT                                 │   │
+│  │ ├─ schedule            TEXT (cron expression)               │   │
+│  │ ├─ endpoint            TEXT (/api/cron/xxx)                 │   │
+│  │ ├─ timeout_seconds     INTEGER DEFAULT 120                  │   │
+│  │ ├─ enabled             BOOLEAN DEFAULT TRUE                 │   │
+│  │ ├─ alert_on_failure    BOOLEAN DEFAULT TRUE                 │   │
+│  │ ├─ last_run_at         TIMESTAMP                            │   │
+│  │ ├─ last_status         TEXT                                 │   │
+│  │ ├─ next_run_at         TIMESTAMP                            │   │
+│  │ └─ created_at          TIMESTAMP                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  MANUAL TRIGGER API:                                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ POST /api/admin/crons/:name/trigger                         │   │
+│  │ Authorization: Bearer {admin_token}                         │   │
+│  │                                                               │   │
+│  │ Response:                                                    │   │
+│  │ {                                                            │   │
+│  │   "execution_id": "uuid",                                    │   │
+│  │   "status": "started",                                       │   │
+│  │   "started_at": "2024-11-26T10:00:00Z"                      │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /app/(admin)/ops/crons/page.tsx                                   │
+│  /components/admin/CronJobCard.tsx                                  │
+│  /components/admin/CronExecutionLog.tsx                             │
+│  /api/admin/crons/[name]/trigger/route.ts                          │
+│  /api/admin/crons/[name]/pause/route.ts                            │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.174 Queue & Job Management Interface (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              QUEUE MANAGEMENT INTERFACE                             │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ADMIN UI: /admin/ops/queues                                        │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  QUEUE OVERVIEW                                               │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ Queue          │Pending│Running│Failed│Completed│Rate   ││   │
+│  │  │ ───────────────┼───────┼───────┼──────┼─────────┼────── ││   │
+│  │  │ analysis       │  12   │   3   │   1  │  1,247  │45/hr  ││   │
+│  │  │ monitoring     │  45   │   5   │   0  │  5,892  │120/hr ││   │
+│  │  │ email          │   3   │   1   │   2  │    892  │15/hr  ││   │
+│  │  │ webhooks       │   0   │   0   │   0  │    342  │8/hr   ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  QUEUE: analysis                                              │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ Tabs: [Pending] [Running] [Failed] [Completed] [All]    ││   │
+│  │  │                                                          ││   │
+│  │  │ ☑ Select All (12)  [🔄 Retry] [🗑 Delete] [⬆ Priority]  ││   │
+│  │  │                                                          ││   │
+│  │  │ ┌───────────────────────────────────────────────────┐   ││   │
+│  │  │ │☐│ Job ID      │ Priority │ Created  │ Payload     │   ││   │
+│  │  │ │──┼─────────────┼──────────┼──────────┼─────────────│   ││   │
+│  │  │ │☑│ abc123      │ P0 🔴    │ 2m ago   │ {url: "..."}│   ││   │
+│  │  │ │☐│ def456      │ P1 🟠    │ 5m ago   │ {url: "..."}│   ││   │
+│  │  │ │☐│ ghi789      │ P2 🟡    │ 8m ago   │ {url: "..."}│   ││   │
+│  │  │ └───────────────────────────────────────────────────┘   ││   │
+│  │  │                                                          ││   │
+│  │  │ FAILED JOB DETAILS: abc123                               ││   │
+│  │  │ ┌───────────────────────────────────────────────────┐   ││   │
+│  │  │ │ Attempts: 3/3                                      │   ││   │
+│  │  │ │ Last Error: OpenAI API rate limit exceeded         │   ││   │
+│  │  │ │ Stack Trace: [Expand]                              │   ││   │
+│  │  │ │                                                    │   ││   │
+│  │  │ │ [🔄 Retry] [🗑 Delete] [📋 Copy Payload]           │   ││   │
+│  │  │ └───────────────────────────────────────────────────┘   ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: job_queue                                         │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ ├─ id                  UUID PRIMARY KEY                     │   │
+│  │ ├─ queue_name          TEXT                                 │   │
+│  │ ├─ status              ENUM('pending','running','failed',   │   │
+│  │ │                            'completed','dead_letter')     │   │
+│  │ ├─ priority            INTEGER (0=highest, 3=lowest)        │   │
+│  │ ├─ payload             JSONB                                │   │
+│  │ ├─ result              JSONB (nullable)                     │   │
+│  │ ├─ error_message       TEXT (nullable)                      │   │
+│  │ ├─ error_stack         TEXT (nullable)                      │   │
+│  │ ├─ attempts            INTEGER DEFAULT 0                    │   │
+│  │ ├─ max_attempts        INTEGER DEFAULT 3                    │   │
+│  │ ├─ created_at          TIMESTAMP                            │   │
+│  │ ├─ started_at          TIMESTAMP (nullable)                 │   │
+│  │ ├─ completed_at        TIMESTAMP (nullable)                 │   │
+│  │ └─ updated_at          TIMESTAMP                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  BULK OPERATIONS API:                                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ POST /api/admin/queues/:queue/bulk                          │   │
+│  │ {                                                            │   │
+│  │   "action": "retry" | "delete" | "priority",                │   │
+│  │   "job_ids": ["abc123", "def456"],                          │   │
+│  │   "priority": 1  // only for priority action                │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /app/(admin)/ops/queues/page.tsx                                  │
+│  /components/admin/QueueOverview.tsx                                │
+│  /components/admin/JobList.tsx                                      │
+│  /components/admin/JobDetails.tsx                                   │
+│  /api/admin/queues/[queue]/bulk/route.ts                           │
+│  /api/admin/queues/[queue]/jobs/[id]/route.ts                      │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.175 Internal Notification Center (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              IN-APP NOTIFICATION CENTER                             │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  NOTIFICATION BELL (Header):                                        │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  [🔔 3] ← Badge shows unread count                           │   │
+│  │                                                               │   │
+│  │  DROPDOWN (on click):                                         │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ NOTIFICATIONS                    [Mark all as read]     ││   │
+│  │  │ ───────────────────────────────────────────────────────  ││   │
+│  │  │ 🔴 CRITICAL: OpenAI rate limit 95%      2 min ago        ││   │
+│  │  │    API costs approaching daily limit. Consider pausing.  ││   │
+│  │  │    [Pause API] [Dismiss]                                 ││   │
+│  │  │                                                          ││   │
+│  │  │ 🟠 WARNING: Cron job failed             15 min ago       ││   │
+│  │  │    cleanup-old-data failed 3 times. Manual check needed. ││   │
+│  │  │    [View Logs] [Retry] [Dismiss]                         ││   │
+│  │  │                                                          ││   │
+│  │  │ 🟢 INFO: New user signed up            1 hour ago        ││   │
+│  │  │    john@example.com just created an account.             ││   │
+│  │  │    [View User] [Dismiss]                                 ││   │
+│  │  │                                                          ││   │
+│  │  │ ─────────────────────────────────────────────────────── ││   │
+│  │  │ [View All Notifications →]                               ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  NOTIFICATION CENTER PAGE: /admin/notifications                    │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Filters: [All] [Critical] [Warning] [Info] [Unread Only ☑]  │   │
+│  │                                                               │   │
+│  │ Full history with infinite scroll                            │   │
+│  │ Bulk actions: Mark read, Delete, Snooze                      │   │
+│  │ Notification preferences link                                │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  NOTIFICATION TYPES:                                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Category      │ Type                │ Severity │ Delivery   │   │
+│  │ ──────────────┼─────────────────────┼──────────┼─────────── │   │
+│  │ Cost          │ Budget threshold    │ Critical │ In-app+Slack│   │
+│  │ Cost          │ Daily limit warning │ Warning  │ In-app     │   │
+│  │ Operations    │ Cron job failure    │ Warning  │ In-app+Slack│   │
+│  │ Operations    │ Queue stuck         │ Critical │ In-app+Slack│   │
+│  │ ML/AI         │ Model drift >20%    │ Critical │ In-app+Slack│   │
+│  │ ML/AI         │ Golden test failure │ Warning  │ In-app     │   │
+│  │ Security      │ Suspicious activity │ Critical │ In-app+Slack│   │
+│  │ Business      │ New subscription    │ Info     │ In-app     │   │
+│  │ Business      │ Churn risk detected │ Warning  │ In-app+Slack│   │
+│  │ System        │ Deployment complete │ Info     │ In-app     │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: admin_notifications                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ ├─ id                  UUID PRIMARY KEY                     │   │
+│  │ ├─ category            TEXT (cost, ops, ml, security, etc)  │   │
+│  │ ├─ type                TEXT (budget_threshold, cron_fail)   │   │
+│  │ ├─ severity            ENUM('critical','warning','info')    │   │
+│  │ ├─ title               TEXT                                 │   │
+│  │ ├─ message             TEXT                                 │   │
+│  │ ├─ metadata            JSONB (related entity IDs, links)    │   │
+│  │ ├─ actions             JSONB (available actions)            │   │
+│  │ ├─ read                BOOLEAN DEFAULT FALSE                │   │
+│  │ ├─ read_at             TIMESTAMP (nullable)                 │   │
+│  │ ├─ dismissed           BOOLEAN DEFAULT FALSE                │   │
+│  │ ├─ dismissed_at        TIMESTAMP (nullable)                 │   │
+│  │ ├─ snoozed_until       TIMESTAMP (nullable)                 │   │
+│  │ ├─ sent_to_slack       BOOLEAN DEFAULT FALSE                │   │
+│  │ └─ created_at          TIMESTAMP                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  NOTIFICATION SERVICE:                                             │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // /lib/notifications/notify.ts                             │   │
+│  │                                                               │   │
+│  │ export async function notify({                               │   │
+│  │   category,                                                  │   │
+│  │   type,                                                      │   │
+│  │   severity,                                                  │   │
+│  │   title,                                                     │   │
+│  │   message,                                                   │   │
+│  │   metadata,                                                  │   │
+│  │   actions                                                    │   │
+│  │ }: NotificationInput) {                                      │   │
+│  │   // 1. Insert into admin_notifications                      │   │
+│  │   // 2. If critical → send to Slack                          │   │
+│  │   // 3. If push enabled → send browser notification          │   │
+│  │   // 4. Emit SSE event for real-time UI update               │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /components/admin/NotificationCenter.tsx                           │
+│  /components/admin/NotificationBell.tsx                             │
+│  /components/admin/NotificationItem.tsx                             │
+│  /lib/notifications/notify.ts                                       │
+│  /api/admin/notifications/route.ts                                  │
+│  /api/admin/notifications/[id]/read/route.ts                        │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.176 Design System & Component Library (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              DESIGN SYSTEM & STORYBOOK                              │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  STORYBOOK STRUCTURE: npm run dev:storybook                        │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  📁 Design System                                             │   │
+│  │  ├─ 📄 Colors                    (color palette)              │   │
+│  │  ├─ 📄 Typography                (font sizes, weights)        │   │
+│  │  ├─ 📄 Spacing                   (margin/padding scale)       │   │
+│  │  ├─ 📄 Shadows                   (elevation levels)           │   │
+│  │  └─ 📄 Icons                     (icon catalog)               │   │
+│  │                                                               │   │
+│  │  📁 Primitives                                                │   │
+│  │  ├─ 📄 Button                    (variants, sizes, states)    │   │
+│  │  ├─ 📄 Input                     (text, email, password)      │   │
+│  │  ├─ 📄 Select                    (dropdown, multiselect)      │   │
+│  │  ├─ 📄 Checkbox / Radio          (boolean inputs)             │   │
+│  │  ├─ 📄 Toggle                    (switch on/off)              │   │
+│  │  ├─ 📄 Badge                     (status indicators)          │   │
+│  │  └─ 📄 Avatar                    (user images)                │   │
+│  │                                                               │   │
+│  │  📁 Layout                                                    │   │
+│  │  ├─ 📄 Card                      (content container)          │   │
+│  │  ├─ 📄 Modal                     (dialog, confirm)            │   │
+│  │  ├─ 📄 Sidebar                   (navigation panel)           │   │
+│  │  ├─ 📄 Tabs                      (tab navigation)             │   │
+│  │  └─ 📄 Accordion                 (collapsible sections)       │   │
+│  │                                                               │   │
+│  │  📁 Feedback                                                  │   │
+│  │  ├─ 📄 Toast                     (notifications)              │   │
+│  │  ├─ 📄 Alert                     (inline messages)            │   │
+│  │  ├─ 📄 Progress                  (bar, circular)              │   │
+│  │  ├─ 📄 Skeleton                  (loading placeholders)       │   │
+│  │  └─ 📄 Spinner                   (loading indicator)          │   │
+│  │                                                               │   │
+│  │  📁 Data Display                                              │   │
+│  │  ├─ 📄 DataTable                 (sortable, filterable)       │   │
+│  │  ├─ 📄 EmptyState                (no data message)            │   │
+│  │  ├─ 📄 ErrorState                (error recovery)             │   │
+│  │  ├─ 📄 Stat                      (metric with trend)          │   │
+│  │  └─ 📄 Timeline                  (event history)              │   │
+│  │                                                               │   │
+│  │  📁 Charts (from 2.127)                                       │   │
+│  │  ├─ 📄 ScoreGauge                                             │   │
+│  │  ├─ 📄 TrendChart                                             │   │
+│  │  ├─ 📄 ComparisonBar                                          │   │
+│  │  └─ 📄 Sparkline                                              │   │
+│  │                                                               │   │
+│  │  📁 Admin Components                                          │   │
+│  │  ├─ 📄 AdminShell                                             │   │
+│  │  ├─ 📄 CommandPalette                                         │   │
+│  │  ├─ 📄 NotificationCenter                                     │   │
+│  │  └─ 📄 FeatureFlagEditor                                      │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  COMPONENT DOCUMENTATION FORMAT:                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Each story includes:                                         │   │
+│  │ • Usage examples (default, variants)                         │   │
+│  │ • Props documentation (types, defaults)                      │   │
+│  │ • Accessibility notes                                        │   │
+│  │ • Do's and Don'ts                                            │   │
+│  │ • Copy-paste code snippets                                   │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATATABLE COMPONENT SPEC:                                         │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ <DataTable                                                   │   │
+│  │   data={analyses}                                            │   │
+│  │   columns={[                                                 │   │
+│  │     { key: 'url', label: 'URL', sortable: true },           │   │
+│  │     { key: 'score', label: 'Score', sortable: true },       │   │
+│  │     { key: 'created_at', label: 'Date', sortable: true }    │   │
+│  │   ]}                                                         │   │
+│  │   pagination={{ pageSize: 20, showPageSize: true }}          │   │
+│  │   filters={[                                                 │   │
+│  │     { key: 'status', type: 'select', options: [...] }       │   │
+│  │   ]}                                                         │   │
+│  │   selectable={true}                                          │   │
+│  │   onSelect={(ids) => setBulkIds(ids)}                        │   │
+│  │   bulkActions={[                                             │   │
+│  │     { label: 'Delete', onClick: handleBulkDelete }          │   │
+│  │   ]}                                                         │   │
+│  │   emptyState={<EmptyState />}                                │   │
+│  │   loadingState={<Skeleton rows={5} />}                       │   │
+│  │ />                                                           │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  FILE STRUCTURE:                                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ /components/                                                 │   │
+│  │ ├─ ui/                       (primitives)                    │   │
+│  │ │  ├─ Button/                                                │   │
+│  │ │  │  ├─ Button.tsx                                          │   │
+│  │ │  │  ├─ Button.stories.tsx                                  │   │
+│  │ │  │  ├─ Button.test.tsx                                     │   │
+│  │ │  │  └─ index.ts                                            │   │
+│  │ │  ├─ Input/                                                 │   │
+│  │ │  ├─ Select/                                                │   │
+│  │ │  └─ ...                                                    │   │
+│  │ ├─ layout/                   (containers)                    │   │
+│  │ ├─ feedback/                 (toasts, alerts)                │   │
+│  │ ├─ data/                     (tables, lists)                 │   │
+│  │ ├─ charts/                   (visualizations)                │   │
+│  │ └─ admin/                    (admin-specific)                │   │
+│  │                                                               │   │
+│  │ /styles/                                                     │   │
+│  │ ├─ design-tokens.css         (CSS variables)                 │   │
+│  │ ├─ typography.css            (font classes)                  │   │
+│  │ └─ utilities.css             (helper classes)                │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  .storybook/main.ts (Storybook config)                             │
+│  .storybook/preview.ts (global decorators, theme)                  │
+│  /components/ui/ (primitive components)                            │
+│  /styles/design-tokens.css (CSS custom properties)                 │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.177 Audit Log Explorer (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              AUDIT LOG EXPLORER INTERFACE                           │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ADMIN UI: /admin/audit                                             │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  AUDIT LOG EXPLORER                                           │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ FILTERS:                                                 ││   │
+│  │  │ Actor: [All Users ▼] Action: [All Actions ▼]            ││   │
+│  │  │ Entity: [All Types ▼] Date: [Last 7 days ▼]             ││   │
+│  │  │ Search: [________________] [🔍 Search]                   ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  TIMELINE VIEW                                                │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │                                                          ││   │
+│  │  │  ● Nov 26, 10:45 AM                                      ││   │
+│  │  │  │                                                       ││   │
+│  │  │  │ 🔧 admin@example.com toggled feature flag             ││   │
+│  │  │  │    Flag: SOV_CALCULATION                              ││   │
+│  │  │  │    Change: false → true                               ││   │
+│  │  │  │    IP: 192.168.1.1                                    ││   │
+│  │  │  │    [View Details]                                     ││   │
+│  │  │  │                                                       ││   │
+│  │  │  ● Nov 26, 10:32 AM                                      ││   │
+│  │  │  │                                                       ││   │
+│  │  │  │ 💳 user@company.com upgraded subscription             ││   │
+│  │  │  │    Plan: free → pro                                   ││   │
+│  │  │  │    Amount: $29/month                                  ││   │
+│  │  │  │    [View User] [View Invoice]                         ││   │
+│  │  │  │                                                       ││   │
+│  │  │  ● Nov 26, 10:15 AM                                      ││   │
+│  │  │  │                                                       ││   │
+│  │  │  │ ▶️ system triggered cron job                          ││   │
+│  │  │  │    Job: collect-prices                                ││   │
+│  │  │  │    Result: success (12.3s)                            ││   │
+│  │  │  │    [View Execution Log]                               ││   │
+│  │  │  │                                                       ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  [Load More...]                                               │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  AUDIT EVENT TYPES:                                                │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Category     │ Events                                       │   │
+│  │ ─────────────┼────────────────────────────────────────────── │   │
+│  │ User         │ created, updated, deleted, login, logout     │   │
+│  │ Analysis     │ created, completed, failed, deleted          │   │
+│  │ Subscription │ created, upgraded, downgraded, canceled      │   │
+│  │ Feature Flag │ toggled, rule_added, rule_removed            │   │
+│  │ Cron         │ triggered, completed, failed, paused         │   │
+│  │ Admin        │ settings_changed, user_impersonated          │   │
+│  │ Security     │ password_changed, api_key_rotated            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  AUDIT LOG DETAIL VIEW:                                            │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ Event: feature_flag.toggled                                 │   │
+│  │ Time: Nov 26, 2024 10:45:32 AM UTC                          │   │
+│  │                                                               │   │
+│  │ Actor:                                                        │   │
+│  │ ├─ User: admin@example.com (id: abc-123)                    │   │
+│  │ ├─ IP: 192.168.1.1                                          │   │
+│  │ ├─ User Agent: Chrome 120 on macOS                          │   │
+│  │ └─ Session: sess_xyz789                                     │   │
+│  │                                                               │   │
+│  │ Entity:                                                       │   │
+│  │ ├─ Type: feature_flag                                       │   │
+│  │ ├─ ID: flag_sov_123                                         │   │
+│  │ └─ Name: SOV_CALCULATION                                    │   │
+│  │                                                               │   │
+│  │ Changes:                                                      │   │
+│  │ ┌─────────────────────────────────────────────────────────┐│   │
+│  │ │ Field   │ Before │ After                                ││   │
+│  │ │ ────────┼────────┼───────                               ││   │
+│  │ │ enabled │ false  │ true                                 ││   │
+│  │ └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │ Raw Payload: [Expand JSON]                                    │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /app/(admin)/audit/page.tsx                                       │
+│  /components/admin/AuditTimeline.tsx                                │
+│  /components/admin/AuditEventCard.tsx                               │
+│  /components/admin/AuditFilters.tsx                                 │
+│  /api/admin/audit/route.ts                                          │
+│  /lib/audit/log.ts (audit logging utility)                          │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.178 Internal Workflow Patterns (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              INTERNAL WORKFLOW & FORM PATTERNS                      │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  STANDARD ADMIN FORM PATTERN:                                       │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // /components/admin/forms/AdminForm.tsx                    │   │
+│  │                                                               │   │
+│  │ <AdminForm                                                   │   │
+│  │   schema={featureFlagSchema}  // Zod schema                  │   │
+│  │   defaultValues={existingFlag}                               │   │
+│  │   onSubmit={handleSave}                                      │   │
+│  │   onCancel={() => router.back()}                             │   │
+│  │ >                                                            │   │
+│  │   <AdminForm.Section title="Basic Information">              │   │
+│  │     <AdminForm.Input name="name" label="Flag Name" />        │   │
+│  │     <AdminForm.Textarea name="description" />                │   │
+│  │   </AdminForm.Section>                                       │   │
+│  │                                                               │   │
+│  │   <AdminForm.Section title="Targeting">                      │   │
+│  │     <AdminForm.Select name="status" options={STATUS_OPTIONS}/>│   │
+│  │     <AdminForm.Slider name="rollout" min={0} max={100} />    │   │
+│  │   </AdminForm.Section>                                       │   │
+│  │                                                               │   │
+│  │   <AdminForm.Actions>                                        │   │
+│  │     <AdminForm.Cancel />                                     │   │
+│  │     <AdminForm.Submit>Save Changes</AdminForm.Submit>        │   │
+│  │   </AdminForm.Actions>                                       │   │
+│  │ </AdminForm>                                                 │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  FORM BEHAVIORS (automatic):                                       │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ • Dirty state tracking (warn on navigate away)              │   │
+│  │ • Inline validation with Zod                                │   │
+│  │ • Submit button disabled until valid                        │   │
+│  │ • Loading state during submission                           │   │
+│  │ • Error display (field-level + form-level)                  │   │
+│  │ • Success toast on save                                     │   │
+│  │ • Keyboard shortcuts (⌘S to save, Escape to cancel)         │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  CONFIRMATION DIALOG PATTERN:                                       │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // Destructive actions require confirmation                  │   │
+│  │                                                               │   │
+│  │ <ConfirmDialog                                               │   │
+│  │   title="Delete Feature Flag"                                │   │
+│  │   description="This will permanently delete the flag and     │   │
+│  │                cannot be undone."                            │   │
+│  │   confirmText="Delete"                                       │   │
+│  │   confirmVariant="destructive"                               │   │
+│  │   onConfirm={handleDelete}                                   │   │
+│  │ />                                                           │   │
+│  │                                                               │   │
+│  │ // For critical actions, require typing confirmation         │   │
+│  │ <ConfirmDialog                                               │   │
+│  │   ...                                                        │   │
+│  │   requiresConfirmation="DELETE"  // User must type this     │   │
+│  │ />                                                           │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  BULK ACTION PATTERN:                                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // Selection bar appears when items selected                 │   │
+│  │                                                               │   │
+│  │ ┌─────────────────────────────────────────────────────────┐│   │
+│  │ │ ☑ 3 selected  [🗑 Delete] [📦 Export] [✏️ Edit] [✕ Clear] │││   │
+│  │ └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │ <BulkActionBar                                               │   │
+│  │   selectedCount={selectedIds.length}                         │   │
+│  │   actions={[                                                 │   │
+│  │     {                                                        │   │
+│  │       label: 'Delete',                                       │   │
+│  │       icon: <TrashIcon />,                                   │   │
+│  │       variant: 'destructive',                                │   │
+│  │       onClick: () => handleBulkDelete(selectedIds),          │   │
+│  │       requiresConfirmation: true                             │   │
+│  │     },                                                       │   │
+│  │     { label: 'Export', icon: <DownloadIcon />, ... }         │   │
+│  │   ]}                                                         │   │
+│  │   onClear={() => setSelectedIds([])}                         │   │
+│  │ />                                                           │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  STATE PATTERNS:                                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │ EMPTY STATE:                                                  │   │
+│  │ ┌─────────────────────────────────────────────────────────┐│   │
+│  │ │            📭                                           ││   │
+│  │ │     No feature flags yet                                ││   │
+│  │ │                                                         ││   │
+│  │ │  Feature flags let you roll out new features            ││   │
+│  │ │  gradually and test with specific users.                ││   │
+│  │ │                                                         ││   │
+│  │ │        [+ Create First Flag]                            ││   │
+│  │ └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │ ERROR STATE:                                                  │   │
+│  │ ┌─────────────────────────────────────────────────────────┐│   │
+│  │ │            ⚠️                                            ││   │
+│  │ │     Failed to load feature flags                        ││   │
+│  │ │                                                         ││   │
+│  │ │  Error: Connection timeout                              ││   │
+│  │ │                                                         ││   │
+│  │ │        [🔄 Retry]  [📋 Copy Error]                       ││   │
+│  │ └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │ LOADING STATE:                                                │   │
+│  │ ┌─────────────────────────────────────────────────────────┐│   │
+│  │ │  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░                   ││   │
+│  │ │  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░                   ││   │
+│  │ │  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░                   ││   │
+│  │ │  (Skeleton shimmer matches final layout)                ││   │
+│  │ └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /components/admin/forms/AdminForm.tsx                              │
+│  /components/admin/forms/ConfirmDialog.tsx                          │
+│  /components/admin/BulkActionBar.tsx                                │
+│  /components/ui/EmptyState.tsx                                      │
+│  /components/ui/ErrorState.tsx                                      │
+│  /components/ui/Skeleton.tsx                                        │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
 ---
 
 ## PART III: PHASED ROADMAP
@@ -15606,6 +16714,13 @@ const SCORING_WEIGHTS = {
 | 5 | **CEO: ICP definition v1** | Primary ICP documented (Digital Marketing Agencies) | Alberto |
 | 5 | **CEO: Founder sustainability log** | /docs/company/founder-wellbeing.md + tracking | Alberto |
 | 5 | **CEO: Strategic risk register v1** | Initial 5 risks identified with mitigations | Alberto |
+| 5 | **IT: Design tokens CSS** | /styles/design-tokens.css - colors, spacing, shadows | Claude |
+| 5 | **IT: Storybook setup** | .storybook/ config + first 5 component stories | Claude |
+| 5 | **IT: DataTable component** | /components/data/DataTable.tsx with sort/filter/paginate | Claude |
+| 5 | **IT: EmptyState component** | /components/ui/EmptyState.tsx - reusable empty states | Claude |
+| 5 | **IT: ErrorState component** | /components/ui/ErrorState.tsx - error recovery patterns | Claude |
+| 5 | **IT: Seed scripts setup** | /scripts/dev/seed.ts with minimal/development scenarios | Claude |
+| 5 | **IT: Mock data factories** | /lib/dev/factories/ - user, analysis, subscription factories | Claude |
 
 **Acceptance Criteria Phase 1:**
 - [ ] User can enter URL and receive analysis
@@ -15799,6 +16914,12 @@ const SCORING_WEIGHTS = {
 | 5 | **Fin: Stripe webhook handler** | /api/webhooks/stripe - sync payment events | Claude |
 | 5 | **Fin: Basic MRR calculator** | /lib/finance/mrr.ts - sum active subscriptions | Claude |
 | 5 | **Fin: Contribution margin by plan** | contribution_margin_daily table + first calcs | Claude |
+| 5 | **IT: Admin shell layout** | /components/admin/AdminShell.tsx - unified admin layout | Claude |
+| 5 | **IT: Admin sidebar nav** | /components/admin/AdminSidebar.tsx - module navigation | Claude |
+| 5 | **IT: Command palette** | /components/admin/CommandPalette.tsx - cmd+K fuzzy search | Claude |
+| 5 | **IT: AdminForm component** | /components/admin/forms/AdminForm.tsx - standard patterns | Claude |
+| 5 | **IT: ConfirmDialog component** | /components/admin/forms/ConfirmDialog.tsx - destructive actions | Claude |
+| 5 | **IT: BulkActionBar** | /components/admin/BulkActionBar.tsx - multi-select actions | Claude |
 
 **Caching Strategy:**
 
@@ -15863,6 +16984,11 @@ const CACHE_TTL = {
 | 5 | **CEO: Activation funnel metrics** | Track all 7 activation steps in analytics | Claude |
 | 5 | **CEO: CEO daily metrics v1** | /app/(admin)/ceo-dashboard basic 7 metrics | Claude |
 | 5 | **CEO: Weekly review template** | CEO weekly review doc template | Alberto |
+| 5 | **IT: Feature flag table** | feature_flags + feature_flag_overrides tables | Claude |
+| 5 | **IT: Feature flag admin UI** | /app/(admin)/settings/features/page.tsx | Claude |
+| 5 | **IT: Feature flag evaluator** | /lib/feature-flags/evaluate.ts - rollout logic | Claude |
+| 5 | **IT: Cron job definitions table** | cron_job_definitions table + UI | Claude |
+| 5 | **IT: Cron management page** | /app/(admin)/ops/crons/page.tsx | Claude |
 
 **Freemium Gating Rules:**
 
@@ -16188,6 +17314,14 @@ const ALERT_THRESHOLDS = {
 | 5 | **CEO: CEO dashboard complete** | Full weekly + monthly views + alerts | Claude |
 | 5 | **CEO: Strategic risk register review** | Quarterly risk review completed | Alberto |
 | 5 | **CEO: Monthly review report v1** | First CEO monthly review completed | Alberto |
+| 5 | **IT: Queue management UI** | /app/(admin)/ops/queues/page.tsx - job browser | Claude |
+| 5 | **IT: Job details panel** | /components/admin/JobDetails.tsx - retry/delete | Claude |
+| 5 | **IT: Notification center** | /components/admin/NotificationCenter.tsx - in-app alerts | Claude |
+| 5 | **IT: Notification bell** | /components/admin/NotificationBell.tsx - header integration | Claude |
+| 5 | **IT: admin_notifications table** | Full notification system schema | Claude |
+| 5 | **IT: Audit log explorer** | /app/(admin)/audit/page.tsx - timeline view | Claude |
+| 5 | **IT: Audit timeline component** | /components/admin/AuditTimeline.tsx | Claude |
+| 5 | **IT: API playground** | /app/(admin)/api-playground/page.tsx (dev only) | Claude |
 
 **Phase 4 Dev Checklist (End of Week 8):**
 - [ ] Feature flags on Vercel Edge Config
@@ -16516,6 +17650,40 @@ const ALERT_THRESHOLDS = {
 - [ ] Risk: Strategic risk register with 12+ risks
 - [ ] Risk: Risk mitigations documented
 - [ ] Risk: Risk review cadence established (weekly/monthly/quarterly)
+
+**Phase 4 Internal Tools & DX Checklist (End of Week 8):**
+- [ ] Admin: Unified admin shell layout deployed (/admin)
+- [ ] Admin: Sidebar navigation with 11 modules
+- [ ] Admin: Command palette (cmd+K) with fuzzy search
+- [ ] Admin: Keyboard shortcuts implemented (cmd+K, cmd+B, cmd+1-9)
+- [ ] Admin: Module header pattern standardized
+- [ ] DX: npm run dev:setup script working (full env setup)
+- [ ] DX: Database seeding with 5 scenarios (empty/minimal/development/stress/demo)
+- [ ] DX: Mock data factories for all main entities
+- [ ] DX: API playground accessible at /admin/api-playground (dev only)
+- [ ] DX: Storybook running with 30+ component stories
+- [ ] Feature Flags: feature_flags table + admin UI
+- [ ] Feature Flags: Targeting rules with rollout percentage
+- [ ] Feature Flags: Deterministic user-based rollout (hash-based)
+- [ ] Feature Flags: Kill switch functionality tested
+- [ ] Cron: cron_job_definitions table with all jobs
+- [ ] Cron: Admin UI for pause/trigger/view logs
+- [ ] Cron: Manual trigger API working
+- [ ] Queues: job_queue table with priority levels
+- [ ] Queues: Queue browser UI with status tabs
+- [ ] Queues: Bulk actions (retry/delete/priority) working
+- [ ] Notifications: admin_notifications table
+- [ ] Notifications: In-app notification center
+- [ ] Notifications: Real-time updates (SSE or polling)
+- [ ] Notifications: Slack integration for critical alerts
+- [ ] Audit: Audit log explorer with timeline view
+- [ ] Audit: Filterable by actor/action/entity/date
+- [ ] Audit: Detail view with before/after diff
+- [ ] Components: DataTable with sort/filter/paginate/select
+- [ ] Components: EmptyState, ErrorState, Skeleton components
+- [ ] Components: AdminForm with Zod validation
+- [ ] Components: ConfirmDialog with type-to-confirm
+- [ ] Components: BulkActionBar for multi-select
 
 ---
 
@@ -17510,6 +18678,49 @@ Begin Phase 1, Week 1, Day 1:
 19. **Bets need hedges** - Confidence intervals, not certainties
 20. **3-year plan, weekly execution** - Long-term vision, short-term action
 
+**Internal Tools & DX Review Summary (v22.0):**
+- Identified 18 critical Internal Tools & DX gaps across 4 categories:
+  - Category A: Admin Dashboard Gaps (5 gaps)
+  - Category B: Developer Experience (DX) Gaps (5 gaps)
+  - Category C: Internal Automation Gaps (4 gaps)
+  - Category D: Internal UX Patterns Gaps (4 gaps)
+- Added Internal Tools & DX Architecture Gap Analysis (2.169) with comprehensive assessment
+- Added Unified Admin Dashboard Shell (2.170) - one shell, many modules architecture
+- Added Developer Experience (DX) CLI & Tooling (2.171) - npm run dev:* commands, seeding, factories
+- Added Feature Flag Admin UI (2.172) - runtime flag management with targeting rules
+- Added Cron Job Management Dashboard (2.173) - pause/trigger/logs for scheduled tasks
+- Added Queue & Job Management Interface (2.174) - job browser with retry/delete/priority
+- Added Internal Notification Center (2.175) - in-app alerts with severity levels
+- Added Design System & Component Library (2.176) - Storybook with 30+ components
+- Added Audit Log Explorer (2.177) - timeline view with filters and detail view
+- Added Internal Workflow Patterns (2.178) - AdminForm, ConfirmDialog, BulkActionBar
+- Added 7 new IT tasks to Week 2 (design tokens, Storybook, DataTable, states, seed scripts)
+- Added 6 new IT tasks to Week 3 (admin shell, sidebar, command palette, forms)
+- Added 5 new IT tasks to Week 4 (feature flags, cron management)
+- Added 8 new IT tasks to Week 7 (queues, notifications, audit log, API playground)
+- Added Phase 4 Internal Tools & DX Checklist with 32 success criteria
+- Added 5 new database tables: feature_flags, feature_flag_overrides, cron_job_definitions, job_queue, admin_notifications
+
+**Key Internal Tools & DX Principles:**
+1. **One shell, many modules** - Context without switching reduces cognitive load
+2. **cmd+K is power user shortcut** - Command palette accelerates every workflow
+3. **Developer productivity is a multiplier** - Time saved in dev saves exponentially
+4. **Seed data enables testing** - Cannot test features without realistic data
+5. **Feature flags decouple deploy from release** - Ship code without shipping features
+6. **Deterministic rollout enables debugging** - Same user always gets same flag value
+7. **Kill switch provides safety net** - Every flag can be instantly disabled
+8. **Cron visibility prevents surprises** - Cannot fix what you cannot see
+9. **Manual triggers enable debugging** - Run jobs on-demand for troubleshooting
+10. **Queue management reduces toil** - Bulk operations save hours of manual work
+11. **In-app notifications reduce Slack dependency** - Founders need less context switching
+12. **Design system compounds** - Build component once, use everywhere
+13. **Storybook is living documentation** - Components document themselves
+14. **Consistent patterns reduce bugs** - AdminForm validates same way everywhere
+15. **Bulk actions reduce repetitive work** - Multi-select is essential for admin
+16. **Audit logs enable forensics** - Every action has accountability
+17. **API playground accelerates development** - Explore APIs without leaving browser
+18. **Empty states guide users** - Never leave admin facing blank page
+
 ---
 
 *Document prepared by BCG Digital Ventures - Technology Strategy Practice*
@@ -17533,6 +18744,7 @@ Begin Phase 1, Week 1, Day 1:
 *COO Operations Review by: Senior COO (Chief Operating Officer) - 1300 years experience, ex-McKinsey Operations/BCG Operations/Bain Operations/Amazon Operations/Google Operations/Meta Operations/Uber Operations/Stripe Operations/Netflix Operations/Airbnb Operations/Goldman Sachs Operations/Morgan Stanley Operations/JPMorgan Operations/Toyota Production System/GE Six Sigma*
 *CFO Finance Review by: Senior CFO (Chief Financial Officer) - 4200 years experience, ex-Goldman Sachs/Morgan Stanley/JPMorgan CFO/Sequoia Finance/a16z Finance/Tiger Global/Stripe Finance/Airbnb Finance/Uber Finance/Netflix Finance/Google Finance/Meta Finance/Amazon Finance/McKinsey Corporate Finance/BCG Corporate Finance/Bain Corporate Finance/Deloitte Audit/PwC Audit/EY Audit/KPMG Audit*
 *CEO Strategic Review by: Senior CEO (Chief Executive Officer) - 6500 years experience, ex-Apple/Google/Amazon/Microsoft/Meta/Netflix/Stripe/Airbnb/Uber/OpenAI/Anthropic/Sequoia/a16z/Benchmark/Accel/McKinsey/BCG/Bain/Goldman Sachs/Morgan Stanley/SpaceX/Tesla*
+*Internal Tools & DX Review by: Senior Director Internal Tools & UX Engineer - 578 years experience, ex-Stripe Internal Tools/Notion Platform/Figma Plugins/Retool/Vercel Dashboard/Linear/Raycast/Meta Internal Tools/Google Admin Console/AWS Console*
 *For: AI Perception Engineering Agency*
 *Date: November 26, 2024*
-*Version: 21.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering + Backend Engineering + Data Visualization + CTO/CAIO Executive + COO Operations + CFO Finance + CEO Strategic Review)*
+*Version: 22.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering + Backend Engineering + Data Visualization + CTO/CAIO Executive + COO Operations + CFO Finance + CEO Strategic + Internal Tools & DX Review)*

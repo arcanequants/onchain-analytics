@@ -2,7 +2,7 @@
 ## Executive Strategic Roadmap
 
 **Document Classification:** Strategic Planning
-**Version:** 17.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering + Backend Engineering + Data Visualization Review)
+**Version:** 18.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering + Backend Engineering + Data Visualization + CTO/CAIO Executive Review)
 **Date:** November 26, 2024
 **Prepared by:** BCG Digital Ventures - Technology Strategy Practice
 **Reviewed by:**
@@ -22,6 +22,7 @@
 - Senior Data Engineer (Architect Level) - Data Modeling, Quality, Lineage & Governance Review
 - Senior Backend Engineer (Python/Rust) - API Design, Concurrency, Error Handling & Reliability Review
 - Senior Data Visualization Specialist - Chart Design, Accessibility, Animation & Responsive Visualization Review
+- **Senior CTO / Chief AI Officer** - Executive Strategy, Governance, Unit Economics, Investor Readiness & Scalability Review
 
 ---
 
@@ -11518,6 +11519,1165 @@ omArchive(userId);                           │   │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
+### 2.130 CTO/CAIO Executive Architecture Gap Analysis (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│         CTO/CAIO EXECUTIVE GAPS IDENTIFIED (18 Strategic)           │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  REVIEWER: Chief Technology Officer / Chief AI Officer              │
+│  EXPERIENCE: 2300 years (Google, Microsoft, Amazon, Meta, Apple,    │
+│              OpenAI, Anthropic, DeepMind, McKinsey, BCG, Bain)      │
+│  METHODOLOGY: Executive strategic review with investor lens         │
+│                                                                     │
+│  ═══════════════════════════════════════════════════════════════   │
+│                    STRATEGIC & GOVERNANCE GAPS                       │
+│  ═══════════════════════════════════════════════════════════════   │
+│                                                                     │
+│  GAP 1: NO UNIT ECONOMICS MODEL                                     │
+│  ═════════════════════════════                                     │
+│  Current: Budget analysis exists but no CAC/LTV/payback model       │
+│  Problem: Investors require unit economics for funding              │
+│  Impact: Cannot demonstrate path to profitability                   │
+│  Solution: Complete unit economics framework with scenarios         │
+│                                                                     │
+│  GAP 2: NO INVESTOR READINESS FRAMEWORK                            │
+│  ═══════════════════════════════════════                           │
+│  Current: No pitch deck, data room, or metrics dashboard           │
+│  Problem: If opportunity arises, 3-6 months to prepare             │
+│  Impact: Missed funding windows, rushed due diligence              │
+│  Solution: Evergreen investor package maintained continuously       │
+│                                                                     │
+│  GAP 3: NO TECHNICAL DUE DILIGENCE DOCUMENTATION                   │
+│  ═══════════════════════════════════════════════                   │
+│  Current: Architecture in roadmap, not investor-ready format        │
+│  Problem: Tech DD takes weeks without preparation                   │
+│  Impact: Deal friction, lower valuations due to perceived risk     │
+│  Solution: Tech DD package: architecture, security, scalability    │
+│                                                                     │
+│  GAP 4: NO SOC 2 / COMPLIANCE ROADMAP                              │
+│  ═════════════════════════════════                                 │
+│  Current: GDPR mentioned, no enterprise compliance strategy         │
+│  Problem: Enterprise customers require SOC 2, HIPAA, ISO 27001     │
+│  Impact: Locked out of enterprise deals (>$50K ACV)                │
+│  Solution: Compliance readiness roadmap with certification timeline │
+│                                                                     │
+│  GAP 5: NO AI GOVERNANCE FRAMEWORK                                 │
+│  ══════════════════════════════                                    │
+│  Current: AI disclaimers exist, no governance structure             │
+│  Problem: AI Act (EU), emerging US regulations require governance   │
+│  Impact: Legal liability, potential fines, reputational damage     │
+│  Solution: AI Governance policy with transparency & accountability  │
+│                                                                     │
+│  GAP 6: NO VENDOR DEPENDENCY RISK MATRIX                           │
+│  ════════════════════════════════════════                          │
+│  Current: Multi-provider exists but no formal risk assessment       │
+│  Problem: OpenAI/Anthropic could change terms, pricing, or fail    │
+│  Impact: Business continuity risk, sudden cost spikes              │
+│  Solution: Vendor risk matrix with contingency triggers            │
+│                                                                     │
+│  GAP 7: NO TECHNICAL DEBT REGISTER                                 │
+│  ══════════════════════════════                                    │
+│  Current: "Phase 4" deferred items but no formal register           │
+│  Problem: Debt compounds silently, surprises during scaling         │
+│  Impact: Velocity slowdown, emergency refactors                    │
+│  Solution: Technical debt register with interest rate estimates    │
+│                                                                     │
+│  GAP 8: NO TEAM SCALING PLAN                                       │
+│  ════════════════════════════                                      │
+│  Current: "Alberto is visionario, Claude ejecuta" - no hiring plan │
+│  Problem: Cannot scale beyond founder capacity                      │
+│  Impact: Burnout, missed opportunities, single point of failure    │
+│  Solution: Team scaling triggers with role definitions             │
+│                                                                     │
+│  ═══════════════════════════════════════════════════════════════   │
+│                    BUSINESS INTELLIGENCE GAPS                        │
+│  ═══════════════════════════════════════════════════════════════   │
+│                                                                     │
+│  GAP 9: NO COHORT ANALYSIS INFRASTRUCTURE                          │
+│  ═════════════════════════════════════════                         │
+│  Current: Basic analytics mentioned, no cohort tracking             │
+│  Problem: Cannot measure retention curves, LTV accuracy            │
+│  Impact: Flying blind on unit economics, wrong pricing             │
+│  Solution: Cohort tables with weekly/monthly retention analysis    │
+│                                                                     │
+│  GAP 10: NO FEATURE USAGE ANALYTICS                                │
+│  ═══════════════════════════════                                   │
+│  Current: Page views tracked, not feature engagement               │
+│  Problem: Don't know which features drive retention                │
+│  Impact: Building wrong features, ignoring valuable ones           │
+│  Solution: Event tracking for every feature interaction            │
+│                                                                     │
+│  GAP 11: NO NPS/CSAT MEASUREMENT                                   │
+│  ════════════════════════════════                                  │
+│  Current: No customer satisfaction tracking                         │
+│  Problem: No early warning for churn, no testimonial source        │
+│  Impact: Silent churn, weak social proof                           │
+│  Solution: In-app NPS survey (quarterly) + post-analysis CSAT      │
+│                                                                     │
+│  GAP 12: NO EXECUTIVE METRICS DASHBOARD                            │
+│  ═══════════════════════════════════════                           │
+│  Current: Admin dashboards for operations, not executive metrics   │
+│  Problem: CEO/board view requires manual compilation               │
+│  Impact: Slow decision making, missed signals                      │
+│  Solution: Executive dashboard with real-time key metrics          │
+│                                                                     │
+│  ═══════════════════════════════════════════════════════════════   │
+│                    SCALABILITY & RESILIENCE GAPS                     │
+│  ═══════════════════════════════════════════════════════════════   │
+│                                                                     │
+│  GAP 13: NO MULTI-REGION STRATEGY                                  │
+│  ═════════════════════════════                                     │
+│  Current: Single region deployment (Vercel auto, likely us-east)   │
+│  Problem: GDPR requires EU data residency, latency for global      │
+│  Impact: Cannot serve EU enterprise, slow for APAC users           │
+│  Solution: Multi-region strategy with data residency options       │
+│                                                                     │
+│  GAP 14: NO CAPACITY PLANNING MODEL                                │
+│  ═══════════════════════════════                                   │
+│  Current: "Scales infinitely" mentioned but no capacity model      │
+│  Problem: Sudden viral growth could break system or budget         │
+│  Impact: Downtime during growth, cost overruns                     │
+│  Solution: Capacity planning with load testing and cost curves     │
+│                                                                     │
+│  GAP 15: NO INCIDENT MANAGEMENT PROCESS                            │
+│  ═══════════════════════════════════════                           │
+│  Current: Error tracking (Sentry) but no incident process          │
+│  Problem: When production breaks, no runbook or escalation         │
+│  Impact: Extended downtime, customer frustration                   │
+│  Solution: Incident management with severity levels and runbooks   │
+│                                                                     │
+│  ═══════════════════════════════════════════════════════════════   │
+│                    STRATEGIC POSITIONING GAPS                        │
+│  ═══════════════════════════════════════════════════════════════   │
+│                                                                     │
+│  GAP 16: NO COMPETITIVE MOAT ANALYSIS                              │
+│  ═════════════════════════════════                                 │
+│  Current: "First mover advantage" stated but not defended          │
+│  Problem: SEMrush/Ahrefs could add AI feature in 3 months          │
+│  Impact: Differentiation erodes, commoditization                   │
+│  Solution: Moat strategy: data network effects, switching costs    │
+│                                                                     │
+│  GAP 17: NO PARTNERSHIP/CHANNEL STRATEGY                           │
+│  ════════════════════════════════════════                          │
+│  Current: Direct-to-consumer only, no channel strategy             │
+│  Problem: Growth limited to marketing spend                        │
+│  Impact: Higher CAC, slower growth than channel partners           │
+│  Solution: Partnership framework: agencies, platforms, resellers   │
+│                                                                     │
+│  GAP 18: NO EXIT STRATEGY DOCUMENTATION                            │
+│  ═══════════════════════════════════════                           │
+│  Current: No consideration of exit scenarios                        │
+│  Problem: Acquirers need clean cap table, IP ownership, contracts  │
+│  Impact: Deal friction, lower valuations, failed acquisitions      │
+│  Solution: Exit readiness checklist maintained from Day 1          │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.131 Unit Economics Framework (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    UNIT ECONOMICS FRAMEWORK                          │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Know your numbers before investors ask"                │
+│                                                                     │
+│  1. CUSTOMER ACQUISITION COST (CAC)                                │
+│     ═══════════════════════════════                                │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ CHANNEL          │ Est. CAC │ Target CAC │ Notes            ││
+│     ├──────────────────┼──────────┼────────────┼──────────────────┤│
+│     │ Organic (SEO)    │ $0       │ $0         │ Content/word-of-m││
+│     │ Viral (sharing)  │ $2-5     │ $3         │ Social sharing   ││
+│     │ Content mktg     │ $15-25   │ $20        │ Blog, guides     ││
+│     │ Twitter/X Ads    │ $30-50   │ $40        │ Phase 3+         ││
+│     │ LinkedIn Ads     │ $80-150  │ $100       │ B2B, Phase 4+    ││
+│     │ Google Ads       │ $50-100  │ $75        │ Intent-based     ││
+│     │ Partnerships     │ $10-20   │ $15        │ Revenue share    ││
+│     └──────────────────────────────────────────────────────────────┘│
+│     BLENDED CAC TARGET: < $30 (weighted average)                   │
+│                                                                     │
+│  2. LIFETIME VALUE (LTV)                                           │
+│     ═══════════════════                                            │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ PLAN      │ MRR   │ Avg Life │ Gross Margin │ LTV           ││
+│     ├───────────┼───────┼──────────┼──────────────┼───────────────┤│
+│     │ Free      │ $0    │ -        │ -            │ $0 (funnel)   ││
+│     │ Starter   │ $29   │ 8 months │ 85%          │ $197          ││
+│     │ Pro       │ $79   │ 14 months│ 90%          │ $995          ││
+│     │ Enterprise│ $299+ │ 24 months│ 92%          │ $6,600+       ││
+│     └──────────────────────────────────────────────────────────────┘│
+│     BLENDED LTV (Starter:Pro 70:30): ~$437                         │
+│                                                                     │
+│  3. KEY RATIOS                                                     │
+│     ═══════════                                                    │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Metric           │ Target   │ Good    │ Excellent │ Current ││
+│     ├──────────────────┼──────────┼─────────┼───────────┼─────────┤│
+│     │ LTV:CAC          │ > 3:1    │ > 4:1   │ > 5:1     │ TBD     ││
+│     │ CAC Payback      │ < 12 mo  │ < 9 mo  │ < 6 mo    │ TBD     ││
+│     │ Gross Margin     │ > 70%    │ > 80%   │ > 85%     │ ~85%    ││
+│     │ Net Revenue Ret. │ > 100%   │ > 110%  │ > 120%    │ TBD     ││
+│     │ Logo Churn       │ < 5%/mo  │ < 3%/mo │ < 2%/mo   │ TBD     ││
+│     │ Free→Paid Conv.  │ > 2%     │ > 5%    │ > 10%     │ TBD     ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. SCENARIO MODELING                                              │
+│     ══════════════════                                             │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ SCENARIO    │ MAU   │ Conv. │ Paid  │ ARPU │ MRR    │ ARR  ││
+│     ├─────────────┼───────┼───────┼───────┼──────┼────────┼──────┤│
+│     │ Conservative│ 5K    │ 3%    │ 150   │ $35  │ $5.3K  │ $63K ││
+│     │ Base        │ 15K   │ 5%    │ 750   │ $40  │ $30K   │ $360K││
+│     │ Optimistic  │ 50K   │ 7%    │ 3,500 │ $45  │ $158K  │ $1.9M││
+│     │ Viral       │ 200K  │ 10%   │ 20K   │ $50  │ $1M    │ $12M ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  5. COST STRUCTURE (at 1000 paid users)                            │
+│     ═══════════════════════════════════                            │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Cost Category    │ Monthly  │ % Revenue │ Notes             ││
+│     ├──────────────────┼──────────┼───────────┼───────────────────┤│
+│     │ AI API costs     │ $800     │ 2%        │ After caching     ││
+│     │ Infrastructure   │ $200     │ 0.5%      │ Vercel Pro, Supa  ││
+│     │ Email (Resend)   │ $50      │ 0.1%      │ Transactional     ││
+│     │ Monitoring       │ $100     │ 0.3%      │ Sentry, Upstash   ││
+│     │ Total COGS       │ $1,150   │ ~3%       │ Highly scalable   ││
+│     │ Gross Profit     │ $38,850  │ 97%       │ Software margins! ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /lib/analytics/unit-economics.ts                                  │
+│  /app/(admin)/unit-economics/page.tsx (dashboard)                  │
+│  Database: user_cohorts, revenue_events, cost_events tables        │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.132 Investor Readiness Package (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                   INVESTOR READINESS PACKAGE                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Always be ready for the unexpected check"              │
+│                                                                     │
+│  1. PITCH DECK (10-12 slides, evergreen)                           │
+│     ════════════════════════════════════                           │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Slide │ Content                                             ││
+│     ├───────┼─────────────────────────────────────────────────────┤│
+│     │ 1     │ Title + One-liner: "AI Perception Engineering"      ││
+│     │ 2     │ Problem: 70% searches → AI, brands invisible        ││
+│     │ 3     │ Solution: Measure, monitor, improve AI perception   ││
+│     │ 4     │ Market: $210M TAM Year 1, growing 40% annually     ││
+│     │ 5     │ Product: Demo/screenshots of score + dashboard      ││
+│     │ 6     │ Traction: Users, revenue, growth rate (auto-update) ││
+│     │ 7     │ Business Model: Freemium → Starter → Pro → Ent     ││
+│     │ 8     │ Competition: Comparison matrix, our advantages      ││
+│     │ 9     │ Team: Founder background, Claude as tech advantage  ││
+│     │ 10    │ Financials: Unit economics, projections, runway     ││
+│     │ 11    │ Ask: Amount, use of funds, milestones               ││
+│     │ 12    │ Appendix: Technical architecture, security, etc.    ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. DATA ROOM STRUCTURE                                            │
+│     ════════════════════                                           │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ /data-room/                                                  ││
+│     │ ├── 01-pitch-deck/                                           ││
+│     │ │   └── AI_Perception_Deck_v[date].pdf                      ││
+│     │ ├── 02-financials/                                           ││
+│     │ │   ├── revenue_model.xlsx                                   ││
+│     │ │   ├── cap_table.xlsx                                       ││
+│     │ │   ├── burn_rate_projections.xlsx                          ││
+│     │ │   └── unit_economics.pdf                                   ││
+│     │ ├── 03-product/                                              ││
+│     │ │   ├── product_demo_video.mp4                              ││
+│     │ │   ├── feature_roadmap.pdf                                  ││
+│     │ │   └── user_testimonials.pdf                                ││
+│     │ ├── 04-technical/                                            ││
+│     │ │   ├── architecture_diagram.pdf                             ││
+│     │ │   ├── security_whitepaper.pdf                              ││
+│     │ │   ├── scalability_analysis.pdf                             ││
+│     │ │   └── tech_stack_overview.pdf                              ││
+│     │ ├── 05-legal/                                                ││
+│     │ │   ├── incorporation_docs/                                  ││
+│     │ │   ├── IP_assignments/                                      ││
+│     │ │   ├── customer_contracts/ (redacted)                      ││
+│     │ │   └── terms_privacy_policies/                              ││
+│     │ ├── 06-metrics/                                              ││
+│     │ │   ├── monthly_metrics_dashboard.pdf (auto-generated)      ││
+│     │ │   ├── cohort_analysis.xlsx                                 ││
+│     │ │   └── nps_csat_results.pdf                                 ││
+│     │ └── 07-team/                                                 ││
+│     │     ├── founder_bio.pdf                                      ││
+│     │     ├── org_chart.pdf                                        ││
+│     │     └── hiring_plan.pdf                                      ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. METRICS DASHBOARD (Real-time, investor-facing)                 │
+│     ══════════════════════════════════════════                     │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ KEY METRICS (Updated Daily):                                 ││
+│     │ • ARR / MRR / MRR Growth %                                  ││
+│     │ • Total Users / Paid Users / Conversion Rate                ││
+│     │ • Churn Rate (Logo + Revenue)                               ││
+│     │ • NPS Score                                                  ││
+│     │ • LTV:CAC Ratio                                             ││
+│     │ • Runway (months at current burn)                           ││
+│     │                                                              ││
+│     │ IMPLEMENTATION:                                              ││
+│     │ • Password-protected page: /investor-metrics                ││
+│     │ • Auto-updates from production data                         ││
+│     │ • Quarterly PDF export for board                            ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. INVESTOR FAQ (Pre-written answers)                             │
+│     ═══════════════════════════════════                            │
+│     Q: What if OpenAI/Anthropic raises prices?                     │
+│     A: Multi-provider architecture + aggressive caching means we   │
+│        can switch providers within days. Cost is <3% of revenue.  │
+│                                                                     │
+│     Q: What's your moat?                                           │
+│     A: Historical perception data (no one else has it), brand     │
+│        network effects, switching costs from monitoring setup.    │
+│                                                                     │
+│     Q: Why now?                                                     │
+│     A: AI search inflection point. 70% of searches will start     │
+│        with AI by 2027. First mover in GEO space.                 │
+│                                                                     │
+│     Q: Why should we fund a solo founder?                         │
+│     A: Claude as co-founder enables 10x velocity. Hiring plan     │
+│        triggers at $50K MRR for first engineer.                   │
+│                                                                     │
+│  FILES:                                                            │
+│  /docs/investor/pitch-deck.md                                      │
+│  /docs/investor/data-room-checklist.md                             │
+│  /app/(protected)/investor-metrics/page.tsx                        │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.133 AI Governance Framework (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    AI GOVERNANCE FRAMEWORK                          │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Responsible AI is a competitive advantage"             │
+│                                                                     │
+│  1. AI TRANSPARENCY POLICY                                         │
+│     ═══════════════════════                                        │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ WE DISCLOSE:                                                 ││
+│     │ • Which AI models we query (OpenAI GPT-4, Claude, etc.)     ││
+│     │ • That scores are AI-generated estimates, not facts          ││
+│     │ • How often models are queried (freshness of data)          ││
+│     │ • When AI responses may be hallucinated/incorrect           ││
+│     │ • That AI models have inherent biases and limitations       ││
+│     │                                                              ││
+│     │ WE COMMIT TO:                                                ││
+│     │ • Marking AI-generated content clearly                      ││
+│     │ • Explaining score methodology to users                     ││
+│     │ • Allowing users to dispute/flag incorrect scores           ││
+│     │ • Regular audits of scoring accuracy                        ││
+│     │ • Transparency reports (quarterly)                          ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. AI ACCOUNTABILITY STRUCTURE                                    │
+│     ════════════════════════════                                   │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ ROLE: AI Ethics Owner (initially = Founder)                  ││
+│     │ RESPONSIBILITIES:                                            ││
+│     │ • Review AI output quality monthly                          ││
+│     │ • Respond to user complaints about AI accuracy              ││
+│     │ • Maintain AI incident log                                  ││
+│     │ • Update AI policy as regulations evolve                    ││
+│     │ • Sign off on prompt changes that affect scoring            ││
+│     │                                                              ││
+│     │ ESCALATION PATH:                                             ││
+│     │ User complaint → Support → AI Ethics Owner → External review ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. AI RISK REGISTER                                               │
+│     ══════════════════                                             │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Risk               │ Prob │ Impact │ Mitigation             ││
+│     ├────────────────────┼──────┼────────┼────────────────────────┤│
+│     │ Hallucinated facts │ High │ Medium │ Cross-reference, flags ││
+│     │ Biased scoring     │ Med  │ High   │ Multi-model, audits    ││
+│     │ Competitor harm    │ Low  │ High   │ Disclaimers, appeals   ││
+│     │ Copyright claims   │ Low  │ Medium │ Don't reproduce content││
+│     │ Defamation claims  │ Low  │ High   │ AI-generated labels    ││
+│     │ EU AI Act non-comp │ Med  │ High   │ Transparency docs      ││
+│     │ Data leakage to AI │ Low  │ High   │ Don't send PII to APIs ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. EU AI ACT COMPLIANCE PREP                                      │
+│     ═════════════════════════                                      │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ OUR SYSTEM CLASSIFICATION: Limited Risk (likely)             ││
+│     │ • We don't make high-stakes decisions (hiring, credit, etc.)││
+│     │ • We provide informational scores, not autonomous actions   ││
+│     │ • Users can override/ignore our recommendations             ││
+│     │                                                              ││
+│     │ REQUIREMENTS WE IMPLEMENT ANYWAY (best practice):           ││
+│     │ ✓ Transparency: Clear AI-generated labeling                 ││
+│     │ ✓ Human oversight: User can dispute, request human review   ││
+│     │ ✓ Record keeping: Log all AI queries and responses          ││
+│     │ ✓ Risk management: AI risk register maintained              ││
+│     │ ✓ Technical documentation: Architecture + methodology docs  ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  5. AI INCIDENT LOG                                                │
+│     ═══════════════════                                            │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Database Table: ai_incidents                                 ││
+│     │ ├─ id              UUID                                     ││
+│     │ ├─ incident_type   ENUM(hallucination, bias, complaint,     ││
+│     │ │                       performance, security, other)       ││
+│     │ ├─ severity        ENUM(low, medium, high, critical)        ││
+│     │ ├─ description     TEXT                                     ││
+│     │ ├─ affected_users  INTEGER                                  ││
+│     │ ├─ root_cause      TEXT                                     ││
+│     │ ├─ resolution      TEXT                                     ││
+│     │ ├─ resolved_at     TIMESTAMPTZ                              ││
+│     │ ├─ created_at      TIMESTAMPTZ                              ││
+│     │ └─ created_by      UUID (staff who logged)                  ││
+│     │                                                              ││
+│     │ QUARTERLY REVIEW: Aggregate incidents, identify patterns    ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  IMPLEMENTATION FILES:                                             │
+│  /docs/legal/ai-governance-policy.md                               │
+│  /docs/legal/ai-transparency-report-template.md                    │
+│  /app/(admin)/ai-incidents/page.tsx                                │
+│  Database: ai_incidents table                                      │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.134 Vendor Dependency Risk Matrix (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                 VENDOR DEPENDENCY RISK MATRIX                        │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Never be held hostage by a single vendor"              │
+│                                                                     │
+│  1. CRITICAL VENDOR ASSESSMENT                                     │
+│     ════════════════════════════                                   │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Vendor      │ Criticality │ Switchability │ Risk │ Backup   ││
+│     ├─────────────┼─────────────┼───────────────┼──────┼──────────┤│
+│     │ OpenAI      │ HIGH        │ Medium (Claude│ MED  │ Anthropic││
+│     │ Anthropic   │ HIGH        │ Medium (GPT)  │ MED  │ OpenAI   ││
+│     │ Vercel      │ HIGH        │ Medium (AWS)  │ LOW  │ Netlify  ││
+│     │ Supabase    │ HIGH        │ Hard (Postgres│ LOW  │ Neon     ││
+│     │ Upstash     │ MEDIUM      │ Easy (Redis)  │ LOW  │ Momento  ││
+│     │ Stripe      │ HIGH        │ Hard (integra)│ LOW  │ Paddle   ││
+│     │ Resend      │ LOW         │ Easy (email)  │ LOW  │ SendGrid ││
+│     │ GitHub      │ MEDIUM      │ Medium        │ LOW  │ GitLab   ││
+│     │ Sentry      │ LOW         │ Easy          │ LOW  │ LogRocket││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. CONTINGENCY TRIGGERS                                           │
+│     ════════════════════════                                       │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ TRIGGER                    │ ACTION                          ││
+│     ├────────────────────────────┼─────────────────────────────────┤│
+│     │ AI provider >50% price hike│ Switch to backup within 7 days ││
+│     │ AI provider >4h downtime   │ Route traffic to backup         ││
+│     │ AI provider ToS change     │ Legal review within 48h        ││
+│     │ Vercel pricing change      │ Evaluate Netlify/AWS migration  ││
+│     │ Supabase sunset announced  │ Begin Neon migration plan       ││
+│     │ Stripe fee increase >1%    │ Evaluate Paddle/LemonSqueezy    ││
+│     │ Any vendor security breach │ Rotate credentials immediately ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. ABSTRACTION LAYERS (Already in roadmap - verify implementation)│
+│     ═══════════════════════════════════════════════════════════   │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ LAYER           │ PURPOSE           │ FILE                   ││
+│     ├─────────────────┼───────────────────┼────────────────────────┤│
+│     │ AIProviderClient│ Swap AI providers │ /lib/ai/provider.ts    ││
+│     │ ICacheService   │ Swap cache backend│ /lib/services/cache.ts ││
+│     │ IEmailService   │ Swap email sender │ /lib/services/email.ts ││
+│     │ IPaymentService │ Swap payment proc │ /lib/services/payment.ts│
+│     │ IStorageService │ Swap file storage │ /lib/services/storage.ts│
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. VENDOR HEALTH MONITORING                                       │
+│     ═══════════════════════════                                    │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ MONITOR:                                                     ││
+│     │ • OpenAI Status: status.openai.com (RSS feed)               ││
+│     │ • Anthropic Status: status.anthropic.com                    ││
+│     │ • Vercel Status: vercel-status.com                          ││
+│     │ • Supabase Status: status.supabase.com                      ││
+│     │                                                              ││
+│     │ IMPLEMENTATION:                                              ││
+│     │ • Subscribe to status page RSS feeds                        ││
+│     │ • Alert in Slack #ops-alerts when any vendor has incident   ││
+│     │ • Weekly vendor status review in ops meeting                ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  5. COST CONCENTRATION RISK                                        │
+│     ═══════════════════════                                        │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ RULE: No single vendor > 40% of operating costs              ││
+│     │                                                              ││
+│     │ CURRENT (estimated at scale):                                ││
+│     │ • AI APIs: ~30% (OpenAI 15%, Anthropic 15%)                 ││
+│     │ • Infrastructure: ~15% (Vercel 10%, Supabase 5%)            ││
+│     │ • Payments: ~3% (Stripe fees)                               ││
+│     │ • Other: ~2% (Email, monitoring, etc.)                      ││
+│     │ • Gross margin: ~50%+ ✓                                     ││
+│     │                                                              ││
+│     │ ALERT THRESHOLD: If any vendor exceeds 35%, diversify       ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  DOCUMENTATION:                                                    │
+│  /docs/ops/vendor-risk-matrix.md                                   │
+│  /docs/ops/vendor-contingency-playbooks/                           │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.135 Technical Debt Register (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    TECHNICAL DEBT REGISTER                          │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Acknowledge debt, pay it down, or accept interest"     │
+│                                                                     │
+│  1. DEBT CATEGORIES & INTEREST RATES                               │
+│     ════════════════════════════════                               │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Category       │ Interest │ Description                      ││
+│     ├────────────────┼──────────┼──────────────────────────────────┤│
+│     │ Architecture   │ HIGH     │ Compounds, affects everything    ││
+│     │ Testing        │ MEDIUM   │ Slows velocity over time         ││
+│     │ Documentation  │ LOW      │ Onboarding cost increases        ││
+│     │ Performance    │ MEDIUM   │ Affects UX, may spike suddenly   ││
+│     │ Security       │ CRITICAL │ Can become catastrophic          ││
+│     │ Code Quality   │ LOW      │ Maintainability degrades slowly  ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. CURRENT DEBT ITEMS (to be maintained)                          │
+│     ═════════════════════════════════════                          │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ ID   │ Description              │ Interest│ Phase │ Est.    ││
+│     ├──────┼──────────────────────────┼─────────┼───────┼─────────┤│
+│     │ TD-1 │ No Drizzle/Prisma ORM    │ Medium  │ P4    │ 3 days  ││
+│     │ TD-2 │ Inline styles (jsx)      │ Low     │ P3    │ 2 days  ││
+│     │ TD-3 │ No E2E tests yet         │ Medium  │ P2    │ 5 days  ││
+│     │ TD-4 │ No API versioning        │ High    │ P4    │ 2 days  ││
+│     │ TD-5 │ Monolith (no monorepo)   │ Low     │ P4+   │ 5 days  ││
+│     │ TD-6 │ No load testing          │ Medium  │ P3    │ 2 days  ││
+│     │ TD-7 │ No multi-tenancy prep    │ High    │ P4    │ 8 days  ││
+│     │ TD-8 │ No i18n infrastructure   │ Low     │ P4+   │ 3 days  ││
+│     │ TD-9 │ Manual deployment checks │ Medium  │ P2    │ 1 day   ││
+│     │ TD-10│ No feature flag system   │ Medium  │ P3    │ 1 day   ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. DEBT PAYMENT SCHEDULE                                          │
+│     ════════════════════════                                       │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ RULE: 20% of engineering time allocated to debt payment      ││
+│     │                                                              ││
+│     │ PRIORITIZATION:                                              ││
+│     │ 1. Security debt → Immediate (no interest tolerance)        ││
+│     │ 2. High interest → Before it blocks features                ││
+│     │ 3. Medium interest → Scheduled in sprints                   ││
+│     │ 4. Low interest → Opportunistic ("while we're here")        ││
+│     │                                                              ││
+│     │ TRACKING:                                                    ││
+│     │ • Review debt register monthly                              ││
+│     │ • Add new items as discovered (no shame)                    ││
+│     │ • Celebrate debt paydown (velocity improves)                ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. DEBT DECISION LOG                                              │
+│     ═════════════════════                                          │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ When taking on debt intentionally, document:                 ││
+│     │                                                              ││
+│     │ Date: [date]                                                 ││
+│     │ Decision: [what shortcut we're taking]                      ││
+│     │ Reason: [why, usually time pressure]                        ││
+│     │ Interest: [what pain this will cause]                       ││
+│     │ Payback plan: [when/how we'll fix it]                       ││
+│     │ Approved by: [founder/tech lead sign-off]                   ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /docs/engineering/tech-debt-register.md (this file, maintained)   │
+│  GitHub Issues with label: tech-debt                               │
+│  Monthly review in engineering sync                                │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.136 Team Scaling Triggers (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    TEAM SCALING TRIGGERS                             │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Hire when it hurts, not when it's comfortable"         │
+│                                                                     │
+│  CURRENT STATE: Founder + Claude (AI pair programming)              │
+│                                                                     │
+│  1. SCALING TRIGGER MATRIX                                         │
+│     ═══════════════════════                                        │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Trigger             │ Hire Role             │ When           ││
+│     ├─────────────────────┼───────────────────────┼────────────────┤│
+│     │ MRR > $50K          │ First Engineer        │ Phase 4+       ││
+│     │ MRR > $100K         │ Customer Success      │ Phase 4+       ││
+│     │ MRR > $150K         │ Second Engineer       │ Phase 5+       ││
+│     │ MRR > $200K         │ Growth/Marketing      │ Phase 5+       ││
+│     │ MRR > $300K         │ Engineering Manager   │ Phase 6+       ││
+│     │ Support tickets >100/wk│ Support hire       │ Any phase      ││
+│     │ Security incident   │ Security consultant   │ Immediate      ││
+│     │ Founder burnout     │ COO/Operations        │ Any phase      ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. ROLE DEFINITIONS (Pre-written for speed)                       │
+│     ═════════════════════════════════════                          │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ FIRST ENGINEER (Hire #1)                                     ││
+│     │ Title: Senior Full Stack Engineer                            ││
+│     │ Salary range: $120-180K (or contractor equivalent)          ││
+│     │ Must-haves:                                                  ││
+│     │ • Next.js + TypeScript production experience                ││
+│     │ • Comfortable working with AI tools (Claude, Copilot)       ││
+│     │ • Can ship independently                                     ││
+│     │ • Good communication (async-first team)                     ││
+│     │ Responsibilities:                                            ││
+│     │ • Take over feature development from founder                ││
+│     │ • Maintain and improve existing codebase                    ││
+│     │ • On-call rotation for incidents                            ││
+│     │ Day 1 priority: Technical debt TD-1, TD-3, TD-4             ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ CUSTOMER SUCCESS (Hire #2)                                   ││
+│     │ Title: Customer Success Manager                              ││
+│     │ Salary range: $80-120K                                       ││
+│     │ Must-haves:                                                  ││
+│     │ • SaaS CS experience (B2B preferred)                        ││
+│     │ • Technical enough to understand AI/SEO                     ││
+│     │ • Proactive churn prevention mindset                        ││
+│     │ Responsibilities:                                            ││
+│     │ • Onboard new paying customers                              ││
+│     │ • Quarterly check-ins with Pro/Enterprise                   ││
+│     │ • Churn analysis and prevention                             ││
+│     │ • Gather testimonials and case studies                      ││
+│     │ Day 1 priority: Build CS playbook, contact top 20 customers ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. FOUNDER TIME ALLOCATION (Evolution)                            │
+│     ════════════════════════════════════                           │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ STAGE       │ Coding │ Product │ GTM │ Ops │ Strategy      ││
+│     ├─────────────┼────────┼─────────┼─────┼─────┼───────────────┤│
+│     │ Now (solo)  │ 60%    │ 20%     │ 15% │ 5%  │ 0%            ││
+│     │ +1 engineer │ 30%    │ 30%     │ 25% │ 10% │ 5%            ││
+│     │ +CS         │ 20%    │ 35%     │ 25% │ 10% │ 10%           ││
+│     │ +2 engineer │ 10%    │ 40%     │ 20% │ 10% │ 20%           ││
+│     │ +growth     │ 5%     │ 35%     │ 20% │ 10% │ 30%           ││
+│     │ CEO mode    │ 0%     │ 30%     │ 20% │ 10% │ 40%           ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. ANTI-PATTERNS TO AVOID                                         │
+│     ════════════════════════                                       │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ ✗ Hiring before product-market fit                          ││
+│     │ ✗ Hiring to solve founder burnout (hire ops, not more eng)  ││
+│     │ ✗ Hiring without clear role definition                      ││
+│     │ ✗ Hiring expensive senior when junior can learn             ││
+│     │ ✗ Hiring full-time when contractor would work               ││
+│     │ ✗ Hiring because competitors are hiring                     ││
+│     │ ✗ Not firing fast enough when mis-hire                      ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  DOCUMENTATION:                                                    │
+│  /docs/hr/role-definitions/                                        │
+│  /docs/hr/hiring-playbook.md                                       │
+│  /docs/hr/onboarding-checklist.md (for each role)                  │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.137 Executive Metrics Dashboard (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                  EXECUTIVE METRICS DASHBOARD                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "If you can't measure it, you can't improve it"         │
+│                                                                     │
+│  1. NORTH STAR METRICS (Top of dashboard)                          │
+│     ═════════════════════════════════════                          │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐          ││
+│     │  │     MRR     │  │   Growth    │  │   Runway    │          ││
+│     │  │  $12,450    │  │   +23%      │  │  14 months  │          ││
+│     │  │  ▲ $2,300   │  │   ▲ 5pts   │  │  @ current  │          ││
+│     │  └─────────────┘  └─────────────┘  └─────────────┘          ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. CUSTOMER METRICS (Row 2)                                       │
+│     ════════════════════════                                       │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │  Total Users │ Paid │ Conv. │ Churn │ NPS  │ LTV:CAC        ││
+│     │  ────────────┼──────┼───────┼───────┼──────┼────────        ││
+│     │     4,523    │  312 │  6.9% │  3.2% │  42  │  4.2:1         ││
+│     │    ▲ 834     │ ▲ 47 │ ▲0.3% │ ▼0.5% │ ▲ 5  │  ▲ 0.3         ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. PRODUCT METRICS (Row 3)                                        │
+│     ═══════════════════════                                        │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │  Analyses │ Avg Score │ Recommendations │ Feature Usage     ││
+│     │  ─────────┼───────────┼─────────────────┼───────────────    ││
+│     │   12,340  │    58     │     82% read    │ ██████████        ││
+│     │  this mo  │  industry │                 │ Trend most used   ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. OPERATIONAL METRICS (Row 4)                                    │
+│     ══════════════════════════                                     │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │  API Cost │ Cache Hit │ Uptime  │ P95 Latency │ Errors     ││
+│     │  ─────────┼───────────┼─────────┼─────────────┼───────     ││
+│     │   $342    │   78%     │ 99.95%  │   2.3s      │  12        ││
+│     │  this mo  │  target:80│ target:99.9│ target:<3s│ this wk   ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  5. TREND CHARTS (Bottom section)                                  │
+│     ══════════════════════════                                     │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │  [MRR Trend - 12 months]     [User Growth - 12 months]      ││
+│     │  ████████████████████████    ████████████████████████       ││
+│     │                                                              ││
+│     │  [Cohort Retention - 6 mo]   [Unit Economics - 6 months]    ││
+│     │  ████████████████████████    ████████████████████████       ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  6. ALERTS & ACTIONS (Sidebar)                                     │
+│     ═══════════════════════════                                    │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │  🔴 CRITICAL                                                 ││
+│     │  • None                                                      ││
+│     │                                                              ││
+│     │  🟡 WARNING                                                  ││
+│     │  • API costs up 15% vs last month                           ││
+│     │  • Churn spike in "CRM" industry cohort                     ││
+│     │                                                              ││
+│     │  🟢 POSITIVE                                                 ││
+│     │  • NPS improved 5 points                                     ││
+│     │  • Conversion rate hit new high                             ││
+│     │                                                              ││
+│     │  📋 ACTIONS                                                  ││
+│     │  • [Review churn cohort] →                                  ││
+│     │  • [Investigate API cost increase] →                        ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  ACCESS CONTROL:                                                   │
+│  • Founder: Full access                                            │
+│  • Investors: Read-only with password /investor-metrics            │
+│  • Board: Quarterly PDF export                                     │
+│  • Team: Relevant sections based on role                          │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /app/(admin)/executive-dashboard/page.tsx                         │
+│  /lib/metrics/executive-aggregator.ts                              │
+│  Database: executive_metrics_daily (pre-aggregated)                │
+│  Cron: Daily rollup at midnight UTC                                │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.138 Incident Management Process (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                  INCIDENT MANAGEMENT PROCESS                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Incidents happen. Response time defines you."          │
+│                                                                     │
+│  1. SEVERITY LEVELS                                                │
+│     ═══════════════                                                │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Level │ Name     │ Definition                    │ Response ││
+│     ├───────┼──────────┼───────────────────────────────┼──────────┤│
+│     │ SEV1  │ Critical │ Service completely down       │ < 15 min ││
+│     │       │          │ Data breach/security incident │ 24/7     ││
+│     │ SEV2  │ High     │ Major feature broken          │ < 1 hour ││
+│     │       │          │ >10% users affected           │ Waking   ││
+│     │ SEV3  │ Medium   │ Minor feature broken          │ < 4 hours││
+│     │       │          │ Workaround available          │ Bus hrs  ││
+│     │ SEV4  │ Low      │ Cosmetic/minor issues         │ Next day ││
+│     │       │          │ <1% users affected            │ Bus hrs  ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. INCIDENT RESPONSE RUNBOOKS                                     │
+│     ══════════════════════════                                     │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ RUNBOOK: SERVICE DOWN (SEV1)                                 ││
+│     │ ──────────────────────────────                               ││
+│     │ 1. CHECK: Vercel status page (is it us or them?)            ││
+│     │ 2. CHECK: Supabase status page                              ││
+│     │ 3. CHECK: AI provider status pages                          ││
+│     │ 4. IF Vercel: Wait, nothing we can do (status page update)  ││
+│     │ 5. IF our code: Check latest deploy, rollback if needed     ││
+│     │    → vercel rollback [deployment-url]                       ││
+│     │ 6. IF database: Check Supabase dashboard for issues         ││
+│     │ 7. COMMUNICATE: Update status page, tweet if >15 min        ││
+│     │ 8. RESOLVE: Document root cause, write postmortem          ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ RUNBOOK: AI PROVIDER OUTAGE (SEV2)                          ││
+│     │ ────────────────────────────────                             ││
+│     │ 1. CHECK: Provider status page                              ││
+│     │ 2. IF OpenAI down:                                           ││
+│     │    → Set OPENAI_ENABLED=false in Vercel env                 ││
+│     │    → Redeploy (traffic routes to Anthropic)                 ││
+│     │ 3. IF Anthropic down:                                        ││
+│     │    → Set ANTHROPIC_ENABLED=false                            ││
+│     │    → Redeploy (traffic routes to OpenAI)                    ││
+│     │ 4. IF both down:                                             ││
+│     │    → Enable maintenance mode                                ││
+│     │    → Show cached results only, disable new analyses         ││
+│     │ 5. COMMUNICATE: In-app banner "Limited service"             ││
+│     │ 6. MONITOR: Check provider status every 15 min              ││
+│     │ 7. RECOVER: Re-enable when provider back, verify working    ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ RUNBOOK: SECURITY INCIDENT (SEV1)                           ││
+│     │ ─────────────────────────────────                            ││
+│     │ 1. CONTAIN: Disable affected feature/endpoint immediately   ││
+│     │ 2. ASSESS: What data exposed? How many users?               ││
+│     │ 3. PRESERVE: Screenshot logs, don't delete evidence         ││
+│     │ 4. ROTATE: All API keys that might be compromised           ││
+│     │ 5. NOTIFY: Legal counsel if PII involved                    ││
+│     │ 6. GDPR: If EU users affected, 72-hour notification clock   ││
+│     │ 7. FIX: Patch vulnerability, test thoroughly                ││
+│     │ 8. POSTMORTEM: Document everything, improve defenses        ││
+│     │ 9. COMMUNICATE: User notification if data exposed           ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. INCIDENT LOG (Database Table)                                  │
+│     ═════════════════════════════                                  │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ production_incidents                                         ││
+│     │ ├─ id              UUID                                     ││
+│     │ ├─ severity        ENUM(sev1, sev2, sev3, sev4)             ││
+│     │ ├─ title           TEXT                                     ││
+│     │ ├─ description     TEXT                                     ││
+│     │ ├─ detected_at     TIMESTAMPTZ                              ││
+│     │ ├─ resolved_at     TIMESTAMPTZ                              ││
+│     │ ├─ duration_min    INTEGER (computed)                       ││
+│     │ ├─ root_cause      TEXT                                     ││
+│     │ ├─ resolution      TEXT                                     ││
+│     │ ├─ postmortem_url  TEXT                                     ││
+│     │ ├─ affected_users  INTEGER                                  ││
+│     │ └─ created_by      UUID                                     ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. POSTMORTEM TEMPLATE                                            │
+│     ═══════════════════════                                        │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ # Incident Postmortem: [Title]                               ││
+│     │ **Date:** [date] | **Severity:** [sev] | **Duration:** [min]││
+│     │                                                              ││
+│     │ ## Summary                                                   ││
+│     │ [1-2 sentence summary]                                       ││
+│     │                                                              ││
+│     │ ## Timeline                                                  ││
+│     │ - HH:MM - Incident detected                                 ││
+│     │ - HH:MM - [action taken]                                    ││
+│     │ - HH:MM - Resolved                                          ││
+│     │                                                              ││
+│     │ ## Root Cause                                                ││
+│     │ [What actually broke and why]                                ││
+│     │                                                              ││
+│     │ ## Impact                                                    ││
+│     │ - Users affected: [number]                                  ││
+│     │ - Revenue impact: [estimate]                                ││
+│     │                                                              ││
+│     │ ## Action Items                                              ││
+│     │ - [ ] [Preventive action] - Owner: [name] - Due: [date]    ││
+│     │                                                              ││
+│     │ ## Lessons Learned                                           ││
+│     │ [What we learned, no blame]                                  ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /docs/ops/runbooks/                                               │
+│  /docs/ops/postmortems/                                            │
+│  /app/(admin)/incidents/page.tsx                                   │
+│  Status page: status.aiperception.com (Vercel Status or Instatus)  │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.139 Competitive Moat Strategy (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                   COMPETITIVE MOAT STRATEGY                          │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "First mover advantage is temporary. Moats are forever."│
+│                                                                     │
+│  THREAT ASSESSMENT:                                                │
+│  ══════════════════                                                │
+│  • SEMrush/Ahrefs could add "AI Visibility Score" in 3-6 months   │
+│  • OpenAI/Google could build this directly into their products    │
+│  • Well-funded startup could copy with more resources             │
+│                                                                     │
+│  1. MOAT #1: HISTORICAL PERCEPTION DATA                            │
+│     ═══════════════════════════════════                            │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ WHAT: We have the only database of "how AI models perceived ││
+│     │       brands over time"                                      ││
+│     │                                                              ││
+│     │ WHY IT MATTERS:                                              ││
+│     │ • Newcomers start at day 0 - we have months/years of data   ││
+│     │ • Trend analysis requires historical data                   ││
+│     │ • "Your score improved 15 pts in 6 months" - only we can say││
+│     │                                                              ││
+│     │ HOW TO BUILD IT:                                             ││
+│     │ • Store every AI response, not just scores                  ││
+│     │ • Track model versions (GPT-4 vs GPT-4-turbo responses)     ││
+│     │ • Run monitoring analyses on free tier (data flywheel)      ││
+│     │ • Never delete historical data (anonymize if needed)        ││
+│     │                                                              ││
+│     │ METRIC: "X million AI perception snapshots since 2024"      ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. MOAT #2: NETWORK EFFECTS (Brand Graph)                         │
+│     ════════════════════════════════════                           │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ WHAT: As more brands use us, our recommendations get better ││
+│     │                                                              ││
+│     │ WHY IT MATTERS:                                              ││
+│     │ • "Companies like yours scored X" requires peer data        ││
+│     │ • Industry benchmarks only possible with industry data      ││
+│     │ • Competitor detection improves with brand database         ││
+│     │                                                              ││
+│     │ HOW TO BUILD IT:                                             ││
+│     │ • Industry leaderboards (public, drives SEO)                ││
+│     │ • "How you compare to your industry" (requires N brands)    ││
+│     │ • Anonymous competitor intelligence from aggregate data     ││
+│     │                                                              ││
+│     │ FLYWHEEL:                                                    ││
+│     │ More brands → Better benchmarks → More value → More brands  ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. MOAT #3: SWITCHING COSTS                                       │
+│     ═══════════════════════════                                    │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ WHAT: Once set up, painful to leave                          ││
+│     │                                                              ││
+│     │ SWITCHING COSTS WE CREATE:                                   ││
+│     │ • Historical score data (can't export trend to competitor)  ││
+│     │ • Alert configurations (would need to recreate)             ││
+│     │ • Team training and workflow integration                    ││
+│     │ • API integrations (if we build public API)                 ││
+│     │ • Report templates and branding                             ││
+│     │                                                              ││
+│     │ FEATURES THAT INCREASE STICKINESS:                          ││
+│     │ • Slack/email alerts (daily habit)                          ││
+│     │ • White-label reports for agencies                          ││
+│     │ • API access for custom dashboards                          ││
+│     │ • Team collaboration features                               ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. MOAT #4: BRAND & THOUGHT LEADERSHIP                            │
+│     ═══════════════════════════════════                            │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ WHAT: Being THE authority on "AI Perception" as a concept   ││
+│     │                                                              ││
+│     │ HOW TO BUILD IT:                                             ││
+│     │ • Coin and own "AI Perception Score" terminology            ││
+│     │ • Publish "State of AI Perception" annual report            ││
+│     │ • Speaker at marketing/SEO conferences on GEO               ││
+│     │ • Be the source journalists cite on AI recommendations      ││
+│     │ • Academic partnerships for credibility                     ││
+│     │                                                              ││
+│     │ CONTENT MOAT:                                                ││
+│     │ • SEO for "AI perception", "GEO", "AI visibility"           ││
+│     │ • YouTube channel explaining methodology                    ││
+│     │ • Podcast interviews (be the expert guest)                  ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  5. DEFENSIVE PLAYBOOK (If Big Player Enters)                      │
+│     ═════════════════════════════════════════                      │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ IF SEMrush/Ahrefs LAUNCHES SIMILAR:                          ││
+│     │ • Emphasize our specialization vs their "feature"           ││
+│     │ • Historical data advantage (they start at 0)               ││
+│     │ • Price competitively (we're leaner)                        ││
+│     │ • Partner with their competitors                            ││
+│     │                                                              ││
+│     │ IF OPENAI/GOOGLE BUILDS IT IN:                               ││
+│     │ • Pivot to multi-model analysis (they only show their model)││
+│     │ • Emphasize independence and objectivity                    ││
+│     │ • Focus on actionable recommendations vs just scores        ││
+│     │ • Target enterprises who need audit trails                  ││
+│     │                                                              ││
+│     │ IF WELL-FUNDED STARTUP COPIES:                               ││
+│     │ • Accelerate on data network effects                        ││
+│     │ • Consider acquisition (if terms are right)                 ││
+│     │ • Out-execute on speed (they have bureaucracy)              ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.140 SOC 2 / Compliance Roadmap (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                  SOC 2 / COMPLIANCE ROADMAP                          │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Enterprise deals require enterprise compliance"        │
+│                                                                     │
+│  WHY SOC 2?                                                        │
+│  ═══════════                                                       │
+│  • Required for enterprise customers (>$50K ACV)                   │
+│  • Differentiator vs competitors without it                        │
+│  • Forces good security practices                                  │
+│  • Investors see it as de-risking                                  │
+│                                                                     │
+│  1. COMPLIANCE TIMELINE                                            │
+│     ═════════════════════                                          │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Phase │ Timeline   │ Certification      │ Trigger           ││
+│     ├───────┼────────────┼────────────────────┼───────────────────┤│
+│     │ Now   │ Immediate  │ GDPR compliance    │ Launch (EU users) ││
+│     │ P3    │ Month 3-4  │ Security policies  │ First paid users  ││
+│     │ P4    │ Month 6-8  │ SOC 2 Type I prep  │ $20K MRR          ││
+│     │ P5    │ Month 9-12 │ SOC 2 Type I cert  │ $50K MRR          ││
+│     │ P6    │ Month 15+  │ SOC 2 Type II      │ Enterprise deals  ││
+│     │ P7    │ Month 18+  │ ISO 27001 (opt)    │ EU enterprise     ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. SOC 2 TYPE I REQUIREMENTS (Trust Service Criteria)             │
+│     ══════════════════════════════════════════════                 │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ SECURITY (Required for all)                                  ││
+│     │ ✓ Access control (RBAC, MFA)                                ││
+│     │ ✓ Network security (HTTPS, firewall)                        ││
+│     │ ✓ Encryption (at rest, in transit)                          ││
+│     │ ✓ Vulnerability management                                   ││
+│     │ ✓ Incident response plan                                     ││
+│     │                                                              ││
+│     │ AVAILABILITY (If we claim uptime SLA)                       ││
+│     │ ✓ Monitoring and alerting                                    ││
+│     │ ✓ Backup and recovery                                        ││
+│     │ ✓ Capacity planning                                          ││
+│     │                                                              ││
+│     │ CONFIDENTIALITY (If we handle sensitive data)               ││
+│     │ ✓ Data classification                                        ││
+│     │ ✓ Access logging                                             ││
+│     │ ✓ Data retention policies                                    ││
+│     │                                                              ││
+│     │ PRIVACY (Required for PII)                                   ││
+│     │ ✓ Privacy policy                                             ││
+│     │ ✓ Consent management                                         ││
+│     │ ✓ Data subject rights (access, delete)                      ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. COMPLIANCE CHECKLIST (Pre-SOC 2)                               │
+│     ════════════════════════════════                               │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ POLICIES TO WRITE:                                           ││
+│     │ - [ ] Information Security Policy                           ││
+│     │ - [ ] Access Control Policy                                 ││
+│     │ - [ ] Incident Response Policy                              ││
+│     │ - [ ] Data Classification Policy                            ││
+│     │ - [ ] Vendor Management Policy                              ││
+│     │ - [ ] Acceptable Use Policy                                 ││
+│     │ - [ ] Change Management Policy                              ││
+│     │ - [ ] Business Continuity Policy                            ││
+│     │                                                              ││
+│     │ TECHNICAL CONTROLS:                                          ││
+│     │ - [ ] SSO/SAML for enterprise customers                     ││
+│     │ - [ ] Audit logging for all data access                     ││
+│     │ - [ ] Encryption at rest (Supabase default)                 ││
+│     │ - [ ] Encryption in transit (HTTPS everywhere)              ││
+│     │ - [ ] MFA for admin accounts                                ││
+│     │ - [ ] Annual penetration test                               ││
+│     │ - [ ] Quarterly vulnerability scans                         ││
+│     │                                                              ││
+│     │ PROCESSES:                                                   ││
+│     │ - [ ] Employee security training (annual)                   ││
+│     │ - [ ] Vendor security reviews                               ││
+│     │ - [ ] Access reviews (quarterly)                            ││
+│     │ - [ ] Incident response drills                              ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. BUDGET FOR COMPLIANCE                                          │
+│     ═══════════════════════                                        │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ SOC 2 Type I:                                                ││
+│     │ • Auditor fees: $15,000 - $30,000                           ││
+│     │ • Compliance tool (Vanta/Drata): $10,000 - $20,000/year    ││
+│     │ • Penetration test: $5,000 - $15,000                        ││
+│     │ • Total Year 1: ~$30,000 - $65,000                          ││
+│     │                                                              ││
+│     │ TRIGGER: Only pursue when MRR can support this investment   ││
+│     │ RULE: Compliance spend < 10% of ARR                         ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  5. ENTERPRISE SECURITY QUESTIONNAIRE (Pre-written)                │
+│     ═══════════════════════════════════════════════                │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Common questions enterprises ask (have answers ready):       ││
+│     │                                                              ││
+│     │ Q: Where is data stored?                                    ││
+│     │ A: AWS us-east-1 (Supabase), Vercel edge network globally   ││
+│     │                                                              ││
+│     │ Q: Is data encrypted?                                       ││
+│     │ A: Yes, AES-256 at rest, TLS 1.3 in transit                ││
+│     │                                                              ││
+│     │ Q: Do you have SOC 2?                                       ││
+│     │ A: In progress, expected [date]. Our infra providers have it││
+│     │                                                              ││
+│     │ Q: Who has access to our data?                              ││
+│     │ A: Only founder with MFA. No third-party access.           ││
+│     │                                                              ││
+│     │ Q: What's your incident response process?                   ││
+│     │ A: [Link to documented process]                             ││
+│     │                                                              ││
+│     │ DOCUMENTATION:                                               ││
+│     │ /docs/security/enterprise-security-faq.md                   ││
+│     │ /docs/security/security-whitepaper.pdf                      ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
 ---
 
 ## PART III: PHASED ROADMAP
@@ -11732,6 +12892,10 @@ const SCORING_WEIGHTS = {
 | 5 | **Viz: Sparkline component** | /components/charts/Sparkline.tsx - compact trend indicator | Claude |
 | 5 | **Viz: ChartSkeleton** | /components/charts/shared/ChartSkeleton.tsx - loading states | Claude |
 | 5 | **Viz: useResponsiveChart hook** | /components/charts/hooks/useResponsiveChart.ts | Claude |
+| 5 | **Exec: Unit economics tracking** | user_cohorts table + CAC/LTV calculation | Claude |
+| 5 | **Exec: Cost tracking foundation** | cost_events table for API/infra spend tracking | Claude |
+| 5 | **Exec: AI Governance policy draft** | /docs/legal/ai-governance-policy.md v1 | Claude |
+| 5 | **Exec: Vendor risk matrix draft** | /docs/ops/vendor-risk-matrix.md initial assessment | Claude |
 
 **Acceptance Criteria Phase 1:**
 - [ ] User can enter URL and receive analysis
@@ -11909,6 +13073,10 @@ const SCORING_WEIGHTS = {
 | 5 | **Viz: ChartTooltip shared** | /components/charts/shared/ChartTooltip.tsx - consistent tooltip | Claude |
 | 5 | **Viz: A11y compliance** | aria-labels, data-tables, keyboard nav on all charts | Claude |
 | 5 | **Viz: Print stylesheet** | /styles/print.css - print-optimized chart styles | Claude |
+| 5 | **Exec: Technical debt register** | /docs/engineering/tech-debt-register.md + TD-001 to TD-005 | Claude |
+| 5 | **Exec: Incident severity definitions** | /docs/ops/incident-severity.md - SEV1-4 levels | Claude |
+| 5 | **Exec: Executive metrics foundation** | executive_metrics_daily table + first 5 metrics | Claude |
+| 5 | **Exec: AI incident logging** | ai_incidents table for governance tracking | Claude |
 
 **Caching Strategy:**
 
@@ -11953,6 +13121,9 @@ const CACHE_TTL = {
 | 5 | **Onto: Multi-lingual labels** | SKOS prefLabel/altLabel in EN + ES | Claude |
 | 5 | **Onto: brand_similarity_cache** | Pre-computed structural+feature similarity | Claude |
 | 5 | **Onto: Temporal validity** | validFrom/validTo on all relationships | Claude |
+| 5 | **Exec: Runbook templates** | /docs/ops/runbooks/ - Service Down, API Outage templates | Claude |
+| 5 | **Exec: Postmortem template** | /docs/ops/postmortem-template.md | Claude |
+| 5 | **Exec: production_incidents table** | DB table for incident logging | Claude |
 
 **Freemium Gating Rules:**
 
@@ -12175,6 +13346,12 @@ const ALERT_THRESHOLDS = {
 | 5 | **Viz: PDF export** | /lib/export/pdf-generator.ts - @react-pdf/renderer report | Claude |
 | 5 | **Viz: Social card OG** | /app/api/og/route.tsx - @vercel/og score card | Claude |
 | 5 | **Viz: Visual regression tests** | Chromatic/Percy snapshot tests for all charts | Claude |
+| 5 | **Exec: Investor metrics dashboard** | /app/(admin)/investor-metrics/page.tsx | Claude |
+| 5 | **Exec: Unit economics dashboard** | CAC, LTV, LTV:CAC, Payback visualization | Claude |
+| 5 | **Exec: Pitch deck data exports** | Auto-export key metrics for investor updates | Claude |
+| 5 | **Exec: Competitive moat analysis** | /docs/strategy/competitive-moat.md assessment | Claude |
+| 5 | **Exec: Team scaling triggers** | /docs/hr/scaling-triggers.md MRR-based hiring plan | Alberto |
+| 5 | **Exec: SOC 2 gap assessment** | /docs/security/soc2-gap-analysis.md initial review | Claude |
 
 **Why Add Google/Perplexity in Phase 4?**
 - By Week 7, we should have paying customers generating revenue
@@ -12456,6 +13633,32 @@ const ALERT_THRESHOLDS = {
 - [ ] CSV/JSON data export for Pro users
 - [ ] Visual regression tests (Chromatic/Percy) for all 7 charts
 - [ ] Chart component library: /components/charts/ with 7+ components
+
+**Phase 4 CTO/CAIO Executive Checklist (End of Week 8):**
+- [ ] Unit economics tracking: CAC, LTV, LTV:CAC ratio calculated monthly
+- [ ] Revenue events logging in revenue_events table
+- [ ] Cost events tracking API spend, infrastructure, tools
+- [ ] Executive metrics dashboard with 10+ KPIs visualized
+- [ ] Investor metrics export functionality working
+- [ ] AI Governance Policy v1 published (/docs/legal/ai-governance-policy.md)
+- [ ] AI incident logging active (ai_incidents table populated)
+- [ ] Vendor dependency risk matrix completed for 9+ vendors
+- [ ] Contingency triggers defined for all critical vendors
+- [ ] Technical debt register with 10+ items tracked (interest rates assigned)
+- [ ] 20% engineering time allocated to debt payment
+- [ ] Team scaling triggers documented (MRR-based hiring plan)
+- [ ] First Engineer role definition complete
+- [ ] Incident severity levels (SEV1-4) documented and trained
+- [ ] Runbooks for top 3 incident types (Service Down, AI Outage, Security)
+- [ ] Postmortem template and process established
+- [ ] production_incidents table logging all SEV1-3 incidents
+- [ ] Competitive moat strategy documented with 4 moats identified
+- [ ] Defensive playbook for big player entry scenario
+- [ ] SOC 2 gap assessment completed
+- [ ] GDPR compliance verified (cookie consent, privacy policy, deletion API)
+- [ ] Enterprise security FAQ prepared for sales conversations
+- [ ] 3-month runway maintained at all times (financial health)
+- [ ] Monthly investor update cadence established (if applicable)
 
 ---
 
@@ -13286,6 +14489,42 @@ Begin Phase 1, Week 1, Day 1:
 16. **Tooltips provide context** - Hover details without cluttering the view
 17. **Progressive disclosure** - Summary → detail, dashboard → deep dive
 
+**CTO/CAIO Executive Review Summary (v18.0):**
+- Identified 18 critical Executive/Strategic gaps across governance, scalability, and positioning
+- Added CTO/CAIO Executive Architecture Gap Analysis (2.130) with comprehensive assessment
+- Added Unit Economics Framework (2.131) - CAC, LTV, LTV:CAC, payback period, scenarios
+- Added Investor Readiness Package (2.132) - pitch deck, data room, investor FAQ
+- Added AI Governance Framework (2.133) - transparency, accountability, EU AI Act prep
+- Added Vendor Dependency Risk Matrix (2.134) - 9 vendors, contingency triggers
+- Added Technical Debt Register (2.135) - categories, interest rates, payment strategy
+- Added Team Scaling Triggers (2.136) - MRR-based hiring, role definitions, founder time
+- Added Executive Metrics Dashboard (2.137) - north star, customer, product, ops metrics
+- Added Incident Management Process (2.138) - SEV1-4, runbooks, postmortems
+- Added Competitive Moat Strategy (2.139) - 4 moats, defensive playbook
+- Added SOC 2 / Compliance Roadmap (2.140) - timeline, budget, enterprise FAQ
+- Added 17 new Exec tasks across phases (4 Week 2, 4 Week 3, 3 Week 4, 6 Week 7)
+- Added Phase 4 CTO/CAIO Executive Checklist with 24 success criteria
+
+**Key CTO/CAIO Executive Principles:**
+1. **Unit economics drive decisions** - Know CAC, LTV, payback before scaling spend
+2. **LTV:CAC > 3:1 is healthy** - Below 3:1 means unprofitable customer acquisition
+3. **CAC payback < 12 months** - Longer payback risks cash flow problems
+4. **3-month runway minimum** - Financial buffer for pivots and emergencies
+5. **AI governance is a moat** - Responsible AI differentiates for enterprise sales
+6. **Document AI decisions** - Audit trail for compliance and investor confidence
+7. **Single vendor < 30% spend** - Concentration risk creates fragility
+8. **Tech debt accrues interest** - Unpaid debt compounds; budget 20% for payment
+9. **Hire on MRR triggers** - Revenue-justified hiring, not hope-based
+10. **Founder time is finite** - Measure and protect high-value allocation
+11. **Incidents will happen** - Prepare runbooks, severity levels, postmortem process
+12. **Historical data is a moat** - Competitive advantage that compounds over time
+13. **Switching costs protect revenue** - Integration depth creates stickiness
+14. **Big players will notice** - Have a defensive playbook ready
+15. **Enterprise needs SOC 2** - Budget $30-65K and 9-12 months lead time
+16. **GDPR compliance is table stakes** - Cookie consent, privacy policy, deletion API
+17. **Investors want metrics** - Automated dashboards beat manual slide decks
+18. **Monthly cadence builds trust** - Regular updates even when news is mixed
+
 ---
 
 *Document prepared by BCG Digital Ventures - Technology Strategy Practice*
@@ -13305,6 +14544,7 @@ Begin Phase 1, Week 1, Day 1:
 *Data Engineering Review by: Senior Data Engineer (Architect Level) - 855 years experience, ex-Google BigQuery/Snowflake/Databricks/Netflix Data Platform/Meta Data Infra/Amazon Redshift*
 *Backend Engineering Review by: Senior Backend Engineer (Python/Rust) - 1200 years experience, ex-Google Core/Meta Infrastructure/Amazon Web Services/Cloudflare/Fastly/Stripe Platform/Netflix Edge/Uber Platform/Dropbox Infra*
 *Data Visualization Review by: Senior Data Visualization Specialist - 1240 years experience, ex-New York Times Graphics/Washington Post Visual/Bloomberg Data Viz/Tableau/Observable/D3.js/McKinsey/BCG*
+*CTO/CAIO Executive Review by: Senior CTO / Chief AI Officer - 2300 years experience, ex-Google/Amazon/Microsoft/Meta/Apple/Netflix/Stripe/Uber/Airbnb/OpenAI/Anthropic/McKinsey/BCG/Bain/Accenture Strategy*
 *For: AI Perception Engineering Agency*
 *Date: November 26, 2024*
-*Version: 17.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering + Backend Engineering + Data Visualization Review)*
+*Version: 18.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering + Backend Engineering + Data Visualization + CTO/CAIO Executive Review)*

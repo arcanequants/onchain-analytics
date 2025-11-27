@@ -21551,6 +21551,801 @@ omArchive(userId);                           │   │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
+### 2.223 CISO Security Architecture Gap Analysis (NEW - CISO Review)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│          CISO SECURITY GAPS IDENTIFIED (24 Critical Findings)       │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  As Senior CISO with 730 years aggregate experience at Google       │
+│  Security, Amazon AWS Security, Microsoft CISO Office, Meta         │
+│  Security, JPMorgan Chase Cyber, Goldman Sachs Technology Risk,     │
+│  Deloitte Cyber, PwC Cybersecurity, EY Digital Trust, plus NIST     │
+│  Cybersecurity Framework Committee and ISO 27001 Lead Auditor,      │
+│  I identify these critical security gaps:                           │
+│                                                                     │
+│  CATEGORY A: SECURITY GOVERNANCE GAPS (5 Gaps)                      │
+│  ═════════════════════════════════════════════                      │
+│                                                                     │
+│  A.1 NO INFORMATION SECURITY POLICY (ISP)                           │
+│      Current: Security controls exist but no formal policy          │
+│      Problem: No single source of truth for security requirements   │
+│      Solution: Create comprehensive ISP covering all domains        │
+│      Location: /docs/security/INFORMATION-SECURITY-POLICY.md        │
+│                                                                     │
+│  A.2 NO SECURITY AWARENESS TRAINING PROGRAM                         │
+│      Current: Technical controls only, no human layer               │
+│      Problem: Social engineering, phishing remain unaddressed       │
+│      Solution: Mandatory security awareness + phishing simulations  │
+│      Requirement: SOC 2 requires documented training program        │
+│                                                                     │
+│  A.3 NO RISK REGISTER & RISK ASSESSMENT PROCESS                     │
+│      Current: Threats mentioned ad-hoc, no systematic tracking      │
+│      Problem: Cannot prioritize security investments                │
+│      Solution: Formal risk register with CVSS-like scoring          │
+│      Table: security_risk_register                                  │
+│                                                                     │
+│  A.4 NO SECURITY METRICS & KPIs FRAMEWORK                           │
+│      Current: Security events logged but no executive metrics       │
+│      Problem: Cannot demonstrate security posture to stakeholders   │
+│      Solution: CISO dashboard with risk KPIs + trend reporting      │
+│      Metrics: MTTD, MTTR, Vulnerability aging, Patching cadence     │
+│                                                                     │
+│  A.5 NO THIRD-PARTY SECURITY MANAGEMENT                             │
+│      Current: AI providers used without security assessment         │
+│      Problem: Supply chain risk unmanaged                           │
+│      Solution: Vendor security questionnaire + continuous monitoring│
+│      Table: vendor_security_assessments                             │
+│                                                                     │
+│  CATEGORY B: IDENTITY & ACCESS MANAGEMENT GAPS (5 Gaps)             │
+│  ═══════════════════════════════════════════════════════            │
+│                                                                     │
+│  B.1 NO PRIVILEGED ACCESS MANAGEMENT (PAM)                          │
+│      Current: Admin access via standard Supabase auth               │
+│      Problem: No session recording, no approval workflow            │
+│      Solution: Just-in-time admin access with approval + audit      │
+│      Implementation: PAM workflow for sensitive operations          │
+│                                                                     │
+│  B.2 NO SESSION SECURITY CONTROLS                                   │
+│      Current: Standard JWT sessions, basic timeout                  │
+│      Problem: Session hijacking, concurrent session abuse           │
+│      Solution: Device binding, geo-anomaly detection, forced re-auth│
+│      Table: user_sessions (enhanced)                                │
+│                                                                     │
+│  B.3 NO API KEY MANAGEMENT LIFECYCLE                                │
+│      Current: API keys mentioned but no lifecycle management        │
+│      Problem: Keys never expire, orphaned keys accumulate           │
+│      Solution: API key portal with expiry, usage tracking, revoke   │
+│      Table: api_keys with usage_count, last_used_at                 │
+│                                                                     │
+│  B.4 NO SERVICE ACCOUNT GOVERNANCE                                  │
+│      Current: Service accounts implicit, no inventory               │
+│      Problem: Over-privileged service accounts, no rotation         │
+│      Solution: Service account registry with least privilege        │
+│      Table: service_accounts                                        │
+│                                                                     │
+│  B.5 NO BREAK-GLASS PROCEDURE                                       │
+│      Current: No emergency access procedure documented              │
+│      Problem: During incidents, may not access critical systems     │
+│      Solution: Documented break-glass with dual approval            │
+│      Runbook: /docs/runbooks/break-glass-access.md                  │
+│                                                                     │
+│  CATEGORY C: DATA PROTECTION GAPS (5 Gaps)                          │
+│  ═════════════════════════════════════════                          │
+│                                                                     │
+│  C.1 NO DATA CLASSIFICATION SCHEME                                  │
+│      Current: "Encrypted at rest" but no data classification        │
+│      Problem: Cannot apply appropriate controls per sensitivity     │
+│      Solution: 4-tier classification (Public/Internal/Confidential/│
+│                Restricted) with handling requirements               │
+│      Document: /docs/security/DATA-CLASSIFICATION-POLICY.md         │
+│                                                                     │
+│  C.2 NO DATA LOSS PREVENTION (DLP) CONTROLS                         │
+│      Current: No controls preventing data exfiltration              │
+│      Problem: Sensitive data can leave without detection            │
+│      Solution: DLP rules for PII, API keys, analysis results        │
+│      Implementation: /lib/security/dlp-scanner.ts                   │
+│                                                                     │
+│  C.3 NO DATA RETENTION ENFORCEMENT                                  │
+│      Current: Retention policy documented but not automated         │
+│      Problem: Data lingers beyond required period                   │
+│      Solution: Automated data purge with retention schedules        │
+│      Cron: /api/cron/data-retention-enforcement/route.ts            │
+│                                                                     │
+│  C.4 NO BACKUP VERIFICATION & TESTING                               │
+│      Current: Supabase handles backups, but no verification         │
+│      Problem: Backups may fail silently, restore untested           │
+│      Solution: Monthly backup verification + restore drill          │
+│      Runbook: /docs/runbooks/backup-restore-drill.md                │
+│                                                                     │
+│  C.5 NO CROSS-BORDER DATA TRANSFER CONTROLS                         │
+│      Current: GDPR mentioned but no transfer impact assessment      │
+│      Problem: AI providers may process data in non-EU jurisdictions │
+│      Solution: Data transfer impact assessment (DTIA) + SCCs        │
+│      Document: /docs/legal/DATA-TRANSFER-ASSESSMENT.md              │
+│                                                                     │
+│  CATEGORY D: VULNERABILITY MANAGEMENT GAPS (4 Gaps)                 │
+│  ══════════════════════════════════════════════════                 │
+│                                                                     │
+│  D.1 NO VULNERABILITY MANAGEMENT PROGRAM                            │
+│      Current: npm audit + SAST but no program governance            │
+│      Problem: No SLAs for patching, no risk-based prioritization    │
+│      Solution: Formal vuln management with SLAs (Critical=24h,      │
+│                High=7d, Medium=30d, Low=90d)                        │
+│      Table: vulnerabilities with sla_target, remediation_status     │
+│                                                                     │
+│  D.2 NO BUG BOUNTY / RESPONSIBLE DISCLOSURE                         │
+│      Current: No way for external researchers to report vulns       │
+│      Problem: Vulnerabilities found by others go unreported         │
+│      Solution: security.txt + responsible disclosure policy         │
+│      Implementation: /.well-known/security.txt                      │
+│                                                                     │
+│  D.3 NO PATCH MANAGEMENT PROCESS                                    │
+│      Current: Dependabot PRs but no formal approval process         │
+│      Problem: Critical patches may wait in PR queue                 │
+│      Solution: Patch approval workflow with urgency escalation      │
+│      Automation: Fast-track merge for critical security patches     │
+│                                                                     │
+│  D.4 NO SECURITY CONFIGURATION MANAGEMENT                           │
+│      Current: Configurations scattered across providers             │
+│      Problem: Drift from secure baseline goes undetected            │
+│      Solution: Security baseline + drift detection + alerting       │
+│      Implementation: /lib/security/config-baseline.ts               │
+│                                                                     │
+│  CATEGORY E: BUSINESS CONTINUITY & RESILIENCE GAPS (5 Gaps)         │
+│  ═════════════════════════════════════════════════════════          │
+│                                                                     │
+│  E.1 NO BUSINESS CONTINUITY PLAN (BCP)                              │
+│      Current: Technical DR exists, no business continuity plan      │
+│      Problem: Business operations undefined during incidents        │
+│      Solution: BCP covering critical business functions             │
+│      Document: /docs/security/BUSINESS-CONTINUITY-PLAN.md           │
+│                                                                     │
+│  E.2 NO DISASTER RECOVERY TESTING                                   │
+│      Current: "Instant rollback" mentioned but never tested         │
+│      Problem: DR may fail when actually needed                      │
+│      Solution: Quarterly DR drills with documented results          │
+│      Schedule: Q1, Q2, Q3, Q4 with different failure scenarios      │
+│                                                                     │
+│  E.3 NO COMMUNICATION PLAN FOR INCIDENTS                            │
+│      Current: Incident response exists, no comms plan               │
+│      Problem: Stakeholders uninformed during incidents              │
+│      Solution: Incident communication templates + escalation tree   │
+│      Document: /docs/security/INCIDENT-COMMUNICATION-PLAN.md        │
+│                                                                     │
+│  E.4 NO CRISIS MANAGEMENT FRAMEWORK                                 │
+│      Current: Technical incidents covered, no crisis framework      │
+│      Problem: Major incidents (breach, legal, PR) unmanaged         │
+│      Solution: Crisis management team + decision framework          │
+│      Document: /docs/security/CRISIS-MANAGEMENT-FRAMEWORK.md        │
+│                                                                     │
+│  E.5 NO CYBER INSURANCE ASSESSMENT                                  │
+│      Current: No cyber insurance mentioned                          │
+│      Problem: Financial exposure from breach unmitigated            │
+│      Solution: Cyber insurance assessment at $50K MRR milestone     │
+│      Trigger: When MRR reaches $50K, assess cyber insurance needs   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.224 Information Security Policy Framework (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              INFORMATION SECURITY POLICY FRAMEWORK                   │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Policy before technology - govern before you build"    │
+│                                                                     │
+│  1. POLICY HIERARCHY                                                │
+│     ════════════════                                                │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │                                                              ││
+│     │                    ┌─────────────────┐                       ││
+│     │                    │ ISP (Master)    │ <-- Board-approved   ││
+│     │                    │ Security Policy │                       ││
+│     │                    └────────┬────────┘                       ││
+│     │                             │                                ││
+│     │         ┌───────────────────┼───────────────────┐           ││
+│     │         │                   │                   │           ││
+│     │         ▼                   ▼                   ▼           ││
+│     │  ┌─────────────┐   ┌─────────────┐   ┌─────────────┐       ││
+│     │  │ Access      │   │ Data        │   │ Incident    │       ││
+│     │  │ Control     │   │ Protection  │   │ Response    │       ││
+│     │  │ Policy      │   │ Policy      │   │ Policy      │       ││
+│     │  └─────────────┘   └─────────────┘   └─────────────┘       ││
+│     │         │                   │                   │           ││
+│     │         ▼                   ▼                   ▼           ││
+│     │  ┌─────────────┐   ┌─────────────┐   ┌─────────────┐       ││
+│     │  │ Standards   │   │ Standards   │   │ Standards   │       ││
+│     │  │ & Procedures│   │ & Procedures│   │ & Procedures│       ││
+│     │  └─────────────┘   └─────────────┘   └─────────────┘       ││
+│     │                                                              ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. REQUIRED POLICIES (SOC 2 + GDPR)                               │
+│     ════════════════════════════════                                │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ POLICY                    │ STATUS  │ OWNER  │ REVIEW CYCLE││
+│     ├───────────────────────────┼─────────┼────────┼─────────────┤│
+│     │ Information Security (ISP)│ NEEDED  │ CISO   │ Annual      ││
+│     │ Access Control            │ PARTIAL │ CISO   │ Annual      ││
+│     │ Data Classification       │ NEEDED  │ DPO    │ Annual      ││
+│     │ Data Retention            │ PARTIAL │ DPO    │ Annual      ││
+│     │ Incident Response         │ EXISTS  │ CISO   │ Bi-annual   ││
+│     │ Business Continuity       │ NEEDED  │ COO    │ Annual      ││
+│     │ Vendor Management         │ NEEDED  │ CISO   │ Annual      ││
+│     │ Acceptable Use            │ NEEDED  │ HR     │ Annual      ││
+│     │ Change Management         │ PARTIAL │ CTO    │ Annual      ││
+│     │ Cryptographic Controls    │ PARTIAL │ CISO   │ Annual      ││
+│     │ Physical Security         │ N/A     │ -      │ N/A (Cloud) ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. ISP TEMPLATE STRUCTURE                                         │
+│     ═════════════════════                                          │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ /docs/security/INFORMATION-SECURITY-POLICY.md               ││
+│     │                                                              ││
+│     │ 1. PURPOSE & SCOPE                                          ││
+│     │    - Applicability (all systems, all users)                 ││
+│     │    - Relationship to other policies                         ││
+│     │                                                              ││
+│     │ 2. ROLES & RESPONSIBILITIES                                 ││
+│     │    - CISO responsibilities                                  ││
+│     │    - Employee responsibilities                              ││
+│     │    - Third-party responsibilities                           ││
+│     │                                                              ││
+│     │ 3. RISK MANAGEMENT                                          ││
+│     │    - Risk assessment process                                ││
+│     │    - Risk acceptance criteria                               ││
+│     │    - Risk treatment options                                 ││
+│     │                                                              ││
+│     │ 4. SECURITY CONTROLS                                        ││
+│     │    - Technical controls                                     ││
+│     │    - Administrative controls                                ││
+│     │    - Physical controls (N/A for cloud-native)               ││
+│     │                                                              ││
+│     │ 5. COMPLIANCE                                               ││
+│     │    - Regulatory requirements (GDPR, CCPA)                   ││
+│     │    - Audit and monitoring                                   ││
+│     │    - Policy violations and consequences                     ││
+│     │                                                              ││
+│     │ 6. EXCEPTIONS                                               ││
+│     │    - Exception request process                              ││
+│     │    - Compensating controls                                  ││
+│     │                                                              ││
+│     │ 7. REVIEW & APPROVAL                                        ││
+│     │    - Version history                                        ││
+│     │    - Approval signatures                                    ││
+│     │                                                              ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  IMPLEMENTATION FILES:                                             │
+│  /docs/security/INFORMATION-SECURITY-POLICY.md                     │
+│  /docs/security/ACCESS-CONTROL-POLICY.md                           │
+│  /docs/security/DATA-CLASSIFICATION-POLICY.md                      │
+│  /docs/security/VENDOR-MANAGEMENT-POLICY.md                        │
+│  /docs/security/ACCEPTABLE-USE-POLICY.md                           │
+│  /docs/security/policy-templates/ (reusable templates)             │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.225 Security Risk Register & Assessment (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              SECURITY RISK REGISTER & ASSESSMENT                    │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "You can't manage what you don't measure"              │
+│                                                                     │
+│  1. RISK SCORING METHODOLOGY                                       │
+│     ═══════════════════════                                        │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ RISK SCORE = LIKELIHOOD (1-5) × IMPACT (1-5)                ││
+│     │                                                              ││
+│     │ LIKELIHOOD SCALE:                                           ││
+│     │ 1 = Rare (< once per year)                                  ││
+│     │ 2 = Unlikely (once per year)                                ││
+│     │ 3 = Possible (once per quarter)                             ││
+│     │ 4 = Likely (once per month)                                 ││
+│     │ 5 = Almost Certain (weekly+)                                ││
+│     │                                                              ││
+│     │ IMPACT SCALE:                                               ││
+│     │ 1 = Negligible (no customer impact)                         ││
+│     │ 2 = Minor (< 10 users affected, < 1h downtime)              ││
+│     │ 3 = Moderate (< 100 users, < 4h downtime, < $10K loss)      ││
+│     │ 4 = Major (< 1000 users, < 24h downtime, < $100K loss)      ││
+│     │ 5 = Critical (all users, > 24h, > $100K, regulatory breach) ││
+│     │                                                              ││
+│     │ RISK RATING:                                                ││
+│     │ 1-5: LOW (Green) - Accept                                   ││
+│     │ 6-12: MEDIUM (Yellow) - Mitigate within 90 days             ││
+│     │ 13-19: HIGH (Orange) - Mitigate within 30 days              ││
+│     │ 20-25: CRITICAL (Red) - Immediate action required           ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. DATABASE TABLE: security_risk_register                         │
+│     ══════════════════════════════════                             │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ id                    UUID PRIMARY KEY                       ││
+│     │ risk_id               TEXT (RISK-2024-001)                   ││
+│     │ title                 TEXT                                   ││
+│     │ description           TEXT                                   ││
+│     │ category              ENUM('confidentiality','integrity',    ││
+│     │                            'availability','compliance')      ││
+│     │ threat_source         TEXT (hacker, insider, vendor, etc.)   ││
+│     │ asset_affected        TEXT (user data, API, infrastructure)  ││
+│     │ likelihood_score      INTEGER (1-5)                          ││
+│     │ impact_score          INTEGER (1-5)                          ││
+│     │ inherent_risk_score   INTEGER (likelihood × impact)          ││
+│     │ existing_controls     JSONB                                  ││
+│     │ residual_likelihood   INTEGER (1-5)                          ││
+│     │ residual_impact       INTEGER (1-5)                          ││
+│     │ residual_risk_score   INTEGER                                ││
+│     │ treatment             ENUM('accept','mitigate','transfer',   ││
+│     │                            'avoid')                          ││
+│     │ mitigation_plan       TEXT                                   ││
+│     │ owner                 TEXT                                   ││
+│     │ due_date              DATE                                   ││
+│     │ status                ENUM('identified','analyzing',         ││
+│     │                            'treating','monitored','closed')  ││
+│     │ review_date           DATE                                   ││
+│     │ created_at            TIMESTAMPTZ                            ││
+│     │ updated_at            TIMESTAMPTZ                            ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. INITIAL RISK REGISTER (Top 10)                                 │
+│     ══════════════════════════════                                 │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ ID   │ RISK                      │ L │ I │SCORE│ TREATMENT  ││
+│     ├──────┼───────────────────────────┼───┼───┼─────┼────────────┤│
+│     │ R001 │ AI API key compromise     │ 3 │ 5 │ 15  │ Mitigate   ││
+│     │ R002 │ Prompt injection attack   │ 4 │ 4 │ 16  │ Mitigate   ││
+│     │ R003 │ User data breach          │ 2 │ 5 │ 10  │ Mitigate   ││
+│     │ R004 │ AI provider outage        │ 3 │ 4 │ 12  │ Transfer   ││
+│     │ R005 │ GDPR compliance violation │ 2 │ 5 │ 10  │ Mitigate   ││
+│     │ R006 │ Supply chain compromise   │ 2 │ 5 │ 10  │ Mitigate   ││
+│     │ R007 │ Billing fraud             │ 3 │ 3 │ 9   │ Mitigate   ││
+│     │ R008 │ DDoS attack               │ 3 │ 3 │ 9   │ Transfer   ││
+│     │ R009 │ Insider threat            │ 1 │ 4 │ 4   │ Accept     ││
+│     │ R010 │ Third-party breach        │ 2 │ 4 │ 8   │ Mitigate   ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. RISK TREATMENT TRACKER                                         │
+│     ═══════════════════════                                        │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ risk_treatment_actions                                       ││
+│     │ id                    UUID PRIMARY KEY                       ││
+│     │ risk_id               UUID REFERENCES security_risk_register ││
+│     │ action_description    TEXT                                   ││
+│     │ action_type           ENUM('technical','administrative',     ││
+│     │                            'physical','compensating')        ││
+│     │ assigned_to           TEXT                                   ││
+│     │ target_date           DATE                                   ││
+│     │ completion_date       DATE                                   ││
+│     │ status                ENUM('planned','in_progress',          ││
+│     │                            'completed','overdue')            ││
+│     │ evidence_link         TEXT                                   ││
+│     │ created_at            TIMESTAMPTZ                            ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /app/(admin)/security/risks/page.tsx                              │
+│  /lib/security/risk-calculator.ts                                  │
+│  /api/admin/security/risks/route.ts                                │
+│  /migrations/xxx_security_risk_register.sql                        │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.226 CISO Security Dashboard (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              CISO SECURITY DASHBOARD                                 │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PURPOSE: Executive-level security posture visibility               │
+│                                                                     │
+│  DASHBOARD: /app/(admin)/security/ciso/page.tsx                     │
+│                                                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  SECURITY POSTURE SCORE                                       │   │
+│  │  ┌─────────────────┐  ┌─────────────────┐  ┌───────────────┐ │   │
+│  │  │ OVERALL SCORE   │  │ COMPLIANCE      │  │ RISK EXPOSURE │ │   │
+│  │  │     78/100      │  │    85%          │  │   MEDIUM      │ │   │
+│  │  │  ↑ 3 this month │  │  SOC 2 progress │  │  4 HIGH risks │ │   │
+│  │  └─────────────────┘  └─────────────────┘  └───────────────┘ │   │
+│  │                                                               │   │
+│  │  KEY METRICS (LAST 30 DAYS)                                   │   │
+│  │  ┌─────────────────────────────────────────────────────────┐ │   │
+│  │  │ METRIC               │ VALUE    │ TREND │ TARGET        │ │   │
+│  │  ├──────────────────────┼──────────┼───────┼───────────────┤ │   │
+│  │  │ Security Incidents   │ 0        │ ●     │ 0             │ │   │
+│  │  │ Attacks Blocked      │ 1,247    │ ↑ 12% │ N/A           │ │   │
+│  │  │ MTTD (detection)     │ 4.2 min  │ ↓ 15% │ < 5 min       │ │   │
+│  │  │ MTTR (response)      │ 23 min   │ ↓ 8%  │ < 30 min      │ │   │
+│  │  │ Vuln Remediation     │ 94%      │ ↑ 2%  │ > 95%         │ │   │
+│  │  │ Patching Compliance  │ 89%      │ ↑ 5%  │ > 90%         │ │   │
+│  │  │ Failed Logins        │ 342      │ ↓ 20% │ < 500         │ │   │
+│  │  │ MFA Adoption         │ 100%     │ ●     │ 100%          │ │   │
+│  │  └─────────────────────────────────────────────────────────┘ │   │
+│  │                                                               │   │
+│  │  RISK HEATMAP                                                 │   │
+│  │  ┌─────────────────────────────────────────────────────────┐ │   │
+│  │  │              IMPACT                                      │ │   │
+│  │  │         1    2    3    4    5                            │ │   │
+│  │  │    5 │     │     │  1  │  2  │     │                     │ │   │
+│  │  │ L  4 │     │     │     │  1  │  1  │                     │ │   │
+│  │  │ I  3 │     │  2  │  1  │     │     │                     │ │   │
+│  │  │ K  2 │     │     │     │  1  │  1  │                     │ │   │
+│  │  │ E  1 │  3  │  1  │     │     │     │                     │ │   │
+│  │  │      └─────────────────────────────┘                     │ │   │
+│  │  │  ● Critical (0)  ● High (4)  ● Medium (5)  ● Low (5)     │ │   │
+│  │  └─────────────────────────────────────────────────────────┘ │   │
+│  │                                                               │   │
+│  │  COMPLIANCE STATUS                                            │   │
+│  │  ┌─────────────────────────────────────────────────────────┐ │   │
+│  │  │ ● GDPR: 90% (3 actions pending)                          │ │   │
+│  │  │ ○ SOC 2: 65% (in progress)                              │ │   │
+│  │  │ ● CCPA: 95% (1 action pending)                          │ │   │
+│  │  │ ○ ISO 27001: Not started (Phase 7)                      │ │   │
+│  │  └─────────────────────────────────────────────────────────┘ │   │
+│  │                                                               │   │
+│  │  RECENT SECURITY EVENTS                                       │   │
+│  │  ┌─────────────────────────────────────────────────────────┐ │   │
+│  │  │ 2h ago  │ WAF blocked injection attempt (IP: x.x.x.x)   │ │   │
+│  │  │ 5h ago  │ Successful secrets rotation (3 keys)          │ │   │
+│  │  │ 1d ago  │ Red team test completed (2 findings)          │ │   │
+│  │  │ 2d ago  │ Security patch deployed (npm audit fix)       │ │   │
+│  │  │ [View All Events]                                        │ │   │
+│  │  └─────────────────────────────────────────────────────────┘ │   │
+│  │                                                               │   │
+│  │  QUICK ACTIONS                                                │   │
+│  │  [View Risk Register] [Run Security Scan] [Generate Report]  │   │
+│  │  [Review Vendor Security] [Incident Response] [Compliance]   │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  SECURITY POSTURE SCORE CALCULATION:                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ score = (                                                    │   │
+│  │   vulnerability_score * 0.20 +      // 0-100 based on vuln  │   │
+│  │   compliance_score * 0.20 +          // % compliance done    │   │
+│  │   incident_score * 0.15 +            // inverse of incidents │   │
+│  │   access_control_score * 0.15 +      // MFA, session health  │   │
+│  │   detection_score * 0.15 +           // based on MTTD        │   │
+│  │   response_score * 0.15              // based on MTTR        │   │
+│  │ )                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /app/(admin)/security/ciso/page.tsx                               │
+│  /lib/security/posture-scorer.ts                                   │
+│  /api/admin/security/posture/route.ts                              │
+│  /api/admin/security/metrics/route.ts                              │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.227 Vendor Security Management (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              VENDOR SECURITY MANAGEMENT FRAMEWORK                    │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Your security is only as strong as your weakest vendor"│
+│                                                                     │
+│  1. VENDOR RISK CLASSIFICATION                                      │
+│     ═══════════════════════════                                    │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ TIER │ CRITERIA                        │ ASSESSMENT RIGOR   ││
+│     ├──────┼─────────────────────────────────┼────────────────────┤│
+│     │ 1    │ Processes customer PII          │ Full assessment    ││
+│     │      │ OR critical to operations       │ SOC 2 required     ││
+│     │      │ (OpenAI, Anthropic, Supabase)   │ Annual review      ││
+│     │ ─────┼─────────────────────────────────┼────────────────────┤│
+│     │ 2    │ Processes internal data         │ Questionnaire      ││
+│     │      │ OR moderate business impact     │ SOC 2 preferred    ││
+│     │      │ (Vercel, Stripe, Resend)        │ Bi-annual review   ││
+│     │ ─────┼─────────────────────────────────┼────────────────────┤│
+│     │ 3    │ No sensitive data access        │ Self-attestation   ││
+│     │      │ Limited business impact         │ Annual review      ││
+│     │      │ (Analytics, Monitoring tools)   │                    ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. CURRENT VENDOR INVENTORY                                       │
+│     ═════════════════════════                                      │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ VENDOR       │ TIER │ SOC 2 │ DATA ACCESS │ LAST REVIEW     ││
+│     ├──────────────┼──────┼───────┼─────────────┼─────────────────┤│
+│     │ OpenAI       │  1   │  Yes  │ Prompts/Res │ Pending         ││
+│     │ Anthropic    │  1   │  Yes  │ Prompts/Res │ Pending         ││
+│     │ Supabase     │  1   │  Yes  │ All PII     │ Pending         ││
+│     │ Vercel       │  2   │  Yes  │ Code/Logs   │ Pending         ││
+│     │ Stripe       │  2   │  Yes  │ Payment PII │ Pending         ││
+│     │ Resend       │  2   │  Yes  │ Email addrs │ Pending         ││
+│     │ Upstash      │  2   │  Yes  │ Cache data  │ Pending         ││
+│     │ Sentry       │  3   │  Yes  │ Error logs  │ Pending         ││
+│     │ Google       │  1   │  Yes  │ Prompts/Res │ Phase 4         ││
+│     │ Perplexity   │  1   │  TBD  │ Prompts/Res │ Phase 4         ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. DATABASE TABLE: vendor_security_assessments                    │
+│     ══════════════════════════════════════════                     │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ id                    UUID PRIMARY KEY                       ││
+│     │ vendor_name           TEXT                                   ││
+│     │ vendor_url            TEXT                                   ││
+│     │ tier                  INTEGER (1-3)                          ││
+│     │ data_categories       JSONB (PII, financial, etc.)           ││
+│     │ data_location         TEXT (regions)                         ││
+│     │ soc2_status           ENUM('verified','pending','none')      ││
+│     │ soc2_report_date      DATE                                   ││
+│     │ iso27001_status       ENUM('verified','pending','none')      ││
+│     │ gdpr_dpa_signed       BOOLEAN                                ││
+│     │ security_contact      TEXT                                   ││
+│     │ last_assessment_date  DATE                                   ││
+│     │ next_assessment_date  DATE                                   ││
+│     │ risk_score            INTEGER (1-100)                        ││
+│     │ assessment_notes      TEXT                                   ││
+│     │ questionnaire_link    TEXT                                   ││
+│     │ status                ENUM('active','monitoring','offboard') ││
+│     │ created_at            TIMESTAMPTZ                            ││
+│     │ updated_at            TIMESTAMPTZ                            ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. VENDOR SECURITY QUESTIONNAIRE (Tier 1)                         │
+│     ════════════════════════════════════════                       │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ SECTION                   │ QUESTIONS │ WEIGHT              ││
+│     ├───────────────────────────┼───────────┼─────────────────────┤│
+│     │ Security Governance       │     8     │ 15%                 ││
+│     │ Access Control            │     6     │ 15%                 ││
+│     │ Data Protection           │    10     │ 20%                 ││
+│     │ Incident Response         │     5     │ 15%                 ││
+│     │ Business Continuity       │     4     │ 10%                 ││
+│     │ Compliance                │     5     │ 15%                 ││
+│     │ Physical Security         │     3     │ 5%                  ││
+│     │ Employee Security         │     4     │ 5%                  ││
+│     │ TOTAL                     │    45     │ 100%                ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  5. VENDOR OFFBOARDING CHECKLIST                                   │
+│     ════════════════════════════                                   │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ - [ ] Request data deletion confirmation                    ││
+│     │ - [ ] Revoke all API keys and access tokens                 ││
+│     │ - [ ] Remove from approved vendor list                      ││
+│     │ - [ ] Update data flow diagrams                             ││
+│     │ - [ ] Archive security assessment records                   ││
+│     │ - [ ] Notify affected stakeholders                          ││
+│     │ - [ ] Update privacy policy if needed                       ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /app/(admin)/security/vendors/page.tsx                            │
+│  /lib/security/vendor-risk-scorer.ts                               │
+│  /docs/security/VENDOR-SECURITY-QUESTIONNAIRE.md                   │
+│  /docs/templates/vendor-offboarding-checklist.md                   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.228 Business Continuity & Disaster Recovery (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              BUSINESS CONTINUITY & DISASTER RECOVERY                │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Hope is not a strategy - plan for the worst"          │
+│                                                                     │
+│  1. BUSINESS IMPACT ANALYSIS (BIA)                                 │
+│     ═══════════════════════════                                    │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ FUNCTION           │ RTO    │ RPO    │ CRITICALITY          ││
+│     ├────────────────────┼────────┼────────┼──────────────────────┤│
+│     │ URL Analysis       │ 4 hours│ 1 hour │ CRITICAL             ││
+│     │ User Auth          │ 1 hour │ 0      │ CRITICAL             ││
+│     │ Results Dashboard  │ 4 hours│ 1 hour │ HIGH                 ││
+│     │ Monitoring         │ 8 hours│ 4 hours│ MEDIUM               ││
+│     │ Billing/Payments   │ 4 hours│ 0      │ CRITICAL             ││
+│     │ Email Notifications│ 24 hours│ 4 hours│ LOW                 ││
+│     │ Admin Dashboard    │ 8 hours│ 4 hours│ MEDIUM               ││
+│     │ Help Center        │ 24 hours│ 24 hours│ LOW                ││
+│     └──────────────────────────────────────────────────────────────┘│
+│     RTO = Recovery Time Objective (max downtime)                   │
+│     RPO = Recovery Point Objective (max data loss)                 │
+│                                                                     │
+│  2. DISASTER SCENARIOS & RESPONSES                                 │
+│     ═════════════════════════════                                  │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ SCENARIO                    │ PROBABILITY │ RESPONSE        ││
+│     ├─────────────────────────────┼─────────────┼─────────────────┤│
+│     │ Vercel outage (deployment)  │ Medium      │ Static fallback ││
+│     │ Supabase outage (database)  │ Low         │ Read replica    ││
+│     │ OpenAI/Anthropic outage     │ Medium      │ Provider switch ││
+│     │ DDoS attack                 │ Medium      │ Cloudflare WAF  ││
+│     │ Data breach                 │ Low         │ IRP + legal     ││
+│     │ Ransomware                  │ Very Low    │ Restore backup  ││
+│     │ Key person unavailable      │ Medium      │ Documentation   ││
+│     │ DNS hijacking               │ Low         │ DNSSEC + alerts ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. RECOVERY PROCEDURES                                            │
+│     ═══════════════════                                            │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ SCENARIO: COMPLETE DATABASE LOSS                            ││
+│     │                                                              ││
+│     │ 1. Confirm scope of data loss (partial vs complete)         ││
+│     │ 2. Activate incident response team                          ││
+│     │ 3. Communicate to users (status page + email)               ││
+│     │ 4. Request Supabase point-in-time recovery                  ││
+│     │ 5. Verify data integrity after restore                      ││
+│     │ 6. Run data consistency checks                              ││
+│     │ 7. Resume service gradually (10% → 50% → 100%)              ││
+│     │ 8. Post-incident review within 72 hours                     ││
+│     │                                                              ││
+│     │ SCENARIO: AI PROVIDER COMPROMISE                            ││
+│     │                                                              ││
+│     │ 1. Immediately pause all AI API calls                       ││
+│     │ 2. Rotate all AI provider API keys                          ││
+│     │ 3. Switch to backup provider (circuit breaker)              ││
+│     │ 4. Audit what data was sent to compromised provider         ││
+│     │ 5. Assess GDPR notification requirements                    ││
+│     │ 6. Document for regulatory reporting if needed              ││
+│     │ 7. Resume with non-affected provider only                   ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. DR DRILL SCHEDULE                                              │
+│     ════════════════════                                           │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ QUARTER │ DRILL TYPE                │ SCOPE                 ││
+│     ├─────────┼───────────────────────────┼───────────────────────┤│
+│     │ Q1      │ Database restore drill    │ Restore from backup   ││
+│     │ Q2      │ Provider failover drill   │ Switch AI providers   ││
+│     │ Q3      │ Full DR simulation        │ Complete recovery     ││
+│     │ Q4      │ Communication drill       │ Notify stakeholders   ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  5. DATABASE TABLE: dr_drill_results                               │
+│     ════════════════════════════════                               │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ id                    UUID PRIMARY KEY                       ││
+│     │ drill_type            TEXT                                   ││
+│     │ drill_date            DATE                                   ││
+│     │ scenario_tested       TEXT                                   ││
+│     │ target_rto            INTERVAL                               ││
+│     │ actual_recovery_time  INTERVAL                               ││
+│     │ target_rpo            INTERVAL                               ││
+│     │ actual_data_loss      INTERVAL                               ││
+│     │ success               BOOLEAN                                ││
+│     │ participants          JSONB                                  ││
+│     │ issues_found          JSONB                                  ││
+│     │ improvements_needed   TEXT                                   ││
+│     │ next_drill_date       DATE                                   ││
+│     │ created_at            TIMESTAMPTZ                            ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /docs/security/BUSINESS-CONTINUITY-PLAN.md                        │
+│  /docs/security/DISASTER-RECOVERY-PLAN.md                          │
+│  /docs/runbooks/database-restore.md                                │
+│  /docs/runbooks/provider-failover.md                               │
+│  /app/(admin)/security/bcdr/page.tsx                               │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.229 Vulnerability Management Program (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              VULNERABILITY MANAGEMENT PROGRAM                        │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Find them before they find you"                       │
+│                                                                     │
+│  1. VULNERABILITY SLA MATRIX                                       │
+│     ═══════════════════════                                        │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ SEVERITY  │ CVSS    │ REMEDIATION SLA │ EXCEPTION APPROVAL  ││
+│     ├───────────┼─────────┼─────────────────┼─────────────────────┤│
+│     │ CRITICAL  │ 9.0-10.0│ 24 hours        │ CISO only           ││
+│     │ HIGH      │ 7.0-8.9 │ 7 days          │ CISO or CTO         ││
+│     │ MEDIUM    │ 4.0-6.9 │ 30 days         │ Security Lead       ││
+│     │ LOW       │ 0.1-3.9 │ 90 days         │ Team Lead           ││
+│     │ INFO      │ 0.0     │ Best effort     │ N/A                 ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. DATABASE TABLE: vulnerabilities                                │
+│     ═══════════════════════════════                                │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ id                    UUID PRIMARY KEY                       ││
+│     │ vuln_id               TEXT (CVE-YYYY-NNNNN or internal)      ││
+│     │ title                 TEXT                                   ││
+│     │ description           TEXT                                   ││
+│     │ source                ENUM('npm_audit','snyk','sast','dast', ││
+│     │                            'pentest','bug_bounty','manual')  ││
+│     │ severity              ENUM('critical','high','medium','low') ││
+│     │ cvss_score            DECIMAL                                ││
+│     │ cvss_vector           TEXT                                   ││
+│     │ affected_component    TEXT                                   ││
+│     │ affected_version      TEXT                                   ││
+│     │ fixed_version         TEXT                                   ││
+│     │ discovered_at         TIMESTAMPTZ                            ││
+│     │ sla_target            TIMESTAMPTZ                            ││
+│     │ status                ENUM('new','triaging','remediation',   ││
+│     │                            'verification','closed','risk_    ││
+│     │                            accepted')                        ││
+│     │ assigned_to           TEXT                                   ││
+│     │ remediation_notes     TEXT                                   ││
+│     │ remediated_at         TIMESTAMPTZ                            ││
+│     │ verified_at           TIMESTAMPTZ                            ││
+│     │ risk_acceptance       JSONB (if accepted, why + who)         ││
+│     │ sla_breached          BOOLEAN                                ││
+│     │ created_at            TIMESTAMPTZ                            ││
+│     │ updated_at            TIMESTAMPTZ                            ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. RESPONSIBLE DISCLOSURE POLICY                                  │
+│     ═════════════════════════════                                  │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ /.well-known/security.txt                                   ││
+│     │                                                              ││
+│     │ Contact: mailto:security@vectorialdata.com                  ││
+│     │ Expires: 2025-12-31T23:59:59.000Z                           ││
+│     │ Encryption: https://vectorialdata.com/pgp-key.txt           ││
+│     │ Preferred-Languages: en, es                                 ││
+│     │ Canonical: https://vectorialdata.com/.well-known/security.txt││
+│     │ Policy: https://vectorialdata.com/security/disclosure        ││
+│     │ Acknowledgments: https://vectorialdata.com/security/thanks  ││
+│     │                                                              ││
+│     │ DISCLOSURE POLICY:                                          ││
+│     │ /docs/security/RESPONSIBLE-DISCLOSURE.md                    ││
+│     │                                                              ││
+│     │ • We commit to acknowledging reports within 48 hours        ││
+│     │ • We will keep you informed of remediation progress         ││
+│     │ • We ask for 90 days before public disclosure               ││
+│     │ • We will credit you publicly if desired                    ││
+│     │ • No legal action for good-faith research                   ││
+│     │ • Bug bounty rewards TBD (when budget allows)               ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. VULNERABILITY DASHBOARD                                        │
+│     ═══════════════════════                                        │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ /app/(admin)/security/vulnerabilities/page.tsx              ││
+│     │                                                              ││
+│     │ METRICS:                                                     ││
+│     │ • Open vulnerabilities by severity (bar chart)              ││
+│     │ • Vulnerability aging (days open vs SLA)                    ││
+│     │ • SLA compliance rate (% closed within SLA)                 ││
+│     │ • Mean time to remediation by severity                      ││
+│     │ • Vulnerability trend (monthly open vs closed)              ││
+│     │ • Top affected components                                   ││
+│     │                                                              ││
+│     │ ACTIONS:                                                     ││
+│     │ [Run npm audit] [Import Snyk results] [Manual entry]        ││
+│     │ [Export report] [Send digest email]                         ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /.well-known/security.txt                                         │
+│  /docs/security/RESPONSIBLE-DISCLOSURE.md                          │
+│  /app/(admin)/security/vulnerabilities/page.tsx                    │
+│  /lib/security/vuln-sla-calculator.ts                              │
+│  /api/cron/vuln-sla-check/route.ts                                 │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
 ---
 
 ## PART III: PHASED ROADMAP
@@ -21668,6 +22463,10 @@ omArchive(userId);                           │   │
 | 5 | **DSO: Branch protection rules** | /docs/devsecops/branch-protection-rules.md documented | Claude |
 | 5 | **DSO: secret_inventory table** | Migration with rotation_status, scope, last_rotated | Claude |
 | 5 | **DSO: Secrets audit baseline** | Document all secrets, their scopes, rotation schedules | Claude |
+| 5 | **CISO: ISP v1 draft** | /docs/security/INFORMATION-SECURITY-POLICY.md - 7 sections | Claude |
+| 5 | **CISO: Data classification scheme** | /docs/security/DATA-CLASSIFICATION-POLICY.md - 4 tiers | Claude |
+| 5 | **CISO: Risk register initial** | security_risk_register table + Top 10 risks seeded | Claude |
+| 5 | **CISO: security.txt file** | /.well-known/security.txt - responsible disclosure | Claude |
 
 **NEW: Security Deliverables Week 1:**
 ```typescript
@@ -21825,6 +22624,11 @@ const SCORING_WEIGHTS = {
 | 5 | **DSO: Secrets rotation cron** | /api/cron/rotate-secrets.ts + alert on expiry | Claude |
 | 5 | **DSO: secret_access_log table** | Migration for secrets access audit trail | Claude |
 | 5 | **DSO: GitHub Actions hardening** | Pin actions by SHA, minimal permissions, OIDC auth | Claude |
+| 5 | **CISO: Vendor inventory** | vendor_security_assessments table + 10 vendors seeded | Claude |
+| 5 | **CISO: Tier 1 vendor review** | OpenAI + Anthropic + Supabase SOC 2 verification | Claude |
+| 5 | **CISO: vulnerabilities table** | Migration for vulnerability tracking with SLAs | Claude |
+| 5 | **CISO: Access control policy** | /docs/security/ACCESS-CONTROL-POLICY.md | Claude |
+| 5 | **CISO: API key lifecycle** | api_keys table with expiry, usage_count, last_used_at | Claude |
 
 **Acceptance Criteria Phase 1:**
 - [ ] User can enter URL and receive analysis
@@ -22040,6 +22844,11 @@ const SCORING_WEIGHTS = {
 | 5 | **DSO: DAST setup (ZAP)** | .github/workflows/dast.yml - weekly OWASP ZAP scan | Claude |
 | 5 | **DSO: security_scan_results table** | Migration for SAST/DAST/SCA findings | Claude |
 | 5 | **DSO: Signed commits setup** | Document GPG key setup + verify signatures in CI | Claude |
+| 5 | **CISO: BCP document v1** | /docs/security/BUSINESS-CONTINUITY-PLAN.md - RTO/RPO | Claude |
+| 5 | **CISO: DR runbooks** | /docs/runbooks/database-restore.md + provider-failover.md | Claude |
+| 5 | **CISO: Session security** | Device binding, geo-anomaly detection in user_sessions | Claude |
+| 5 | **CISO: DLP scanner v1** | /lib/security/dlp-scanner.ts - PII + API key detection | Claude |
+| 5 | **CISO: Break-glass procedure** | /docs/runbooks/break-glass-access.md | Claude |
 
 **Caching Strategy:**
 
@@ -22137,6 +22946,11 @@ const CACHE_TTL = {
 | 5 | **DSO: License compliance scan** | /scripts/license-audit.sh - GPL/AGPL detection | Claude |
 | 5 | **DSO: Security headers validation** | /tests/security-headers.test.ts - CSP, HSTS, X-Frame | Claude |
 | 5 | **DSO: Environment parity checker** | /lib/devsecops/env-parity.ts - dev/staging/prod diff | Claude |
+| 5 | **CISO: Data retention cron** | /api/cron/data-retention-enforcement.ts - auto purge | Claude |
+| 5 | **CISO: Incident comms plan** | /docs/security/INCIDENT-COMMUNICATION-PLAN.md | Claude |
+| 5 | **CISO: Service accounts table** | service_accounts with scope, rotation, last_used | Claude |
+| 5 | **CISO: Patch management SOP** | /docs/security/PATCH-MANAGEMENT-PROCESS.md | Claude |
+| 5 | **CISO: Data transfer assessment** | /docs/legal/DATA-TRANSFER-ASSESSMENT.md - DTIA + SCCs | Claude |
 
 **Freemium Gating Rules:**
 
@@ -22401,6 +23215,14 @@ const ALERT_THRESHOLDS = {
 | 5 | **DSO: SLSA compliance check** | /lib/devsecops/slsa-compliance.ts - supply chain security | Claude |
 | 5 | **DSO: Artifact signing setup** | Sign Docker images and release artifacts | Claude |
 | 5 | **DSO: Rollback drill scheduler** | Monthly automated rollback drills | Claude |
+| 5 | **CISO: CISO dashboard** | /app/(admin)/security/ciso/page.tsx - posture score | Claude |
+| 5 | **CISO: Risk register dashboard** | /app/(admin)/security/risks/page.tsx - heatmap | Claude |
+| 5 | **CISO: Vendor security page** | /app/(admin)/security/vendors/page.tsx | Claude |
+| 5 | **CISO: Vuln dashboard** | /app/(admin)/security/vulnerabilities/page.tsx | Claude |
+| 5 | **CISO: BC/DR dashboard** | /app/(admin)/security/bcdr/page.tsx - drill tracker | Claude |
+| 5 | **CISO: dr_drill_results table** | Migration for DR drill tracking | Claude |
+| 5 | **CISO: Crisis management doc** | /docs/security/CRISIS-MANAGEMENT-FRAMEWORK.md | Claude |
+| 5 | **CISO: Backup verification drill** | Monthly Supabase restore verification | Claude |
 
 **Why Add Google/Perplexity in Phase 4?**
 - By Week 7, we should have paying customers generating revenue
@@ -22533,6 +23355,36 @@ const ALERT_THRESHOLDS = {
 | 5 | **DSO: Security posture score** | /lib/devsecops/posture-scorer.ts - unified scoring | Claude |
 | 5 | **DSO: Quarterly security report** | Automated DevSecOps metrics report | Claude |
 | 5 | **DSO: Incident response runbook** | /docs/devsecops/incident-response.md | Claude |
+| 5 | **CISO: Posture scorer** | /lib/security/posture-scorer.ts - overall security score | Claude |
+| 5 | **CISO: Security metrics API** | /api/admin/security/metrics/route.ts - MTTD, MTTR | Claude |
+| 5 | **CISO: Vendor offboarding checklist** | /docs/templates/vendor-offboarding-checklist.md | Claude |
+| 5 | **CISO: Security awareness plan** | /docs/security/SECURITY-AWARENESS-PROGRAM.md | Claude |
+| 5 | **CISO: PAM workflow** | Just-in-time admin access with approval audit | Claude |
+| 5 | **CISO: Config baseline** | /lib/security/config-baseline.ts - secure defaults | Claude |
+| 5 | **CISO: Cyber insurance assessment** | Document requirements for $50K MRR milestone | Alberto |
+
+**Phase 4 CISO Security Checklist (End of Week 8):**
+- [ ] Information Security Policy (ISP) documented and approved
+- [ ] Data Classification Policy with 4 tiers implemented
+- [ ] Risk Register with Top 10 risks tracked and scored
+- [ ] All Tier 1 vendors (OpenAI, Anthropic, Supabase) SOC 2 verified
+- [ ] Vulnerability management program with SLAs operational
+- [ ] security.txt file published with responsible disclosure policy
+- [ ] Business Continuity Plan documented with RTO/RPO
+- [ ] DR runbooks created for database restore + provider failover
+- [ ] At least 1 DR drill completed and documented
+- [ ] API key lifecycle management operational (expiry, tracking)
+- [ ] Service accounts inventory with least-privilege enforcement
+- [ ] Session security controls (device binding, geo-anomaly) active
+- [ ] DLP scanner detecting PII and API keys in responses
+- [ ] Data retention automation enforcing retention schedules
+- [ ] Incident communication plan documented
+- [ ] Crisis management framework documented
+- [ ] CISO dashboard showing Security Posture Score > 70/100
+- [ ] MTTD < 10 minutes, MTTR < 60 minutes measured
+- [ ] Break-glass procedure documented and tested
+- [ ] Patch management SOP with fast-track for criticals
+- [ ] Cross-border data transfer assessment complete
 
 **Phase 4 DevSecOps Checklist (End of Week 8):**
 - [ ] Pre-commit hooks (gitleaks, detect-secrets) active on all commits
@@ -24401,6 +25253,90 @@ Begin Phase 1, Week 1, Day 1:
 
 ---
 
+### v28.0 CISO Security Review Summary
+
+**Reviewer:** Senior CISO (Chief Information Security Officer) - 730 years aggregate experience at Google Security, Amazon AWS Security, Microsoft CISO Office, Meta Security, JPMorgan Chase Cyber, Goldman Sachs Technology Risk, Deloitte Cyber, PwC Cybersecurity, EY Digital Trust, plus NIST Cybersecurity Framework Committee and ISO 27001 Lead Auditor
+
+**Review Focus:** Comprehensive enterprise security posture assessment covering security governance, identity & access management, data protection, vulnerability management, and business continuity/disaster recovery
+
+**Critical Gaps Identified (24 total across 5 categories):**
+
+**Category A: Security Governance Gaps (5)**
+- A.1: No Information Security Policy (ISP) - single source of truth for security
+- A.2: No Security Awareness Training Program - human layer unaddressed
+- A.3: No Risk Register & Assessment Process - ad-hoc threat tracking
+- A.4: No Security Metrics & KPIs Framework - cannot demonstrate posture
+- A.5: No Third-Party Security Management - supply chain risk unmanaged
+
+**Category B: Identity & Access Management Gaps (5)**
+- B.1: No Privileged Access Management (PAM) - no session recording/approval
+- B.2: No Session Security Controls - no device binding/geo-anomaly
+- B.3: No API Key Management Lifecycle - keys never expire
+- B.4: No Service Account Governance - over-privileged, no rotation
+- B.5: No Break-Glass Procedure - emergency access undefined
+
+**Category C: Data Protection Gaps (5)**
+- C.1: No Data Classification Scheme - cannot apply appropriate controls
+- C.2: No Data Loss Prevention (DLP) - exfiltration goes undetected
+- C.3: No Data Retention Enforcement - data lingers beyond period
+- C.4: No Backup Verification & Testing - restore untested
+- C.5: No Cross-Border Data Transfer Controls - DTIA missing
+
+**Category D: Vulnerability Management Gaps (4)**
+- D.1: No Vulnerability Management Program - no SLAs for patching
+- D.2: No Bug Bounty / Responsible Disclosure - external reports lost
+- D.3: No Patch Management Process - critical patches wait in queue
+- D.4: No Security Configuration Management - drift undetected
+
+**Category E: Business Continuity & Resilience Gaps (5)**
+- E.1: No Business Continuity Plan (BCP) - business ops undefined
+- E.2: No Disaster Recovery Testing - DR may fail when needed
+- E.3: No Communication Plan for Incidents - stakeholders uninformed
+- E.4: No Crisis Management Framework - major incidents unmanaged
+- E.5: No Cyber Insurance Assessment - financial exposure unmitigated
+
+**Architecture Sections Added (7):**
+- 2.223: CISO Security Architecture Gap Analysis (24 gaps)
+- 2.224: Information Security Policy Framework
+- 2.225: Security Risk Register & Assessment
+- 2.226: CISO Security Dashboard
+- 2.227: Vendor Security Management Framework
+- 2.228: Business Continuity & Disaster Recovery
+- 2.229: Vulnerability Management Program
+
+**Database Tables Added (7):**
+- security_risk_register (risk tracking with scoring)
+- risk_treatment_actions (mitigation tracking)
+- vendor_security_assessments (vendor security inventory)
+- vulnerabilities (vuln management with SLAs)
+- dr_drill_results (DR drill tracking)
+- api_keys (enhanced with lifecycle)
+- service_accounts (service account registry)
+
+**Tasks Added to Implementation Phases:**
+- Week 1: 4 CISO tasks (ISP draft, data classification, risk register, security.txt)
+- Week 2: 5 CISO tasks (vendor inventory, Tier 1 review, vulnerabilities table, access control policy, API key lifecycle)
+- Week 3: 5 CISO tasks (BCP doc, DR runbooks, session security, DLP scanner, break-glass procedure)
+- Week 4: 5 CISO tasks (data retention cron, incident comms, service accounts, patch management, data transfer assessment)
+- Week 7: 8 CISO tasks (CISO dashboard, risk dashboard, vendor page, vuln dashboard, BC/DR dashboard, dr_drill table, crisis management, backup drill)
+- Week 8: 7 CISO tasks (posture scorer, metrics API, vendor offboarding, security awareness, PAM workflow, config baseline, cyber insurance assessment)
+
+**Phase 4 CISO Security Checklist Added:** 21 success criteria for security validation
+
+**Key CISO Security Principles:**
+1. **Policy before technology** - Governance frameworks enable consistent security
+2. **Risk-based prioritization** - Invest where risk is highest, not where it's easiest
+3. **Defense in depth** - Multiple layers, no single point of failure
+4. **Least privilege always** - Every account, key, and service gets minimum access
+5. **Vendor risk is your risk** - Third-party security requires continuous monitoring
+6. **Test your DR before you need it** - Quarterly drills prevent surprises
+7. **Metrics prove posture** - MTTD, MTTR, vulnerability aging tell the story
+8. **Data classification drives controls** - Different sensitivity = different protection
+9. **Session security is identity security** - Device binding, geo-anomaly, forced re-auth
+10. **Communication saves reputation** - Incident comms plan prevents PR disasters
+
+---
+
 *Document prepared by BCG Digital Ventures - Technology Strategy Practice*
 *Technical Review by: Senior Software Director - 300 years experience*
 *UX/UI Review by: Senior UX/UI Executive - 300 years experience, IDEO/frog/Pentagram background*
@@ -24428,6 +25364,7 @@ Begin Phase 1, Week 1, Day 1:
 *Domain Expert Review by: Senior Director Domain Experts - 12,340 years aggregate experience, all top consulting firms (McKinsey/BCG/Bain/Deloitte/Accenture), Fortune 500 industry leaders, specialized research centers (MIT Media Lab/Stanford HAI/Harvard Business School/INSEAD/Wharton), vertical expertise across Healthcare/SaaS/Legal/Finance/Restaurant/Retail/Manufacturing/Real Estate/Education/Professional Services*
 *AI Governance & Ethics Review by: Senior Director AI Governance & Ethics Officer - 8,750 years aggregate experience, ex-UNESCO AI Ethics/OECD AI Policy/EU AI Act Drafting Committee/IEEE AI Ethics Standards/Partnership on AI/Anthropic Safety/OpenAI Policy/Google DeepMind Ethics/Microsoft Responsible AI/IBM AI Ethics Board/Meta AI Responsibility/WEF AI Governance Council/Harvard Berkman Klein/Stanford HAI Policy/MIT AI Policy Forum/McKinsey AI Ethics/BCG AI Responsibility/Deloitte AI Governance*
 *DevSecOps Engineering Review by: Senior Director DevSecOps Engineer - 1,290 years aggregate experience, ex-Google Cloud Security/AWS Security/Microsoft Azure DevOps/Netflix Platform Security/Stripe Infrastructure Security/GitHub Actions Platform/GitLab Security/HashiCorp Vault/Datadog Security/Snyk/McKinsey Cyber/BCG Digital Ventures/Deloitte Cyber*
+*CISO Security Review by: Senior CISO (Chief Information Security Officer) - 730 years aggregate experience, ex-Google Security/Amazon AWS Security/Microsoft CISO Office/Meta Security/JPMorgan Chase Cyber/Goldman Sachs Technology Risk/Deloitte Cyber/PwC Cybersecurity/EY Digital Trust/NIST Cybersecurity Framework Committee/ISO 27001 Lead Auditor*
 *For: AI Perception Engineering Agency*
 *Date: November 27, 2024*
-*Version: 27.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering + Backend Engineering + Data Visualization + CTO/CAIO Executive + COO Operations + CFO Finance + CEO Strategic + Internal Tools & DX + RLHF & Feedback Loop + Semantic Audit & Data Quality + Domain Expert + AI Governance & Ethics + DevSecOps Engineering Review)*
+*Version: 28.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering + Backend Engineering + Data Visualization + CTO/CAIO Executive + COO Operations + CFO Finance + CEO Strategic + Internal Tools & DX + RLHF & Feedback Loop + Semantic Audit & Data Quality + Domain Expert + AI Governance & Ethics + DevSecOps Engineering + CISO Security Review)*

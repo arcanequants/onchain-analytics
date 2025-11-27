@@ -16484,6 +16484,989 @@ omArchive(userId);                           │   │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
+### 2.179 RLHF Architecture Gap Analysis (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│        RLHF & FEEDBACK SYSTEMS REVIEW (v23.0)                        │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  REVIEWER: Senior Director RLHF Specialist                          │
+│  EXPERIENCE: 433 years - ex-OpenAI Alignment/Anthropic Constitutional│
+│              AI/Google DeepMind RLHF/Meta AI Feedback/Microsoft      │
+│              Research Alignment/Stanford HAI/Berkeley CHAI/EleutherAI│
+│  DATE: November 26, 2024                                            │
+│                                                                     │
+│  ════════════════════════════════════════════════════════════════  │
+│  METHODOLOGY: Line-by-line review with 16 critical gap analysis    │
+│  ════════════════════════════════════════════════════════════════  │
+│                                                                     │
+│  EXECUTIVE SUMMARY:                                                 │
+│  The system has excellent LLM behavioral research (drift, bias,    │
+│  fingerprinting) but LACKS a closed-loop feedback system where     │
+│  human preferences improve the scoring/recommendation quality.     │
+│                                                                     │
+│  KEY INSIGHT: Without user feedback, the system is STATIC.         │
+│  With feedback loops, the system becomes SELF-IMPROVING.           │
+│                                                                     │
+│  IDENTIFIED GAPS (16 Critical RLHF/Feedback Issues):               │
+│                                                                     │
+│  ═══════════════════════════════════════════════════════════════   │
+│  CATEGORY A: HUMAN FEEDBACK COLLECTION GAPS (4 gaps)               │
+│  ═══════════════════════════════════════════════════════════════   │
+│                                                                     │
+│  1. NO EXPLICIT FEEDBACK UI                                         │
+│     Current: Users see results but cannot rate their accuracy      │
+│     Problem: Cannot know if score matched user's reality           │
+│     Solution: Thumbs up/down + "Was this helpful?" on results      │
+│                                                                     │
+│  2. NO RECOMMENDATION FEEDBACK                                      │
+│     Current: Recommendations shown but no tracking of usefulness   │
+│     Problem: Cannot improve recommendations without signal         │
+│     Solution: "Did you implement this?" + outcome tracking         │
+│                                                                     │
+│  3. NO COMPETITIVE ACCURACY VALIDATION                              │
+│     Current: Show competitors but don't verify accuracy            │
+│     Problem: User knows if competitors are real, we don't ask      │
+│     Solution: "Are these your actual competitors?" checkbox        │
+│                                                                     │
+│  4. NO SCORE DISAGREEMENT CAPTURE                                   │
+│     Current: User sees score, might disagree, but no channel       │
+│     Problem: Silent disagreement = lost learning opportunity       │
+│     Solution: "Does this score match your perception?" + reasoning │
+│                                                                     │
+│  ═══════════════════════════════════════════════════════════════   │
+│  CATEGORY B: REWARD MODELING GAPS (4 gaps)                         │
+│  ═══════════════════════════════════════════════════════════════   │
+│                                                                     │
+│  5. NO IMPLICIT SIGNAL COLLECTION                                   │
+│     Current: Track clicks but not engagement quality               │
+│     Problem: Dwell time, scroll depth, return visits = preference  │
+│     Solution: Implicit feedback signals from user behavior         │
+│                                                                     │
+│  6. NO PREFERENCE PAIR CONSTRUCTION                                 │
+│     Current: Isolated feedback, no comparison structure            │
+│     Problem: RLHF needs "A is better than B" pairs                 │
+│     Solution: Pairwise comparison UI + automated pair mining       │
+│                                                                     │
+│  7. NO REWARD MODEL TRAINING PIPELINE                               │
+│     Current: No mechanism to learn from feedback                   │
+│     Problem: Feedback collected but not used to improve            │
+│     Solution: Reward model that predicts user satisfaction         │
+│                                                                     │
+│  8. NO FEEDBACK QUALITY SCORING                                     │
+│     Current: All feedback treated equally                          │
+│     Problem: Expert feedback > novice feedback for training        │
+│     Solution: Feedback quality weights based on user expertise     │
+│                                                                     │
+│  ═══════════════════════════════════════════════════════════════   │
+│  CATEGORY C: PREFERENCE LEARNING GAPS (4 gaps)                     │
+│  ═══════════════════════════════════════════════════════════════   │
+│                                                                     │
+│  9. NO A/B TESTING FOR PROMPTS                                      │
+│     Current: Single prompt version, no experimentation             │
+│     Problem: Cannot find optimal prompts without testing           │
+│     Solution: Prompt A/B testing with user preference as metric    │
+│                                                                     │
+│  10. NO SCORE CALIBRATION FROM FEEDBACK                             │
+│      Current: Scores computed, never adjusted from outcomes        │
+│      Problem: Score of 75 should predict ~75% satisfaction        │
+│      Solution: Calibration layer using historical feedback         │
+│                                                                     │
+│  11. NO PERSONALIZED SCORING                                        │
+│      Current: Same scoring logic for all users                     │
+│      Problem: Different users value different factors              │
+│      Solution: User preference profiles (price vs features vs UX)  │
+│                                                                     │
+│  12. NO INDUSTRY-SPECIFIC LEARNING                                  │
+│      Current: Same prompts/scoring across all industries           │
+│      Problem: "Best" means different things per industry           │
+│      Solution: Industry-specific preference models                 │
+│                                                                     │
+│  ═══════════════════════════════════════════════════════════════   │
+│  CATEGORY D: CONTINUOUS IMPROVEMENT GAPS (4 gaps)                  │
+│  ═══════════════════════════════════════════════════════════════   │
+│                                                                     │
+│  13. NO FEEDBACK-DRIVEN PROMPT EVOLUTION                            │
+│      Current: Prompts updated manually, no data-driven iteration   │
+│      Problem: Prompts don't improve from actual outcomes           │
+│      Solution: Prompt optimization based on feedback signals       │
+│                                                                     │
+│  14. NO ACTIVE LEARNING SYSTEM                                      │
+│      Current: System doesn't identify what it needs to learn       │
+│      Problem: Wasted effort on already-accurate predictions        │
+│      Solution: Active learning to query users on uncertain cases   │
+│                                                                     │
+│  15. NO FEEDBACK LOOP METRICS                                       │
+│      Current: No measurement of feedback system effectiveness      │
+│      Problem: Cannot know if feedback is improving system          │
+│      Solution: Track prediction accuracy over time + feedback ROI  │
+│                                                                     │
+│  16. NO HUMAN-AI COLLABORATION FRAMEWORK                            │
+│      Current: AI generates, human consumes (one-way)               │
+│      Problem: Misses collaborative intelligence opportunity        │
+│      Solution: Human corrections feed back into AI outputs         │
+│                                                                     │
+│  ════════════════════════════════════════════════════════════════  │
+│  SECTIONS TO ADD: 2.179-2.188 (10 new architecture sections)      │
+│  DATABASE TABLES TO ADD: 8 new tables                             │
+│  TASKS TO ADD: 22 new tasks across all phases                     │
+│  ════════════════════════════════════════════════════════════════  │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.180 Human Feedback Collection System (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              EXPLICIT FEEDBACK COLLECTION UI                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PHILOSOPHY: "Every user interaction is a learning opportunity"    │
+│                                                                     │
+│  FEEDBACK TOUCHPOINTS:                                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  1. RESULTS PAGE FEEDBACK (Primary)                          │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │                                                          ││   │
+│  │  │  Your AI Perception Score: 72/100                        ││   │
+│  │  │                                                          ││   │
+│  │  │  ───────────────────────────────────────────────────── ││   │
+│  │  │  Was this score helpful?                                 ││   │
+│  │  │                                                          ││   │
+│  │  │  [👍 Yes, accurate]  [👎 No, inaccurate]  [🤔 Not sure] ││   │
+│  │  │                                                          ││   │
+│  │  │  (Optional) Tell us more:                                ││   │
+│  │  │  ┌─────────────────────────────────────────────────────┐││   │
+│  │  │  │ Score seems too low, we rank #1 on Google for...    │││   │
+│  │  │  └─────────────────────────────────────────────────────┘││   │
+│  │  │                                                          ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  2. RECOMMENDATION FEEDBACK (Per-Item)                       │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ Recommendation: Add Schema.org markup to your site      ││   │
+│  │  │ Impact: High | Effort: Low                               ││   │
+│  │  │                                                          ││   │
+│  │  │ [✓ Will implement] [✗ Won't do] [? Need help]           ││   │
+│  │  │                                                          ││   │
+│  │  │ 30 days later (email follow-up):                        ││   │
+│  │  │ "Did you implement this? Did it help your AI score?"    ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  3. COMPETITOR VALIDATION                                    │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ We detected these competitors in your industry:         ││   │
+│  │  │                                                          ││   │
+│  │  │ ☑ HubSpot (Score: 85)                                   ││   │
+│  │  │ ☑ Salesforce (Score: 91)                                ││   │
+│  │  │ ☐ Zoho (Score: 68) - Not a competitor                   ││   │
+│  │  │                                                          ││   │
+│  │  │ [+ Add competitor we missed]                            ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  4. HALLUCINATION REPORTING                                  │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ ChatGPT said: "Your company was founded in 2015"        ││   │
+│  │  │                                                          ││   │
+│  │  │ Is this correct?                                         ││   │
+│  │  │ ○ Yes, accurate                                          ││   │
+│  │  │ ● No, we were founded in: [2018____]                    ││   │
+│  │  │                                                          ││   │
+│  │  │ [Report inaccuracy]                                      ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: user_feedback                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ analysis_id           UUID REFERENCES analyses               │   │
+│  │ user_id               UUID REFERENCES user_profiles          │   │
+│  │ feedback_type         ENUM('score','recommendation',         │   │
+│  │                            'competitor','hallucination')     │   │
+│  │ target_id             UUID (rec_id, competitor_id, etc.)     │   │
+│  │ sentiment             ENUM('positive','negative','neutral')  │   │
+│  │ rating                INTEGER (1-5 if applicable)            │   │
+│  │ free_text             TEXT (optional explanation)            │   │
+│  │ metadata              JSONB (contextual data)                │   │
+│  │ created_at            TIMESTAMPTZ                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: recommendation_outcomes                           │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ recommendation_id     UUID REFERENCES recommendations        │   │
+│  │ user_id               UUID REFERENCES user_profiles          │   │
+│  │ initial_response      ENUM('will_do','wont_do','need_help')  │   │
+│  │ implemented           BOOLEAN (NULL until follow-up)         │   │
+│  │ outcome_reported      BOOLEAN                                │   │
+│  │ score_before          INTEGER                                │   │
+│  │ score_after           INTEGER (from re-analysis)             │   │
+│  │ user_reported_impact  ENUM('helped','no_change','hurt')      │   │
+│  │ follow_up_sent_at     TIMESTAMPTZ                            │   │
+│  │ follow_up_responded_at TIMESTAMPTZ                           │   │
+│  │ created_at            TIMESTAMPTZ                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /components/feedback/ScoreFeedback.tsx                            │
+│  /components/feedback/RecommendationFeedback.tsx                   │
+│  /components/feedback/CompetitorValidation.tsx                     │
+│  /components/feedback/HallucinationReport.tsx                      │
+│  /api/feedback/route.ts                                            │
+│  /lib/feedback/collect.ts                                          │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.181 Implicit Feedback Signal Collection (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              IMPLICIT BEHAVIORAL SIGNALS                             │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PHILOSOPHY: "Actions speak louder than ratings"                   │
+│                                                                     │
+│  SIGNALS TO TRACK:                                                  │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  ENGAGEMENT SIGNALS (Positive preference indicators):        │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ Signal               │ Interpretation                   ││   │
+│  │  │ ─────────────────────┼──────────────────────────────────││   │
+│  │  │ Time on results page │ >60s = engaged, <10s = bounce    ││   │
+│  │  │ Scroll to bottom     │ Read full analysis               ││   │
+│  │  │ Click recommendation │ Interested in improving          ││   │
+│  │  │ Share results        │ Trusted the score                ││   │
+│  │  │ Return within 7 days │ Found value, wants more          ││   │
+│  │  │ Run re-analysis      │ Checking if score improved       ││   │
+│  │  │ Upgrade to paid      │ Strong preference signal         ││   │
+│  │  │ Add to dashboard     │ Wants to monitor (high trust)    ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  NEGATIVE SIGNALS (Dissatisfaction indicators):              │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ Signal               │ Interpretation                   ││   │
+│  │  │ ─────────────────────┼──────────────────────────────────││   │
+│  │  │ Immediate back/close │ Results not useful               ││   │
+│  │  │ No return (churned)  │ Didn't find value                ││   │
+│  │  │ Re-analyze same URL  │ Didn't trust first result        ││   │
+│  │  │ Contact support      │ Confused or disagrees            ││   │
+│  │  │ No recommendation clicks│ Recommendations not relevant  ││   │
+│  │  │ Downgrade/cancel     │ Strong negative signal           ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: implicit_feedback_events                          │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ user_id               UUID REFERENCES user_profiles          │   │
+│  │ analysis_id           UUID REFERENCES analyses               │   │
+│  │ session_id            TEXT                                   │   │
+│  │ event_type            TEXT (dwell, scroll, click, share)     │   │
+│  │ event_data            JSONB (scroll_pct, duration_ms, etc.)  │   │
+│  │ page                  TEXT (results, dashboard, etc.)        │   │
+│  │ created_at            TIMESTAMPTZ                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLICIT PREFERENCE SCORE CALCULATION:                            │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // Compute implicit satisfaction score per analysis         │   │
+│  │                                                               │   │
+│  │ function computeImplicitSatisfaction(events: Event[]): number {│   │
+│  │   let score = 0;                                             │   │
+│  │                                                               │   │
+│  │   // Positive signals                                        │   │
+│  │   if (events.dwellTime > 60_000) score += 2;                │   │
+│  │   if (events.scrolledToBottom) score += 1;                   │   │
+│  │   if (events.clickedRecommendation) score += 2;             │   │
+│  │   if (events.shared) score += 3;                             │   │
+│  │   if (events.returnedWithin7Days) score += 2;               │   │
+│  │   if (events.upgraded) score += 5;                           │   │
+│  │                                                               │   │
+│  │   // Negative signals                                        │   │
+│  │   if (events.dwellTime < 10_000) score -= 2;                │   │
+│  │   if (events.immediateBack) score -= 3;                      │   │
+│  │   if (events.reanalyzedSameUrl) score -= 1;                 │   │
+│  │   if (events.contactedSupport) score -= 1;                   │   │
+│  │   if (events.churned) score -= 5;                            │   │
+│  │                                                               │   │
+│  │   return Math.max(-10, Math.min(10, score)); // -10 to +10  │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /lib/analytics/implicit-feedback.ts                               │
+│  /lib/analytics/engagement-tracker.ts                              │
+│  /components/analytics/EngagementTracker.tsx (client-side)         │
+│  /api/analytics/implicit/route.ts                                  │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.182 Preference Pair Construction (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              PAIRWISE PREFERENCE LEARNING                            │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PHILOSOPHY: "Which is better?" is easier than "Rate 1-5"          │
+│                                                                     │
+│  WHY PAIRWISE COMPARISONS:                                          │
+│  • RLHF works best with preference pairs (A > B)                   │
+│  • Easier for users than absolute ratings                          │
+│  • More reliable signal (relative vs absolute)                     │
+│  • Standard input for reward model training                        │
+│                                                                     │
+│  PAIR COLLECTION METHODS:                                           │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  1. EXPLICIT COMPARISON (Occasional prompt)                  │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ Help us improve! Which recommendation seems more useful?││   │
+│  │  │                                                          ││   │
+│  │  │ ┌─────────────────────┐  ┌─────────────────────┐       ││   │
+│  │  │ │ A: Add Schema.org   │  │ B: Create Wikipedia │       ││   │
+│  │  │ │    markup           │  │    page             │       ││   │
+│  │  │ │                     │  │                     │       ││   │
+│  │  │ │ [Select A]          │  │ [Select B]          │       ││   │
+│  │  │ └─────────────────────┘  └─────────────────────┘       ││   │
+│  │  │                    [Both equally useful]                 ││   │
+│  │  │                    [Neither useful]                      ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  2. AUTOMATED PAIR MINING (From implicit signals)            │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ // User clicked Rec A but not Rec B                     ││   │
+│  │  │ // → Infer A > B preference pair                        ││   │
+│  │  │                                                          ││   │
+│  │  │ // User implemented Rec A, score improved               ││   │
+│  │  │ // User ignored Rec B, no change                        ││   │
+│  │  │ // → Strong A > B preference signal                     ││   │
+│  │  │                                                          ││   │
+│  │  │ // User gave thumbs up to Analysis X                    ││   │
+│  │  │ // User gave thumbs down to Analysis Y (same URL)       ││   │
+│  │  │ // → X's methodology > Y's methodology                  ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  3. SCORE OUTCOME PAIRS (Predictive validation)              │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ // Score predicted: 72                                   ││   │
+│  │  │ // User said: "Too low"                                  ││   │
+│  │  │ // → Score 72 < User's expectation                      ││   │
+│  │  │                                                          ││   │
+│  │  │ // Used to calibrate scoring model                       ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: preference_pairs                                  │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ user_id               UUID REFERENCES user_profiles          │   │
+│  │ pair_type             ENUM('explicit','implicit','outcome')  │   │
+│  │ context               TEXT (what was being compared)         │   │
+│  │ option_a_id           UUID (rec_id, analysis_id, etc.)       │   │
+│  │ option_b_id           UUID                                   │   │
+│  │ option_a_data         JSONB (snapshot of option A)           │   │
+│  │ option_b_data         JSONB (snapshot of option B)           │   │
+│  │ preference            ENUM('a','b','equal','neither')        │   │
+│  │ confidence            DECIMAL (0-1, how sure)                │   │
+│  │ source                TEXT (where pair came from)            │   │
+│  │ created_at            TIMESTAMPTZ                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /lib/rlhf/pair-constructor.ts                                     │
+│  /lib/rlhf/implicit-pair-miner.ts                                  │
+│  /components/feedback/PairwiseComparison.tsx                       │
+│  /api/rlhf/pairs/route.ts                                          │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.183 Reward Model Architecture (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              REWARD MODEL TRAINING PIPELINE                          │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PHILOSOPHY: "Learn what users value, predict satisfaction"        │
+│                                                                     │
+│  REWARD MODEL PURPOSE:                                              │
+│  Given an (analysis, score, recommendations) tuple, predict:       │
+│  • Will user find this helpful? (0-1 probability)                  │
+│  • Which recommendations will user value most?                     │
+│  • Is this score calibrated with user expectations?                │
+│                                                                     │
+│  REWARD MODEL ARCHITECTURE:                                         │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  INPUT FEATURES:                                              │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ • Analysis: URL, industry, score, provider breakdown    ││   │
+│  │  │ • Recommendations: List with priorities and categories  ││   │
+│  │  │ • User context: Plan, previous scores, engagement       ││   │
+│  │  │ • Brand context: Size, industry, competitors            ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  MODEL (Lightweight, not LLM):                               │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ // Gradient boosting for interpretability               ││   │
+│  │  │ // Trained on preference pairs + explicit feedback      ││   │
+│  │  │                                                          ││   │
+│  │  │ interface RewardModelInput {                             ││   │
+│  │  │   score: number;                                         ││   │
+│  │  │   score_confidence: number;                              ││   │
+│  │  │   provider_agreement: number;  // 0-1                    ││   │
+│  │  │   recommendation_count: number;                          ││   │
+│  │  │   high_impact_rec_count: number;                        ││   │
+│  │  │   industry: string;                                      ││   │
+│  │  │   user_plan: string;                                     ││   │
+│  │  │   user_previous_satisfaction: number;                   ││   │
+│  │  │ }                                                        ││   │
+│  │  │                                                          ││   │
+│  │  │ // Output: P(user satisfied | input)                    ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  OUTPUT:                                                      │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ • satisfaction_probability: 0.82                        ││   │
+│  │  │ • recommendation_rankings: [rec3, rec1, rec2]           ││   │
+│  │  │ • score_calibration_adjustment: +3                      ││   │
+│  │  │ • confidence: 0.75                                       ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  TRAINING PIPELINE:                                                 │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  1. COLLECT: preference_pairs + user_feedback (daily)       │   │
+│  │  2. PROCESS: Convert to training examples                    │   │
+│  │  3. TRAIN: Weekly retrain on accumulated data                │   │
+│  │  4. VALIDATE: Holdout set + golden dataset                   │   │
+│  │  5. DEPLOY: If validation passes, promote to production     │   │
+│  │  6. MONITOR: Track online metrics (satisfaction rate)        │   │
+│  │                                                               │   │
+│  │  MINIMUM DATA REQUIREMENTS:                                   │   │
+│  │  • 100 preference pairs before first training                │   │
+│  │  • 500+ for reliable industry-specific models                │   │
+│  │  • Weekly retraining once 50+ new pairs accumulated          │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: reward_model_versions                             │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ version               TEXT (v1.0.0, v1.1.0)                  │   │
+│  │ model_type            TEXT (global, industry-specific)       │   │
+│  │ industry              TEXT (NULL for global)                 │   │
+│  │ training_pairs_count  INTEGER                                │   │
+│  │ validation_accuracy   DECIMAL                                │   │
+│  │ validation_auc        DECIMAL                                │   │
+│  │ model_artifact_url    TEXT (S3/storage path)                 │   │
+│  │ is_active             BOOLEAN                                │   │
+│  │ trained_at            TIMESTAMPTZ                            │   │
+│  │ deployed_at           TIMESTAMPTZ                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: reward_predictions                                │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ analysis_id           UUID REFERENCES analyses               │   │
+│  │ model_version_id      UUID REFERENCES reward_model_versions  │   │
+│  │ predicted_satisfaction DECIMAL (0-1)                         │   │
+│  │ actual_satisfaction   DECIMAL (NULL until feedback)          │   │
+│  │ prediction_data       JSONB (full prediction output)         │   │
+│  │ created_at            TIMESTAMPTZ                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /lib/rlhf/reward-model.ts (inference)                             │
+│  /scripts/rlhf/train-reward-model.py (training job)                │
+│  /api/rlhf/predict/route.ts                                        │
+│  /app/(admin)/rlhf/models/page.tsx (admin UI)                      │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.184 Score Calibration System (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              FEEDBACK-DRIVEN SCORE CALIBRATION                       │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PHILOSOPHY: "A score of 75 should mean the same thing every time" │
+│                                                                     │
+│  CALIBRATION PROBLEM:                                               │
+│  • Raw scores from AI may not match user expectations              │
+│  • Score of 75 might mean "great" in one industry, "average" in another│
+│  • Different users have different mental scales                    │
+│                                                                     │
+│  CALIBRATION APPROACH:                                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  1. COLLECT GROUND TRUTH                                     │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ For each analysis with feedback:                        ││   │
+│  │  │ • Raw score: 75                                          ││   │
+│  │  │ • User said: "Too low"                                   ││   │
+│  │  │ • User's expected score: ~85                             ││   │
+│  │  │ • Industry: SaaS                                         ││   │
+│  │  │ • Actual satisfaction: Negative (thumbs down)            ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  2. BUILD CALIBRATION CURVE                                  │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ // Per-industry calibration                              ││   │
+│  │  │ // Maps raw_score → calibrated_score                    ││   │
+│  │  │                                                          ││   │
+│  │  │ Raw Score │ Avg User Expectation │ Calibration Delta     ││   │
+│  │  │ ──────────┼──────────────────────┼─────────────────────  ││   │
+│  │  │ 60-70     │ 68                   │ +3 (users expect more)││   │
+│  │  │ 70-80     │ 82                   │ +7                     ││   │
+│  │  │ 80-90     │ 88                   │ +3                     ││   │
+│  │  │ 90-100    │ 94                   │ +1                     ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  3. APPLY CALIBRATION                                        │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ function calibrateScore(                                 ││   │
+│  │  │   rawScore: number,                                      ││   │
+│  │  │   industry: string                                       ││   │
+│  │  │ ): number {                                              ││   │
+│  │  │   const curve = getCalibrationCurve(industry);           ││   │
+│  │  │   return curve.apply(rawScore);                          ││   │
+│  │  │ }                                                        ││   │
+│  │  │                                                          ││   │
+│  │  │ // Show both if significantly different                  ││   │
+│  │  │ // "Your score: 82 (raw: 75)"                           ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: calibration_curves                                │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ scope                 TEXT (global, industry, user)          │   │
+│  │ scope_value           TEXT (industry name, user_id, NULL)    │   │
+│  │ curve_data            JSONB (bucketed adjustments)           │   │
+│  │ sample_size           INTEGER                                │   │
+│  │ confidence            DECIMAL                                │   │
+│  │ computed_at           TIMESTAMPTZ                            │   │
+│  │ is_active             BOOLEAN                                │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: calibration_feedback                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ analysis_id           UUID REFERENCES analyses               │   │
+│  │ raw_score             INTEGER                                │   │
+│  │ user_expectation      INTEGER (what user expected)           │   │
+│  │ user_satisfaction     ENUM('too_low','about_right','too_high')│   │
+│  │ industry              TEXT                                   │   │
+│  │ created_at            TIMESTAMPTZ                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /lib/scoring/calibration.ts                                       │
+│  /lib/scoring/calibration-curve.ts                                 │
+│  /scripts/rlhf/compute-calibration.ts (weekly job)                 │
+│  /api/scoring/calibrate/route.ts                                   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.185 Prompt A/B Testing Framework (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              PROMPT EXPERIMENTATION SYSTEM                           │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PHILOSOPHY: "Let user preferences decide which prompts are best"  │
+│                                                                     │
+│  A/B TEST STRUCTURE:                                                │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  EXPERIMENT DEFINITION:                                       │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ {                                                        ││   │
+│  │  │   "experiment_id": "prompt-recommendation-v2",           ││   │
+│  │  │   "hypothesis": "More specific prompts → better recs",   ││   │
+│  │  │   "metric": "recommendation_click_rate",                 ││   │
+│  │  │   "variants": [                                          ││   │
+│  │  │     {                                                    ││   │
+│  │  │       "id": "control",                                   ││   │
+│  │  │       "traffic": 50,                                     ││   │
+│  │  │       "prompt_version": "rec-prompt-v1.0"                ││   │
+│  │  │     },                                                   ││   │
+│  │  │     {                                                    ││   │
+│  │  │       "id": "treatment",                                 ││   │
+│  │  │       "traffic": 50,                                     ││   │
+│  │  │       "prompt_version": "rec-prompt-v2.0"                ││   │
+│  │  │     }                                                    ││   │
+│  │  │   ],                                                     ││   │
+│  │  │   "min_sample_size": 200,                                ││   │
+│  │  │   "significance_threshold": 0.95                         ││   │
+│  │  │ }                                                        ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  METRICS TO TRACK:                                           │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ • Primary: User satisfaction (thumbs up rate)           ││   │
+│  │  │ • Secondary: Recommendation click rate                  ││   │
+│  │  │ • Secondary: Time on results page                       ││   │
+│  │  │ • Secondary: Share rate                                  ││   │
+│  │  │ • Guardrail: Error rate                                  ││   │
+│  │  │ • Guardrail: Latency                                     ││   │
+│  │  │ • Guardrail: Cost per analysis                           ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  STATISTICAL ANALYSIS:                                       │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ // After min_sample_size reached                        ││   │
+│  │  │                                                          ││   │
+│  │  │ function analyzeExperiment(exp: Experiment): Result {    ││   │
+│  │  │   const control = getMetrics(exp, 'control');            ││   │
+│  │  │   const treatment = getMetrics(exp, 'treatment');        ││   │
+│  │  │                                                          ││   │
+│  │  │   const pValue = chiSquareTest(control, treatment);      ││   │
+│  │  │   const lift = (treatment.rate - control.rate) / control.rate;││   │
+│  │  │                                                          ││   │
+│  │  │   if (pValue < 0.05 && lift > 0.05) {                   ││   │
+│  │  │     return { winner: 'treatment', confidence: 1 - pValue };││   │
+│  │  │   }                                                      ││   │
+│  │  │   return { winner: null, needMoreData: true };           ││   │
+│  │  │ }                                                        ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: prompt_experiments                                │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ name                  TEXT                                   │   │
+│  │ hypothesis            TEXT                                   │   │
+│  │ status                ENUM('draft','running','concluded')    │   │
+│  │ variants              JSONB                                  │   │
+│  │ primary_metric        TEXT                                   │   │
+│  │ guardrail_metrics     JSONB                                  │   │
+│  │ min_sample_size       INTEGER                                │   │
+│  │ significance_threshold DECIMAL                               │   │
+│  │ started_at            TIMESTAMPTZ                            │   │
+│  │ concluded_at          TIMESTAMPTZ                            │   │
+│  │ result                JSONB                                  │   │
+│  │ created_by            UUID REFERENCES user_profiles          │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: experiment_assignments                            │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ experiment_id         UUID REFERENCES prompt_experiments     │   │
+│  │ user_id               UUID REFERENCES user_profiles          │   │
+│  │ analysis_id           UUID REFERENCES analyses               │   │
+│  │ variant_id            TEXT                                   │   │
+│  │ assigned_at           TIMESTAMPTZ                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /lib/experiments/ab-test.ts                                       │
+│  /lib/experiments/assignment.ts                                    │
+│  /lib/experiments/analysis.ts                                      │
+│  /app/(admin)/rlhf/experiments/page.tsx                            │
+│  /api/experiments/assign/route.ts                                  │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.186 Active Learning System (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              ACTIVE LEARNING FOR FEEDBACK COLLECTION                 │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PHILOSOPHY: "Ask for feedback where it matters most"              │
+│                                                                     │
+│  PROBLEM: Can't ask for feedback on every analysis (user fatigue)  │
+│  SOLUTION: Strategically request feedback on uncertain cases        │
+│                                                                     │
+│  UNCERTAINTY SIGNALS:                                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  WHEN TO ASK FOR FEEDBACK:                                   │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ Signal                          │ Ask Probability       ││   │
+│  │  │ ────────────────────────────────┼─────────────────────  ││   │
+│  │  │ Provider disagreement > 20pts   │ 80% (high uncertainty)││   │
+│  │  │ New industry (< 10 samples)     │ 90% (learning needed) ││   │
+│  │  │ Score near decision boundary    │ 70% (40-60 range)     ││   │
+│  │  │ Low reward model confidence     │ 85%                    ││   │
+│  │  │ Unusual URL pattern             │ 60%                    ││   │
+│  │  │ First analysis for this user    │ 50% (establish baseline)││   │
+│  │  │ Repeat user, 5+ analyses        │ 20% (occasional check) ││   │
+│  │  │ Standard case, high confidence  │ 10% (random sample)   ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  FEEDBACK REQUEST UI (Non-intrusive):                        │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ [Banner at bottom of results, dismissible]              ││   │
+│  │  │                                                          ││   │
+│  │  │ 💬 Help us improve! We're not 100% sure about this score.││   │
+│  │  │    Does 72 feel accurate for your brand?                 ││   │
+│  │  │                                                          ││   │
+│  │  │    [Yes, about right] [No, too low] [No, too high]      ││   │
+│  │  │                                                          ││   │
+│  │  │    (Your feedback helps us improve for everyone)         ││   │
+│  │  │    [Dismiss - don't ask again today]                    ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  QUERY SELECTION ALGORITHM:                                        │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ function shouldRequestFeedback(analysis: Analysis): boolean { │   │
+│  │   const uncertainty = computeUncertainty(analysis);          │   │
+│  │   const userFatigue = getUserFatigueScore(analysis.user_id); │   │
+│  │   const learningValue = computeLearningValue(analysis);      │   │
+│  │                                                               │   │
+│  │   // Balance learning vs user experience                     │   │
+│  │   const askProbability =                                     │   │
+│  │     uncertainty * 0.4 +                                      │   │
+│  │     learningValue * 0.4 -                                    │   │
+│  │     userFatigue * 0.2;                                       │   │
+│  │                                                               │   │
+│  │   return Math.random() < askProbability;                     │   │
+│  │ }                                                            │   │
+│  │                                                               │   │
+│  │ function computeLearningValue(analysis: Analysis): number {  │   │
+│  │   // High value if:                                          │   │
+│  │   // - New industry with few samples                         │   │
+│  │   // - Score would change reward model significantly         │   │
+│  │   // - Edge case that current model handles poorly           │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: active_learning_log                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ analysis_id           UUID REFERENCES analyses               │   │
+│  │ uncertainty_score     DECIMAL                                │   │
+│  │ learning_value        DECIMAL                                │   │
+│  │ ask_probability       DECIMAL                                │   │
+│  │ asked                 BOOLEAN                                │   │
+│  │ user_responded        BOOLEAN                                │   │
+│  │ response_quality      DECIMAL                                │   │
+│  │ created_at            TIMESTAMPTZ                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /lib/rlhf/active-learning.ts                                      │
+│  /lib/rlhf/uncertainty.ts                                          │
+│  /components/feedback/ActiveFeedbackRequest.tsx                    │
+│  /api/rlhf/should-ask/route.ts                                     │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.187 Feedback Loop Metrics Dashboard (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              RLHF EFFECTIVENESS MONITORING                           │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ADMIN UI: /admin/rlhf/metrics                                      │
+│                                                                     │
+│  KEY METRICS TO TRACK:                                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  FEEDBACK HEALTH:                                            │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ Metric                      │ Target │ Current │ Trend  ││   │
+│  │  │ ────────────────────────────┼────────┼─────────┼─────── ││   │
+│  │  │ Feedback response rate      │ >20%   │ 18%     │ ↑      ││   │
+│  │  │ Preference pairs collected  │ +50/wk │ 62      │ ✓      ││   │
+│  │  │ Avg feedback quality score  │ >0.7   │ 0.75    │ ↔      ││   │
+│  │  │ User fatigue rate           │ <15%   │ 12%     │ ↓ (good)││   │
+│  │  │ Active learning ask rate    │ 15-30% │ 22%     │ ↔      ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  REWARD MODEL PERFORMANCE:                                   │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ Metric                      │ Target │ Current │ Trend  ││   │
+│  │  │ ────────────────────────────┼────────┼─────────┼─────── ││   │
+│  │  │ Satisfaction prediction acc │ >75%   │ 78%     │ ↑      ││   │
+│  │  │ Score calibration error     │ <5pts  │ 3.2pts  │ ↓ (good)││   │
+│  │  │ Recommendation click rate   │ >30%   │ 28%     │ ↑      ││   │
+│  │  │ Thumbs up rate              │ >70%   │ 72%     │ ↔      ││   │
+│  │  │ Model drift from baseline   │ <10%   │ 4%      │ ↔      ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  LEARNING VELOCITY:                                          │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ Metric                      │ Target │ Current │ Trend  ││   │
+│  │  │ ────────────────────────────┼────────┼─────────┼─────── ││   │
+│  │  │ Days to 1000 preference pairs│ <60    │ 45 est  │ ↓ (good)││   │
+│  │  │ Model retrain frequency     │ weekly │ weekly  │ ✓      ││   │
+│  │  │ Experiment conclusions/month│ >2     │ 3       │ ↑      ││   │
+│  │  │ % industries with calibration│ >80%  │ 65%     │ ↑      ││   │
+│  │  │ New edge cases discovered/wk│ tracking│ 12      │ new    ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  IMPROVEMENT OVER TIME (Chart):                              │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │                                                          ││   │
+│  │  │  Thumbs Up Rate                                          ││   │
+│  │  │  80% ─────────────────────────────────────────  ●        ││   │
+│  │  │  75% ──────────────────────────────────●──────────        ││   │
+│  │  │  70% ────────────────●───●────────────────────────        ││   │
+│  │  │  65% ────●────●──────────────────────────────────         ││   │
+│  │  │  60% ●────────────────────────────────────────────        ││   │
+│  │  │       W1   W2   W3   W4   W5   W6   W7   W8               ││   │
+│  │  │                                                          ││   │
+│  │  │  ✓ System improving: +15% satisfaction since launch     ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /app/(admin)/rlhf/metrics/page.tsx                                │
+│  /components/admin/RLHFDashboard.tsx                                │
+│  /lib/rlhf/metrics.ts                                               │
+│  /api/admin/rlhf/metrics/route.ts                                   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.188 Human-AI Collaborative Correction (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              HUMAN CORRECTION WORKFLOW                               │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PHILOSOPHY: "Human corrections make AI outputs better"            │
+│                                                                     │
+│  CORRECTION OPPORTUNITIES:                                          │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  1. HALLUCINATION CORRECTION                                 │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ AI said: "Founded in 2015"                              ││   │
+│  │  │ User corrects: "Founded in 2018"                        ││   │
+│  │  │                                                          ││   │
+│  │  │ System action:                                           ││   │
+│  │  │ • Store correction in brand_corrections table            ││   │
+│  │  │ • Inject correction into future prompts for this brand  ││   │
+│  │  │ • Update knowledge base for all users                   ││   │
+│  │  │ • Train hallucination detector on this pattern          ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  2. COMPETITOR CORRECTION                                    │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ AI suggested competitor: "Zoho"                         ││   │
+│  │  │ User says: "Not a competitor - different market"        ││   │
+│  │  │                                                          ││   │
+│  │  │ System action:                                           ││   │
+│  │  │ • Remove Zoho from competitor suggestions for this industry││   │
+│  │  │ • Learn that Zoho/UserBrand are different categories    ││   │
+│  │  │ • Improve competitor detection model                     ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  3. RECOMMENDATION CORRECTION                                │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ AI recommended: "Create LinkedIn Company Page"          ││   │
+│  │  │ User says: "Already have one"                           ││   │
+│  │  │                                                          ││   │
+│  │  │ System action:                                           ││   │
+│  │  │ • Mark this brand as having LinkedIn                    ││   │
+│  │  │ • Improve pre-analysis checks to detect existing presence││   │
+│  │  │ • Filter similar recommendations in future              ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  │  4. SCORE OVERRIDE REQUEST (Admin only)                     │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ User disputes: "Score of 45 is way too low"             ││   │
+│  │  │ Admin reviews: Evidence suggests score should be 65     ││   │
+│  │  │                                                          ││   │
+│  │  │ System action:                                           ││   │
+│  │  │ • Log disagreement as training data                     ││   │
+│  │  │ • Investigate why AI scored so differently              ││   │
+│  │  │ • Optionally override with explanation                  ││   │
+│  │  │ • Use as edge case for future model training            ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: brand_corrections                                 │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ brand_url             TEXT                                   │   │
+│  │ correction_type       ENUM('hallucination','competitor',     │   │
+│  │                            'recommendation','score')         │   │
+│  │ original_claim        TEXT                                   │   │
+│  │ corrected_value       TEXT                                   │   │
+│  │ corrected_by          UUID REFERENCES user_profiles          │   │
+│  │ verified_by_admin     BOOLEAN DEFAULT FALSE                  │   │
+│  │ applied_to_model      BOOLEAN DEFAULT FALSE                  │   │
+│  │ created_at            TIMESTAMPTZ                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE TABLE: score_disputes                                    │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ analysis_id           UUID REFERENCES analyses               │   │
+│  │ user_id               UUID REFERENCES user_profiles          │   │
+│  │ original_score        INTEGER                                │   │
+│  │ disputed_reason       TEXT                                   │   │
+│  │ user_expected_score   INTEGER                                │   │
+│  │ admin_reviewed        BOOLEAN DEFAULT FALSE                  │   │
+│  │ admin_decision        ENUM('upheld','adjusted','investigating')│   │
+│  │ adjusted_score        INTEGER (NULL if upheld)               │   │
+│  │ admin_notes           TEXT                                   │   │
+│  │ resolved_at           TIMESTAMPTZ                            │   │
+│  │ created_at            TIMESTAMPTZ                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  CORRECTION INJECTION (Into future prompts):                       │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // When analyzing acme.com, inject known corrections:       │   │
+│  │                                                               │   │
+│  │ function getKnownFacts(brandUrl: string): string[] {         │   │
+│  │   const corrections = await db.brand_corrections.findMany({  │   │
+│  │     where: { brand_url: brandUrl, verified_by_admin: true } │   │
+│  │   });                                                        │   │
+│  │                                                               │   │
+│  │   return corrections.map(c =>                                │   │
+│  │     `Known fact: ${c.corrected_value}`                      │   │
+│  │   );                                                         │   │
+│  │ }                                                            │   │
+│  │                                                               │   │
+│  │ // Include in system prompt:                                 │   │
+│  │ // "Use these verified facts about the brand: [...]"        │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION:                                                   │
+│  /lib/rlhf/corrections.ts                                          │
+│  /lib/rlhf/fact-injection.ts                                       │
+│  /components/feedback/CorrectionForm.tsx                           │
+│  /app/(admin)/rlhf/disputes/page.tsx                               │
+│  /api/corrections/route.ts                                          │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
 ---
 
 ## PART III: PHASED ROADMAP
@@ -16721,6 +17704,11 @@ const SCORING_WEIGHTS = {
 | 5 | **IT: ErrorState component** | /components/ui/ErrorState.tsx - error recovery patterns | Claude |
 | 5 | **IT: Seed scripts setup** | /scripts/dev/seed.ts with minimal/development scenarios | Claude |
 | 5 | **IT: Mock data factories** | /lib/dev/factories/ - user, analysis, subscription factories | Claude |
+| 5 | **RLHF: Feedback UI components** | /components/feedback/ScoreFeedback.tsx - thumbs up/down on score | Claude |
+| 5 | **RLHF: user_feedback table** | Schema: analysis_id, feedback_type, rating, comment, context | Claude |
+| 5 | **RLHF: Implicit signal collector** | /lib/rlhf/implicit-signals.ts - dwell time, scroll depth tracking | Claude |
+| 5 | **RLHF: implicit_feedback_events table** | Schema: session_id, event_type, value, element_id, timestamp | Claude |
+| 5 | **RLHF: Feedback submission API** | /api/feedback/route.ts - POST endpoint with rate limiting | Claude |
 
 **Acceptance Criteria Phase 1:**
 - [ ] User can enter URL and receive analysis
@@ -16989,6 +17977,12 @@ const CACHE_TTL = {
 | 5 | **IT: Feature flag evaluator** | /lib/feature-flags/evaluate.ts - rollout logic | Claude |
 | 5 | **IT: Cron job definitions table** | cron_job_definitions table + UI | Claude |
 | 5 | **IT: Cron management page** | /app/(admin)/ops/crons/page.tsx | Claude |
+| 5 | **RLHF: preference_pairs table** | Schema: pair_id, analysis_a, analysis_b, winner, labeler_type | Claude |
+| 5 | **RLHF: Implicit pair mining** | /lib/rlhf/pair-constructor.ts - auto-generate from user behavior | Claude |
+| 5 | **RLHF: calibration_curves table** | Per-industry score calibration from user satisfaction | Claude |
+| 5 | **RLHF: Score calibration service** | /lib/scoring/calibration.ts - industry-adjusted scores | Claude |
+| 5 | **RLHF: recommendation_outcomes table** | Track if users implemented recommendations | Claude |
+| 5 | **RLHF: Outcome tracking UI** | "Did this help?" prompt after 7 days | Claude |
 
 **Freemium Gating Rules:**
 
@@ -17223,6 +18217,14 @@ const ALERT_THRESHOLDS = {
 | 5 | **Ops: Founder time tracking** | Track ops overhead vs automation progress | Claude |
 | 5 | **Ops: Ops dashboard v1** | /app/(admin)/ops-dashboard/page.tsx - full ops view | Claude |
 | 5 | **Ops: Vendor status dashboard** | /app/(admin)/vendor-status/page.tsx | Claude |
+| 5 | **RLHF: Reward model architecture** | /lib/rlhf/reward-model.ts - satisfaction predictor | Claude |
+| 5 | **RLHF: reward_model_versions table** | Model versioning + performance tracking | Claude |
+| 5 | **RLHF: Active learning system** | /lib/rlhf/active-learning.ts - strategic feedback requests | Claude |
+| 5 | **RLHF: active_learning_log table** | Track uncertain cases prioritized for labeling | Claude |
+| 5 | **RLHF: Prompt A/B testing** | /lib/experiments/ab-test.ts - prompt variant comparison | Claude |
+| 5 | **RLHF: prompt_experiments table** | Schema: experiment_id, variants, traffic_split, metrics | Claude |
+| 5 | **RLHF: experiment_assignments table** | User-to-variant assignment tracking | Claude |
+| 5 | **RLHF: RLHF metrics dashboard** | /app/(admin)/rlhf/metrics/page.tsx - feedback loop analytics | Claude |
 
 **Why Add Google/Perplexity in Phase 4?**
 - By Week 7, we should have paying customers generating revenue
@@ -17322,6 +18324,12 @@ const ALERT_THRESHOLDS = {
 | 5 | **IT: Audit log explorer** | /app/(admin)/audit/page.tsx - timeline view | Claude |
 | 5 | **IT: Audit timeline component** | /components/admin/AuditTimeline.tsx | Claude |
 | 5 | **IT: API playground** | /app/(admin)/api-playground/page.tsx (dev only) | Claude |
+| 5 | **RLHF: Human-AI correction workflow** | /lib/rlhf/corrections.ts - brand correction queue | Claude |
+| 5 | **RLHF: brand_corrections table** | Schema: brand_id, original_score, corrected_score, reason | Claude |
+| 5 | **RLHF: score_disputes table** | User dispute mechanism with review workflow | Claude |
+| 5 | **RLHF: Correction review UI** | /app/(admin)/rlhf/corrections/page.tsx - approve/reject | Claude |
+| 5 | **RLHF: Feedback incentive system** | Gamification for quality feedback (badges, tier unlocks) | Claude |
+| 5 | **RLHF: RLHF monthly report** | Automated feedback quality + model improvement metrics | Claude |
 
 **Phase 4 Dev Checklist (End of Week 8):**
 - [ ] Feature flags on Vercel Edge Config
@@ -17684,6 +18692,40 @@ const ALERT_THRESHOLDS = {
 - [ ] Components: AdminForm with Zod validation
 - [ ] Components: ConfirmDialog with type-to-confirm
 - [ ] Components: BulkActionBar for multi-select
+
+**Phase 4 RLHF & Feedback Loop Checklist (End of Week 8):**
+- [ ] Feedback: user_feedback table with thumbs up/down/rating
+- [ ] Feedback: ScoreFeedback.tsx component on results page
+- [ ] Feedback: RecommendationFeedback.tsx for individual recommendations
+- [ ] Feedback: implicit_feedback_events table capturing behavioral signals
+- [ ] Feedback: Dwell time, scroll depth, click tracking active
+- [ ] Feedback: /api/feedback/route.ts with rate limiting
+- [ ] Preferences: preference_pairs table for A > B comparisons
+- [ ] Preferences: Implicit pair mining from user behavior active
+- [ ] Preferences: 1,000+ preference pairs collected (Week 8 target)
+- [ ] Calibration: calibration_curves table per industry
+- [ ] Calibration: Score calibration service applying industry adjustments
+- [ ] Calibration: Calibration dashboard showing curve accuracy
+- [ ] Outcomes: recommendation_outcomes table tracking implementation
+- [ ] Outcomes: "Did this help?" prompt appearing after 7 days
+- [ ] Outcomes: Outcome-based recommendation ranking active
+- [ ] Reward Model: reward_model_versions table with performance tracking
+- [ ] Reward Model: Satisfaction prediction model deployed
+- [ ] Reward Model: Model accuracy > 75% on held-out test set
+- [ ] Active Learning: active_learning_log tracking uncertain cases
+- [ ] Active Learning: Strategic feedback requests shown to power users
+- [ ] Active Learning: Labeling efficiency improved 30%+ via active learning
+- [ ] Experiments: prompt_experiments table with variants
+- [ ] Experiments: A/B testing framework with statistical significance
+- [ ] Experiments: At least 3 prompt experiments completed
+- [ ] Corrections: brand_corrections table with approval workflow
+- [ ] Corrections: score_disputes table with user dispute mechanism
+- [ ] Corrections: Admin review UI at /admin/rlhf/corrections
+- [ ] Dashboard: RLHF metrics dashboard at /admin/rlhf/metrics
+- [ ] Dashboard: Feedback quality metrics (signal-to-noise ratio)
+- [ ] Dashboard: Loop latency metrics (feedback → model update)
+- [ ] Incentives: Feedback quality gamification active
+- [ ] Reports: Monthly RLHF improvement report automated
 
 ---
 
@@ -18721,6 +19763,47 @@ Begin Phase 1, Week 1, Day 1:
 17. **API playground accelerates development** - Explore APIs without leaving browser
 18. **Empty states guide users** - Never leave admin facing blank page
 
+**RLHF & Feedback Loop Specialist Review Summary (v23.0):**
+- Identified 16 critical RLHF gaps across 4 categories:
+  - Category A: Human Feedback Collection Gaps (4 gaps)
+  - Category B: Reward Modeling & Scoring Gaps (4 gaps)
+  - Category C: Preference Learning Systems Gaps (4 gaps)
+  - Category D: Continuous Improvement Loop Gaps (4 gaps)
+- Added RLHF Architecture Gap Analysis (2.179) with comprehensive feedback loop assessment
+- Added Human Feedback Collection System (2.180) - explicit thumbs up/down + star rating
+- Added Implicit Feedback Signal Collection (2.181) - behavioral signals (dwell, scroll, clicks)
+- Added Preference Pair Construction (2.182) - A > B comparisons for RLHF training
+- Added Reward Model Architecture (2.183) - satisfaction predictor with gradient boosting
+- Added Score Calibration System (2.184) - industry-specific calibration curves
+- Added Prompt A/B Testing Framework (2.185) - statistical significance testing
+- Added Active Learning System (2.186) - strategic feedback requests for uncertain cases
+- Added Feedback Loop Metrics Dashboard (2.187) - RLHF effectiveness analytics
+- Added Human-AI Collaborative Correction (2.188) - brand correction + dispute workflow
+- Added 5 new RLHF tasks to Week 2 (feedback UI, user_feedback table, implicit signals)
+- Added 6 new RLHF tasks to Week 4 (preference_pairs, calibration_curves, outcomes)
+- Added 9 new RLHF tasks to Week 7 (reward model, active learning, experiments, dashboard)
+- Added 7 new RLHF tasks to Week 8 (corrections workflow, disputes, incentives, reports)
+- Added Phase 4 RLHF & Feedback Loop Checklist with 32 success criteria
+- Added 13 new database tables: user_feedback, recommendation_outcomes, implicit_feedback_events, preference_pairs, reward_model_versions, reward_predictions, calibration_curves, calibration_feedback, prompt_experiments, experiment_assignments, active_learning_log, brand_corrections, score_disputes
+
+**Key RLHF & Feedback Loop Principles:**
+1. **Explicit + implicit = complete signal** - Thumbs up alone misses passive satisfaction
+2. **Behavioral signals don't lie** - Users vote with attention, not just clicks
+3. **Preference pairs enable RLHF** - A > B comparisons train reward models
+4. **Calibration is per-industry** - A 70 in competitive SaaS ≠ 70 in niche B2B
+5. **Outcomes trump opinions** - Did the recommendation actually help?
+6. **Active learning maximizes ROI** - Ask for feedback on uncertain cases first
+7. **A/B testing validates prompts** - Statistical significance prevents false positives
+8. **Reward models predict satisfaction** - Forecast user happiness before they tell you
+9. **Feedback latency matters** - Faster loops = faster improvement
+10. **Human corrections close the gap** - Domain experts catch what models miss
+11. **Disputes provide ground truth** - Contested scores reveal calibration errors
+12. **Gamification improves quality** - Incentives align user behavior with system needs
+13. **Signal-to-noise ratio is the metric** - More feedback isn't better; better feedback is better
+14. **Loop metrics prove ROI** - Track feedback → model → improvement cycle
+15. **HOTL + RLHF = alignment** - Human-on-the-loop requires human feedback
+16. **Self-improving > static** - Systems that learn from users compound advantage
+
 ---
 
 *Document prepared by BCG Digital Ventures - Technology Strategy Practice*
@@ -18745,6 +19828,7 @@ Begin Phase 1, Week 1, Day 1:
 *CFO Finance Review by: Senior CFO (Chief Financial Officer) - 4200 years experience, ex-Goldman Sachs/Morgan Stanley/JPMorgan CFO/Sequoia Finance/a16z Finance/Tiger Global/Stripe Finance/Airbnb Finance/Uber Finance/Netflix Finance/Google Finance/Meta Finance/Amazon Finance/McKinsey Corporate Finance/BCG Corporate Finance/Bain Corporate Finance/Deloitte Audit/PwC Audit/EY Audit/KPMG Audit*
 *CEO Strategic Review by: Senior CEO (Chief Executive Officer) - 6500 years experience, ex-Apple/Google/Amazon/Microsoft/Meta/Netflix/Stripe/Airbnb/Uber/OpenAI/Anthropic/Sequoia/a16z/Benchmark/Accel/McKinsey/BCG/Bain/Goldman Sachs/Morgan Stanley/SpaceX/Tesla*
 *Internal Tools & DX Review by: Senior Director Internal Tools & UX Engineer - 578 years experience, ex-Stripe Internal Tools/Notion Platform/Figma Plugins/Retool/Vercel Dashboard/Linear/Raycast/Meta Internal Tools/Google Admin Console/AWS Console*
+*RLHF & Feedback Loop Review by: Senior RLHF Specialist Director - 433 years experience, ex-OpenAI RLHF/Anthropic Constitutional AI/Google DeepMind Reward/Meta FAIR Human Feedback/Microsoft Research Alignment/Cohere Human Preference/Character.AI Training/Midjourney Feedback/Scale AI Data/Surge AI Labeling/McKinsey AI Practice/BCG Gamma*
 *For: AI Perception Engineering Agency*
 *Date: November 26, 2024*
-*Version: 22.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering + Backend Engineering + Data Visualization + CTO/CAIO Executive + COO Operations + CFO Finance + CEO Strategic + Internal Tools & DX Review)*
+*Version: 23.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering + Backend Engineering + Data Visualization + CTO/CAIO Executive + COO Operations + CFO Finance + CEO Strategic + Internal Tools & DX + RLHF & Feedback Loop Review)*

@@ -20533,6 +20533,945 @@ omArchive(userId);                           │   │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
+### 2.216 DevSecOps Architecture Gap Analysis (NEW - DevSecOps Engineer Review)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│         DEVSECOPS GAPS IDENTIFIED (26 Critical Findings)            │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  CATEGORY A: CI/CD PIPELINE SECURITY GAPS (6 Gaps)                 │
+│  ══════════════════════════════════════════════════                 │
+│                                                                     │
+│  A.1 NO PIPELINE SECRETS SCANNING                                  │
+│      Current: Secrets may be committed to code accidentally         │
+│      Problem: API keys, passwords exposed in git history           │
+│      Solution: Pre-commit hooks + CI secrets scanning (gitleaks)   │
+│                                                                     │
+│  A.2 NO SIGNED COMMITS ENFORCEMENT                                 │
+│      Current: Any commit accepted without cryptographic verify     │
+│      Problem: Impersonation attacks, commit injection possible     │
+│      Solution: GPG signed commits required for main branch         │
+│                                                                     │
+│  A.3 NO BRANCH PROTECTION RULES DOCUMENTED                         │
+│      Current: Basic PR review mentioned but not enforced           │
+│      Problem: Direct pushes to main, bypassing CI/CD gates         │
+│      Solution: Branch protection with required reviews + status    │
+│                                                                     │
+│  A.4 NO CI/CD PIPELINE HARDENING                                   │
+│      Current: Standard GitHub Actions without security hardening   │
+│      Problem: Supply chain attacks via compromised actions         │
+│      Solution: Pin actions by SHA, minimal permissions, OIDC       │
+│                                                                     │
+│  A.5 NO ARTIFACT SIGNING                                           │
+│      Current: Build artifacts not signed or verified               │
+│      Problem: Tampering between build and deploy undetected        │
+│      Solution: Sigstore/cosign for artifact attestation            │
+│                                                                     │
+│  A.6 NO DEPLOYMENT APPROVAL GATES                                  │
+│      Current: Auto-deploy to production on merge                   │
+│      Problem: No human gate for critical changes                   │
+│      Solution: Environment protection rules for production         │
+│                                                                     │
+│  CATEGORY B: SECRETS MANAGEMENT GAPS (5 Gaps)                      │
+│  ════════════════════════════════════════════                       │
+│                                                                     │
+│  B.1 NO SECRETS ROTATION AUTOMATION                                │
+│      Current: "Rotate keys quarterly" mentioned but manual         │
+│      Problem: Manual rotation means stale secrets, human error     │
+│      Solution: Automated rotation with notification pipeline       │
+│                                                                     │
+│  B.2 NO SECRETS AUDIT TRAIL                                        │
+│      Current: No logging of secret access patterns                 │
+│      Problem: Cannot detect secret misuse or exfiltration          │
+│      Solution: Secret access logging with anomaly detection        │
+│                                                                     │
+│  B.3 NO ZERO-TRUST SECRET ACCESS                                   │
+│      Current: All services have access to all secrets              │
+│      Problem: Blast radius too large if one service compromised    │
+│      Solution: Service-specific secret scopes + least privilege    │
+│                                                                     │
+│  B.4 NO SECRET SPRAWL DETECTION                                    │
+│      Current: No inventory of where secrets are used               │
+│      Problem: Secrets copied to logs, error messages, etc          │
+│      Solution: Secret usage inventory + sprawl detection scanning  │
+│                                                                     │
+│  B.5 NO EMERGENCY SECRET REVOCATION PROCEDURE                      │
+│      Current: No documented procedure for compromised secrets      │
+│      Problem: Slow response to credential leaks                    │
+│      Solution: One-click revocation + rotation runbook             │
+│                                                                     │
+│  CATEGORY C: SECURITY SCANNING GAPS (5 Gaps)                       │
+│  ═══════════════════════════════════════════                        │
+│                                                                     │
+│  C.1 NO SAST IN CI PIPELINE                                        │
+│      Current: TypeScript check only, no security static analysis   │
+│      Problem: Security vulnerabilities not detected at code time   │
+│      Solution: Semgrep/CodeQL in PR workflow with blocking rules   │
+│                                                                     │
+│  C.2 NO DAST/PENETRATION TESTING                                   │
+│      Current: No automated security testing of running app         │
+│      Problem: Runtime vulnerabilities not detected                 │
+│      Solution: OWASP ZAP in staging pipeline + quarterly pentest   │
+│                                                                     │
+│  C.3 NO CONTAINER IMAGE SCANNING                                   │
+│      Current: Vercel builds, no explicit image security            │
+│      Problem: Base image vulnerabilities inherited silently        │
+│      Solution: Trivy/Snyk container scanning (if containerized)    │
+│                                                                     │
+│  C.4 NO LICENSE COMPLIANCE SCANNING                                │
+│      Current: npm audit for vulns but not license compliance       │
+│      Problem: GPL/AGPL deps could require source disclosure        │
+│      Solution: FOSSA/license-checker in CI for compliance          │
+│                                                                     │
+│  C.5 NO INFRASTRUCTURE SCANNING                                    │
+│      Current: Vercel managed, but no security config validation    │
+│      Problem: Misconfigurations in Vercel/Supabase settings        │
+│      Solution: Security headers check + cloud config audit         │
+│                                                                     │
+│  CATEGORY D: DEPLOYMENT SECURITY GAPS (5 Gaps)                     │
+│  ════════════════════════════════════════════                       │
+│                                                                     │
+│  D.1 NO IMMUTABLE DEPLOYMENTS                                      │
+│      Current: Vercel manages but no explicit immutability policy   │
+│      Problem: Production environment could be mutated post-deploy  │
+│      Solution: Immutable deployment artifacts + audit trail        │
+│                                                                     │
+│  D.2 NO DEPLOYMENT DRIFT DETECTION                                 │
+│      Current: No comparison between intended vs actual state       │
+│      Problem: Manual changes go undetected                         │
+│      Solution: Drift detection with alerting                       │
+│                                                                     │
+│  D.3 NO CANARY/BLUE-GREEN DEPLOYMENT                               │
+│      Current: All-or-nothing deployments                           │
+│      Problem: Bad deploy affects 100% of users immediately         │
+│      Solution: Canary deployment with auto-rollback                │
+│                                                                     │
+│  D.4 NO DEPLOYMENT METRICS CORRELATION                             │
+│      Current: Deploy happens, no correlation with error rates      │
+│      Problem: Cannot quickly identify if deploy caused issues      │
+│      Solution: Deploy markers in metrics + auto-correlation        │
+│                                                                     │
+│  D.5 NO ROLLBACK VERIFICATION                                      │
+│      Current: "Instant rollback" mentioned but not tested          │
+│      Problem: Rollback may fail when actually needed               │
+│      Solution: Periodic rollback drills + verification             │
+│                                                                     │
+│  CATEGORY E: INFRASTRUCTURE & ENVIRONMENT GAPS (5 Gaps)            │
+│  ══════════════════════════════════════════════════════             │
+│                                                                     │
+│  E.1 NO INFRASTRUCTURE AS CODE (IaC)                               │
+│      Current: Manual Vercel/Supabase configuration                 │
+│      Problem: Environment drift, no reproducible infrastructure    │
+│      Solution: Terraform/Pulumi for Vercel + Supabase config       │
+│                                                                     │
+│  E.2 NO ENVIRONMENT PARITY ENFORCEMENT                             │
+│      Current: Dev/staging/prod mentioned but not enforced          │
+│      Problem: Works in dev, breaks in prod                         │
+│      Solution: IaC ensuring identical environments                 │
+│                                                                     │
+│  E.3 NO SECURITY HEADERS ENFORCEMENT                               │
+│      Current: Basic headers mentioned in 2.4                       │
+│      Problem: No CI verification of security headers               │
+│      Solution: Security headers test in CI + observatory check     │
+│                                                                     │
+│  E.4 NO CSP/SECURITY POLICY CI VALIDATION                          │
+│      Current: CSP mentioned but not tested                         │
+│      Problem: CSP changes could break or weaken security           │
+│      Solution: CSP testing in CI with strictness requirements      │
+│                                                                     │
+│  E.5 NO SUPPLY CHAIN SECURITY ATTESTATION                          │
+│      Current: SBOM mentioned but no SLSA compliance                │
+│      Problem: Cannot prove build provenance to customers           │
+│      Solution: SLSA Level 2+ compliance with attestations          │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.217 Secure CI/CD Pipeline Architecture (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              SECURE CI/CD PIPELINE ARCHITECTURE                      │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Security is not a gate, it's built into every step"   │
+│                                                                     │
+│  1. HARDENED GITHUB ACTIONS WORKFLOW                                │
+│     ════════════════════════════════                                │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ # .github/workflows/secure-ci.yml                            ││
+│     │                                                              ││
+│     │ name: Secure CI/CD                                           ││
+│     │ on:                                                          ││
+│     │   push:                                                      ││
+│     │     branches: [main]                                         ││
+│     │   pull_request:                                              ││
+│     │     branches: [main]                                         ││
+│     │                                                              ││
+│     │ permissions:                                                 ││
+│     │   contents: read        # Minimal permissions                ││
+│     │   security-events: write # For SARIF upload                  ││
+│     │   id-token: write       # For OIDC                           ││
+│     │                                                              ││
+│     │ jobs:                                                        ││
+│     │   secrets-scan:                                              ││
+│     │     runs-on: ubuntu-latest                                   ││
+│     │     steps:                                                   ││
+│     │       - uses: actions/checkout@b4ffde65 # Pinned by SHA     ││
+│     │         with:                                                ││
+│     │           fetch-depth: 0  # Full history for secrets scan   ││
+│     │       - uses: gitleaks/gitleaks-action@cb7149a # Pinned     ││
+│     │         env:                                                 ││
+│     │           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}         ││
+│     │                                                              ││
+│     │   sast:                                                      ││
+│     │     runs-on: ubuntu-latest                                   ││
+│     │     steps:                                                   ││
+│     │       - uses: actions/checkout@b4ffde65                     ││
+│     │       - uses: returntocorp/semgrep-action@v1                ││
+│     │         with:                                                ││
+│     │           config: >-                                         ││
+│     │             p/security-audit                                 ││
+│     │             p/typescript                                     ││
+│     │             p/react                                          ││
+│     │             p/nextjs                                         ││
+│     │       - uses: github/codeql-action/upload-sarif@v2          ││
+│     │         with:                                                ││
+│     │           sarif_file: semgrep.sarif                          ││
+│     │                                                              ││
+│     │   dependency-audit:                                          ││
+│     │     runs-on: ubuntu-latest                                   ││
+│     │     steps:                                                   ││
+│     │       - uses: actions/checkout@b4ffde65                     ││
+│     │       - run: npm audit --audit-level=high                   ││
+│     │       - uses: snyk/actions/node@master                      ││
+│     │         env:                                                 ││
+│     │           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}             ││
+│     │       - name: License compliance check                       ││
+│     │         run: npx license-checker --failOn 'GPL;AGPL'        ││
+│     │                                                              ││
+│     │   build-with-attestation:                                    ││
+│     │     needs: [secrets-scan, sast, dependency-audit]           ││
+│     │     runs-on: ubuntu-latest                                   ││
+│     │     outputs:                                                 ││
+│     │       digest: ${{ steps.build.outputs.digest }}             ││
+│     │     steps:                                                   ││
+│     │       - uses: actions/checkout@b4ffde65                     ││
+│     │       - uses: pnpm/action-setup@v2                          ││
+│     │       - run: pnpm install --frozen-lockfile                 ││
+│     │       - run: pnpm build                                     ││
+│     │         id: build                                            ││
+│     │       - name: Generate SBOM                                  ││
+│     │         run: npx @cyclonedx/cyclonedx-npm --output sbom.json││
+│     │       - name: Sign artifacts                                 ││
+│     │         uses: sigstore/cosign-installer@v3                  ││
+│     │       - run: cosign sign-blob --yes sbom.json               ││
+│     │                                                              ││
+│     │   deploy-staging:                                            ││
+│     │     needs: [build-with-attestation]                          ││
+│     │     runs-on: ubuntu-latest                                   ││
+│     │     environment: staging                                     ││
+│     │     steps:                                                   ││
+│     │       - name: Deploy to Vercel Preview                       ││
+│     │         run: vercel --token=${{ secrets.VERCEL_TOKEN }}     ││
+│     │                                                              ││
+│     │   dast:                                                      ││
+│     │     needs: [deploy-staging]                                  ││
+│     │     runs-on: ubuntu-latest                                   ││
+│     │     steps:                                                   ││
+│     │       - name: OWASP ZAP Baseline Scan                        ││
+│     │         uses: zaproxy/action-baseline@v0.11.0               ││
+│     │         with:                                                ││
+│     │           target: ${{ needs.deploy-staging.outputs.url }}   ││
+│     │                                                              ││
+│     │   deploy-production:                                         ││
+│     │     needs: [dast]                                            ││
+│     │     if: github.ref == 'refs/heads/main'                     ││
+│     │     runs-on: ubuntu-latest                                   ││
+│     │     environment: production  # Requires approval             ││
+│     │     steps:                                                   ││
+│     │       - name: Deploy to Production                           ││
+│     │         run: vercel --prod --token=${{ secrets.VERCEL_TOKEN}}││
+│     │       - name: Create deploy marker in metrics               ││
+│     │         run: |                                               ││
+│     │           curl -X POST "$METRICS_URL/api/deploy-marker"     ││
+│     │           -d '{"version": "${{ github.sha }}"}'             ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. BRANCH PROTECTION CONFIGURATION                                 │
+│     ═══════════════════════════════                                 │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ GITHUB BRANCH PROTECTION RULES FOR `main`:                   ││
+│     │                                                              ││
+│     │ ✓ Require pull request before merging                       ││
+│     │   └─ Require 1 approval                                     ││
+│     │   └─ Dismiss stale reviews on new commits                   ││
+│     │   └─ Require review from code owners                        ││
+│     │                                                              ││
+│     │ ✓ Require status checks to pass                             ││
+│     │   └─ secrets-scan (required)                                ││
+│     │   └─ sast (required)                                        ││
+│     │   └─ dependency-audit (required)                            ││
+│     │   └─ build-with-attestation (required)                      ││
+│     │   └─ dast (required for production)                         ││
+│     │                                                              ││
+│     │ ✓ Require signed commits                                    ││
+│     │                                                              ││
+│     │ ✓ Require linear history                                    ││
+│     │                                                              ││
+│     │ ✓ Do not allow bypassing                                    ││
+│     │                                                              ││
+│     │ ✓ Restrict who can push                                     ││
+│     │   └─ Only CI/CD service account                             ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. PRE-COMMIT HOOKS                                                │
+│     ════════════════════                                            │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ # .pre-commit-config.yaml                                    ││
+│     │ repos:                                                       ││
+│     │   - repo: https://github.com/pre-commit/pre-commit-hooks    ││
+│     │     rev: v4.5.0                                              ││
+│     │     hooks:                                                   ││
+│     │       - id: check-added-large-files                         ││
+│     │       - id: check-merge-conflict                            ││
+│     │       - id: detect-private-key                              ││
+│     │       - id: detect-aws-credentials                          ││
+│     │                                                              ││
+│     │   - repo: https://github.com/gitleaks/gitleaks              ││
+│     │     rev: v8.18.0                                             ││
+│     │     hooks:                                                   ││
+│     │       - id: gitleaks                                         ││
+│     │                                                              ││
+│     │   - repo: https://github.com/eslint/eslint                  ││
+│     │     rev: v8.55.0                                             ││
+│     │     hooks:                                                   ││
+│     │       - id: eslint                                           ││
+│     │         files: \.(ts|tsx)$                                   ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  IMPLEMENTATION FILES:                                             │
+│  /.github/workflows/secure-ci.yml                                  │
+│  /.pre-commit-config.yaml                                          │
+│  /scripts/setup-pre-commit.sh                                      │
+│  /docs/BRANCH-PROTECTION-SETUP.md                                  │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.218 Secrets Management Architecture (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              SECRETS MANAGEMENT ARCHITECTURE                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Secrets are ephemeral, auditable, and scoped"         │
+│                                                                     │
+│  1. SECRET INVENTORY & CLASSIFICATION                               │
+│     ═════════════════════════════════                               │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ SECRET NAME          │ SENSITIVITY │ ROTATION │ SCOPE       ││
+│     ├──────────────────────┼─────────────┼──────────┼─────────────┤│
+│     │ OPENAI_API_KEY       │ HIGH        │ 90 days  │ AI service  ││
+│     │ ANTHROPIC_API_KEY    │ HIGH        │ 90 days  │ AI service  ││
+│     │ SUPABASE_SERVICE_KEY │ CRITICAL    │ 60 days  │ Backend     ││
+│     │ STRIPE_SECRET_KEY    │ CRITICAL    │ 60 days  │ Payments    ││
+│     │ STRIPE_WEBHOOK_SECRET│ HIGH        │ 90 days  │ Webhooks    ││
+│     │ RESEND_API_KEY       │ MEDIUM      │ 180 days │ Email svc   ││
+│     │ UPSTASH_REDIS_TOKEN  │ HIGH        │ 90 days  │ Cache svc   ││
+│     │ VERCEL_TOKEN         │ CRITICAL    │ 30 days  │ CI/CD only  ││
+│     │ SENTRY_DSN           │ LOW         │ 365 days │ All services││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. AUTOMATED ROTATION WORKFLOW                                     │
+│     ══════════════════════════════                                  │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ SECRET ROTATION PIPELINE:                                    ││
+│     │                                                              ││
+│     │ 1. SCHEDULE: Cron job checks rotation_due_date              ││
+│     │    → Runs daily at 2am UTC                                  ││
+│     │                                                              ││
+│     │ 2. PRE-ROTATION: Alert sent 7 days before due               ││
+│     │    → Slack + Email to Alberto                               ││
+│     │                                                              ││
+│     │ 3. ROTATION EXECUTION:                                       ││
+│     │    a) Generate new secret at provider                       ││
+│     │    b) Update in Vercel env vars (via API)                   ││
+│     │    c) Verify new secret works (health check)                ││
+│     │    d) Revoke old secret at provider                         ││
+│     │    e) Log rotation in audit trail                           ││
+│     │                                                              ││
+│     │ 4. POST-ROTATION: Verify all services healthy               ││
+│     │    → If failure: auto-rollback to previous secret           ││
+│     │                                                              ││
+│     │ 5. EMERGENCY ROTATION:                                       ││
+│     │    → One-click rotation for compromised secrets             ││
+│     │    → Immediate revoke + regenerate + redeploy               ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. SECRET SPRAWL DETECTION                                         │
+│     ═════════════════════════                                       │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ DETECTION PATTERNS (run in CI + cron):                       ││
+│     │                                                              ││
+│     │ ✗ Secrets in source code:                                   ││
+│     │   → Gitleaks patterns for all secret types                  ││
+│     │                                                              ││
+│     │ ✗ Secrets in logs:                                          ││
+│     │   → Log sanitizer middleware strips known patterns          ││
+│     │   → Post-facto log scanning for leaks                       ││
+│     │                                                              ││
+│     │ ✗ Secrets in error messages:                                ││
+│     │   → Error boundary sanitizes before Sentry                  ││
+│     │   → Test suite checks error output for secrets              ││
+│     │                                                              ││
+│     │ ✗ Secrets in database:                                      ││
+│     │   → No secrets stored in DB (only hashed tokens)            ││
+│     │   → Periodic scan for high-entropy strings                  ││
+│     │                                                              ││
+│     │ ✗ Secrets in client bundle:                                 ││
+│     │   → Build-time check for NEXT_PUBLIC_ misuse               ││
+│     │   → Runtime check for exposed secrets                       ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. ACCESS AUDIT LOGGING                                            │
+│     ════════════════════════                                        │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ DATABASE TABLE: secret_access_log                            │   │
+│     │ ├─ id                UUID PRIMARY KEY                        │   │
+│     │ ├─ secret_name       TEXT NOT NULL                          │   │
+│     │ ├─ accessed_by       TEXT (service/function name)           │   │
+│     │ ├─ access_type       TEXT (read, rotate, revoke)            │   │
+│     │ ├─ source_ip         INET                                   │   │
+│     │ ├─ user_agent        TEXT                                   │   │
+│     │ ├─ success           BOOLEAN                                │   │
+│     │ ├─ error_message     TEXT                                   │   │
+│     │ ├─ created_at        TIMESTAMPTZ                            │   │
+│     │                                                              ││
+│     │ ANOMALY DETECTION:                                           ││
+│     │ → Alert if secret accessed >100x/hour (unusual volume)      ││
+│     │ → Alert if accessed from new IP/region                      ││
+│     │ → Alert if accessed outside business hours                  ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  DATABASE TABLE: secret_inventory                                  │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ secret_name           TEXT NOT NULL UNIQUE                   │   │
+│  │ sensitivity           TEXT -- low, medium, high, critical    │   │
+│  │ rotation_days         INTEGER                                │   │
+│  │ last_rotated          TIMESTAMPTZ                            │   │
+│  │ rotation_due          DATE                                   │   │
+│  │ scope                 TEXT[] -- which services can access    │   │
+│  │ provider              TEXT -- where secret is managed        │   │
+│  │ created_at            TIMESTAMPTZ                            │   │
+│  │ updated_at            TIMESTAMPTZ                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION FILES:                                             │
+│  /lib/secrets/rotation-manager.ts                                  │
+│  /lib/secrets/sprawl-detector.ts                                   │
+│  /lib/secrets/access-logger.ts                                     │
+│  /api/cron/secrets-rotation-check/route.ts                         │
+│  /api/admin/secrets/emergency-rotate/route.ts                      │
+│  /scripts/rotate-secret.ts                                         │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.219 Infrastructure as Code (IaC) Framework (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              INFRASTRUCTURE AS CODE (IaC) FRAMEWORK                  │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Infrastructure changes go through same rigor as code" │
+│                                                                     │
+│  1. TERRAFORM CONFIGURATION (Vercel + Supabase)                    │
+│     ═══════════════════════════════════════════                     │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ # /infrastructure/main.tf                                    ││
+│     │                                                              ││
+│     │ terraform {                                                  ││
+│     │   required_version = ">= 1.5.0"                             ││
+│     │   required_providers {                                       ││
+│     │     vercel = {                                               ││
+│     │       source  = "vercel/vercel"                             ││
+│     │       version = "~> 0.15"                                    ││
+│     │     }                                                        ││
+│     │   }                                                          ││
+│     │   backend "s3" {  # Or Terraform Cloud                      ││
+│     │     bucket = "aip-terraform-state"                          ││
+│     │     key    = "prod/terraform.tfstate"                       ││
+│     │     region = "us-east-1"                                     ││
+│     │   }                                                          ││
+│     │ }                                                            ││
+│     │                                                              ││
+│     │ # Vercel Project                                             ││
+│     │ resource "vercel_project" "ai_perception" {                  ││
+│     │   name      = "ai-perception"                                ││
+│     │   framework = "nextjs"                                       ││
+│     │                                                              ││
+│     │   git_repository = {                                         ││
+│     │     type = "github"                                          ││
+│     │     repo = "org/ai-perception"                               ││
+│     │   }                                                          ││
+│     │                                                              ││
+│     │   environment = [                                            ││
+│     │     {                                                        ││
+│     │       key    = "NEXT_PUBLIC_APP_URL"                        ││
+│     │       value  = var.app_url                                   ││
+│     │       target = ["production"]                                ││
+│     │     }                                                        ││
+│     │   ]                                                          ││
+│     │ }                                                            ││
+│     │                                                              ││
+│     │ # Vercel Domain                                              ││
+│     │ resource "vercel_project_domain" "main" {                    ││
+│     │   project_id = vercel_project.ai_perception.id              ││
+│     │   domain     = "aiperception.com"                            ││
+│     │ }                                                            ││
+│     │                                                              ││
+│     │ # Security Headers                                           ││
+│     │ resource "vercel_edge_config" "security" {                   ││
+│     │   name = "security-config"                                   ││
+│     │   # CSP, HSTS, etc. as code                                 ││
+│     │ }                                                            ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. ENVIRONMENT PARITY ENFORCEMENT                                  │
+│     ══════════════════════════════                                  │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ # /infrastructure/environments/                              ││
+│     │ ├── dev.tfvars                                               ││
+│     │ ├── staging.tfvars                                           ││
+│     │ └── production.tfvars                                        ││
+│     │                                                              ││
+│     │ PARITY RULES:                                                ││
+│     │ • Same Terraform modules for all environments               ││
+│     │ • Only variables differ (URLs, scaling, secrets)            ││
+│     │ • CI validates parity before apply                          ││
+│     │ • Drift detection runs hourly                               ││
+│     │                                                              ││
+│     │ PARITY CHECKS IN CI:                                         ││
+│     │ ┌─────────────────────────────────────────────────────────┐ ││
+│     │ │ - name: Check environment parity                        │ ││
+│     │ │   run: |                                                │ ││
+│     │ │     terraform plan -var-file=staging.tfvars -out=stg   │ ││
+│     │ │     terraform plan -var-file=production.tfvars -out=prd│ ││
+│     │ │     ./scripts/compare-terraform-plans.sh stg prd        │ ││
+│     │ └─────────────────────────────────────────────────────────┘ ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. DRIFT DETECTION & REMEDIATION                                   │
+│     ═════════════════════════════                                   │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ DRIFT DETECTION WORKFLOW:                                    ││
+│     │                                                              ││
+│     │ 1. SCHEDULED: terraform plan runs hourly via cron           ││
+│     │                                                              ││
+│     │ 2. COMPARE: Plan output vs expected (no changes)            ││
+│     │                                                              ││
+│     │ 3. IF DRIFT DETECTED:                                        ││
+│     │    a) Classify drift (manual change vs provider change)     ││
+│     │    b) Alert via Slack + create GitHub issue                 ││
+│     │    c) Auto-remediate if safe (e.g., security headers)       ││
+│     │    d) Require human approval if risky                       ││
+│     │                                                              ││
+│     │ 4. AUDIT: All drift events logged with root cause           ││
+│     │                                                              ││
+│     │ DRIFT SEVERITY LEVELS:                                       ││
+│     │ • INFO: Cosmetic (tags, descriptions)                       ││
+│     │ • WARN: Functional (env vars, domains)                      ││
+│     │ • CRITICAL: Security (headers, access control)              ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  DATABASE TABLE: infrastructure_drift                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ environment           TEXT NOT NULL                          │   │
+│  │ resource_type         TEXT                                   │   │
+│  │ resource_id           TEXT                                   │   │
+│  │ drift_type            TEXT -- added, removed, changed        │   │
+│  │ expected_value        JSONB                                  │   │
+│  │ actual_value          JSONB                                  │   │
+│  │ severity              TEXT -- info, warn, critical           │   │
+│  │ remediation_status    TEXT -- pending, auto_fixed, manual    │   │
+│  │ detected_at           TIMESTAMPTZ                            │   │
+│  │ resolved_at           TIMESTAMPTZ                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION FILES:                                             │
+│  /infrastructure/main.tf                                           │
+│  /infrastructure/modules/vercel/                                   │
+│  /infrastructure/modules/supabase/                                 │
+│  /infrastructure/environments/*.tfvars                             │
+│  /.github/workflows/terraform-ci.yml                               │
+│  /scripts/drift-detector.ts                                        │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.220 Deployment Security & Canary Releases (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              DEPLOYMENT SECURITY & CANARY RELEASES                   │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Deploy safely with instant rollback capability"       │
+│                                                                     │
+│  1. CANARY DEPLOYMENT STRATEGY                                      │
+│     ══════════════════════════                                      │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ DEPLOYMENT PHASES:                                           ││
+│     │                                                              ││
+│     │ Phase 1: CANARY (5% traffic, 10 minutes)                    ││
+│     │ ├─ Deploy new version to canary                             ││
+│     │ ├─ Route 5% of traffic to canary                            ││
+│     │ ├─ Monitor: Error rate, latency P99, success rate           ││
+│     │ ├─ Auto-rollback if: error_rate > 1% OR p99 > 5s           ││
+│     │ └─ Proceed if: 10 min stable                                ││
+│     │                                                              ││
+│     │ Phase 2: STAGED ROLLOUT (25% → 50% → 100%)                  ││
+│     │ ├─ 25% traffic: 10 min observation                          ││
+│     │ ├─ 50% traffic: 10 min observation                          ││
+│     │ ├─ 100% traffic: Full deployment                            ││
+│     │ └─ Any phase can trigger auto-rollback                      ││
+│     │                                                              ││
+│     │ Phase 3: VERIFICATION (30 minutes post-deploy)              ││
+│     │ ├─ Run smoke tests against production                       ││
+│     │ ├─ Verify key metrics stable                                ││
+│     │ ├─ Mark deployment as "verified"                            ││
+│     │ └─ Previous version kept warm for 1 hour                    ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. AUTO-ROLLBACK TRIGGERS                                          │
+│     ════════════════════════                                        │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ TRIGGER             │ THRESHOLD   │ WINDOW  │ ACTION        ││
+│     ├─────────────────────┼─────────────┼─────────┼───────────────┤│
+│     │ Error rate increase │ >1% delta   │ 5 min   │ Auto-rollback ││
+│     │ P99 latency         │ >200% base  │ 5 min   │ Auto-rollback ││
+│     │ 5xx responses       │ >10 total   │ 2 min   │ Auto-rollback ││
+│     │ Health check fails  │ 3 consec    │ 1 min   │ Auto-rollback ││
+│     │ Memory usage        │ >90%        │ 5 min   │ Alert + pause ││
+│     │ AI API errors       │ >5% rate    │ 5 min   │ Auto-rollback ││
+│     │ Payment failures    │ Any         │ Instant │ Alert + pause ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. DEPLOYMENT METRICS CORRELATION                                  │
+│     ══════════════════════════════                                  │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ DEPLOY MARKER IN METRICS:                                    ││
+│     │                                                              ││
+│     │ // On every deploy, record marker                           ││
+│     │ await db.deployments.insert({                                ││
+│     │   version: process.env.VERCEL_GIT_COMMIT_SHA,               ││
+│     │   deployed_at: new Date(),                                   ││
+│     │   deployer: github.actor,                                    ││
+│     │   environment: 'production',                                 ││
+│     │   changes_summary: pr.title,                                 ││
+│     │   baseline_metrics: await captureCurrentMetrics(),          ││
+│     │ });                                                          ││
+│     │                                                              ││
+│     │ CORRELATION DASHBOARD:                                       ││
+│     │ ┌─────────────────────────────────────────────────────────┐ ││
+│     │ │  ERROR RATE WITH DEPLOY MARKERS                         │ ││
+│     │ │                                                         │ ││
+│     │ │  2.0% │         ▲                                       │ ││
+│     │ │       │         │ Deploy v1.2.3                         │ ││
+│     │ │  1.0% │    ─────┴────────────                          │ ││
+│     │ │       │                      │ Rollback                 │ ││
+│     │ │  0.5% │ ────────            ─┴─────────                │ ││
+│     │ │       └───────────────────────────────────────────────  │ ││
+│     │ │        12:00   12:30   13:00   13:30   14:00           │ ││
+│     │ └─────────────────────────────────────────────────────────┘ ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. ROLLBACK DRILLS                                                 │
+│     ══════════════════                                              │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ MONTHLY ROLLBACK DRILL:                                      ││
+│     │                                                              ││
+│     │ 1. Schedule: First Tuesday of each month, 10am UTC          ││
+│     │                                                              ││
+│     │ 2. Procedure:                                                ││
+│     │    a) Deploy intentionally bad canary (returns 500)         ││
+│     │    b) Verify auto-rollback triggers within 5 min            ││
+│     │    c) Verify previous version restored                      ││
+│     │    d) Verify alerts fired correctly                         ││
+│     │    e) Verify metrics show recovery                          ││
+│     │                                                              ││
+│     │ 3. Document:                                                 ││
+│     │    - Time to detection                                       ││
+│     │    - Time to rollback                                        ││
+│     │    - Any manual intervention needed                          ││
+│     │    - Lessons learned                                         ││
+│     │                                                              ││
+│     │ 4. Update runbook if issues found                           ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  DATABASE TABLE: deployments                                       │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ version               TEXT NOT NULL (git SHA)                │   │
+│  │ environment           TEXT NOT NULL                          │   │
+│  │ deployed_at           TIMESTAMPTZ                            │   │
+│  │ deployer              TEXT                                   │   │
+│  │ status                TEXT -- canary, staged, complete, rolled_back │
+│  │ rollout_percentage    INTEGER                                │   │
+│  │ baseline_metrics      JSONB                                  │   │
+│  │ current_metrics       JSONB                                  │   │
+│  │ rollback_reason       TEXT                                   │   │
+│  │ verified_at           TIMESTAMPTZ                            │   │
+│  │ pr_number             INTEGER                                │   │
+│  │ changes_summary       TEXT                                   │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION FILES:                                             │
+│  /lib/deployment/canary-manager.ts                                 │
+│  /lib/deployment/rollback-controller.ts                            │
+│  /lib/deployment/metrics-correlator.ts                             │
+│  /api/webhooks/vercel-deploy/route.ts                              │
+│  /scripts/rollback-drill.ts                                        │
+│  /docs/ROLLBACK-RUNBOOK.md                                         │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.221 Security Scanning Pipeline (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              SECURITY SCANNING PIPELINE                              │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Shift security left - catch issues before production" │
+│                                                                     │
+│  1. SCANNING STAGES                                                 │
+│     ═══════════════════                                             │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │                                                              ││
+│     │  PRE-COMMIT    →    CI BUILD    →    STAGING    →    PROD   ││
+│     │  ───────────────────────────────────────────────────────────││
+│     │  • Gitleaks      • Semgrep        • OWASP ZAP    • Runtime  ││
+│     │  • ESLint sec    • CodeQL         • Lighthouse   • WAF logs ││
+│     │  • detect-secrets• npm audit      • Headers      • Anomaly  ││
+│     │                  • License        • SSL/TLS                  ││
+│     │                  • SBOM                                      ││
+│     │                                                              ││
+│     │  FAIL FAST: Any critical finding blocks pipeline            ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. SAST CONFIGURATION (Semgrep)                                    │
+│     ════════════════════════════                                    │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ # .semgrep.yml                                               ││
+│     │ rules:                                                       ││
+│     │   - id: next-api-no-auth-check                              ││
+│     │     patterns:                                                ││
+│     │       - pattern-inside: |                                    ││
+│     │           export async function POST(req) { ... }           ││
+│     │       - pattern-not-inside: |                                ││
+│     │           ... getServerSession(...) ...                      ││
+│     │     message: "API route missing authentication check"       ││
+│     │     severity: ERROR                                          ││
+│     │                                                              ││
+│     │   - id: sql-injection-risk                                   ││
+│     │     pattern: supabase.from(...).select($X)                  ││
+│     │     pattern-where: $X contains user input                    ││
+│     │     message: "Potential SQL injection via user input"       ││
+│     │     severity: ERROR                                          ││
+│     │                                                              ││
+│     │   - id: exposed-api-key                                      ││
+│     │     pattern-regex: '(sk-|pk_|api[_-]?key)'                  ││
+│     │     paths:                                                   ││
+│     │       exclude:                                               ││
+│     │         - '*.test.ts'                                        ││
+│     │     severity: ERROR                                          ││
+│     │                                                              ││
+│     │   - id: unsafe-eval                                          ││
+│     │     patterns:                                                ││
+│     │       - pattern: eval(...)                                   ││
+│     │       - pattern: new Function(...)                           ││
+│     │     message: "Unsafe eval usage detected"                   ││
+│     │     severity: ERROR                                          ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. DAST CONFIGURATION (OWASP ZAP)                                  │
+│     ══════════════════════════════                                  │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ OWASP ZAP BASELINE SCAN CONFIG:                              ││
+│     │                                                              ││
+│     │ Target: Staging URL after each deploy                       ││
+│     │                                                              ││
+│     │ Scan Types:                                                  ││
+│     │ ├─ Passive scan (all responses)                             ││
+│     │ ├─ Active scan (high-risk endpoints only)                   ││
+│     │ │   ├─ /api/analyze (POST with various payloads)           ││
+│     │ │   ├─ /api/auth/* (authentication endpoints)              ││
+│     │ │   └─ /api/billing/* (payment endpoints)                  ││
+│     │ └─ API scan (OpenAPI spec if available)                     ││
+│     │                                                              ││
+│     │ Alert Thresholds:                                            ││
+│     │ ├─ HIGH: Fail pipeline, block deploy                        ││
+│     │ ├─ MEDIUM: Warn, create issue, allow deploy                 ││
+│     │ └─ LOW: Log only, weekly report                             ││
+│     │                                                              ││
+│     │ Excluded from scan:                                          ││
+│     │ ├─ /api/cron/* (internal only)                              ││
+│     │ └─ /api/webhooks/* (external callbacks)                     ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. SECURITY HEADERS VALIDATION                                     │
+│     ═══════════════════════════                                     │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ REQUIRED HEADERS CHECK:                                      ││
+│     │                                                              ││
+│     │ // /scripts/check-security-headers.ts                       ││
+│     │ const requiredHeaders = {                                    ││
+│     │   'Strict-Transport-Security': {                             ││
+│     │     pattern: /max-age=\d{8,}/,  // At least 1 year          ││
+│     │     required: true,                                          ││
+│     │   },                                                         ││
+│     │   'Content-Security-Policy': {                               ││
+│     │     pattern: /default-src 'self'/,                          ││
+│     │     required: true,                                          ││
+│     │   },                                                         ││
+│     │   'X-Frame-Options': {                                       ││
+│     │     value: 'DENY',                                           ││
+│     │     required: true,                                          ││
+│     │   },                                                         ││
+│     │   'X-Content-Type-Options': {                                ││
+│     │     value: 'nosniff',                                        ││
+│     │     required: true,                                          ││
+│     │   },                                                         ││
+│     │   'Referrer-Policy': {                                       ││
+│     │     pattern: /strict-origin|no-referrer/,                   ││
+│     │     required: true,                                          ││
+│     │   },                                                         ││
+│     │   'Permissions-Policy': {                                    ││
+│     │     pattern: /geolocation=\(\)/,                            ││
+│     │     required: true,                                          ││
+│     │   },                                                         ││
+│     │ };                                                           ││
+│     │                                                              ││
+│     │ // Run in CI against deployed preview URL                   ││
+│     │ async function validateSecurityHeaders(url: string) {       ││
+│     │   const response = await fetch(url);                        ││
+│     │   const failures = [];                                       ││
+│     │   for (const [header, config] of Object.entries(required)) {││
+│     │     const value = response.headers.get(header);             ││
+│     │     if (!value && config.required) {                        ││
+│     │       failures.push(`Missing: ${header}`);                  ││
+│     │     }                                                        ││
+│     │   }                                                          ││
+│     │   return failures;                                           ││
+│     │ }                                                            ││
+│     └──────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  DATABASE TABLE: security_scan_results                             │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ id                    UUID PRIMARY KEY                       │   │
+│  │ scan_type             TEXT -- sast, dast, sca, secrets       │   │
+│  │ tool                  TEXT -- semgrep, zap, snyk, gitleaks   │   │
+│  │ trigger               TEXT -- pr, deploy, scheduled          │   │
+│  │ commit_sha            TEXT                                   │   │
+│  │ branch                TEXT                                   │   │
+│  │ findings_critical     INTEGER                                │   │
+│  │ findings_high         INTEGER                                │   │
+│  │ findings_medium       INTEGER                                │   │
+│  │ findings_low          INTEGER                                │   │
+│  │ findings_detail       JSONB                                  │   │
+│  │ duration_ms           INTEGER                                │   │
+│  │ passed                BOOLEAN                                │   │
+│  │ scanned_at            TIMESTAMPTZ                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION FILES:                                             │
+│  /.semgrep.yml                                                     │
+│  /.github/workflows/security-scan.yml                              │
+│  /scripts/check-security-headers.ts                                │
+│  /scripts/run-zap-scan.sh                                          │
+│  /lib/security/scan-aggregator.ts                                  │
+│  /app/(admin)/security/scans/page.tsx                              │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.222 DevSecOps Dashboard (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              DEVSECOPS DASHBOARD                                     │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  DASHBOARD: /app/(admin)/devsecops/page.tsx                        │
+│                                                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │  DEVSECOPS HEALTH OVERVIEW                                   │   │
+│  │                                                              │   │
+│  │  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────┐│   │
+│  │  │ PIPELINE    │ │ SECRETS     │ │ SCANNING    │ │ DEPLOY  ││   │
+│  │  │   98%       │ │    95%      │ │    100%     │ │   92%   ││   │
+│  │  │ ● Healthy   │ │ ⚠ 2 due    │ │ ● All pass  │ │ ● Stable││   │
+│  │  └─────────────┘ └─────────────┘ └─────────────┘ └─────────┘│   │
+│  │                                                              │   │
+│  │  SECURITY SCAN TRENDS (Last 30 Days)                        │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ Critical ████░░░░░░░░░░░░░░░░░░░░░░░░░░ 0 (was 2)      ││   │
+│  │  │ High     ████████░░░░░░░░░░░░░░░░░░░░░░ 3 (was 7)      ││   │
+│  │  │ Medium   ████████████████░░░░░░░░░░░░░░ 12             ││   │
+│  │  │ Low      ████████████████████████░░░░░░ 24             ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                              │   │
+│  │  RECENT DEPLOYMENTS                                          │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ Version   │ Status    │ Rolled Out │ Time      │ Action ││   │
+│  │  │ abc123f   │ ● Verified│ 100%       │ 2h ago    │ [View] ││   │
+│  │  │ def456a   │ ○ Canary  │ 5%         │ Now       │ [View] ││   │
+│  │  │ ghi789b   │ ⟲ Rolled  │ 0%         │ Yesterday │ [View] ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                              │   │
+│  │  SECRETS STATUS                                              │   │
+│  │  ┌─────────────────────────────────────────────────────────┐│   │
+│  │  │ Secret            │ Last Rotated │ Due      │ Status    ││   │
+│  │  │ OPENAI_API_KEY    │ 45 days ago  │ 45 days  │ ● OK      ││   │
+│  │  │ ANTHROPIC_API_KEY │ 82 days ago  │ 8 days   │ ⚠ Soon    ││   │
+│  │  │ STRIPE_SECRET_KEY │ 30 days ago  │ 30 days  │ ● OK      ││   │
+│  │  │ VERCEL_TOKEN      │ 28 days ago  │ 2 days   │ ⚠ Soon    ││   │
+│  │  └─────────────────────────────────────────────────────────┘│   │
+│  │                                                              │   │
+│  │  QUICK ACTIONS                                               │   │
+│  │  [Run Security Scan] [Rotate Secret] [Trigger Rollback Drill]│   │
+│  │  [View IaC Status] [Export Compliance Report]                │   │
+│  │                                                              │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  SUB-PAGES:                                                        │
+│  • /devsecops/pipeline - CI/CD pipeline health                     │
+│  • /devsecops/secrets - Secret inventory & rotation                │
+│  • /devsecops/scans - Security scan results                        │
+│  • /devsecops/deployments - Deployment history & metrics           │
+│  • /devsecops/infrastructure - IaC status & drift                  │
+│  • /devsecops/compliance - SOC2/compliance checklist               │
+│                                                                     │
+│  IMPLEMENTATION FILES:                                             │
+│  /app/(admin)/devsecops/page.tsx                                   │
+│  /app/(admin)/devsecops/pipeline/page.tsx                          │
+│  /app/(admin)/devsecops/secrets/page.tsx                           │
+│  /app/(admin)/devsecops/scans/page.tsx                             │
+│  /app/(admin)/devsecops/deployments/page.tsx                       │
+│  /lib/devsecops/health-scorer.ts                                   │
+│  /api/admin/devsecops/metrics/route.ts                             │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
 ### 2.197 Semantic Audit Dashboard (NEW)
 
 ```
@@ -20725,6 +21664,10 @@ omArchive(userId);                           │   │
 | 5 | **Gov: RACI matrix initial** | /docs/legal/accountability-matrix.md - AI decision roles | Claude |
 | 5 | **Gov: AI Ethics Owner role doc** | /docs/roles/ai-ethics-owner.md - responsibilities defined | Claude |
 | 5 | **Gov: Fairness metrics schema** | fairness_metrics table + protected attribute categories | Claude |
+| 5 | **DSO: Pre-commit hooks setup** | .pre-commit-config.yaml with gitleaks, detect-secrets | Claude |
+| 5 | **DSO: Branch protection rules** | /docs/devsecops/branch-protection-rules.md documented | Claude |
+| 5 | **DSO: secret_inventory table** | Migration with rotation_status, scope, last_rotated | Claude |
+| 5 | **DSO: Secrets audit baseline** | Document all secrets, their scopes, rotation schedules | Claude |
 
 **NEW: Security Deliverables Week 1:**
 ```typescript
@@ -20876,6 +21819,12 @@ const SCORING_WEIGHTS = {
 | 5 | **Gov: Dispute form UI** | /components/DisputeForm.tsx - user override mechanism | Claude |
 | 5 | **Gov: human_review_queue table** | Migration for escalation tracking | Claude |
 | 5 | **Gov: AIIA template v1** | /docs/legal/ai-impact-assessment-template.md | Claude |
+| 5 | **DSO: Gitleaks CI integration** | .github/workflows/security.yml - secrets scanning on PR | Claude |
+| 5 | **DSO: SAST setup (Semgrep)** | .github/workflows/sast.yml - static analysis on push | Claude |
+| 5 | **DSO: npm audit automation** | .github/workflows/dependency-check.yml - daily SCA scan | Claude |
+| 5 | **DSO: Secrets rotation cron** | /api/cron/rotate-secrets.ts + alert on expiry | Claude |
+| 5 | **DSO: secret_access_log table** | Migration for secrets access audit trail | Claude |
+| 5 | **DSO: GitHub Actions hardening** | Pin actions by SHA, minimal permissions, OIDC auth | Claude |
 
 **Acceptance Criteria Phase 1:**
 - [ ] User can enter URL and receive analysis
@@ -21085,6 +22034,12 @@ const SCORING_WEIGHTS = {
 | 5 | **Gov: Kill switch API** | /api/admin/kill-switch/route.ts - 3-level protocol | Claude |
 | 5 | **Gov: kill_switch_events table** | Migration for kill switch audit trail | Claude |
 | 5 | **Gov: Demographic parity v1** | /lib/fairness/demographic-parity.ts - geographic/size | Claude |
+| 5 | **DSO: Terraform IaC foundation** | /infra/terraform/ - Vercel + Supabase resources | Claude |
+| 5 | **DSO: infrastructure_drift table** | Migration for tracking IaC drift with severity | Claude |
+| 5 | **DSO: Drift detection cron** | /api/cron/detect-drift.ts - daily terraform plan diff | Claude |
+| 5 | **DSO: DAST setup (ZAP)** | .github/workflows/dast.yml - weekly OWASP ZAP scan | Claude |
+| 5 | **DSO: security_scan_results table** | Migration for SAST/DAST/SCA findings | Claude |
+| 5 | **DSO: Signed commits setup** | Document GPG key setup + verify signatures in CI | Claude |
 
 **Caching Strategy:**
 
@@ -21176,6 +22131,12 @@ const CACHE_TTL = {
 | 5 | **Gov: AI liability insurance eval** | /docs/legal/ai-liability-coverage.md - requirements doc | Claude |
 | 5 | **Gov: harm_registry table** | Migration for harm tier tracking | Claude |
 | 5 | **Gov: Redress workflow v1** | /lib/accountability/redress-workflow.ts - 4 steps | Claude |
+| 5 | **DSO: Canary deployment setup** | Vercel preview env as canary, 5% traffic split | Claude |
+| 5 | **DSO: deployments table** | Migration for deployment tracking with rollback_status | Claude |
+| 5 | **DSO: Auto-rollback triggers** | /lib/devsecops/rollback-monitor.ts - error rate threshold | Claude |
+| 5 | **DSO: License compliance scan** | /scripts/license-audit.sh - GPL/AGPL detection | Claude |
+| 5 | **DSO: Security headers validation** | /tests/security-headers.test.ts - CSP, HSTS, X-Frame | Claude |
+| 5 | **DSO: Environment parity checker** | /lib/devsecops/env-parity.ts - dev/staging/prod diff | Claude |
 
 **Freemium Gating Rules:**
 
@@ -21432,6 +22393,14 @@ const ALERT_THRESHOLDS = {
 | 5 | **Gov: Counterfactual fairness v1** | /lib/fairness/counterfactual-tester.ts | Claude |
 | 5 | **Gov: fairness_audit_log table** | Migration for automated + external audits | Claude |
 | 5 | **Gov: DPIA AI addendum v1** | /docs/legal/dpia-ai-addendum.md | Claude |
+| 5 | **DSO: DevSecOps dashboard** | /app/(admin)/devsecops/page.tsx - unified security view | Claude |
+| 5 | **DSO: Secrets health page** | /app/(admin)/devsecops/secrets/page.tsx - rotation status | Claude |
+| 5 | **DSO: IaC drift page** | /app/(admin)/devsecops/drift/page.tsx - terraform drift view | Claude |
+| 5 | **DSO: Deployment history page** | /app/(admin)/devsecops/deployments/page.tsx - canary status | Claude |
+| 5 | **DSO: Security scan results page** | /app/(admin)/devsecops/scans/page.tsx - SAST/DAST findings | Claude |
+| 5 | **DSO: SLSA compliance check** | /lib/devsecops/slsa-compliance.ts - supply chain security | Claude |
+| 5 | **DSO: Artifact signing setup** | Sign Docker images and release artifacts | Claude |
+| 5 | **DSO: Rollback drill scheduler** | Monthly automated rollback drills | Claude |
 
 **Why Add Google/Perplexity in Phase 4?**
 - By Week 7, we should have paying customers generating revenue
@@ -21558,6 +22527,35 @@ const ALERT_THRESHOLDS = {
 | 5 | **Gov: Transparency report template** | /docs/legal/transparency-report-template.md | Claude |
 | 5 | **Gov: External audit prep doc** | /docs/legal/external-audit-readiness.md | Claude |
 | 5 | **Gov: Governance health scorer** | /lib/governance/health-scorer.ts - 4 dimensions | Claude |
+| 5 | **DSO: CI/CD audit complete** | /docs/devsecops/ci-cd-audit.md - final security review | Claude |
+| 5 | **DSO: Secrets sprawl cleanup** | Remove all hardcoded secrets, verify rotation | Claude |
+| 5 | **DSO: IaC coverage 100%** | All infra resources in Terraform | Claude |
+| 5 | **DSO: Security posture score** | /lib/devsecops/posture-scorer.ts - unified scoring | Claude |
+| 5 | **DSO: Quarterly security report** | Automated DevSecOps metrics report | Claude |
+| 5 | **DSO: Incident response runbook** | /docs/devsecops/incident-response.md | Claude |
+
+**Phase 4 DevSecOps Checklist (End of Week 8):**
+- [ ] Pre-commit hooks (gitleaks, detect-secrets) active on all commits
+- [ ] Signed commits enforced via GitHub branch protection
+- [ ] SAST (Semgrep) running on all PRs with 0 critical findings
+- [ ] DAST (OWASP ZAP) weekly scans with <5 medium severity findings
+- [ ] SCA (npm audit + Snyk) daily scans, no high-severity vulnerabilities
+- [ ] All secrets in rotation schedule with <90 day max age
+- [ ] secret_access_log capturing all secret retrievals
+- [ ] Secrets sprawl detection running (no secrets in codebase)
+- [ ] Infrastructure as Code (Terraform) covering 100% of resources
+- [ ] Drift detection cron running daily with alerting
+- [ ] Canary deployments active with 5% traffic split
+- [ ] Auto-rollback triggering on error rate >1% or p99 >2s
+- [ ] Rollback drills completed (at least 1 successful drill)
+- [ ] Security headers (CSP, HSTS, X-Frame-Options) all passing
+- [ ] License compliance scan with no GPL/AGPL in production deps
+- [ ] GitHub Actions hardened (pinned by SHA, minimal permissions)
+- [ ] OIDC authentication for CI/CD (no long-lived tokens)
+- [ ] Environment parity >95% between staging and production
+- [ ] SLSA Level 2 compliance achieved
+- [ ] DevSecOps dashboard live with all metrics visible
+- [ ] Security posture score >80/100
 
 **Phase 4 AI Governance & Ethics Checklist (End of Week 8):**
 - [ ] Ethical AI principles published at /ethics (5 principles + red lines)
@@ -23319,6 +24317,90 @@ Begin Phase 1, Week 1, Day 1:
 
 ---
 
+### v27.0 DevSecOps Engineering Review Summary
+
+**Reviewer:** Senior Director DevSecOps Engineer - 1,290 years aggregate experience across Google Cloud Security, AWS Security, Microsoft Azure DevOps, Netflix Platform Security, Stripe Infrastructure Security, GitHub Actions Platform, GitLab Security, HashiCorp Vault, Datadog Security, Snyk, plus top consulting firms (McKinsey Cyber/BCG Digital Ventures/Deloitte Cyber)
+
+**Review Focus:** Comprehensive DevSecOps audit ensuring CI/CD pipeline security, secrets management, security scanning (SAST/DAST/SCA), infrastructure as code, deployment security, and supply chain integrity
+
+**Critical Gaps Identified (26 total across 5 categories):**
+
+**Category A: CI/CD Pipeline Security Gaps (6)**
+- A.1: No pre-commit hooks for secrets detection (gitleaks, detect-secrets)
+- A.2: No signed commits enforcement
+- A.3: GitHub Actions not hardened (not pinned by SHA, excessive permissions)
+- A.4: No branch protection rules documentation
+- A.5: No CI pipeline for security checks (separate from main CI)
+- A.6: No OIDC authentication for CI/CD (using long-lived tokens)
+
+**Category B: Secrets Management Gaps (5)**
+- B.1: No secrets inventory with rotation schedules
+- B.2: No secrets sprawl detection
+- B.3: No automated rotation cron for secrets
+- B.4: No access logging for secrets retrieval
+- B.5: No secrets scope documentation (which env uses which secrets)
+
+**Category C: Security Scanning Gaps (5)**
+- C.1: No SAST (Static Application Security Testing) in pipeline
+- C.2: No DAST (Dynamic Application Security Testing) scheduled scans
+- C.3: No SCA (Software Composition Analysis) beyond basic npm audit
+- C.4: No license compliance scanning (GPL/AGPL detection)
+- C.5: No security scan result tracking in database
+
+**Category D: Deployment Security Gaps (5)**
+- D.1: No canary deployment strategy documented
+- D.2: No automated rollback triggers (error rate, latency thresholds)
+- D.3: No deployment tracking database table
+- D.4: No rollback drill procedures
+- D.5: No artifact signing for releases
+
+**Category E: Infrastructure & Environment Gaps (5)**
+- E.1: No Infrastructure as Code (Terraform) for Vercel/Supabase
+- E.2: No drift detection for infrastructure changes
+- E.3: No environment parity enforcement (dev vs staging vs prod)
+- E.4: No security headers validation in CI
+- E.5: No SLSA (Supply-chain Levels for Software Artifacts) compliance
+
+**Architecture Sections Added (7):**
+- 2.216: DevSecOps Architecture Gap Analysis
+- 2.217: Secure CI/CD Pipeline Architecture
+- 2.218: Secrets Management Architecture
+- 2.219: Infrastructure as Code (IaC) Framework
+- 2.220: Deployment Security & Canary Releases
+- 2.221: Security Scanning Pipeline
+- 2.222: DevSecOps Dashboard
+
+**Database Tables Added (5):**
+- secret_access_log
+- secret_inventory
+- infrastructure_drift
+- deployments
+- security_scan_results
+
+**Tasks Added to Implementation Phases:**
+- Week 1: 4 DSO tasks (pre-commit hooks, branch protection, secret_inventory, secrets audit)
+- Week 2: 6 DSO tasks (gitleaks CI, SAST, npm audit, secrets rotation, access log, Actions hardening)
+- Week 3: 6 DSO tasks (Terraform IaC, drift table, drift cron, DAST, scan results, signed commits)
+- Week 4: 6 DSO tasks (canary deployment, deployments table, auto-rollback, license scan, security headers, env parity)
+- Week 7: 8 DSO tasks (DevSecOps dashboard, secrets page, drift page, deployments page, scans page, SLSA, artifact signing, rollback drills)
+- Week 8: 6 DSO tasks (CI/CD audit, secrets cleanup, IaC 100%, posture score, quarterly report, incident response)
+
+**Phase 4 DevSecOps Checklist Added:** 21 success criteria for DevSecOps validation
+
+**Key DevSecOps Engineering Principles:**
+1. **Shift left security** - Security checks in pre-commit, not just in CI
+2. **Secrets are toxic** - Treat every secret as a ticking time bomb with rotation deadlines
+3. **SAST catches early, DAST catches deep** - Both are essential, neither is sufficient alone
+4. **Infrastructure drift is technical debt** - Detect and remediate daily
+5. **Canary deployments save production** - 5% traffic catches issues before 100% users suffer
+6. **Auto-rollback is insurance** - 1% error rate or 2s p99 triggers immediate rollback
+7. **Supply chain security is existential** - Pinned dependencies, signed artifacts, SLSA compliance
+8. **Hardened CI is attack surface reduction** - Minimal permissions, OIDC auth, no long-lived tokens
+9. **Environment parity prevents "works on my machine"** - Dev, staging, prod must be functionally identical
+10. **DevSecOps dashboard is single pane of glass** - All security metrics visible in one place
+
+---
+
 *Document prepared by BCG Digital Ventures - Technology Strategy Practice*
 *Technical Review by: Senior Software Director - 300 years experience*
 *UX/UI Review by: Senior UX/UI Executive - 300 years experience, IDEO/frog/Pentagram background*
@@ -23345,6 +24427,7 @@ Begin Phase 1, Week 1, Day 1:
 *Semantic Audit & Data Quality Review by: Senior Lead Semantic Auditor - 543 years experience, ex-Google Data Governance/Meta Data Quality/Amazon Data Catalog/Snowflake Schema Design/dbt Labs/Great Expectations/Monte Carlo Data/Collibra/Alation/Informatica/Atlan/McKinsey Data Governance/BCG Data Strategy/Bain Analytics*
 *Domain Expert Review by: Senior Director Domain Experts - 12,340 years aggregate experience, all top consulting firms (McKinsey/BCG/Bain/Deloitte/Accenture), Fortune 500 industry leaders, specialized research centers (MIT Media Lab/Stanford HAI/Harvard Business School/INSEAD/Wharton), vertical expertise across Healthcare/SaaS/Legal/Finance/Restaurant/Retail/Manufacturing/Real Estate/Education/Professional Services*
 *AI Governance & Ethics Review by: Senior Director AI Governance & Ethics Officer - 8,750 years aggregate experience, ex-UNESCO AI Ethics/OECD AI Policy/EU AI Act Drafting Committee/IEEE AI Ethics Standards/Partnership on AI/Anthropic Safety/OpenAI Policy/Google DeepMind Ethics/Microsoft Responsible AI/IBM AI Ethics Board/Meta AI Responsibility/WEF AI Governance Council/Harvard Berkman Klein/Stanford HAI Policy/MIT AI Policy Forum/McKinsey AI Ethics/BCG AI Responsibility/Deloitte AI Governance*
+*DevSecOps Engineering Review by: Senior Director DevSecOps Engineer - 1,290 years aggregate experience, ex-Google Cloud Security/AWS Security/Microsoft Azure DevOps/Netflix Platform Security/Stripe Infrastructure Security/GitHub Actions Platform/GitLab Security/HashiCorp Vault/Datadog Security/Snyk/McKinsey Cyber/BCG Digital Ventures/Deloitte Cyber*
 *For: AI Perception Engineering Agency*
-*Date: November 26, 2024*
-*Version: 26.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering + Backend Engineering + Data Visualization + CTO/CAIO Executive + COO Operations + CFO Finance + CEO Strategic + Internal Tools & DX + RLHF & Feedback Loop + Semantic Audit & Data Quality + Domain Expert + AI Governance & Ethics Review)*
+*Date: November 27, 2024*
+*Version: 27.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering + Backend Engineering + Data Visualization + CTO/CAIO Executive + COO Operations + CFO Finance + CEO Strategic + Internal Tools & DX + RLHF & Feedback Loop + Semantic Audit & Data Quality + Domain Expert + AI Governance & Ethics + DevSecOps Engineering Review)*

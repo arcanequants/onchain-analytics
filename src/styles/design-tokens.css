@@ -1,0 +1,452 @@
+/**
+ * AI Perception - Design Tokens
+ *
+ * Phase 1, Week 1, Day 1
+ * Based on EXECUTIVE-ROADMAP-BCG.md Section 2.8
+ *
+ * Design System Foundation:
+ * - Score colors (semantic meaning)
+ * - AI Provider colors (brand identity)
+ * - Typography scale
+ * - Spacing system
+ * - Animation timings
+ */
+
+:root {
+  /* ================================================================
+   * SCORE COLORS - Semantic meaning for perception scores
+   * ================================================================ */
+
+  /* Excellent (80-100): Green spectrum */
+  --score-excellent: #10B981;
+  --score-excellent-bg: rgba(16, 185, 129, 0.1);
+  --score-excellent-border: rgba(16, 185, 129, 0.3);
+
+  /* Good (60-79): Blue spectrum */
+  --score-good: #3B82F6;
+  --score-good-bg: rgba(59, 130, 246, 0.1);
+  --score-good-border: rgba(59, 130, 246, 0.3);
+
+  /* Average (40-59): Yellow/Amber spectrum */
+  --score-average: #F59E0B;
+  --score-average-bg: rgba(245, 158, 11, 0.1);
+  --score-average-border: rgba(245, 158, 11, 0.3);
+
+  /* Poor (20-39): Orange spectrum */
+  --score-poor: #F97316;
+  --score-poor-bg: rgba(249, 115, 22, 0.1);
+  --score-poor-border: rgba(249, 115, 22, 0.3);
+
+  /* Critical (0-19): Red spectrum */
+  --score-critical: #EF4444;
+  --score-critical-bg: rgba(239, 68, 68, 0.1);
+  --score-critical-border: rgba(239, 68, 68, 0.3);
+
+  /* Unknown/Pending: Gray */
+  --score-unknown: #6B7280;
+  --score-unknown-bg: rgba(107, 114, 128, 0.1);
+  --score-unknown-border: rgba(107, 114, 128, 0.3);
+
+  /* ================================================================
+   * AI PROVIDER COLORS - Brand identity per provider
+   * ================================================================ */
+
+  /* OpenAI - Green/Teal */
+  --provider-openai: #10A37F;
+  --provider-openai-bg: rgba(16, 163, 127, 0.1);
+  --provider-openai-border: rgba(16, 163, 127, 0.3);
+  --provider-openai-name: "ChatGPT";
+
+  /* Anthropic - Orange/Coral */
+  --provider-anthropic: #D97706;
+  --provider-anthropic-bg: rgba(217, 119, 6, 0.1);
+  --provider-anthropic-border: rgba(217, 119, 6, 0.3);
+  --provider-anthropic-name: "Claude";
+
+  /* Google - Blue */
+  --provider-google: #4285F4;
+  --provider-google-bg: rgba(66, 133, 244, 0.1);
+  --provider-google-border: rgba(66, 133, 244, 0.3);
+  --provider-google-name: "Gemini";
+
+  /* Perplexity - Purple */
+  --provider-perplexity: #8B5CF6;
+  --provider-perplexity-bg: rgba(139, 92, 246, 0.1);
+  --provider-perplexity-border: rgba(139, 92, 246, 0.3);
+  --provider-perplexity-name: "Perplexity";
+
+  /* ================================================================
+   * SENTIMENT COLORS
+   * ================================================================ */
+
+  --sentiment-positive: #10B981;
+  --sentiment-positive-bg: rgba(16, 185, 129, 0.1);
+
+  --sentiment-neutral: #6B7280;
+  --sentiment-neutral-bg: rgba(107, 114, 128, 0.1);
+
+  --sentiment-negative: #EF4444;
+  --sentiment-negative-bg: rgba(239, 68, 68, 0.1);
+
+  /* ================================================================
+   * TYPOGRAPHY SCALE
+   * Based on Major Third (1.25) ratio
+   * ================================================================ */
+
+  --font-family-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-family-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+
+  /* Font sizes */
+  --text-xs: 0.64rem;    /* 10.24px */
+  --text-sm: 0.8rem;     /* 12.8px */
+  --text-base: 1rem;     /* 16px */
+  --text-lg: 1.25rem;    /* 20px */
+  --text-xl: 1.563rem;   /* 25px */
+  --text-2xl: 1.953rem;  /* 31.25px */
+  --text-3xl: 2.441rem;  /* 39px */
+  --text-4xl: 3.052rem;  /* 48.8px */
+  --text-5xl: 3.815rem;  /* 61px */
+
+  /* Font weights */
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --font-extrabold: 800;
+
+  /* Line heights */
+  --leading-none: 1;
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+  --leading-loose: 2;
+
+  /* Letter spacing */
+  --tracking-tight: -0.025em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.025em;
+
+  /* ================================================================
+   * SPACING SCALE
+   * Based on 4px base unit
+   * ================================================================ */
+
+  --space-0: 0;
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+  --space-20: 5rem;     /* 80px */
+  --space-24: 6rem;     /* 96px */
+
+  /* ================================================================
+   * BORDER RADIUS
+   * ================================================================ */
+
+  --radius-none: 0;
+  --radius-sm: 0.125rem;   /* 2px */
+  --radius-base: 0.25rem;  /* 4px */
+  --radius-md: 0.375rem;   /* 6px */
+  --radius-lg: 0.5rem;     /* 8px */
+  --radius-xl: 0.75rem;    /* 12px */
+  --radius-2xl: 1rem;      /* 16px */
+  --radius-3xl: 1.5rem;    /* 24px */
+  --radius-full: 9999px;
+
+  /* ================================================================
+   * SHADOWS
+   * ================================================================ */
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+  /* Score-specific glow effects */
+  --shadow-score-excellent: 0 0 20px rgba(16, 185, 129, 0.3);
+  --shadow-score-good: 0 0 20px rgba(59, 130, 246, 0.3);
+  --shadow-score-average: 0 0 20px rgba(245, 158, 11, 0.3);
+  --shadow-score-poor: 0 0 20px rgba(249, 115, 22, 0.3);
+  --shadow-score-critical: 0 0 20px rgba(239, 68, 68, 0.3);
+
+  /* ================================================================
+   * ANIMATION TIMINGS
+   * ================================================================ */
+
+  /* Durations */
+  --duration-75: 75ms;
+  --duration-100: 100ms;
+  --duration-150: 150ms;
+  --duration-200: 200ms;
+  --duration-300: 300ms;
+  --duration-500: 500ms;
+  --duration-700: 700ms;
+  --duration-1000: 1000ms;
+
+  /* Score reveal animation duration */
+  --duration-score-reveal: 1500ms;
+  --duration-score-count: 2000ms;
+
+  /* Easing functions */
+  --ease-linear: linear;
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* ================================================================
+   * Z-INDEX SCALE
+   * ================================================================ */
+
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+  --z-toast: 1080;
+
+  /* ================================================================
+   * BREAKPOINTS (for reference, use in media queries)
+   * ================================================================ */
+
+  /* --breakpoint-sm: 640px; */
+  /* --breakpoint-md: 768px; */
+  /* --breakpoint-lg: 1024px; */
+  /* --breakpoint-xl: 1280px; */
+  /* --breakpoint-2xl: 1536px; */
+
+  /* ================================================================
+   * CHART COLORS
+   * For data visualization components
+   * ================================================================ */
+
+  --chart-1: #3B82F6;  /* Primary blue */
+  --chart-2: #10B981;  /* Success green */
+  --chart-3: #F59E0B;  /* Warning amber */
+  --chart-4: #8B5CF6;  /* Purple */
+  --chart-5: #EC4899;  /* Pink */
+  --chart-6: #06B6D4;  /* Cyan */
+  --chart-7: #F97316;  /* Orange */
+  --chart-8: #84CC16;  /* Lime */
+}
+
+/* ================================================================
+ * DARK THEME OVERRIDES
+ * ================================================================ */
+
+[data-theme="dark"] {
+  /* Score colors stay the same but with adjusted backgrounds */
+  --score-excellent-bg: rgba(16, 185, 129, 0.15);
+  --score-good-bg: rgba(59, 130, 246, 0.15);
+  --score-average-bg: rgba(245, 158, 11, 0.15);
+  --score-poor-bg: rgba(249, 115, 22, 0.15);
+  --score-critical-bg: rgba(239, 68, 68, 0.15);
+
+  /* Provider backgrounds adjusted for dark mode */
+  --provider-openai-bg: rgba(16, 163, 127, 0.15);
+  --provider-anthropic-bg: rgba(217, 119, 6, 0.15);
+  --provider-google-bg: rgba(66, 133, 244, 0.15);
+  --provider-perplexity-bg: rgba(139, 92, 246, 0.15);
+
+  /* Adjusted shadows for dark mode */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px -1px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+
+  /* Enhanced glow effects for dark mode */
+  --shadow-score-excellent: 0 0 30px rgba(16, 185, 129, 0.4);
+  --shadow-score-good: 0 0 30px rgba(59, 130, 246, 0.4);
+  --shadow-score-average: 0 0 30px rgba(245, 158, 11, 0.4);
+  --shadow-score-poor: 0 0 30px rgba(249, 115, 22, 0.4);
+  --shadow-score-critical: 0 0 30px rgba(239, 68, 68, 0.4);
+}
+
+/* ================================================================
+ * UTILITY CLASSES FOR SCORES
+ * ================================================================ */
+
+.score-excellent {
+  color: var(--score-excellent);
+  background-color: var(--score-excellent-bg);
+  border-color: var(--score-excellent-border);
+}
+
+.score-good {
+  color: var(--score-good);
+  background-color: var(--score-good-bg);
+  border-color: var(--score-good-border);
+}
+
+.score-average {
+  color: var(--score-average);
+  background-color: var(--score-average-bg);
+  border-color: var(--score-average-border);
+}
+
+.score-poor {
+  color: var(--score-poor);
+  background-color: var(--score-poor-bg);
+  border-color: var(--score-poor-border);
+}
+
+.score-critical {
+  color: var(--score-critical);
+  background-color: var(--score-critical-bg);
+  border-color: var(--score-critical-border);
+}
+
+/* ================================================================
+ * UTILITY CLASSES FOR PROVIDERS
+ * ================================================================ */
+
+.provider-openai {
+  color: var(--provider-openai);
+  background-color: var(--provider-openai-bg);
+  border-color: var(--provider-openai-border);
+}
+
+.provider-anthropic {
+  color: var(--provider-anthropic);
+  background-color: var(--provider-anthropic-bg);
+  border-color: var(--provider-anthropic-border);
+}
+
+.provider-google {
+  color: var(--provider-google);
+  background-color: var(--provider-google-bg);
+  border-color: var(--provider-google-border);
+}
+
+.provider-perplexity {
+  color: var(--provider-perplexity);
+  background-color: var(--provider-perplexity-bg);
+  border-color: var(--provider-perplexity-border);
+}
+
+/* ================================================================
+ * UTILITY CLASSES FOR SENTIMENT
+ * ================================================================ */
+
+.sentiment-positive {
+  color: var(--sentiment-positive);
+  background-color: var(--sentiment-positive-bg);
+}
+
+.sentiment-neutral {
+  color: var(--sentiment-neutral);
+  background-color: var(--sentiment-neutral-bg);
+}
+
+.sentiment-negative {
+  color: var(--sentiment-negative);
+  background-color: var(--sentiment-negative-bg);
+}
+
+/* ================================================================
+ * ANIMATION KEYFRAMES
+ * ================================================================ */
+
+@keyframes score-reveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes score-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 currentColor;
+  }
+  50% {
+    box-shadow: 0 0 0 10px transparent;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes count-up {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ================================================================
+ * ANIMATION UTILITY CLASSES
+ * ================================================================ */
+
+.animate-score-reveal {
+  animation: score-reveal var(--duration-score-reveal) var(--ease-bounce) forwards;
+}
+
+.animate-score-pulse {
+  animation: score-pulse 2s var(--ease-in-out) infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.animate-fade-in {
+  animation: fade-in var(--duration-300) var(--ease-out) forwards;
+}
+
+.animate-slide-up {
+  animation: slide-up var(--duration-300) var(--ease-out) forwards;
+}

@@ -24,6 +24,7 @@
 - Senior Data Visualization Specialist - Chart Design, Accessibility, Animation & Responsive Visualization Review
 - **Senior CTO / Chief AI Officer** - Executive Strategy, Governance, Unit Economics, Investor Readiness & Scalability Review
 - **Senior COO (Chief Operating Officer)** - Operations Architecture, SLAs, Automation, Queue Management, User Lifecycle & Operational Efficiency Review
+- **Senior CFO (Chief Financial Officer)** - Cash Flow, Revenue Recognition, Pricing Strategy, Cost Analysis, Financial Controls, SaaS Metrics, Cohort Analysis & Three-Statement Model Review
 
 ---
 
@@ -13176,6 +13177,1024 @@ omArchive(userId);                           │   │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
+### 2.149 CFO Financial Architecture Gap Analysis (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│          CFO FINANCIAL ARCHITECTURE GAP ANALYSIS                     │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  REVIEWER: Senior CFO - 4200 years experience                       │
+│  Companies: Stripe, Square, PayPal, Coinbase, Robinhood, Y Combinator│
+│            Sequoia, a16z, Goldman Sachs Tech Banking, Visa, Netflix │
+│                                                                     │
+│  ASSESSMENT: 22 Critical Financial Gaps Identified                  │
+│                                                                     │
+│  ════════════════════════════════════════════════════════════════  │
+│  CATEGORY A: CASH FLOW & TREASURY GAPS                              │
+│  ════════════════════════════════════════════════════════════════  │
+│                                                                     │
+│  GAP 1: NO CASH FLOW FORECASTING MODEL                             │
+│  ══════════════════════════════════════                            │
+│  Current: Unit economics exist but no cash flow projections         │
+│  Problem: Can't predict runway accurately or plan fundraising       │
+│  Impact: Could run out of cash unexpectedly                         │
+│  Solution: 13-week rolling cash flow forecast + 12-month projection │
+│                                                                     │
+│  GAP 2: NO BURN RATE MONITORING                                    │
+│  ═══════════════════════════════                                   │
+│  Current: Costs tracked but no burn rate dashboard                  │
+│  Problem: No real-time visibility into cash consumption             │
+│  Impact: Decision-making without financial context                  │
+│  Solution: Daily/weekly burn rate tracking with alerts              │
+│                                                                     │
+│  GAP 3: NO RUNWAY CALCULATION AUTOMATION                           │
+│  ════════════════════════════════════════                          │
+│  Current: Manual runway estimates                                   │
+│  Problem: Runway changes daily with revenue and costs               │
+│  Impact: Stale financial data leads to poor decisions               │
+│  Solution: Real-time runway dashboard updated from transactions     │
+│                                                                     │
+│  GAP 4: NO TREASURY MANAGEMENT                                     │
+│  ═════════════════════════════                                     │
+│  Current: Single bank account assumed                               │
+│  Problem: No cash optimization strategy                             │
+│  Impact: Missed interest income, concentration risk                 │
+│  Solution: Multi-account strategy with yield optimization           │
+│                                                                     │
+│  ════════════════════════════════════════════════════════════════  │
+│  CATEGORY B: REVENUE RECOGNITION & ACCOUNTING GAPS                  │
+│  ════════════════════════════════════════════════════════════════  │
+│                                                                     │
+│  GAP 5: NO REVENUE RECOGNITION POLICY                              │
+│  ════════════════════════════════════                              │
+│  Current: Revenue mentioned but no accounting policy                │
+│  Problem: ASC 606 compliance required for SaaS                      │
+│  Impact: Investor due diligence will flag this                      │
+│  Solution: Define revenue recognition timing and rules              │
+│                                                                     │
+│  GAP 6: NO DEFERRED REVENUE TRACKING                               │
+│  ═══════════════════════════════════                               │
+│  Current: Annual billing mentioned but no deferred rev accounting   │
+│  Problem: Upfront payment ≠ recognized revenue                      │
+│  Impact: Overstating revenue, compliance issues                     │
+│  Solution: Deferred revenue schedule with monthly recognition       │
+│                                                                     │
+│  GAP 7: NO CHART OF ACCOUNTS                                       │
+│  ═══════════════════════════                                       │
+│  Current: Cost categories exist but no formal CoA                   │
+│  Problem: Inconsistent expense categorization                       │
+│  Impact: Unreliable P&L, investor confusion                         │
+│  Solution: Standard SaaS chart of accounts structure                │
+│                                                                     │
+│  GAP 8: NO ACCRUAL ACCOUNTING INFRASTRUCTURE                       │
+│  ═══════════════════════════════════════════                       │
+│  Current: Cash-basis implied throughout                             │
+│  Problem: Investors and lenders want accrual basis                  │
+│  Impact: Financial statements not investor-ready                    │
+│  Solution: Accrual journal entries for key items                    │
+│                                                                     │
+│  ════════════════════════════════════════════════════════════════  │
+│  CATEGORY C: PRICING & REVENUE OPTIMIZATION GAPS                    │
+│  ════════════════════════════════════════════════════════════════  │
+│                                                                     │
+│  GAP 9: NO PRICE ELASTICITY ANALYSIS                               │
+│  ═══════════════════════════════════                               │
+│  Current: Prices set at $29/$79/$299 without testing                │
+│  Problem: May be leaving money on table or losing conversions       │
+│  Impact: Suboptimal revenue per user                                │
+│  Solution: A/B pricing tests with conversion tracking               │
+│                                                                     │
+│  GAP 10: NO DISCOUNT GOVERNANCE                                    │
+│  ══════════════════════════════                                    │
+│  Current: Annual discount (17%) but no policy framework             │
+│  Problem: Ad-hoc discounting erodes margins                         │
+│  Impact: Revenue leakage, inconsistent pricing                      │
+│  Solution: Discount authority matrix with approval levels           │
+│                                                                     │
+│  GAP 11: NO REVENUE EXPANSION STRATEGY                             │
+│  ═════════════════════════════════════                             │
+│  Current: Upsell path exists but no expansion revenue tracking      │
+│  Problem: Net Revenue Retention is undefined                        │
+│  Impact: Missing key SaaS metric investors love                     │
+│  Solution: Track NRR with expansion, contraction, churn             │
+│                                                                     │
+│  GAP 12: NO USAGE-BASED PRICING OPTION                             │
+│  ════════════════════════════════════                              │
+│  Current: Flat subscription tiers only                              │
+│  Problem: Heavy users subsidize light users                         │
+│  Impact: Value mismatch reduces willingness to pay                  │
+│  Solution: Hybrid model with usage overage billing                  │
+│                                                                     │
+│  ════════════════════════════════════════════════════════════════  │
+│  CATEGORY D: COST MANAGEMENT & MARGIN GAPS                          │
+│  ════════════════════════════════════════════════════════════════  │
+│                                                                     │
+│  GAP 13: NO CONTRIBUTION MARGIN BY PLAN                            │
+│  ══════════════════════════════════════                            │
+│  Current: Gross margin calculated overall                           │
+│  Problem: Don't know which plans are most profitable                │
+│  Impact: May be promoting wrong plans                               │
+│  Solution: Per-plan contribution margin dashboard                   │
+│                                                                     │
+│  GAP 14: NO VARIABLE VS FIXED COST SEPARATION                      │
+│  ═══════════════════════════════════════════                       │
+│  Current: All costs lumped together                                 │
+│  Problem: Can't model break-even or operating leverage              │
+│  Impact: Poor financial planning                                    │
+│  Solution: Classify every cost as variable, semi-variable, or fixed │
+│                                                                     │
+│  GAP 15: NO GROSS MARGIN PROTECTION TRIGGERS                       │
+│  ═══════════════════════════════════════════                       │
+│  Current: Target margin mentioned but no alerts                     │
+│  Problem: Margin erosion can happen silently                        │
+│  Impact: Profitability issues discovered too late                   │
+│  Solution: Auto-alerts when gross margin drops below threshold      │
+│                                                                     │
+│  ════════════════════════════════════════════════════════════════  │
+│  CATEGORY E: FINANCIAL CONTROLS & GOVERNANCE GAPS                   │
+│  ════════════════════════════════════════════════════════════════  │
+│                                                                     │
+│  GAP 16: NO SPENDING AUTHORIZATION MATRIX                          │
+│  ════════════════════════════════════════                          │
+│  Current: Founder makes all spending decisions                      │
+│  Problem: No governance for future team members                     │
+│  Impact: Fraud risk, audit findings                                 │
+│  Solution: Spending limits by amount and category                   │
+│                                                                     │
+│  GAP 17: NO MONTHLY FINANCIAL CLOSE PROCESS                        │
+│  ═══════════════════════════════════════════                       │
+│  Current: No mention of book closing                                │
+│  Problem: Financial data quality degrades over time                 │
+│  Impact: Unreliable metrics, investor distrust                      │
+│  Solution: Monthly close checklist with timeline                    │
+│                                                                     │
+│  GAP 18: NO FINANCIAL AUDIT TRAIL                                  │
+│  ═══════════════════════════════                                   │
+│  Current: Transaction logs exist but no financial audit trail       │
+│  Problem: Can't trace financial changes                             │
+│  Impact: SOC 2 / audit issues                                       │
+│  Solution: Immutable financial transaction log                      │
+│                                                                     │
+│  ════════════════════════════════════════════════════════════════  │
+│  CATEGORY F: FINANCIAL REPORTING & ANALYTICS GAPS                   │
+│  ════════════════════════════════════════════════════════════════  │
+│                                                                     │
+│  GAP 19: NO THREE-STATEMENT MODEL                                  │
+│  ═══════════════════════════════                                   │
+│  Current: P&L projection only                                       │
+│  Problem: No balance sheet or cash flow statement                   │
+│  Impact: Incomplete financial picture                               │
+│  Solution: Linked P&L, Balance Sheet, Cash Flow Statement           │
+│                                                                     │
+│  GAP 20: NO SAAS METRICS DASHBOARD                                 │
+│  ═════════════════════════════════                                 │
+│  Current: Scattered metrics across sections                         │
+│  Problem: No unified view of SaaS health                            │
+│  Impact: Can't track key metrics consistently                       │
+│  Solution: Unified SaaS metrics dashboard (ARR, NRR, CAC, etc.)     │
+│                                                                     │
+│  GAP 21: NO COHORT REVENUE ANALYSIS                                │
+│  ══════════════════════════════════                                │
+│  Current: Cohort analysis mentioned but not implemented             │
+│  Problem: Don't know revenue behavior by acquisition cohort         │
+│  Impact: Can't optimize marketing spend by cohort                   │
+│  Solution: Revenue cohort waterfall chart                           │
+│                                                                     │
+│  GAP 22: NO FINANCIAL VARIANCE ANALYSIS                            │
+│  ══════════════════════════════════════                            │
+│  Current: Targets set but no variance tracking                      │
+│  Problem: Don't know why actuals differ from plan                   │
+│  Impact: Can't course correct in time                               │
+│  Solution: Monthly variance report (actual vs budget vs forecast)   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.150 Cash Flow Forecasting & Treasury (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              CASH FLOW FORECASTING & TREASURY MANAGEMENT             │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Cash is oxygen. Never run out."                        │
+│                                                                     │
+│  1. 13-WEEK ROLLING CASH FLOW FORECAST                             │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Week  │ Starting │ Cash In  │ Cash Out │ Net      │ Ending  ││
+│     │       │ Cash     │          │          │ Change   │ Cash    ││
+│     ├───────┼──────────┼──────────┼──────────┼──────────┼─────────┤│
+│     │ W1    │ $5,000   │ $2,900   │ $1,200   │ +$1,700  │ $6,700  ││
+│     │ W2    │ $6,700   │ $2,900   │ $800     │ +$2,100  │ $8,800  ││
+│     │ ...   │ ...      │ ...      │ ...      │ ...      │ ...     ││
+│     │ W13   │ $28,500  │ $4,500   │ $2,000   │ +$2,500  │ $31,000 ││
+│     └───────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│     CASH INFLOWS:                                                   │
+│     ├─ Subscription revenue (MRR × expected collection rate)        │
+│     ├─ Annual prepayments (if applicable)                           │
+│     ├─ Refund chargebacks (negative)                                │
+│     └─ Investment/loan proceeds                                     │
+│                                                                     │
+│     CASH OUTFLOWS:                                                  │
+│     ├─ AI API costs (variable with usage)                          │
+│     ├─ Infrastructure (Vercel, Supabase, etc.)                     │
+│     ├─ SaaS tools (fixed monthly)                                  │
+│     ├─ Contractor payments (if any)                                │
+│     ├─ Stripe fees (2.9% + $0.30 per transaction)                  │
+│     └─ One-time expenses (equipment, legal, etc.)                  │
+│                                                                     │
+│  2. BURN RATE DASHBOARD                                            │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Metric               │ Current │ Target │ Alert Threshold   ││
+│     ├──────────────────────┼─────────┼────────┼───────────────────┤│
+│     │ Gross Burn (monthly) │ $563    │ <$1000 │ >$1500            ││
+│     │ Net Burn (monthly)   │ -$3,837 │ <$0    │ >$500             ││
+│     │ Burn Multiple        │ -6.8x   │ <2x    │ >3x               ││
+│     │ Cash Balance         │ $5,000  │ >$10K  │ <$3000            ││
+│     └───────────────────────────────────────────────────────────────┘│
+│     Burn Multiple = Net Burn / Net New ARR (lower is better)       │
+│                                                                     │
+│  3. RUNWAY CALCULATION                                             │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Simple Runway = Cash Balance / Monthly Net Burn              ││
+│     │ Example: $5,000 / $0 = Infinite (if profitable)             ││
+│     │ Example: $5,000 / $500 = 10 months (if burning)              ││
+│     │                                                              ││
+│     │ RUNWAY SCENARIOS:                                            ││
+│     │ ├─ Best Case (2x growth): 24+ months                        ││
+│     │ ├─ Base Case (1.5x growth): 18 months                       ││
+│     │ ├─ Conservative (flat): 12 months                           ││
+│     │ └─ Worst Case (churn spike): 8 months                       ││
+│     │                                                              ││
+│     │ FUNDRAISING TRIGGER: Start when runway < 6 months           ││
+│     └───────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. TREASURY POLICY                                                 │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ ALLOCATION RULES (when cash > $50K):                         ││
+│     │ ├─ Operating Account: 3 months expenses (liquid)             ││
+│     │ ├─ Reserve Account: 2 months expenses (savings)              ││
+│     │ └─ Yield Account: Excess cash (money market/T-bills)         ││
+│     │                                                              ││
+│     │ BANK DIVERSIFICATION (when cash > $100K):                    ││
+│     │ ├─ Primary: Mercury/Brex (startup-friendly)                  ││
+│     │ ├─ Secondary: Traditional bank (backup)                      ││
+│     │ └─ Never > $250K in single account (FDIC limit)             ││
+│     └───────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  DATABASE TABLE: cash_flow_forecast                                 │
+│  ├─ id, week_start_date, starting_cash, cash_in, cash_out          │
+│  ├─ net_change, ending_cash, actual_vs_forecast, notes             │
+│  └─ Updated: Weekly on Monday                                       │
+│                                                                     │
+│  IMPLEMENTATION:                                                    │
+│  /lib/finance/cash-flow.ts                                         │
+│  /app/(admin)/cash-flow/page.tsx                                   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.151 Revenue Recognition & Accounting Framework (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              REVENUE RECOGNITION & ACCOUNTING FRAMEWORK              │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Revenue is earned, not received"                       │
+│                                                                     │
+│  1. ASC 606 REVENUE RECOGNITION (5-Step Model)                     │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Step │ AI Perception Application                             ││
+│     ├──────┼───────────────────────────────────────────────────────┤│
+│     │ 1    │ Identify contract: Subscription agreement             ││
+│     │ 2    │ Identify obligations: Access to platform per period   ││
+│     │ 3    │ Determine price: $29/$79/$299 per month               ││
+│     │ 4    │ Allocate price: Ratably over subscription period      ││
+│     │ 5    │ Recognize: Daily/monthly as service delivered         ││
+│     └───────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. DEFERRED REVENUE SCHEDULE (Annual Plans)                       │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Example: $290 Annual Starter ($29 × 10 months paid upfront)  ││
+│     │                                                              ││
+│     │ Month │ Recognized │ Deferred (Liability)                    ││
+│     ├───────┼────────────┼─────────────────────────────────────────┤│
+│     │ Jan   │ $24.17     │ $265.83                                 ││
+│     │ Feb   │ $24.17     │ $241.66                                 ││
+│     │ Mar   │ $24.17     │ $217.49                                 ││
+│     │ ...   │ ...        │ ...                                     ││
+│     │ Dec   │ $24.17     │ $0.00                                   ││
+│     └───────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. CHART OF ACCOUNTS (SaaS Standard)                              │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ REVENUE (4000s)                                              ││
+│     │ ├─ 4100 Subscription Revenue - Starter                       ││
+│     │ ├─ 4200 Subscription Revenue - Pro                           ││
+│     │ ├─ 4300 Subscription Revenue - Enterprise                    ││
+│     │ ├─ 4400 Expansion Revenue (upsells)                          ││
+│     │ └─ 4900 Other Revenue (consulting, custom)                   ││
+│     │                                                              ││
+│     │ COGS (5000s)                                                 ││
+│     │ ├─ 5100 AI API Costs (OpenAI, Anthropic)                     ││
+│     │ ├─ 5200 Infrastructure (Vercel, Supabase, Upstash)           ││
+│     │ ├─ 5300 Payment Processing (Stripe fees)                     ││
+│     │ └─ 5400 Customer Support (if any)                            ││
+│     │                                                              ││
+│     │ OPEX (6000s-8000s)                                           ││
+│     │ ├─ 6100 Marketing & Advertising                              ││
+│     │ ├─ 6200 Sales (when applicable)                              ││
+│     │ ├─ 7100 Research & Development                               ││
+│     │ ├─ 7200 Third-party tools (SaaS subscriptions)               ││
+│     │ ├─ 8100 General & Administrative                             ││
+│     │ └─ 8200 Legal & Professional                                 ││
+│     └───────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. MONTHLY JOURNAL ENTRIES (Automated)                            │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ ENTRY 1: Subscription Revenue Recognition (monthly)          ││
+│     │ DR: Deferred Revenue  $X                                     ││
+│     │ CR: Subscription Revenue  $X                                 ││
+│     │                                                              ││
+│     │ ENTRY 2: Stripe Payout (bi-weekly)                          ││
+│     │ DR: Cash  $X                                                 ││
+│     │ CR: Accounts Receivable  $X                                  ││
+│     │                                                              ││
+│     │ ENTRY 3: AI API Accrual (monthly)                           ││
+│     │ DR: AI API Expense  $X                                       ││
+│     │ CR: Accounts Payable  $X                                     ││
+│     └───────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  DATABASE TABLES:                                                   │
+│  ├─ revenue_recognition (invoice_id, period, recognized_amount)    │
+│  ├─ deferred_revenue (subscription_id, remaining_balance, schedule)│
+│  └─ journal_entries (date, account, debit, credit, description)    │
+│                                                                     │
+│  IMPLEMENTATION:                                                    │
+│  /lib/finance/revenue-recognition.ts                               │
+│  /lib/finance/deferred-revenue.ts                                  │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.152 Pricing Strategy & Revenue Optimization (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              PRICING STRATEGY & REVENUE OPTIMIZATION                 │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Price captures value, not costs"                       │
+│                                                                     │
+│  1. PRICING EXPERIMENTATION FRAMEWORK                              │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ TEST           │ Variants          │ Metric         │ Win   ││
+│     ├────────────────┼───────────────────┼────────────────┼───────┤│
+│     │ Starter price  │ $19 vs $29 vs $39 │ Conversion %   │ TBD   ││
+│     │ Pro price      │ $59 vs $79 vs $99 │ Revenue/user   │ TBD   ││
+│     │ Annual discount│ 10% vs 17% vs 25% │ Annual uptake  │ TBD   ││
+│     │ Trial length   │ 7d vs 14d vs 30d  │ Trial→Paid     │ TBD   ││
+│     │ Free limits    │ 1 vs 3 vs 5/mo    │ Upgrade rate   │ TBD   ││
+│     └───────────────────────────────────────────────────────────────┘│
+│     Rule: Min 500 users per variant for statistical significance    │
+│                                                                     │
+│  2. DISCOUNT GOVERNANCE MATRIX                                     │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Discount Type      │ Max %   │ Approval Required │ Tracking ││
+│     ├────────────────────┼─────────┼───────────────────┼──────────┤│
+│     │ Annual prepay      │ 17%     │ None (automatic)  │ Auto     ││
+│     │ Nonprofit/EDU      │ 25%     │ Founder           │ Code     ││
+│     │ Startup (< 2 yrs)  │ 30%     │ Founder + verify  │ Code     ││
+│     │ Strategic partner  │ 50%     │ Founder + doc     │ Manual   ││
+│     │ Churning customer  │ 20%     │ Auto (win-back)   │ Auto     ││
+│     │ Competitor switch  │ 30%     │ Founder           │ Manual   ││
+│     └───────────────────────────────────────────────────────────────┘│
+│     POLICY: All discounts logged with reason code                   │
+│                                                                     │
+│  3. NET REVENUE RETENTION (NRR) TRACKING                           │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ NRR FORMULA:                                                 ││
+│     │ (Starting MRR + Expansion - Contraction - Churn) / Start MRR ││
+│     │                                                              ││
+│     │ COMPONENTS:                                                  ││
+│     │ ├─ Starting MRR: MRR at period start (cohort)               ││
+│     │ ├─ Expansion: Upgrades within cohort                        ││
+│     │ ├─ Contraction: Downgrades within cohort                    ││
+│     │ └─ Churn: Cancellations within cohort                       ││
+│     │                                                              ││
+│     │ TARGETS:                                                     ││
+│     │ ├─ Minimum Viable: 100% (no shrinkage)                      ││
+│     │ ├─ Good: 105-110%                                           ││
+│     │ ├─ Excellent: 110-120%                                      ││
+│     │ └─ World-Class: >120% (negative churn)                      ││
+│     └───────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. USAGE-BASED OVERAGE MODEL (Future)                             │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ PLAN      │ Included      │ Overage Rate   │ Hard Cap       ││
+│     ├───────────┼───────────────┼────────────────┼────────────────┤│
+│     │ Starter   │ 20 analyses   │ $2/analysis    │ 50/month       ││
+│     │ Pro       │ 100 analyses  │ $1/analysis    │ 250/month      ││
+│     │ Enterprise│ 500 analyses  │ $0.50/analysis │ Unlimited      ││
+│     └───────────────────────────────────────────────────────────────┘│
+│     IMPLEMENTATION: Phase 4 after validating demand                 │
+│                                                                     │
+│  5. ARPU OPTIMIZATION LEVERS                                       │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ LEVER               │ Impact  │ Effort │ Priority           ││
+│     ├─────────────────────┼─────────┼────────┼────────────────────┤│
+│     │ Annual upsell nudge │ +15% ARR│ Low    │ P1 - Week 5        ││
+│     │ Plan upgrade prompts│ +10% ARR│ Medium │ P1 - Week 6        ││
+│     │ Seat-based pricing  │ +20% ARR│ High   │ P2 - Enterprise    ││
+│     │ Add-on features     │ +8% ARR │ Medium │ P2 - After PMF     ││
+│     │ Usage billing       │ +12% ARR│ High   │ P3 - Scale         ││
+│     └───────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  DATABASE TABLES:                                                   │
+│  ├─ pricing_experiments (test_id, variants, metrics, status)       │
+│  ├─ discount_log (user_id, discount_type, amount, reason, approver)│
+│  └─ nrr_cohorts (cohort_month, starting_mrr, expansion, contraction)│
+│                                                                     │
+│  IMPLEMENTATION:                                                    │
+│  /lib/finance/pricing-experiments.ts                               │
+│  /lib/finance/nrr-calculator.ts                                    │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.153 Contribution Margin & Cost Analysis (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              CONTRIBUTION MARGIN & COST ANALYSIS                     │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Know which customers create value"                     │
+│                                                                     │
+│  1. CONTRIBUTION MARGIN BY PLAN                                    │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ PLAN       │ MRR   │ Variable │ CM $   │ CM %  │ Target    ││
+│     │            │       │ Cost     │        │       │           ││
+│     ├────────────┼───────┼──────────┼────────┼───────┼───────────┤│
+│     │ Free       │ $0    │ $0.05    │ -$0.05 │ N/A   │ -$0.10 max││
+│     │ Starter    │ $29   │ $1.80    │ $27.20 │ 93.8% │ >85%      ││
+│     │ Pro        │ $79   │ $4.50    │ $74.50 │ 94.3% │ >90%      ││
+│     │ Enterprise │ $299  │ $12.00   │ $287.00│ 96.0% │ >92%      ││
+│     └───────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│     VARIABLE COSTS PER USER/MONTH:                                 │
+│     ├─ AI API cost (avg analyses × cost/analysis)                  │
+│     ├─ Database storage (avg MB × $0.125/GB)                       │
+│     ├─ Email (avg emails × $0.001/email)                          │
+│     ├─ Stripe fees (2.9% + $0.30)                                  │
+│     └─ Support time (if any)                                       │
+│                                                                     │
+│  2. COST CLASSIFICATION                                            │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Cost Type    │ Category    │ Driver          │ Monthly Est  ││
+│     ├──────────────┼─────────────┼─────────────────┼──────────────┤│
+│     │ AI APIs      │ Variable    │ Analyses count  │ $0.04/anal   ││
+│     │ Stripe fees  │ Variable    │ Transaction vol │ 2.9%+$0.30   ││
+│     │ Email send   │ Variable    │ Email volume    │ $0.001/email ││
+│     │ DB bandwidth │ Semi-var    │ Query volume    │ ~$10-50      ││
+│     │ Vercel       │ Semi-fixed  │ Compute/users   │ $20-50       ││
+│     │ Supabase     │ Fixed       │ Base plan       │ $25          ││
+│     │ Upstash      │ Semi-var    │ Operations      │ $10-20       ││
+│     │ Sentry       │ Fixed       │ Base plan       │ $0 (free)    ││
+│     │ Domain       │ Fixed       │ Annual          │ $1.50/mo     ││
+│     └───────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. BREAK-EVEN ANALYSIS                                            │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Fixed Costs (Monthly): ~$75                                  ││
+│     │ Average CM per Paid User: $35 (blended)                      ││
+│     │ Break-Even: $75 / $35 = 2.1 paid users                      ││
+│     │                                                              ││
+│     │ MILESTONE BREAK-EVENS:                                       ││
+│     │ ├─ Cash flow positive: 3 paid users                         ││
+│     │ ├─ Cover founder time ($5K/mo): 150 paid users              ││
+│     │ ├─ First hire ready ($50K MRR): 1,400 paid users            ││
+│     │ └─ Default alive: >3 months profitability streak             ││
+│     └───────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. GROSS MARGIN ALERTS                                            │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Threshold       │ Action                                     ││
+│     ├─────────────────┼────────────────────────────────────────────┤│
+│     │ GM > 90%        │ Normal operations                          ││
+│     │ GM 85-90%       │ Review API costs, optimize caching         ││
+│     │ GM 80-85%       │ Alert founder, investigate cost drivers    ││
+│     │ GM 70-80%       │ Emergency: reduce API usage, pause free    ││
+│     │ GM < 70%        │ CRITICAL: Stop new signups, fix immediately││
+│     └───────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  5. OPERATING LEVERAGE MODEL                                       │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ At 100 users:  Fixed $75 + Variable $180 = Total $255       ││
+│     │ At 1000 users: Fixed $75 + Variable $1,800 = Total $1,875   ││
+│     │ At 10K users:  Fixed $75 + Variable $18,000 = Total $18,075 ││
+│     │                                                              ││
+│     │ Revenue grows faster than costs due to:                      ││
+│     │ ├─ Fixed infrastructure (nearly $0 marginal cost)           ││
+│     │ ├─ Caching reduces AI costs at scale                        ││
+│     │ └─ Automation reduces support costs                          ││
+│     └───────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  DATABASE TABLES:                                                   │
+│  ├─ contribution_margin_daily (date, plan, users, revenue, costs)  │
+│  ├─ cost_events (date, category, amount, driver_metric)            │
+│  └─ margin_alerts (date, metric, threshold, action_taken)          │
+│                                                                     │
+│  IMPLEMENTATION:                                                    │
+│  /lib/finance/contribution-margin.ts                               │
+│  /lib/finance/break-even.ts                                        │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.154 Financial Controls & Governance (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              FINANCIAL CONTROLS & GOVERNANCE                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Controls prevent problems; governance ensures trust"   │
+│                                                                     │
+│  1. SPENDING AUTHORIZATION MATRIX                                  │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Amount        │ Approver      │ Documentation │ Timing      ││
+│     ├───────────────┼───────────────┼───────────────┼─────────────┤│
+│     │ < $100        │ Auto-approved │ Receipt       │ Anytime     ││
+│     │ $100-500      │ Founder       │ Reason + rcpt │ 24h review  ││
+│     │ $500-2,000    │ Founder       │ Business case │ 48h review  ││
+│     │ $2,000-10,000 │ Founder + Adv │ Written prop  │ 1 week      ││
+│     │ > $10,000     │ Board (if any)│ Full analysis │ Board mtg   ││
+│     └───────────────────────────────────────────────────────────────┘│
+│     EXCEPTION: Pre-approved recurring (Vercel, Supabase, etc.)     │
+│                                                                     │
+│  2. MONTHLY FINANCIAL CLOSE CHECKLIST                              │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Day │ Task                                     │ Owner      ││
+│     ├─────┼──────────────────────────────────────────┼────────────┤│
+│     │ 1-2 │ Reconcile Stripe to bank                 │ Auto/Found ││
+│     │ 1-2 │ Verify all subscriptions recorded        │ Auto       ││
+│     │ 3-4 │ Accrue AI API costs (not yet billed)    │ Manual     ││
+│     │ 3-4 │ Record deferred revenue movements        │ Auto       ││
+│     │ 5   │ Reconcile bank statements                │ Founder    ││
+│     │ 5   │ Review unusual transactions              │ Founder    ││
+│     │ 6   │ Generate P&L, Balance Sheet, Cash Flow   │ Auto       ││
+│     │ 7   │ Compare actual vs budget                 │ Manual     ││
+│     │ 7   │ Write variance commentary                │ Founder    ││
+│     │ 8   │ Archive close package                    │ Auto       ││
+│     └───────────────────────────────────────────────────────────────┘│
+│     DEADLINE: Close by 8th of following month                       │
+│                                                                     │
+│  3. FINANCIAL AUDIT TRAIL                                          │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ EVERY FINANCIAL TRANSACTION LOGGED:                          ││
+│     │ ├─ Transaction ID (immutable)                                ││
+│     │ ├─ Timestamp (server time, cannot modify)                    ││
+│     │ ├─ Amount and currency                                       ││
+│     │ ├─ Account codes (debit, credit)                            ││
+│     │ ├─ Source system (Stripe, manual, etc.)                     ││
+│     │ ├─ Supporting document reference                             ││
+│     │ ├─ User who recorded (if manual)                            ││
+│     │ └─ IP address of recorder                                    ││
+│     │                                                              ││
+│     │ IMMUTABILITY: No updates or deletes; only reversing entries  ││
+│     └───────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. SEGREGATION OF DUTIES (Future, when team grows)                │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Task                   │ Can't Also Do                       ││
+│     ├────────────────────────┼──────────────────────────────────────┤│
+│     │ Approve expense        │ Record expense                      ││
+│     │ Issue refund           │ Handle customer complaint           ││
+│     │ Create discount code   │ Apply discount code                 ││
+│     │ Change pricing         │ Record revenue                      ││
+│     │ Access bank account    │ Reconcile bank account             ││
+│     └───────────────────────────────────────────────────────────────┘│
+│     NOTE: Solo founder = all duties; document all transactions     │
+│                                                                     │
+│  5. FRAUD PREVENTION CONTROLS                                      │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ ✓ Two-factor auth on all financial systems (Stripe, bank)   ││
+│     │ ✓ Alerts for transactions > $500                            ││
+│     │ ✓ Weekly bank account review (unexpected transactions)       ││
+│     │ ✓ No shared credentials                                      ││
+│     │ ✓ API keys rotated every 90 days                            ││
+│     │ ✓ Refund velocity monitoring (>10/day = alert)              ││
+│     │ ✓ Discount code usage monitoring                            ││
+│     └───────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  DATABASE TABLE: financial_audit_log (append-only)                 │
+│  ├─ id, timestamp, transaction_type, amount, currency              │
+│  ├─ debit_account, credit_account, source_system                   │
+│  ├─ document_ref, recorded_by, ip_address                          │
+│  └─ checksum (SHA256 of row for tamper detection)                  │
+│                                                                     │
+│  IMPLEMENTATION:                                                    │
+│  /lib/finance/audit-trail.ts                                       │
+│  /lib/finance/close-checklist.ts                                   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.155 SaaS Metrics Dashboard (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    SAAS METRICS DASHBOARD                            │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "One dashboard to rule them all"                        │
+│                                                                     │
+│  1. PRIMARY METRICS (Updated Daily)                                │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ METRIC          │ Formula                     │ Target      ││
+│     ├─────────────────┼─────────────────────────────┼─────────────┤│
+│     │ MRR             │ Sum of monthly subscriptions│ $10K (M12)  ││
+│     │ ARR             │ MRR × 12                    │ $120K (M12) ││
+│     │ MRR Growth %    │ (MRR_now - MRR_prev) / prev│ >20%/month  ││
+│     │ Total Customers │ Active paid subscriptions   │ 350 (M12)   ││
+│     │ ARPU            │ MRR / Total Customers       │ $40         ││
+│     │ ACV             │ ARR / Total Customers       │ $480        ││
+│     │ Free Users      │ Registered, non-paying      │ 5x paid     ││
+│     │ Conversion Rate │ Paid / (Paid + Free)        │ >5%         ││
+│     └───────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. RETENTION METRICS (Updated Weekly)                             │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ METRIC          │ Formula                     │ Target      ││
+│     ├─────────────────┼─────────────────────────────┼─────────────┤│
+│     │ Logo Churn      │ Lost customers / Start cust │ <5%/month   ││
+│     │ Revenue Churn   │ Lost MRR / Start MRR        │ <3%/month   ││
+│     │ Net Revenue Ret.│ End MRR of cohort / Start   │ >100%       ││
+│     │ Gross Retention │ (Start - Churn) / Start     │ >95%        ││
+│     │ Expansion MRR   │ Upsells + Add-ons           │ >10% of MRR ││
+│     │ Contraction MRR │ Downgrades                  │ <5% of MRR  ││
+│     └───────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. UNIT ECONOMICS (Updated Monthly)                               │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ METRIC          │ Formula                     │ Target      ││
+│     ├─────────────────┼─────────────────────────────┼─────────────┤│
+│     │ CAC             │ S&M Spend / New Customers   │ <$30        ││
+│     │ LTV             │ ARPU × Gross Margin × Life  │ >$400       ││
+│     │ LTV:CAC         │ LTV / CAC                   │ >3:1        ││
+│     │ CAC Payback     │ CAC / (ARPU × Gross Margin) │ <12 months  ││
+│     │ Gross Margin    │ (Rev - COGS) / Revenue      │ >85%        ││
+│     │ Magic Number    │ Δ ARR / S&M Spend           │ >0.75       ││
+│     └───────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. FINANCIAL HEALTH (Updated Weekly)                              │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ METRIC          │ Formula                     │ Target      ││
+│     ├─────────────────┼─────────────────────────────┼─────────────┤│
+│     │ Cash Balance    │ Bank + Receivables          │ >3mo burn   ││
+│     │ Runway          │ Cash / Net Burn             │ >12 months  ││
+│     │ Net Burn        │ Cash Out - Cash In          │ $0 (profit) ││
+│     │ Burn Multiple   │ Net Burn / Net New ARR      │ <2x         ││
+│     │ Rule of 40      │ Revenue Growth + Margin     │ >40%        ││
+│     │ Quick Ratio     │ (New + Exp) / (Churn + Cont)│ >4          ││
+│     └───────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  5. DASHBOARD LAYOUT                                               │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ ┌───────────┐ ┌───────────┐ ┌───────────┐ ┌───────────┐     ││
+│     │ │    MRR    │ │    ARR    │ │ Customers │ │  Runway   │     ││
+│     │ │  $10,000  │ │  $120,000 │ │    350    │ │ 18 months │     ││
+│     │ │   +22%    │ │   +22%    │ │   +15%    │ │   +3mo    │     ││
+│     │ └───────────┘ └───────────┘ └───────────┘ └───────────┘     ││
+│     │                                                              ││
+│     │ ┌──────────────────────────────────────────────────────┐    ││
+│     │ │              MRR TREND (12 MONTHS)                    │    ││
+│     │ │  $10K ──────────────────────────────────── ●          │    ││
+│     │ │   $5K ─────────────────────● ● ● ● ● ● ●             │    ││
+│     │ │     $0 ● ● ● ● ● ●                                    │    ││
+│     │ │     Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec   │    ││
+│     │ └──────────────────────────────────────────────────────┘    ││
+│     │                                                              ││
+│     │ ┌────────────────────┐ ┌────────────────────────────┐       ││
+│     │ │   CHURN ANALYSIS   │ │      NRR BY COHORT         │       ││
+│     │ │   Logo: 3.2%       │ │  Jan: 112%  │ Jul: 108%    │       ││
+│     │ │   Revenue: 2.1%    │ │  Feb: 115%  │ Aug: 105%    │       ││
+│     │ │   ▼ improving      │ │  Mar: 118%  │ Sep: TBD     │       ││
+│     │ └────────────────────┘ └────────────────────────────┘       ││
+│     └───────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  IMPLEMENTATION:                                                    │
+│  /app/(admin)/saas-metrics/page.tsx                                │
+│  /lib/finance/saas-metrics.ts                                      │
+│                                                                     │
+│  AUTOMATED EXPORTS:                                                 │
+│  ├─ Weekly investor email (PDF)                                    │
+│  ├─ Monthly board deck (auto-populate)                             │
+│  └─ Real-time API for integrations                                 │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.156 Cohort Revenue Analysis (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    COHORT REVENUE ANALYSIS                           │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Cohorts reveal the truth about retention"              │
+│                                                                     │
+│  1. REVENUE COHORT WATERFALL                                       │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Cohort │ M0    │ M1    │ M2    │ M3    │ M6    │ M12   │ NRR││
+│     ├────────┼───────┼───────┼───────┼───────┼───────┼───────┼────┤│
+│     │ Jan'25 │ $1,000│ $980  │ $970  │ $990  │ $1,050│ $1,120│112%││
+│     │ Feb'25 │ $1,500│ $1,470│ $1,440│ $1,500│ $1,650│ -     │110%││
+│     │ Mar'25 │ $2,000│ $1,960│ $1,920│ $1,980│ -     │ -     │99% ││
+│     │ Apr'25 │ $2,500│ $2,450│ $2,400│ -     │ -     │ -     │96% ││
+│     │ May'25 │ $3,000│ $2,940│ -     │ -     │ -     │ -     │98% ││
+│     │ Jun'25 │ $4,000│ -     │ -     │ -     │ -     │ -     │TBD ││
+│     └───────────────────────────────────────────────────────────────┘│
+│     Reading: Jan cohort started at $1K, now at $1,120 = 112% NRR   │
+│                                                                     │
+│  2. COHORT RETENTION HEATMAP                                       │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Cohort │ M1    │ M2    │ M3    │ M6    │ M12   │ Insight    ││
+│     ├────────┼───────┼───────┼───────┼───────┼───────┼────────────┤│
+│     │ Jan'25 │ █ 98% │ █ 97% │ █ 99% │ █105% │ █112% │ Excellent  ││
+│     │ Feb'25 │ █ 98% │ █ 96% │ █100% │ █110% │ -     │ Strong     ││
+│     │ Mar'25 │ █ 98% │ █ 96% │ █ 99% │ -     │ -     │ On track   ││
+│     │ Apr'25 │ ▓ 98% │ ▓ 96% │ -     │ -     │ -     │ Watch M3   ││
+│     │ May'25 │ ▓ 98% │ -     │ -     │ -     │ -     │ Too early  ││
+│     └───────────────────────────────────────────────────────────────┘│
+│     █ = Above target (>95%) | ▓ = On target (90-95%) | ░ = Below  │
+│                                                                     │
+│  3. COHORT QUALITY SCORING                                         │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ METRIC PER COHORT:                                           ││
+│     │ ├─ Starting MRR (size)                                       ││
+│     │ ├─ CAC (how expensive to acquire)                            ││
+│     │ ├─ Time to first value (how fast they activated)             ││
+│     │ ├─ First-month retention (early warning)                     ││
+│     │ ├─ Upgrade rate (expansion potential)                        ││
+│     │ └─ NRR at 6 months (quality indicator)                       ││
+│     │                                                              ││
+│     │ COHORT QUALITY SCORE (0-100):                                ││
+│     │ = 25×(NRR>100) + 25×(Retention>90) + 25×(CAC<$30) +         ││
+│     │   25×(Activation<2days)                                      ││
+│     └───────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. ACQUISITION CHANNEL BY COHORT                                  │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Cohort │ Organic │ Viral  │ Paid   │ Partner │ Best Channel ││
+│     ├────────┼─────────┼────────┼────────┼─────────┼──────────────┤│
+│     │ Jan'25 │ 60%     │ 25%    │ 10%    │ 5%      │ Organic      ││
+│     │ Feb'25 │ 55%     │ 30%    │ 10%    │ 5%      │ Viral ↑      ││
+│     │ Mar'25 │ 50%     │ 35%    │ 10%    │ 5%      │ Viral ↑↑     ││
+│     └───────────────────────────────────────────────────────────────┘│
+│     INSIGHT: Viral improving → double down on sharing features     │
+│                                                                     │
+│  5. COHORT ALERTS                                                  │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ ⚠️ ALERT: April cohort M2 retention dropped to 88%          ││
+│     │    Normal: 95% | Current: 88% | Gap: -7%                    ││
+│     │    ACTION: Review April acquisition channel quality          ││
+│     │                                                              ││
+│     │ ✅ GOOD: Viral cohorts have 15% higher NRR                   ││
+│     │    Implication: Referrals = better customers                 ││
+│     │    ACTION: Increase referral incentives                      ││
+│     └───────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  DATABASE TABLE: revenue_cohorts                                   │
+│  ├─ cohort_month, acquisition_channel, starting_mrr, users        │
+│  ├─ month_1_mrr, month_2_mrr, ..., month_12_mrr                   │
+│  ├─ nrr_calculated, quality_score                                  │
+│  └─ Updated: Daily (automated from subscription events)            │
+│                                                                     │
+│  IMPLEMENTATION:                                                    │
+│  /lib/finance/cohort-analysis.ts                                   │
+│  /app/(admin)/cohorts/page.tsx                                     │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.157 Financial Variance Analysis (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                  FINANCIAL VARIANCE ANALYSIS                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Understand why reality differs from plan"              │
+│                                                                     │
+│  1. MONTHLY VARIANCE REPORT                                        │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Category      │ Budget │ Actual │ Var $  │ Var % │ Flag    ││
+│     ├───────────────┼────────┼────────┼────────┼───────┼─────────┤│
+│     │ REVENUE                                                      ││
+│     │ Starter MRR   │ $2,000 │ $2,320 │ +$320  │ +16%  │ ✅ Good ││
+│     │ Pro MRR       │ $3,000 │ $2,700 │ -$300  │ -10%  │ ⚠️ Watch││
+│     │ Enterprise    │ $1,000 │ $0     │ -$1000 │ -100% │ 🔴 Miss ││
+│     │ Total Revenue │ $6,000 │ $5,020 │ -$980  │ -16%  │ ⚠️      ││
+│     │                                                              ││
+│     │ COGS                                                         ││
+│     │ AI APIs       │ $400   │ $320   │ -$80   │ -20%  │ ✅ Under││
+│     │ Infrastructure│ $100   │ $95    │ -$5    │ -5%   │ ✅ Under││
+│     │ Total COGS    │ $500   │ $415   │ -$85   │ -17%  │ ✅      ││
+│     │                                                              ││
+│     │ GROSS PROFIT  │ $5,500 │ $4,605 │ -$895  │ -16%  │ ⚠️      ││
+│     │ Gross Margin  │ 91.7%  │ 91.7%  │ 0%     │ 0%    │ ✅ OK   ││
+│     └───────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. VARIANCE EXPLANATION FRAMEWORK                                 │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ REVENUE VARIANCE DRIVERS:                                    ││
+│     │ ├─ Volume: Different # of customers than planned            ││
+│     │ ├─ Mix: Different plan distribution than planned            ││
+│     │ ├─ Price: Different ARPU than planned                       ││
+│     │ └─ Timing: Revenue recognized in different period           ││
+│     │                                                              ││
+│     │ COST VARIANCE DRIVERS:                                       ││
+│     │ ├─ Rate: Unit cost different (AI API price change)          ││
+│     │ ├─ Volume: Usage different than planned                      ││
+│     │ ├─ Efficiency: Better/worse than planned                    ││
+│     │ └─ Timing: Cost recognized in different period              ││
+│     └───────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. VARIANCE COMMENTARY TEMPLATE                                   │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ MONTHLY COMMENTARY (Auto-generated + Manual additions)       ││
+│     │                                                              ││
+│     │ REVENUE: -$980 (-16%) vs budget                              ││
+│     │ • Starter over-performed (+$320) due to viral growth         ││
+│     │ • Pro under-performed (-$300) due to higher churn            ││
+│     │ • Enterprise missed (-$1000) - no enterprise deals closed    ││
+│     │ • ACTION: Focus on enterprise pipeline, investigate Pro churn││
+│     │                                                              ││
+│     │ COSTS: -$85 favorable vs budget                              ││
+│     │ • AI costs 20% under due to improved caching (60% hit rate)  ││
+│     │ • Infrastructure slightly under budget                       ││
+│     │ • NO ACTION REQUIRED - maintain cost discipline              ││
+│     │                                                              ││
+│     │ OUTLOOK: Revising Q2 forecast down 10% for enterprise delay  ││
+│     └───────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. FORECAST VS ACTUAL TRACKING                                    │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Month │ Original│ Revised │ Actual │ Forecast │ Accuracy   ││
+│     │       │ Budget  │ Forecast│        │ Error    │            ││
+│     ├───────┼─────────┼─────────┼────────┼──────────┼────────────┤│
+│     │ Jan   │ $2,000  │ $2,000  │ $2,150 │ +$150    │ 93%        ││
+│     │ Feb   │ $3,000  │ $3,200  │ $3,100 │ -$100    │ 97%        ││
+│     │ Mar   │ $4,500  │ $4,200  │ $4,400 │ +$200    │ 95%        ││
+│     │ Apr   │ $6,000  │ $5,500  │ $5,020 │ -$480    │ 91%        ││
+│     └───────────────────────────────────────────────────────────────┘│
+│     Target accuracy: >90% by month 3                                │
+│                                                                     │
+│  5. VARIANCE ALERTS                                                │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Threshold │ Action                                           ││
+│     ├───────────┼─────────────────────────────────────────────────┤│
+│     │ ±5%       │ Note in commentary, no action required           ││
+│     │ ±10%      │ Investigate root cause, document in commentary   ││
+│     │ ±20%      │ Required action item with owner and deadline     ││
+│     │ ±30%      │ Escalate, revise forecast, emergency review      ││
+│     └───────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  DATABASE TABLES:                                                   │
+│  ├─ financial_budgets (month, category, account, budget_amount)    │
+│  ├─ financial_forecasts (month, category, forecast_amount, version)│
+│  ├─ financial_actuals (month, category, actual_amount)             │
+│  └─ variance_commentary (month, commentary, actions, owner)        │
+│                                                                     │
+│  IMPLEMENTATION:                                                    │
+│  /lib/finance/variance-analysis.ts                                 │
+│  /app/(admin)/variance/page.tsx                                    │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.158 Three-Statement Financial Model (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                THREE-STATEMENT FINANCIAL MODEL                       │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "P&L, Balance Sheet, Cash Flow must reconcile"          │
+│                                                                     │
+│  1. INCOME STATEMENT (P&L) - Monthly                               │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ Revenue                                    │ $10,000         ││
+│     │   Starter Subscriptions                    │   $5,800        ││
+│     │   Pro Subscriptions                        │   $3,950        ││
+│     │   Enterprise Subscriptions                 │   $250          ││
+│     │                                                              ││
+│     │ Cost of Goods Sold (COGS)                  │ ($1,150)        ││
+│     │   AI API Costs                             │   ($800)        ││
+│     │   Infrastructure                           │   ($200)        ││
+│     │   Payment Processing                       │   ($150)        ││
+│     │                                                              ││
+│     │ Gross Profit                               │ $8,850 (88.5%)  ││
+│     │                                                              ││
+│     │ Operating Expenses                         │ ($2,000)        ││
+│     │   Marketing                                │   ($500)        ││
+│     │   Tools & Software                         │   ($100)        ││
+│     │   Professional Services                    │   ($200)        ││
+│     │   Other G&A                                │   ($200)        ││
+│     │   Founder Compensation*                    │   ($1,000)      ││
+│     │                                                              ││
+│     │ Operating Income (EBITDA)                  │ $6,850 (68.5%)  ││
+│     │                                                              ││
+│     │ *Founder comp = imputed cost, not cash out                  ││
+│     └───────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  2. BALANCE SHEET - Monthly Snapshot                               │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ ASSETS                                                       ││
+│     │ Current Assets                                               ││
+│     │   Cash                                     │ $25,000         ││
+│     │   Accounts Receivable (Stripe pending)    │ $2,000          ││
+│     │   Prepaid Expenses                         │ $500            ││
+│     │ Total Current Assets                       │ $27,500         ││
+│     │                                                              ││
+│     │ Fixed Assets                                                 ││
+│     │   Equipment                                │ $0              ││
+│     │ Total Assets                               │ $27,500         ││
+│     │                                                              ││
+│     │ LIABILITIES                                                  ││
+│     │ Current Liabilities                                          ││
+│     │   Accounts Payable                         │ $500            ││
+│     │   Deferred Revenue                         │ $3,000          ││
+│     │   Accrued Expenses                         │ $200            ││
+│     │ Total Liabilities                          │ $3,700          ││
+│     │                                                              ││
+│     │ EQUITY                                                       ││
+│     │   Owner's Equity                           │ $5,000          ││
+│     │   Retained Earnings                        │ $18,800         ││
+│     │ Total Equity                               │ $23,800         ││
+│     │                                                              ││
+│     │ Total Liabilities + Equity                 │ $27,500 ✓       ││
+│     └───────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  3. CASH FLOW STATEMENT - Monthly                                  │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ OPERATING ACTIVITIES                                         ││
+│     │   Net Income                               │ $6,850          ││
+│     │   Add: Depreciation                        │ $0              ││
+│     │   Changes in Working Capital:                                ││
+│     │     Decrease in A/R                        │ +$500           ││
+│     │     Increase in Deferred Revenue           │ +$1,000         ││
+│     │     Decrease in A/P                        │ -$200           ││
+│     │ Cash from Operations                       │ $8,150          ││
+│     │                                                              ││
+│     │ INVESTING ACTIVITIES                                         ││
+│     │   Equipment Purchases                      │ $0              ││
+│     │ Cash from Investing                        │ $0              ││
+│     │                                                              ││
+│     │ FINANCING ACTIVITIES                                         ││
+│     │   Owner Contributions                      │ $0              ││
+│     │   Distributions                            │ $0              ││
+│     │ Cash from Financing                        │ $0              ││
+│     │                                                              ││
+│     │ Net Change in Cash                         │ $8,150          ││
+│     │ Beginning Cash                             │ $16,850         ││
+│     │ Ending Cash                                │ $25,000 ✓       ││
+│     └───────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  4. STATEMENT LINKAGES                                             │
+│     ┌─────────────────────────────────────────────────────────────┐│
+│     │ P&L → Balance Sheet:                                         ││
+│     │   Net Income adds to Retained Earnings                       ││
+│     │                                                              ││
+│     │ P&L → Cash Flow:                                             ││
+│     │   Net Income starts Operating Cash Flow                      ││
+│     │                                                              ││
+│     │ Cash Flow → Balance Sheet:                                   ││
+│     │   Ending Cash = Balance Sheet Cash                           ││
+│     │                                                              ││
+│     │ VALIDATION RULES (automated):                                ││
+│     │ ✓ Assets = Liabilities + Equity                              ││
+│     │ ✓ Ending Cash = Cash Flow ending                             ││
+│     │ ✓ Retained Earnings = Prior + Net Income                    ││
+│     └───────────────────────────────────────────────────────────────┘│
+│                                                                     │
+│  DATABASE TABLES:                                                   │
+│  ├─ income_statement (month, account, amount)                      │
+│  ├─ balance_sheet (month, account, amount)                         │
+│  └─ cash_flow_statement (month, category, amount)                  │
+│                                                                     │
+│  IMPLEMENTATION:                                                    │
+│  /lib/finance/three-statement-model.ts                             │
+│  /app/(admin)/financials/page.tsx                                  │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
 ---
 
 ## PART III: PHASED ROADMAP
@@ -13587,6 +14606,12 @@ const SCORING_WEIGHTS = {
 | 5 | **Ops: Self-healing framework** | /lib/automation/self-healing.ts - auto-failover logic | Claude |
 | 5 | **Ops: Vendor incident tracking** | vendor_incidents table + SLA credit claiming | Claude |
 | 5 | **Ops: Ops efficiency baseline** | ops_efficiency_daily table + first metrics | Claude |
+| 5 | **Fin: Cash flow forecast table** | cash_flow_forecast table + 13-week template | Claude |
+| 5 | **Fin: Chart of accounts setup** | Define SaaS CoA (4000s-8000s account structure) | Claude |
+| 5 | **Fin: Revenue recognition schema** | revenue_recognition + deferred_revenue tables | Claude |
+| 5 | **Fin: Stripe webhook handler** | /api/webhooks/stripe - sync payment events | Claude |
+| 5 | **Fin: Basic MRR calculator** | /lib/finance/mrr.ts - sum active subscriptions | Claude |
+| 5 | **Fin: Contribution margin by plan** | contribution_margin_daily table + first calcs | Claude |
 
 **Caching Strategy:**
 
@@ -13639,6 +14664,12 @@ const CACHE_TTL = {
 | 5 | **Ops: Automated weekly reports** | /lib/automation/reports.ts - KPI summary generation | Claude |
 | 5 | **Ops: Ops health score calc** | /lib/ops/health-scorer.ts - weighted ops metrics | Claude |
 | 5 | **Ops: OPERATIONS-MANUAL draft** | /docs/ops/OPERATIONS-MANUAL.md - runbook index | Claude |
+| 5 | **Fin: Burn rate dashboard** | /app/(admin)/burn-rate/page.tsx - gross/net burn | Claude |
+| 5 | **Fin: Runway calculator** | /lib/finance/runway.ts - scenarios (best/base/worst) | Claude |
+| 5 | **Fin: Gross margin alerts** | Auto-alert when GM drops below 85% | Claude |
+| 5 | **Fin: Discount governance schema** | discount_log table + approval workflow | Claude |
+| 5 | **Fin: Financial audit trail** | financial_audit_log table (append-only) | Claude |
+| 5 | **Fin: Monthly close checklist** | /lib/finance/close-checklist.ts + calendar | Claude |
 
 **Freemium Gating Rules:**
 
@@ -13949,6 +14980,13 @@ const ALERT_THRESHOLDS = {
 | 5 | **Ops: OPERATIONS-MANUAL complete** | Full /docs/ops/OPERATIONS-MANUAL.md published | Claude |
 | 5 | **Ops: Monthly ops report automation** | /lib/automation/reports.ts - monthly exec summary | Claude |
 | 5 | **Ops: Support SLA validation** | Verify T0-T3 response times meeting targets | Claude |
+| 5 | **Fin: SaaS metrics dashboard** | /app/(admin)/saas-metrics/page.tsx - unified view | Claude |
+| 5 | **Fin: Cohort revenue analysis** | revenue_cohorts table + waterfall visualization | Claude |
+| 5 | **Fin: NRR calculator** | /lib/finance/nrr-calculator.ts - expansion/churn tracking | Claude |
+| 5 | **Fin: Variance analysis report** | Monthly actual vs budget with commentary | Claude |
+| 5 | **Fin: Three-statement model** | Linked P&L, Balance Sheet, Cash Flow | Claude |
+| 5 | **Fin: Pricing experiment framework** | pricing_experiments table + A/B tracking | Claude |
+| 5 | **Fin: Investor metrics page** | /investor-metrics - password-protected real-time | Claude |
 
 **Phase 4 Dev Checklist (End of Week 8):**
 - [ ] Feature flags on Vercel Edge Config
@@ -14211,6 +15249,37 @@ const ALERT_THRESHOLDS = {
 - [ ] OPERATIONS-MANUAL: Complete runbook index published (/docs/ops/OPERATIONS-MANUAL.md)
 - [ ] Ops Dashboard: /app/(admin)/ops-dashboard/page.tsx live with all ops metrics
 - [ ] Vendor Status Dashboard: /app/(admin)/vendor-status/page.tsx live
+
+**Phase 4 CFO Finance Checklist (End of Week 8):**
+- [ ] Cash Flow: 13-week rolling forecast automated (weekly refresh)
+- [ ] Cash Flow: Burn rate dashboard live (gross/net burn, burn multiple)
+- [ ] Cash Flow: Runway calculator with scenarios (best/base/worst/disaster)
+- [ ] Cash Flow: Fundraising trigger alert at runway < 6 months
+- [ ] Revenue Recognition: ASC 606 compliant recognition timing
+- [ ] Revenue Recognition: Deferred revenue tracked for annual plans
+- [ ] Accounting: Chart of accounts implemented (4000s-8000s)
+- [ ] Accounting: Monthly journal entries automated (Stripe → revenue)
+- [ ] Accounting: Monthly close process completing by 8th of each month
+- [ ] Accounting: Financial audit trail append-only (immutable)
+- [ ] Pricing: Discount governance matrix enforced (approval levels)
+- [ ] Pricing: Discount log capturing all exceptions with reason codes
+- [ ] Pricing: NRR tracking active (expansion, contraction, churn)
+- [ ] Pricing: Price experiment framework ready for A/B tests
+- [ ] Cost Analysis: Contribution margin by plan calculated daily
+- [ ] Cost Analysis: Variable vs fixed costs classified
+- [ ] Cost Analysis: Break-even analysis automated (milestone tracking)
+- [ ] Cost Analysis: Gross margin alerts at <85%, <80%, <70%
+- [ ] Controls: Spending authorization matrix documented
+- [ ] Controls: Segregation of duties documented (for future team)
+- [ ] Controls: Fraud prevention controls active (2FA, alerts, monitoring)
+- [ ] Metrics: SaaS metrics dashboard unified (MRR, ARR, Churn, NRR, CAC, LTV)
+- [ ] Metrics: Cohort revenue analysis with waterfall visualization
+- [ ] Metrics: Financial variance analysis (actual vs budget) monthly
+- [ ] Metrics: Rule of 40 and Quick Ratio tracked
+- [ ] Reporting: Three-statement model linked (P&L, Balance Sheet, Cash Flow)
+- [ ] Reporting: Investor metrics page password-protected and live
+- [ ] Reporting: Weekly investor email auto-generated
+- [ ] Reporting: Monthly board deck auto-populated from real data
 
 ---
 
@@ -15119,6 +16188,52 @@ Begin Phase 1, Week 1, Day 1:
 17. **Cost efficiency scales** - <$0.04/analysis and <15% infra-to-revenue are targets
 18. **Ops dashboards surface issues** - Visibility before customers notice problems
 
+**CFO Finance Review Summary (v20.0):**
+- Identified 22 critical Financial gaps across 6 categories:
+  - Category A: Cash Flow & Treasury Gaps (4 gaps)
+  - Category B: Revenue Recognition & Accounting Gaps (4 gaps)
+  - Category C: Pricing & Revenue Optimization Gaps (4 gaps)
+  - Category D: Cost Management & Margin Gaps (3 gaps)
+  - Category E: Financial Controls & Governance Gaps (3 gaps)
+  - Category F: Financial Reporting & Analytics Gaps (4 gaps)
+- Added CFO Financial Architecture Gap Analysis (2.149) with comprehensive assessment
+- Added Cash Flow Forecasting & Treasury (2.150) - 13-week rolling, burn rate, runway, treasury policy
+- Added Revenue Recognition & Accounting Framework (2.151) - ASC 606, deferred revenue, chart of accounts
+- Added Pricing Strategy & Revenue Optimization (2.152) - experimentation, discount governance, NRR, usage-based
+- Added Contribution Margin & Cost Analysis (2.153) - margin by plan, cost classification, break-even, alerts
+- Added Financial Controls & Governance (2.154) - spending authorization, monthly close, audit trail, fraud prevention
+- Added SaaS Metrics Dashboard (2.155) - MRR, ARR, churn, NRR, CAC, LTV, Quick Ratio, Rule of 40
+- Added Cohort Revenue Analysis (2.156) - waterfall, heatmap, quality scoring, channel analysis
+- Added Financial Variance Analysis (2.157) - monthly variance, explanation framework, commentary, alerts
+- Added Three-Statement Financial Model (2.158) - linked P&L, Balance Sheet, Cash Flow Statement
+- Added 6 new Fin tasks to Week 2 (cash flow, chart of accounts, revenue recognition, Stripe webhook, MRR calculator, contribution margin)
+- Added 6 new Fin tasks to Week 4 (burn rate, runway, margin alerts, discount governance, audit trail, monthly close)
+- Added 7 new Fin tasks to Week 8 (SaaS metrics dashboard, cohort analysis, NRR calculator, variance report, three-statement, pricing experiments, investor metrics)
+- Added Phase 4 CFO Finance Checklist with 29 success criteria
+- Added 15+ new database tables: cash_flow_forecast, revenue_recognition, deferred_revenue, journal_entries, pricing_experiments, discount_log, nrr_cohorts, contribution_margin_daily, cost_events, margin_alerts, financial_audit_log, revenue_cohorts, financial_budgets, financial_forecasts, financial_actuals, variance_commentary, income_statement, balance_sheet, cash_flow_statement
+
+**Key CFO Finance Principles:**
+1. **Cash is oxygen** - Never run out; 13-week forecast updated weekly
+2. **Runway is survival** - Know your months of runway at all times
+3. **Revenue is earned, not received** - ASC 606 compliance from day one
+4. **Deferred revenue is a liability** - Annual payments ≠ annual revenue
+5. **Chart of accounts is foundation** - Consistent categorization enables analysis
+6. **Monthly close by day 8** - Timely books enable timely decisions
+7. **Price captures value, not cost** - Test pricing; don't guess
+8. **Discounts erode margins** - Governance matrix prevents revenue leakage
+9. **NRR > 100% is the goal** - Expansion should exceed churn
+10. **Know your contribution margin** - Per-plan profitability guides strategy
+11. **Variable costs scale** - Fixed costs don't; operating leverage wins
+12. **Gross margin alerts prevent crises** - 85% threshold triggers investigation
+13. **Financial controls prevent fraud** - Segregation of duties, audit trails
+14. **Spending authorization scales** - Matrix for future team governance
+15. **SaaS metrics tell the story** - MRR, ARR, Churn, NRR, CAC, LTV, Quick Ratio
+16. **Cohorts reveal truth** - Acquisition channel quality varies
+17. **Variance analysis drives action** - Understand why actuals differ from plan
+18. **Three statements must link** - P&L → Balance Sheet → Cash Flow reconciled
+19. **Investors want real-time metrics** - Automated dashboards beat stale decks
+20. **Burn multiple matters** - Net burn / net new ARR < 2x is efficient
+
 ---
 
 *Document prepared by BCG Digital Ventures - Technology Strategy Practice*
@@ -15140,6 +16255,7 @@ Begin Phase 1, Week 1, Day 1:
 *Data Visualization Review by: Senior Data Visualization Specialist - 1240 years experience, ex-New York Times Graphics/Washington Post Visual/Bloomberg Data Viz/Tableau/Observable/D3.js/McKinsey/BCG*
 *CTO/CAIO Executive Review by: Senior CTO / Chief AI Officer - 2300 years experience, ex-Google/Amazon/Microsoft/Meta/Apple/Netflix/Stripe/Uber/Airbnb/OpenAI/Anthropic/McKinsey/BCG/Bain/Accenture Strategy*
 *COO Operations Review by: Senior COO (Chief Operating Officer) - 1300 years experience, ex-McKinsey Operations/BCG Operations/Bain Operations/Amazon Operations/Google Operations/Meta Operations/Uber Operations/Stripe Operations/Netflix Operations/Airbnb Operations/Goldman Sachs Operations/Morgan Stanley Operations/JPMorgan Operations/Toyota Production System/GE Six Sigma*
+*CFO Finance Review by: Senior CFO (Chief Financial Officer) - 4200 years experience, ex-Goldman Sachs/Morgan Stanley/JPMorgan CFO/Sequoia Finance/a16z Finance/Tiger Global/Stripe Finance/Airbnb Finance/Uber Finance/Netflix Finance/Google Finance/Meta Finance/Amazon Finance/McKinsey Corporate Finance/BCG Corporate Finance/Bain Corporate Finance/Deloitte Audit/PwC Audit/EY Audit/KPMG Audit*
 *For: AI Perception Engineering Agency*
 *Date: November 26, 2024*
-*Version: 19.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering + Backend Engineering + Data Visualization + CTO/CAIO Executive + COO Operations Review)*
+*Version: 20.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering + Backend Engineering + Data Visualization + CTO/CAIO Executive + COO Operations + CFO Finance Review)*

@@ -88,6 +88,93 @@ This means:
 - **AI Agents handle edge cases** - Not humans
 - **Scales infinitely** - No bottleneck on people
 
+### Human-on-the-Loop Philosophy
+
+**"Automation executes, humans supervise and steer."**
+
+We adopt a **Human-on-the-Loop** (HOTL) model, NOT Human-in-the-Loop (HITL):
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│           HUMAN-IN-THE-LOOP vs HUMAN-ON-THE-LOOP                    │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  HUMAN-IN-THE-LOOP (HITL):                                          │
+│  ══════════════════════════                                         │
+│  • Human approves EVERY decision                                    │
+│  • Blocks automation until human validates                          │
+│  • High accuracy, but doesn't scale                                 │
+│  • Example: Human reviews every AI score before showing             │
+│  • NOT our model ✗                                                  │
+│                                                                     │
+│  HUMAN-ON-THE-LOOP (HOTL):                                          │
+│  ══════════════════════════                                         │
+│  • Automation runs autonomously                                     │
+│  • Human monitors dashboards, receives alerts                       │
+│  • Human intervenes ONLY when anomalies detected                    │
+│  • Scales infinitely while maintaining oversight                    │
+│  • Example: System alerts Alberto when drift >20%                   │
+│  • THIS IS OUR MODEL ✓                                              │
+│                                                                     │
+│  ─────────────────────────────────────────────────────────────────  │
+│                                                                     │
+│  HOTL IMPLEMENTATION IN AI PERCEPTION:                              │
+│                                                                     │
+│  AUTOMATED (No human needed):                                       │
+│  ├─ AI analysis execution                                           │
+│  ├─ Score calculation                                               │
+│  ├─ Recommendation generation                                       │
+│  ├─ User onboarding                                                 │
+│  ├─ Payment processing                                              │
+│  ├─ Email notifications                                             │
+│  ├─ Monitoring cron jobs                                            │
+│  └─ Cost tracking & budget enforcement                              │
+│                                                                     │
+│  HUMAN SUPERVISION (Dashboards & Alerts):                           │
+│  ├─ CEO Dashboard: 7 daily metrics reviewed                         │
+│  ├─ Golden Dataset: Weekly drift detection                          │
+│  ├─ Cost Alerts: Triggered at 70%, 90%, 95% budget                  │
+│  ├─ Anomaly Flags: Unusual responses marked for review              │
+│  ├─ Strategic Risks: Quarterly risk register review                 │
+│  └─ OKR Tracking: Weekly progress assessment                        │
+│                                                                     │
+│  HUMAN INTERVENTION (Only when triggered):                          │
+│  ├─ Drift >20% on golden tests → Alberto investigates               │
+│  ├─ Drift >50% → System pauses, human reviews                       │
+│  ├─ Security incident → Escalation to Alberto                       │
+│  ├─ Product direction decisions → Alberto decides                   │
+│  ├─ Pricing changes → Alberto decides                               │
+│  └─ Crisis response → Alberto + Claude collaborate                  │
+│                                                                     │
+│  ─────────────────────────────────────────────────────────────────  │
+│                                                                     │
+│  WHY HOTL IS RIGHT FOR US:                                          │
+│                                                                     │
+│  1. SCALE: $29-79 ticket doesn't justify human review per analysis  │
+│  2. SPEED: Users get results in 30 seconds, not 24 hours            │
+│  3. COST: Solo founder can't review thousands of analyses           │
+│  4. VISION: "El negocio no depende de mí" requires autonomy         │
+│  5. QUALITY: Golden dataset + alerts catch problems systematically  │
+│                                                                     │
+│  SAFEGUARDS THAT MAKE HOTL WORK:                                    │
+│  ├─ Circuit breakers (auto-pause on failures)                       │
+│  ├─ Budget limits (auto-pause at 95%)                               │
+│  ├─ Golden dataset regression (weekly validation)                   │
+│  ├─ Anomaly detection (flags unusual patterns)                      │
+│  ├─ Audit trails (every decision logged)                            │
+│  └─ Rollback capability (prompt versioning)                         │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+**The Founder's Role in HOTL:**
+- **Daily:** Glance at CEO dashboard (5 minutes)
+- **Weekly:** Review alerts, OKR progress, cost trends (30 minutes)
+- **Monthly:** Strategic review, risk assessment (2 hours)
+- **On-demand:** Respond to escalated alerts
+
+This allows Alberto to focus on **vision and growth** while Claude and automation handle **execution and operations**.
+
 ---
 
 ## PART I: MARKET ANALYSIS

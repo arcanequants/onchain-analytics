@@ -18251,6 +18251,1305 @@ omArchive(userId);                           │   │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
+### 2.198 Domain Expert Architecture Gap Analysis (NEW - Domain Expert Review)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│     DOMAIN EXPERT ARCHITECTURE GAP ANALYSIS (22 Critical Gaps)      │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  REVIEWER: Senior Domain Expert Director                            │
+│  EXPERIENCE: 12,340 years across all global top consultancies,     │
+│              research centers, Fortune 500, and unicorn startups   │
+│  METHODOLOGY: Line-by-line review with vertical expertise lens      │
+│                                                                     │
+│  ═══════════════════════════════════════════════════════════════   │
+│  CATEGORY A: INDUSTRY VERTICAL DEPTH GAPS (6 Gaps)                 │
+│  ═══════════════════════════════════════════════════════════════   │
+│                                                                     │
+│  GAP A.1: NO VERTICAL-SPECIFIC PROMPT LIBRARIES                    │
+│  ───────────────────────────────────────────────────────────────   │
+│  Current: Generic prompts with {industry} placeholder               │
+│  Problem: A healthcare AI query differs fundamentally from SaaS     │
+│  Impact: Generic prompts miss vertical-specific nuances             │
+│  Solution: 20 vertical-specific prompt templates with domain terms  │
+│  Example: Healthcare needs "HIPAA compliance", "patient outcomes"   │
+│           SaaS needs "MRR", "churn rate", "onboarding"              │
+│                                                                     │
+│  GAP A.2: NO INDUSTRY-SPECIFIC SCORING WEIGHTS                     │
+│  ───────────────────────────────────────────────────────────────   │
+│  Current: Same scoring weights for all industries                   │
+│  Problem: "Trust" matters more in Finance; "Innovation" in Tech     │
+│  Impact: Scores not calibrated to industry expectations             │
+│  Solution: Industry-adjusted weight matrices (20 verticals)         │
+│                                                                     │
+│  GAP A.3: NO VERTICAL BENCHMARK DATABASES                          │
+│  ───────────────────────────────────────────────────────────────   │
+│  Current: "Industry Average: 54" without data source                │
+│  Problem: Cannot tell if 72 is good without industry baseline       │
+│  Impact: Users cannot contextualize their scores meaningfully       │
+│  Solution: Benchmark tables with P10/P25/P50/P75/P90 by industry    │
+│                                                                     │
+│  GAP A.4: NO DOMAIN TERMINOLOGY GLOSSARIES                         │
+│  ───────────────────────────────────────────────────────────────   │
+│  Current: 6-term general glossary                                   │
+│  Problem: "Lead" means different things in Sales vs. Real Estate    │
+│  Impact: AI may misinterpret domain-specific terminology            │
+│  Solution: 20 industry glossaries with 30+ terms each               │
+│                                                                     │
+│  GAP A.5: NO REGULATORY CONTEXT PER VERTICAL                       │
+│  ───────────────────────────────────────────────────────────────   │
+│  Current: No mention of HIPAA, PCI-DSS, SOC 2, GDPR by industry     │
+│  Problem: Regulated industries have compliance-driven AI perception │
+│  Impact: Missing compliance = instant disqualification in queries   │
+│  Solution: Regulatory requirement matrix per industry               │
+│                                                                     │
+│  GAP A.6: NO SEASONAL/CYCLICAL AWARENESS                           │
+│  ───────────────────────────────────────────────────────────────   │
+│  Current: Scores treated as static                                  │
+│  Problem: Travel AI perception peaks in summer; Retail in Q4        │
+│  Impact: Seasonal variations misinterpreted as performance changes  │
+│  Solution: Industry calendar with seasonality factors               │
+│                                                                     │
+│  ═══════════════════════════════════════════════════════════════   │
+│  CATEGORY B: COMPETITIVE INTELLIGENCE GAPS (5 Gaps)                │
+│  ═══════════════════════════════════════════════════════════════   │
+│                                                                     │
+│  GAP B.1: NO COMPETITOR TIER CLASSIFICATION                        │
+│  ───────────────────────────────────────────────────────────────   │
+│  Current: All competitors treated equally                           │
+│  Problem: Being behind Salesforce ≠ being behind unknown startup    │
+│  Impact: User cannot prioritize competitive threats                 │
+│  Solution: Competitor tier system (Enterprise/Mid-Market/SMB/Local) │
+│                                                                     │
+│  GAP B.2: NO MARKET SHARE CORRELATION                              │
+│  ───────────────────────────────────────────────────────────────   │
+│  Current: AI mentions ≠ actual market position                      │
+│  Problem: AI may recommend market leader due to training data bias  │
+│  Impact: Cannot distinguish earned vs inherited AI visibility       │
+│  Solution: Market share data integration (SimilarWeb, SEMrush)      │
+│                                                                     │
+│  GAP B.3: NO BRAND STRENGTH BASELINE                               │
+│  ───────────────────────────────────────────────────────────────   │
+│  Current: No brand equity input                                     │
+│  Problem: Apple vs unknown brand have different baselines           │
+│  Impact: Same tactics won't work for different brand strength       │
+│  Solution: Brand strength index input (domain authority, traffic)   │
+│                                                                     │
+│  GAP B.4: NO COMPETITIVE MOAT IDENTIFICATION                       │
+│  ───────────────────────────────────────────────────────────────   │
+│  Current: Lists competitors without differentiation analysis        │
+│  Problem: User doesn't know WHY competitor is recommended           │
+│  Impact: Cannot develop counter-positioning strategy                │
+│  Solution: Moat extraction from AI responses (price, feature, etc)  │
+│                                                                     │
+│  GAP B.5: NO SHARE OF VOICE TREND ANALYSIS                         │
+│  ───────────────────────────────────────────────────────────────   │
+│  Current: SOV calculated as snapshot                                │
+│  Problem: SOV momentum matters more than absolute position          │
+│  Impact: Cannot identify rising/falling competitors early           │
+│  Solution: SOV trend tracking with momentum indicators              │
+│                                                                     │
+│  ═══════════════════════════════════════════════════════════════   │
+│  CATEGORY C: GEOGRAPHIC & CULTURAL GAPS (5 Gaps)                   │
+│  ═══════════════════════════════════════════════════════════════   │
+│                                                                     │
+│  GAP C.1: NO GEOGRAPHIC MARKET CONTEXT                             │
+│  ───────────────────────────────────────────────────────────────   │
+│  Current: Industry taxonomy without geography                       │
+│  Problem: "Best CRM" varies by US vs LATAM vs EU markets            │
+│  Impact: Cannot localize recommendations for target markets         │
+│  Solution: Geography-industry matrix with market leaders per region │
+│                                                                     │
+│  GAP C.2: NO CULTURAL PERCEPTION FACTORS                           │
+│  ───────────────────────────────────────────────────────────────   │
+│  Current: English-centric prompts                                   │
+│  Problem: AI models have cultural biases in recommendations         │
+│  Impact: US-centric results even for LATAM businesses               │
+│  Solution: Cultural context injection in prompts per market         │
+│                                                                     │
+│  GAP C.3: NO LOCAL COMPETITOR DATABASES                            │
+│  ───────────────────────────────────────────────────────────────   │
+│  Current: Competitor detection from AI only                         │
+│  Problem: Local market leaders often missing from AI knowledge      │
+│  Impact: Cannot compare against true local competition              │
+│  Solution: Region-specific competitor seeding (manual + data)       │
+│                                                                     │
+│  GAP C.4: NO LANGUAGE-SPECIFIC AI BEHAVIOR                         │
+│  ───────────────────────────────────────────────────────────────   │
+│  Current: Same prompts translated                                   │
+│  Problem: Spanish query patterns differ from English                │
+│  Impact: Translation ≠ localization in AI perception                │
+│  Solution: Language-native prompt engineering per market            │
+│                                                                     │
+│  GAP C.5: NO REGULATORY JURISDICTION MAPPING                       │
+│  ───────────────────────────────────────────────────────────────   │
+│  Current: GDPR mentioned but not systematized                       │
+│  Problem: EU vs US vs APAC have different data requirements         │
+│  Impact: Recommendations may conflict with local regulations        │
+│  Solution: Jurisdiction-regulation matrix with impact assessment    │
+│                                                                     │
+│  ═══════════════════════════════════════════════════════════════   │
+│  CATEGORY D: VALIDATION & ACCURACY GAPS (6 Gaps)                   │
+│  ═══════════════════════════════════════════════════════════════   │
+│                                                                     │
+│  GAP D.1: NO DOMAIN EXPERT VALIDATION LAYER                        │
+│  ───────────────────────────────────────────────────────────────   │
+│  Current: AI results presented as-is                                │
+│  Problem: No human validation for domain accuracy                   │
+│  Impact: Domain-specific errors passed to users                     │
+│  Solution: Expert review queue for edge cases + feedback loop       │
+│                                                                     │
+│  GAP D.2: NO INDUSTRY-SPECIFIC FACT VERIFICATION                   │
+│  ───────────────────────────────────────────────────────────────   │
+│  Current: Hallucination detection generic                           │
+│  Problem: "FDA approved" needs healthcare-specific verification     │
+│  Impact: Industry claims unverified = liability risk                │
+│  Solution: Vertical-specific fact-check databases                   │
+│                                                                     │
+│  GAP D.3: NO DOMAIN AUTHORITY SIGNALS                              │
+│  ───────────────────────────────────────────────────────────────   │
+│  Current: E-E-A-T mentioned but not industry-specific               │
+│  Problem: Authority signals differ by industry                      │
+│  Impact: Generic authority check misses domain expertise            │
+│  Solution: Industry-specific authority indicators (certs, awards)   │
+│                                                                     │
+│  GAP D.4: NO PROFESSIONAL CREDENTIAL VALIDATION                    │
+│  ───────────────────────────────────────────────────────────────   │
+│  Current: No credential checking                                    │
+│  Problem: Healthcare AI should verify medical licenses              │
+│  Impact: Recommending unlicensed providers in regulated industries  │
+│  Solution: Credential verification APIs by industry                 │
+│                                                                     │
+│  GAP D.5: NO RECENCY WEIGHTING BY DOMAIN                           │
+│  ───────────────────────────────────────────────────────────────   │
+│  Current: Recency treated uniformly                                 │
+│  Problem: Tech: 6 months old = outdated; Law: 2 years = current     │
+│  Impact: Misaligned recency penalties across industries             │
+│  Solution: Domain-specific recency decay factors                    │
+│                                                                     │
+│  GAP D.6: NO USER EXPERTISE LEVEL ADAPTATION                       │
+│  ───────────────────────────────────────────────────────────────   │
+│  Current: Same results for all users                                │
+│  Problem: Expert vs novice need different recommendation depth      │
+│  Impact: Experts get basic advice; novices get overwhelming detail  │
+│  Solution: User expertise profiling + adaptive recommendations      │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.199 Vertical-Specific Prompt Library Architecture (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│           VERTICAL-SPECIFIC PROMPT LIBRARY                          │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Each industry speaks its own language"                 │
+│                                                                     │
+│  ARCHITECTURE:                                                      │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  ┌──────────────┐      ┌──────────────┐      ┌────────────┐ │   │
+│  │  │   Industry   │      │   Prompt     │      │  Variable  │ │   │
+│  │  │   Taxonomy   │─────▶│   Selector   │─────▶│  Injector  │ │   │
+│  │  └──────────────┘      └──────────────┘      └────────────┘ │   │
+│  │         │                     │                     │        │   │
+│  │         ▼                     ▼                     ▼        │   │
+│  │  ┌────────────────────────────────────────────────────────┐ │   │
+│  │  │              PROMPT TEMPLATE DATABASE                  │ │   │
+│  │  │  • Base structure (shared across all)                  │ │   │
+│  │  │  • Vertical-specific terminology                       │ │   │
+│  │  │  • Domain context injection                            │ │   │
+│  │  │  • Industry-specific evaluation criteria               │ │   │
+│  │  └────────────────────────────────────────────────────────┘ │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE SCHEMA: vertical_prompts                                 │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ CREATE TABLE vertical_prompts (                              │   │
+│  │   id UUID PRIMARY KEY,                                       │   │
+│  │   industry_id UUID REFERENCES industries(id),                │   │
+│  │   prompt_type TEXT NOT NULL, -- 'recommend' | 'compare' |    │   │
+│  │                               -- 'explain' | 'rank'          │   │
+│  │   template TEXT NOT NULL,                                    │   │
+│  │   variables JSONB NOT NULL,  -- required template vars       │   │
+│  │   domain_context TEXT,       -- industry-specific context    │   │
+│  │   key_terms TEXT[],          -- industry terminology         │   │
+│  │   evaluation_criteria JSONB, -- domain-specific criteria     │   │
+│  │   seasonality_factors JSONB, -- Q1-Q4 adjustments           │   │
+│  │   regulatory_context TEXT[], -- HIPAA, SOC2, etc.           │   │
+│  │   version INTEGER DEFAULT 1,                                 │   │
+│  │   is_active BOOLEAN DEFAULT true,                            │   │
+│  │   created_at TIMESTAMP DEFAULT now(),                        │   │
+│  │   updated_at TIMESTAMP DEFAULT now()                         │   │
+│  │ );                                                           │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  EXAMPLE VERTICAL PROMPTS:                                         │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  HEALTHCARE / MEDICAL:                                        │   │
+│  │  "You are a healthcare industry expert. When evaluating       │   │
+│  │  {brand_name}, consider: HIPAA compliance, patient outcomes,  │   │
+│  │  clinical evidence, medical board certifications, and         │   │
+│  │  healthcare accreditations (JCI, AAAHC). Focus on trust       │   │
+│  │  signals critical for patient decision-making."               │   │
+│  │                                                               │   │
+│  │  Key Terms: patient, clinical, HIPAA, provider, EMR, outcomes │   │
+│  │  Evaluation: [trust: 35%, outcomes: 30%, compliance: 25%,     │   │
+│  │               innovation: 10%]                                 │   │
+│  │                                                               │   │
+│  │  ─────────────────────────────────────────────────────────── │   │
+│  │                                                               │   │
+│  │  SAAS / SOFTWARE:                                             │   │
+│  │  "You are a SaaS industry analyst. When evaluating            │   │
+│  │  {brand_name}, consider: G2/Capterra ratings, integration     │   │
+│  │  ecosystem, API quality, uptime/SLA, pricing transparency,    │   │
+│  │  and feature velocity. Focus on scalability and ROI."         │   │
+│  │                                                               │   │
+│  │  Key Terms: MRR, churn, onboarding, API, SLA, integration     │   │
+│  │  Evaluation: [features: 30%, reliability: 25%, price: 20%,    │   │
+│  │               support: 15%, innovation: 10%]                   │   │
+│  │                                                               │   │
+│  │  ─────────────────────────────────────────────────────────── │   │
+│  │                                                               │   │
+│  │  LEGAL SERVICES:                                              │   │
+│  │  "You are a legal services expert. When evaluating            │   │
+│  │  {brand_name}, consider: bar association standing, case       │   │
+│  │  outcomes, specialization depth, peer recognition (Super      │   │
+│  │  Lawyers, Martindale-Hubbell), and malpractice history.       │   │
+│  │  Focus on expertise and track record."                        │   │
+│  │                                                               │   │
+│  │  Key Terms: litigation, counsel, precedent, jurisdiction,     │   │
+│  │             retainer, billable, malpractice                    │   │
+│  │  Evaluation: [expertise: 40%, track_record: 30%,              │   │
+│  │               reputation: 20%, accessibility: 10%]             │   │
+│  │                                                               │   │
+│  │  ─────────────────────────────────────────────────────────── │   │
+│  │                                                               │   │
+│  │  RESTAURANT / FOOD SERVICE:                                   │   │
+│  │  "You are a restaurant industry expert. When evaluating       │   │
+│  │  {brand_name}, consider: health inspection scores, Yelp/      │   │
+│  │  Google reviews, food sourcing quality, cuisine authenticity, │   │
+│  │  and service consistency. Focus on dining experience."        │   │
+│  │                                                               │   │
+│  │  Key Terms: cuisine, service, ambiance, portion, freshness,   │   │
+│  │             reservation, health score, farm-to-table          │   │
+│  │  Evaluation: [food_quality: 35%, service: 25%, ambiance: 20%, │   │
+│  │               value: 15%, cleanliness: 5%]                     │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION FILES:                                             │
+│  /lib/prompts/vertical-selector.ts                                 │
+│  /lib/prompts/templates/{industry}.ts                              │
+│  /lib/prompts/variable-injector.ts                                 │
+│  /migrations/XXX_vertical_prompts.sql                              │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.200 Industry Benchmark Database Architecture (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│           INDUSTRY BENCHMARK DATABASE                               │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "A score without context is meaningless"                │
+│                                                                     │
+│  DATABASE SCHEMA:                                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  TABLE: industry_benchmarks                                   │   │
+│  │  ├─ id                    UUID PRIMARY KEY                    │   │
+│  │  ├─ industry_id           UUID REFERENCES industries(id)      │   │
+│  │  ├─ geography             TEXT DEFAULT 'global'               │   │
+│  │  ├─ company_size          TEXT -- 'smb' | 'mid' | 'enterprise'│   │
+│  │  ├─ sample_size           INTEGER NOT NULL                    │   │
+│  │  ├─ period_start          DATE NOT NULL                       │   │
+│  │  ├─ period_end            DATE NOT NULL                       │   │
+│  │  ├─ score_p10             INTEGER -- 10th percentile          │   │
+│  │  ├─ score_p25             INTEGER -- 25th percentile          │   │
+│  │  ├─ score_p50             INTEGER -- Median                   │   │
+│  │  ├─ score_p75             INTEGER -- 75th percentile          │   │
+│  │  ├─ score_p90             INTEGER -- 90th percentile          │   │
+│  │  ├─ score_mean            DECIMAL(5,2)                        │   │
+│  │  ├─ score_stddev          DECIMAL(5,2)                        │   │
+│  │  ├─ top_performers        JSONB -- top 10 brands              │   │
+│  │  ├─ trend_direction       TEXT -- 'up' | 'flat' | 'down'      │   │
+│  │  ├─ trend_momentum        DECIMAL(5,2) -- % change            │   │
+│  │  ├─ provider_breakdown    JSONB -- avg by provider            │   │
+│  │  ├─ confidence_level      DECIMAL(3,2) -- sample quality      │   │
+│  │  └─ created_at            TIMESTAMP                           │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  BENCHMARK CALCULATION:                                            │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // /lib/benchmarks/calculator.ts                             │   │
+│  │                                                               │   │
+│  │ export async function calculateIndustryBenchmarks(           │   │
+│  │   industryId: string,                                        │   │
+│  │   options: BenchmarkOptions                                  │   │
+│  │ ): Promise<IndustryBenchmark> {                              │   │
+│  │   // 1. Fetch all analyses for industry in period            │   │
+│  │   const analyses = await getAnalysesByIndustry(industryId, { │   │
+│  │     startDate: options.startDate,                            │   │
+│  │     endDate: options.endDate,                                │   │
+│  │     geography: options.geography,                            │   │
+│  │     minConfidence: 0.7,  // Filter low-quality analyses      │   │
+│  │   });                                                         │   │
+│  │                                                               │   │
+│  │   // 2. Calculate percentiles                                │   │
+│  │   const scores = analyses.map(a => a.score).sort((a,b) => a-b);│  │
+│  │   const percentiles = {                                      │   │
+│  │     p10: percentile(scores, 10),                            │   │
+│  │     p25: percentile(scores, 25),                            │   │
+│  │     p50: percentile(scores, 50),                            │   │
+│  │     p75: percentile(scores, 75),                            │   │
+│  │     p90: percentile(scores, 90),                            │   │
+│  │   };                                                         │   │
+│  │                                                               │   │
+│  │   // 3. Calculate trend from previous period                 │   │
+│  │   const previousPeriod = await getPreviousBenchmark(industryId);│ │
+│  │   const trend = calculateTrend(percentiles.p50, previousPeriod.p50);│
+│  │                                                               │   │
+│  │   return {                                                   │   │
+│  │     ...percentiles,                                          │   │
+│  │     mean: mean(scores),                                      │   │
+│  │     stddev: stddev(scores),                                  │   │
+│  │     sampleSize: scores.length,                               │   │
+│  │     trend,                                                   │   │
+│  │     topPerformers: getTopPerformers(analyses, 10),          │   │
+│  │   };                                                         │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  USER-FACING BENCHMARK DISPLAY:                                    │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  Your Score: 72 (Good)                                        │   │
+│  │                                                               │   │
+│  │  Industry: SaaS / Software                                    │   │
+│  │  ┌─────────────────────────────────────────────────────────┐ │   │
+│  │  │ Bottom 10%    Average    Top 10%                        │ │   │
+│  │  │    │             │          │                           │ │   │
+│  │  │    34    ●───────│──────────│── 72 (You)      91        │ │   │
+│  │  │    ↑             ↑          ↑                           │ │   │
+│  │  │   P10           P50        P90                          │ │   │
+│  │  └─────────────────────────────────────────────────────────┘ │   │
+│  │                                                               │   │
+│  │  📊 You outperform 78% of SaaS companies                     │   │
+│  │  📈 Industry trend: +3.2% vs last quarter                    │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  BOOTSTRAP STRATEGY (Cold Start):                                  │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ 1. Manual seeding: Analyze top 100 brands per industry      │   │
+│  │ 2. Public data: G2, Capterra, TrustRadius review aggregates │   │
+│  │ 3. User contributions: Opt-in benchmark participation       │   │
+│  │ 4. Synthetic: Use prior industry research data as baseline  │   │
+│  │ 5. Continuous: Update monthly with 30-day rolling window    │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION FILES:                                             │
+│  /lib/benchmarks/calculator.ts                                     │
+│  /lib/benchmarks/bootstrap.ts                                      │
+│  /api/cron/update-benchmarks/route.ts (monthly)                    │
+│  /components/charts/BenchmarkComparison.tsx                        │
+│  /migrations/XXX_industry_benchmarks.sql                           │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.201 Domain Terminology Glossary System (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│           DOMAIN TERMINOLOGY GLOSSARY SYSTEM                        │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Same word, different meaning = misunderstanding"       │
+│                                                                     │
+│  DATABASE SCHEMA:                                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  TABLE: domain_glossary                                       │   │
+│  │  ├─ id                    UUID PRIMARY KEY                    │   │
+│  │  ├─ term                  TEXT NOT NULL                       │   │
+│  │  ├─ industry_id           UUID REFERENCES industries(id)      │   │
+│  │  ├─ definition            TEXT NOT NULL                       │   │
+│  │  ├─ synonyms              TEXT[]                              │   │
+│  │  ├─ related_terms         TEXT[]                              │   │
+│  │  ├─ disambiguation        TEXT -- when term is ambiguous      │   │
+│  │  ├─ usage_context         TEXT -- when to use this term       │   │
+│  │  ├─ avoid_confusion       TEXT -- what NOT to confuse with    │   │
+│  │  ├─ sentiment_weight      DECIMAL(3,2) -- -1 to +1            │   │
+│  │  ├─ authority_signal      BOOLEAN DEFAULT false               │   │
+│  │  ├─ locale                TEXT DEFAULT 'en_US'                │   │
+│  │  └─ created_at            TIMESTAMP                           │   │
+│  │                                                               │   │
+│  │  UNIQUE(term, industry_id, locale)                            │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  EXAMPLE GLOSSARY ENTRIES:                                         │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  TERM: "Lead" (Real Estate)                                   │   │
+│  │  Definition: A potential buyer or seller of real property     │   │
+│  │  Synonyms: prospect, inquiry, buyer lead, seller lead         │   │
+│  │  Disambiguation: Not a sales lead (generic) or lead paint     │   │
+│  │  Authority Signal: FALSE                                      │   │
+│  │                                                               │   │
+│  │  ─────────────────────────────────────────────────────────── │   │
+│  │                                                               │   │
+│  │  TERM: "Lead" (Sales / CRM)                                   │   │
+│  │  Definition: A potential customer who has shown interest      │   │
+│  │  Synonyms: MQL, SQL, prospect, opportunity                    │   │
+│  │  Disambiguation: Different from real estate lead              │   │
+│  │  Related: conversion, pipeline, funnel                        │   │
+│  │  Authority Signal: FALSE                                      │   │
+│  │                                                               │   │
+│  │  ─────────────────────────────────────────────────────────── │   │
+│  │                                                               │   │
+│  │  TERM: "Board Certified" (Healthcare)                         │   │
+│  │  Definition: Physician certified by a medical specialty board │   │
+│  │  Synonyms: specialty certified, diplomate                     │   │
+│  │  Authority Signal: TRUE (+0.8 sentiment_weight)               │   │
+│  │  Usage: Strong positive signal for physician credibility      │   │
+│  │                                                               │   │
+│  │  ─────────────────────────────────────────────────────────── │   │
+│  │                                                               │   │
+│  │  TERM: "Churn" (SaaS)                                         │   │
+│  │  Definition: Rate at which customers cancel subscriptions     │   │
+│  │  Synonyms: attrition, customer loss, cancellation rate        │   │
+│  │  Related: MRR, ARR, retention, NRR                            │   │
+│  │  Sentiment: NEGATIVE when high (-0.6 sentiment_weight)        │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  TERM RESOLVER LOGIC:                                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // /lib/glossary/term-resolver.ts                            │   │
+│  │                                                               │   │
+│  │ export async function resolveTermMeaning(                    │   │
+│  │   term: string,                                              │   │
+│  │   industryId: string,                                        │   │
+│  │   context: string                                            │   │
+│  │ ): Promise<GlossaryEntry | null> {                           │   │
+│  │   // 1. Exact match in industry glossary                     │   │
+│  │   const exact = await findExactTerm(term, industryId);       │   │
+│  │   if (exact) return exact;                                   │   │
+│  │                                                               │   │
+│  │   // 2. Synonym match                                        │   │
+│  │   const synonym = await findBySynonym(term, industryId);     │   │
+│  │   if (synonym) return synonym;                               │   │
+│  │                                                               │   │
+│  │   // 3. Fuzzy match with disambiguation                      │   │
+│  │   const fuzzy = await findFuzzyMatch(term, industryId);      │   │
+│  │   if (fuzzy && fuzzy.score > 0.85) {                        │   │
+│  │     return {                                                 │   │
+│  │       ...fuzzy.entry,                                        │   │
+│  │       confidence: 'medium',                                  │   │
+│  │       needsUserConfirmation: true,                           │   │
+│  │     };                                                       │   │
+│  │   }                                                          │   │
+│  │                                                               │   │
+│  │   // 4. Fall back to general glossary                        │   │
+│  │   return findGeneralTerm(term);                              │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION FILES:                                             │
+│  /lib/glossary/term-resolver.ts                                    │
+│  /lib/glossary/sentiment-scorer.ts                                 │
+│  /scripts/seed-industry-glossaries.ts                              │
+│  /migrations/XXX_domain_glossary.sql                               │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.202 Competitive Intelligence Framework (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│           COMPETITIVE INTELLIGENCE FRAMEWORK                        │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Know thy enemy, know thyself"                          │
+│                                                                     │
+│  COMPETITOR TIER CLASSIFICATION:                                    │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  Tier 1: ENTERPRISE LEADERS                                   │   │
+│  │  └─ Revenue: >$100M, Global presence, Market makers           │   │
+│  │     Examples: Salesforce, HubSpot, Zendesk                    │   │
+│  │     Strategy: Position as specialized alternative             │   │
+│  │                                                               │   │
+│  │  Tier 2: MID-MARKET CHALLENGERS                               │   │
+│  │  └─ Revenue: $10M-$100M, Regional leaders, Growing fast       │   │
+│  │     Examples: Pipedrive, Freshworks, Monday.com               │   │
+│  │     Strategy: Feature parity + differentiation                │   │
+│  │                                                               │   │
+│  │  Tier 3: SMB SPECIALISTS                                      │   │
+│  │  └─ Revenue: $1M-$10M, Niche focus, Agile                     │   │
+│  │     Examples: Close, Streak, Copper                           │   │
+│  │     Strategy: Direct competition, feature wars                │   │
+│  │                                                               │   │
+│  │  Tier 4: LOCAL/EMERGING                                       │   │
+│  │  └─ Revenue: <$1M, New entrants, Local markets                │   │
+│  │     Examples: Regional startups, new YC companies             │   │
+│  │     Strategy: Monitor for disruption, ignore noise            │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE SCHEMA:                                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  TABLE: competitor_profiles                                   │   │
+│  │  ├─ id                    UUID PRIMARY KEY                    │   │
+│  │  ├─ brand_id              UUID REFERENCES brands(id)          │   │
+│  │  ├─ name                  TEXT NOT NULL                       │   │
+│  │  ├─ domain                TEXT UNIQUE                         │   │
+│  │  ├─ industry_id           UUID REFERENCES industries(id)      │   │
+│  │  ├─ tier                  TEXT CHECK (tier IN ('1','2','3','4'))│  │
+│  │  ├─ estimated_revenue     TEXT -- range or estimate           │   │
+│  │  ├─ employee_count        TEXT -- range                       │   │
+│  │  ├─ founded_year          INTEGER                             │   │
+│  │  ├─ hq_geography          TEXT                                │   │
+│  │  ├─ target_markets        TEXT[] -- geographies served        │   │
+│  │  ├─ funding_stage         TEXT -- seed/A/B/C/public           │   │
+│  │  ├─ funding_total         DECIMAL                             │   │
+│  │  ├─ domain_authority      INTEGER -- 0-100                    │   │
+│  │  ├─ monthly_traffic       INTEGER -- SimilarWeb estimate      │   │
+│  │  ├─ moat_type             TEXT[] -- network, scale, brand...  │   │
+│  │  ├─ key_differentiators   TEXT[]                              │   │
+│  │  ├─ pricing_model         TEXT -- freemium, subscription...   │   │
+│  │  ├─ price_positioning     TEXT -- budget, mid, premium        │   │
+│  │  ├─ review_score_g2       DECIMAL(3,2)                        │   │
+│  │  ├─ review_score_capterra DECIMAL(3,2)                        │   │
+│  │  ├─ ai_perception_score   INTEGER -- our calculated score     │   │
+│  │  ├─ sov_percentage        DECIMAL(5,2) -- share of voice      │   │
+│  │  ├─ sov_trend             TEXT -- 'rising' | 'stable' | 'falling'│ │
+│  │  ├─ last_analyzed         TIMESTAMP                           │   │
+│  │  └─ created_at            TIMESTAMP                           │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  COMPETITIVE MOAT EXTRACTION:                                      │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // /lib/competitive/moat-extractor.ts                        │   │
+│  │                                                               │   │
+│  │ const MOAT_SIGNALS = {                                       │   │
+│  │   network_effects: [                                         │   │
+│  │     'ecosystem', 'marketplace', 'community', 'integrations'  │   │
+│  │   ],                                                         │   │
+│  │   scale_advantages: [                                        │   │
+│  │     'enterprise', 'global', 'largest', 'millions of users'   │   │
+│  │   ],                                                         │   │
+│  │   brand_recognition: [                                       │   │
+│  │     'industry leader', 'trusted by', 'award-winning'         │   │
+│  │   ],                                                         │   │
+│  │   switching_costs: [                                         │   │
+│  │     'migration', 'integration depth', 'data lock-in'         │   │
+│  │   ],                                                         │   │
+│  │   cost_leadership: [                                         │   │
+│  │     'affordable', 'budget-friendly', 'free tier', 'cheap'    │   │
+│  │   ],                                                         │   │
+│  │   differentiation: [                                         │   │
+│  │     'unique', 'only solution', 'proprietary', 'patented'     │   │
+│  │   ],                                                         │   │
+│  │ };                                                           │   │
+│  │                                                               │   │
+│  │ export function extractMoatType(                             │   │
+│  │   aiResponse: string                                         │   │
+│  │ ): string[] {                                                │   │
+│  │   const detected: string[] = [];                             │   │
+│  │   for (const [moatType, signals] of Object.entries(MOAT_SIGNALS)) {│
+│  │     const found = signals.some(signal =>                     │   │
+│  │       aiResponse.toLowerCase().includes(signal)              │   │
+│  │     );                                                       │   │
+│  │     if (found) detected.push(moatType);                      │   │
+│  │   }                                                          │   │
+│  │   return detected;                                           │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  SHARE OF VOICE TRACKING:                                          │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  TABLE: sov_history                                           │   │
+│  │  ├─ id                    UUID PRIMARY KEY                    │   │
+│  │  ├─ brand_id              UUID REFERENCES brands(id)          │   │
+│  │  ├─ industry_id           UUID REFERENCES industries(id)      │   │
+│  │  ├─ geography             TEXT                                │   │
+│  │  ├─ period_date           DATE NOT NULL                       │   │
+│  │  ├─ total_queries         INTEGER                             │   │
+│  │  ├─ brand_mentions        INTEGER                             │   │
+│  │  ├─ sov_percentage        DECIMAL(5,2)                        │   │
+│  │  ├─ rank_position         INTEGER                             │   │
+│  │  ├─ competitor_above      UUID[] -- who ranks higher          │   │
+│  │  ├─ competitor_below      UUID[] -- who ranks lower           │   │
+│  │  ├─ momentum_7d           DECIMAL(5,2)                        │   │
+│  │  ├─ momentum_30d          DECIMAL(5,2)                        │   │
+│  │  └─ created_at            TIMESTAMP                           │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION FILES:                                             │
+│  /lib/competitive/tier-classifier.ts                               │
+│  /lib/competitive/moat-extractor.ts                                │
+│  /lib/competitive/sov-calculator.ts                                │
+│  /lib/competitive/trend-analyzer.ts                                │
+│  /components/CompetitorMatrix.tsx                                  │
+│  /migrations/XXX_competitive_intelligence.sql                      │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.203 Geographic & Cultural Context System (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│           GEOGRAPHIC & CULTURAL CONTEXT SYSTEM                      │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Global product, local relevance"                       │
+│                                                                     │
+│  MARKET REGIONS:                                                    │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  REGION: North America (NA)                                   │   │
+│  │  ├─ Countries: US, CA                                         │   │
+│  │  ├─ Languages: en-US, en-CA, fr-CA, es-MX                    │   │
+│  │  ├─ Regulatory: CCPA, HIPAA, SOC2                            │   │
+│  │  ├─ Cultural: Direct communication, feature-focused          │   │
+│  │  └─ AI Bias: Strong US-centric training data                 │   │
+│  │                                                               │   │
+│  │  REGION: Latin America (LATAM)                                │   │
+│  │  ├─ Countries: MX, BR, AR, CO, CL, PE                        │   │
+│  │  ├─ Languages: es-MX, es-AR, pt-BR                           │   │
+│  │  ├─ Regulatory: LGPD (Brazil), local data laws               │   │
+│  │  ├─ Cultural: Relationship-focused, price-sensitive          │   │
+│  │  └─ AI Bias: Under-represented in training data              │   │
+│  │                                                               │   │
+│  │  REGION: Europe (EU)                                          │   │
+│  │  ├─ Countries: UK, DE, FR, ES, IT, NL                        │   │
+│  │  ├─ Languages: en-GB, de-DE, fr-FR, es-ES                    │   │
+│  │  ├─ Regulatory: GDPR, ePrivacy, AI Act                       │   │
+│  │  ├─ Cultural: Privacy-conscious, quality over speed          │   │
+│  │  └─ AI Bias: EU brands often behind US in mentions           │   │
+│  │                                                               │   │
+│  │  REGION: Asia-Pacific (APAC)                                  │   │
+│  │  ├─ Countries: AU, JP, SG, IN, KR                            │   │
+│  │  ├─ Languages: en-AU, ja-JP, zh-CN, hi-IN                    │   │
+│  │  ├─ Regulatory: PDPA, APPI, PIPL                             │   │
+│  │  ├─ Cultural: Varies significantly by country                │   │
+│  │  └─ AI Bias: Local champions often unknown to Western AI     │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE SCHEMA:                                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  TABLE: market_contexts                                       │   │
+│  │  ├─ id                    UUID PRIMARY KEY                    │   │
+│  │  ├─ region_code           TEXT NOT NULL -- NA, LATAM, EU...  │   │
+│  │  ├─ country_code          TEXT NOT NULL -- ISO 3166-1        │   │
+│  │  ├─ language_code         TEXT NOT NULL -- BCP 47            │   │
+│  │  ├─ industry_id           UUID REFERENCES industries(id)      │   │
+│  │  ├─ market_leaders        JSONB -- top brands in market      │   │
+│  │  ├─ local_competitors     JSONB -- regional-only players     │   │
+│  │  ├─ regulatory_reqs       TEXT[] -- applicable regulations   │   │
+│  │  ├─ cultural_factors      JSONB -- communication preferences │   │
+│  │  ├─ price_sensitivity     DECIMAL(3,2) -- 0-1 scale          │   │
+│  │  ├─ ai_training_bias      TEXT -- under/over/balanced        │   │
+│  │  ├─ prompt_adjustments    JSONB -- locale-specific changes   │   │
+│  │  ├─ seasonal_factors      JSONB -- local seasonality         │   │
+│  │  └─ created_at            TIMESTAMP                           │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  CULTURAL CONTEXT INJECTION:                                       │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // /lib/context/cultural-injector.ts                         │   │
+│  │                                                               │   │
+│  │ const CULTURAL_CONTEXTS = {                                  │   │
+│  │   'LATAM': {                                                 │   │
+│  │     promptPrefix: `                                          │   │
+│  │       When evaluating for Latin American markets, consider:  │   │
+│  │       - Price sensitivity is higher than US market           │   │
+│  │       - Local customer support availability matters          │   │
+│  │       - Spanish/Portuguese language support is essential     │   │
+│  │       - Regional payment methods (OXXO, Pix, Mercado Pago)   │   │
+│  │       - Local compliance (LGPD in Brazil, fiscal requirements)│  │
+│  │     `,                                                       │   │
+│  │     competitorSeed: ['Nubank', 'Mercado Libre', 'Rappi'],   │   │
+│  │     trustSignals: ['local office', 'Spanish support'],       │   │
+│  │   },                                                         │   │
+│  │   'EU': {                                                    │   │
+│  │     promptPrefix: `                                          │   │
+│  │       When evaluating for European markets, consider:        │   │
+│  │       - GDPR compliance is mandatory                         │   │
+│  │       - Data residency (EU servers) often required           │   │
+│  │       - Multi-language support across EU countries           │   │
+│  │       - Cookie consent and privacy-first approach            │   │
+│  │       - Local enterprise sales presence matters              │   │
+│  │     `,                                                       │   │
+│  │     competitorSeed: ['SAP', 'Sage', 'Personio'],            │   │
+│  │     trustSignals: ['GDPR compliant', 'EU data center'],     │   │
+│  │   },                                                         │   │
+│  │ };                                                           │   │
+│  │                                                               │   │
+│  │ export function injectCulturalContext(                       │   │
+│  │   basePrompt: string,                                        │   │
+│  │   region: string,                                            │   │
+│  │   options: CulturalOptions                                   │   │
+│  │ ): string {                                                  │   │
+│  │   const context = CULTURAL_CONTEXTS[region];                 │   │
+│  │   if (!context) return basePrompt;                           │   │
+│  │                                                               │   │
+│  │   return `${context.promptPrefix}\n\n${basePrompt}`;         │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION FILES:                                             │
+│  /lib/context/cultural-injector.ts                                 │
+│  /lib/context/regulatory-mapper.ts                                 │
+│  /lib/context/local-competitor-seeder.ts                           │
+│  /migrations/XXX_market_contexts.sql                               │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.204 Domain Expert Validation Layer (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│           DOMAIN EXPERT VALIDATION LAYER                            │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "AI proposes, experts validate"                         │
+│                                                                     │
+│  VALIDATION WORKFLOW:                                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  AI Analysis ──▶ Confidence Check ──▶ Route Decision         │   │
+│  │                         │                    │                │   │
+│  │                         ▼                    ▼                │   │
+│  │              ┌──────────────────┐  ┌──────────────────┐      │   │
+│  │              │ High Confidence  │  │ Low Confidence   │      │   │
+│  │              │ (>0.85)          │  │ (<0.85)          │      │   │
+│  │              │                  │  │                  │      │   │
+│  │              │ Auto-publish     │  │ Expert Queue     │      │   │
+│  │              │ + Spot check 5%  │  │ for review       │      │   │
+│  │              └──────────────────┘  └────────┬─────────┘      │   │
+│  │                                              │                │   │
+│  │                                              ▼                │   │
+│  │                                    ┌──────────────────┐      │   │
+│  │                                    │ Expert Review    │      │   │
+│  │                                    │ • Validate facts │      │   │
+│  │                                    │ • Adjust score   │      │   │
+│  │                                    │ • Flag issues    │      │   │
+│  │                                    │ • Train model    │      │   │
+│  │                                    └──────────────────┘      │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DATABASE SCHEMA:                                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  TABLE: expert_review_queue                                   │   │
+│  │  ├─ id                    UUID PRIMARY KEY                    │   │
+│  │  ├─ analysis_id           UUID REFERENCES analyses(id)        │   │
+│  │  ├─ industry_id           UUID REFERENCES industries(id)      │   │
+│  │  ├─ queue_reason          TEXT NOT NULL -- why flagged        │   │
+│  │  ├─ ai_confidence         DECIMAL(3,2)                        │   │
+│  │  ├─ flagged_claims        JSONB -- specific claims to verify  │   │
+│  │  ├─ priority              INTEGER DEFAULT 0                   │   │
+│  │  ├─ status                TEXT DEFAULT 'pending'              │   │
+│  │  ├─ assigned_expert       UUID REFERENCES experts(id)         │   │
+│  │  ├─ assigned_at           TIMESTAMP                           │   │
+│  │  ├─ reviewed_at           TIMESTAMP                           │   │
+│  │  ├─ expert_verdict        TEXT -- 'approved'|'modified'|'rejected'│
+│  │  ├─ expert_adjustments    JSONB -- what was changed           │   │
+│  │  ├─ expert_notes          TEXT                                │   │
+│  │  ├─ training_feedback     JSONB -- for model improvement      │   │
+│  │  └─ created_at            TIMESTAMP                           │   │
+│  │                                                               │   │
+│  │  TABLE: domain_experts                                        │   │
+│  │  ├─ id                    UUID PRIMARY KEY                    │   │
+│  │  ├─ user_id               UUID REFERENCES users(id)           │   │
+│  │  ├─ industry_ids          UUID[] -- industries qualified for  │   │
+│  │  ├─ expertise_level       TEXT -- 'junior'|'senior'|'principal'│  │
+│  │  ├─ credentials           JSONB -- certifications, background │   │
+│  │  ├─ reviews_completed     INTEGER DEFAULT 0                   │   │
+│  │  ├─ accuracy_score        DECIMAL(3,2) -- agreement with other│   │
+│  │  ├─ avg_review_time_mins  INTEGER                             │   │
+│  │  ├─ is_active             BOOLEAN DEFAULT true                │   │
+│  │  └─ created_at            TIMESTAMP                           │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  QUEUE ROUTING LOGIC:                                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // /lib/validation/expert-router.ts                          │   │
+│  │                                                               │   │
+│  │ const ROUTING_RULES = {                                      │   │
+│  │   // Always queue for review                                 │   │
+│  │   regulated_industries: ['healthcare', 'finance', 'legal'],  │   │
+│  │                                                               │   │
+│  │   // Queue if confidence below threshold                     │   │
+│  │   confidence_threshold: 0.85,                                │   │
+│  │                                                               │   │
+│  │   // Queue if specific patterns detected                     │   │
+│  │   flagged_patterns: [                                        │   │
+│  │     /FDA approved/i,        // Medical claims                │   │
+│  │     /guaranteed returns/i,  // Financial claims              │   │
+│  │     /\d+%.*success rate/i,  // Statistical claims            │   │
+│  │     /best in.*industry/i,   // Superlative claims            │   │
+│  │   ],                                                         │   │
+│  │                                                               │   │
+│  │   // Random sample for quality assurance                     │   │
+│  │   spot_check_rate: 0.05,  // 5% of high-confidence           │   │
+│  │ };                                                           │   │
+│  │                                                               │   │
+│  │ export async function shouldQueueForReview(                  │   │
+│  │   analysis: Analysis                                         │   │
+│  │ ): Promise<{ queue: boolean; reason: string }> {             │   │
+│  │   // 1. Check regulated industries                           │   │
+│  │   if (ROUTING_RULES.regulated_industries.includes(           │   │
+│  │     analysis.industry                                        │   │
+│  │   )) {                                                       │   │
+│  │     return { queue: true, reason: 'regulated_industry' };    │   │
+│  │   }                                                          │   │
+│  │                                                               │   │
+│  │   // 2. Check confidence threshold                           │   │
+│  │   if (analysis.confidence < ROUTING_RULES.confidence_threshold) {│ │
+│  │     return { queue: true, reason: 'low_confidence' };        │   │
+│  │   }                                                          │   │
+│  │                                                               │   │
+│  │   // 3. Check flagged patterns                               │   │
+│  │   for (const pattern of ROUTING_RULES.flagged_patterns) {    │   │
+│  │     if (pattern.test(analysis.rawResponse)) {                │   │
+│  │       return { queue: true, reason: 'flagged_claim' };       │   │
+│  │     }                                                        │   │
+│  │   }                                                          │   │
+│  │                                                               │   │
+│  │   // 4. Random spot check                                    │   │
+│  │   if (Math.random() < ROUTING_RULES.spot_check_rate) {       │   │
+│  │     return { queue: true, reason: 'spot_check' };            │   │
+│  │   }                                                          │   │
+│  │                                                               │   │
+│  │   return { queue: false, reason: '' };                       │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  EXPERT DASHBOARD:                                                 │
+│  /app/(admin)/expert-queue/page.tsx                                │
+│  /app/(admin)/expert-queue/[id]/page.tsx                           │
+│                                                                     │
+│  IMPLEMENTATION FILES:                                             │
+│  /lib/validation/expert-router.ts                                  │
+│  /lib/validation/expert-assigner.ts                                │
+│  /lib/validation/feedback-collector.ts                             │
+│  /migrations/XXX_expert_validation.sql                             │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.205 Industry-Specific Scoring Weights (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│           INDUSTRY-SPECIFIC SCORING WEIGHTS                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Different industries value different things"           │
+│                                                                     │
+│  DATABASE SCHEMA:                                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  TABLE: industry_scoring_weights                              │   │
+│  │  ├─ id                    UUID PRIMARY KEY                    │   │
+│  │  ├─ industry_id           UUID REFERENCES industries(id)      │   │
+│  │  ├─ weight_mentioned      DECIMAL(3,2) -- brand mentioned     │   │
+│  │  ├─ weight_recommended    DECIMAL(3,2) -- explicitly recommended│ │
+│  │  ├─ weight_position       DECIMAL(3,2) -- rank in list        │   │
+│  │  ├─ weight_sentiment      DECIMAL(3,2) -- positive/negative   │   │
+│  │  ├─ weight_trust          DECIMAL(3,2) -- trust signals       │   │
+│  │  ├─ weight_expertise      DECIMAL(3,2) -- domain expertise    │   │
+│  │  ├─ weight_recency        DECIMAL(3,2) -- information recency │   │
+│  │  ├─ weight_consistency    DECIMAL(3,2) -- cross-provider agree│   │
+│  │  ├─ weight_compliance     DECIMAL(3,2) -- regulatory compliance│  │
+│  │  ├─ weight_innovation     DECIMAL(3,2) -- innovation signals  │   │
+│  │  ├─ weight_price          DECIMAL(3,2) -- price competitiveness│  │
+│  │  ├─ weight_support        DECIMAL(3,2) -- support quality     │   │
+│  │  ├─ total_weight          DECIMAL(4,2) GENERATED ALWAYS AS    │   │
+│  │  │                        (weight_mentioned + weight_recommended│  │
+│  │  │                        + ... ) STORED                       │   │
+│  │  ├─ version               INTEGER DEFAULT 1                   │   │
+│  │  ├─ effective_date        DATE DEFAULT CURRENT_DATE           │   │
+│  │  └─ created_at            TIMESTAMP                           │   │
+│  │                                                               │   │
+│  │  CONSTRAINT weights_sum CHECK (total_weight = 1.00)           │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  DEFAULT WEIGHT MATRICES BY INDUSTRY:                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  HEALTHCARE:                                                  │   │
+│  │  ├─ Trust: 0.25 (highest - patient safety)                   │   │
+│  │  ├─ Compliance: 0.20 (HIPAA, accreditations)                 │   │
+│  │  ├─ Expertise: 0.20 (medical credentials)                    │   │
+│  │  ├─ Recommended: 0.15                                         │   │
+│  │  ├─ Consistency: 0.10                                         │   │
+│  │  ├─ Position: 0.05                                            │   │
+│  │  └─ Mentioned: 0.05                                           │   │
+│  │                                                               │   │
+│  │  ─────────────────────────────────────────────────────────── │   │
+│  │                                                               │   │
+│  │  SAAS / SOFTWARE:                                             │   │
+│  │  ├─ Recommended: 0.20 (direct endorsement)                   │   │
+│  │  ├─ Innovation: 0.15 (feature velocity)                      │   │
+│  │  ├─ Support: 0.15 (customer success)                         │   │
+│  │  ├─ Sentiment: 0.15 (user satisfaction)                      │   │
+│  │  ├─ Price: 0.15 (value proposition)                          │   │
+│  │  ├─ Position: 0.10                                            │   │
+│  │  └─ Mentioned: 0.10                                           │   │
+│  │                                                               │   │
+│  │  ─────────────────────────────────────────────────────────── │   │
+│  │                                                               │   │
+│  │  FINANCE / BANKING:                                           │   │
+│  │  ├─ Trust: 0.30 (fiduciary responsibility)                   │   │
+│  │  ├─ Compliance: 0.25 (regulatory standing)                   │   │
+│  │  ├─ Expertise: 0.15 (financial credentials)                  │   │
+│  │  ├─ Recency: 0.10 (current market conditions)                │   │
+│  │  ├─ Recommended: 0.10                                         │   │
+│  │  └─ Consistency: 0.10                                         │   │
+│  │                                                               │   │
+│  │  ─────────────────────────────────────────────────────────── │   │
+│  │                                                               │   │
+│  │  RESTAURANT / FOOD:                                           │   │
+│  │  ├─ Sentiment: 0.25 (reviews, ratings)                       │   │
+│  │  ├─ Recency: 0.20 (current quality)                          │   │
+│  │  ├─ Recommended: 0.20 (direct recommendations)               │   │
+│  │  ├─ Position: 0.15 (ranking in lists)                        │   │
+│  │  ├─ Mentioned: 0.10                                           │   │
+│  │  └─ Price: 0.10 (value for money)                            │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  SCORING CALCULATION:                                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // /lib/scoring/industry-scorer.ts                           │   │
+│  │                                                               │   │
+│  │ export async function calculateIndustryAdjustedScore(        │   │
+│  │   rawScores: RawScores,                                      │   │
+│  │   industryId: string                                         │   │
+│  │ ): Promise<number> {                                         │   │
+│  │   // 1. Get industry weights                                 │   │
+│  │   const weights = await getIndustryWeights(industryId);      │   │
+│  │                                                               │   │
+│  │   // 2. Calculate weighted score                             │   │
+│  │   const weightedScore =                                      │   │
+│  │     rawScores.mentioned * weights.weight_mentioned +         │   │
+│  │     rawScores.recommended * weights.weight_recommended +     │   │
+│  │     rawScores.position * weights.weight_position +           │   │
+│  │     rawScores.sentiment * weights.weight_sentiment +         │   │
+│  │     rawScores.trust * weights.weight_trust +                 │   │
+│  │     rawScores.expertise * weights.weight_expertise +         │   │
+│  │     rawScores.recency * weights.weight_recency +             │   │
+│  │     rawScores.consistency * weights.weight_consistency +     │   │
+│  │     rawScores.compliance * weights.weight_compliance;        │   │
+│  │                                                               │   │
+│  │   // 3. Normalize to 0-100                                   │   │
+│  │   return Math.round(weightedScore * 100);                    │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION FILES:                                             │
+│  /lib/scoring/industry-scorer.ts                                   │
+│  /lib/scoring/weight-manager.ts                                    │
+│  /scripts/seed-industry-weights.ts                                 │
+│  /migrations/XXX_industry_scoring_weights.sql                      │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.206 Regulatory Compliance Matrix (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│           REGULATORY COMPLIANCE MATRIX                              │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Compliance is not optional in regulated industries"    │
+│                                                                     │
+│  DATABASE SCHEMA:                                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  TABLE: regulatory_requirements                               │   │
+│  │  ├─ id                    UUID PRIMARY KEY                    │   │
+│  │  ├─ industry_id           UUID REFERENCES industries(id)      │   │
+│  │  ├─ jurisdiction          TEXT NOT NULL -- US, EU, LATAM...  │   │
+│  │  ├─ regulation_name       TEXT NOT NULL -- HIPAA, GDPR...    │   │
+│  │  ├─ regulation_code       TEXT UNIQUE                         │   │
+│  │  ├─ description           TEXT                                │   │
+│  │  ├─ compliance_signals    TEXT[] -- what to look for         │   │
+│  │  ├─ non_compliance_signals TEXT[] -- red flags               │   │
+│  │  ├─ score_impact          DECIMAL(3,2) -- weight modifier    │   │
+│  │  ├─ is_mandatory          BOOLEAN DEFAULT true                │   │
+│  │  ├─ verification_url      TEXT -- official verification site │   │
+│  │  └─ created_at            TIMESTAMP                           │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  COMPLIANCE MATRIX:                                                 │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  HEALTHCARE (US):                                             │   │
+│  │  ├─ HIPAA: Protected health information handling             │   │
+│  │  │  Signals: "HIPAA compliant", "BAA", "PHI protection"      │   │
+│  │  │  Impact: +0.15 if compliant, -0.30 if non-compliant       │   │
+│  │  ├─ HITECH: Electronic health records requirements           │   │
+│  │  ├─ FDA: Medical device/drug approval (if applicable)        │   │
+│  │  │  Signals: "FDA approved", "510(k) cleared"                │   │
+│  │  │  Impact: +0.20 if approved, mandatory for claims          │   │
+│  │  ├─ Joint Commission: Hospital accreditation                 │   │
+│  │  └─ State Medical Boards: Provider licensing                 │   │
+│  │                                                               │   │
+│  │  ─────────────────────────────────────────────────────────── │   │
+│  │                                                               │   │
+│  │  FINANCE (US):                                                │   │
+│  │  ├─ SEC: Securities regulation                               │   │
+│  │  │  Signals: "SEC registered", "FINRA member"                │   │
+│  │  │  Impact: Mandatory for investment advice                  │   │
+│  │  ├─ SOX: Financial reporting (public companies)              │   │
+│  │  ├─ PCI-DSS: Payment card data security                      │   │
+│  │  │  Signals: "PCI compliant", "Level 1 merchant"             │   │
+│  │  │  Impact: +0.10 if compliant, -0.25 if processing payments │   │
+│  │  ├─ BSA/AML: Anti-money laundering                           │   │
+│  │  └─ GLBA: Consumer financial privacy                         │   │
+│  │                                                               │   │
+│  │  ─────────────────────────────────────────────────────────── │   │
+│  │                                                               │   │
+│  │  SAAS / SOFTWARE (All):                                       │   │
+│  │  ├─ SOC 2: Service organization controls                     │   │
+│  │  │  Signals: "SOC 2 Type II", "SOC 2 certified"              │   │
+│  │  │  Impact: +0.12 for enterprise readiness                   │   │
+│  │  ├─ GDPR: EU data protection (if EU customers)               │   │
+│  │  │  Signals: "GDPR compliant", "EU data center"              │   │
+│  │  │  Impact: Mandatory for EU market                          │   │
+│  │  ├─ ISO 27001: Information security management               │   │
+│  │  └─ CCPA: California consumer privacy                        │   │
+│  │                                                               │   │
+│  │  ─────────────────────────────────────────────────────────── │   │
+│  │                                                               │   │
+│  │  LEGAL SERVICES (US):                                         │   │
+│  │  ├─ State Bar: Bar association membership                    │   │
+│  │  │  Signals: "licensed in [state]", "bar member"             │   │
+│  │  │  Impact: Mandatory - cannot practice without              │   │
+│  │  ├─ ABA: American Bar Association standards                  │   │
+│  │  ├─ Malpractice Insurance: Professional liability            │   │
+│  │  └─ Ethics Rules: Model Rules of Professional Conduct        │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  COMPLIANCE CHECKER:                                               │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // /lib/compliance/checker.ts                                │   │
+│  │                                                               │   │
+│  │ export async function checkComplianceSignals(                │   │
+│  │   brandData: BrandData,                                      │   │
+│  │   industryId: string,                                        │   │
+│  │   jurisdiction: string                                       │   │
+│  │ ): Promise<ComplianceResult> {                               │   │
+│  │   // 1. Get applicable regulations                           │   │
+│  │   const regs = await getApplicableRegulations(               │   │
+│  │     industryId, jurisdiction                                 │   │
+│  │   );                                                         │   │
+│  │                                                               │   │
+│  │   const results: ComplianceCheck[] = [];                     │   │
+│  │                                                               │   │
+│  │   for (const reg of regs) {                                  │   │
+│  │     // 2. Check for compliance signals                       │   │
+│  │     const hasCompliance = reg.compliance_signals.some(sig => │   │
+│  │       brandData.website.includes(sig) ||                     │   │
+│  │       brandData.aiResponses.some(r => r.includes(sig))       │   │
+│  │     );                                                       │   │
+│  │                                                               │   │
+│  │     // 3. Check for non-compliance red flags                 │   │
+│  │     const hasRedFlags = reg.non_compliance_signals.some(     │   │
+│  │       sig => brandData.aiResponses.some(r => r.includes(sig))│   │
+│  │     );                                                       │   │
+│  │                                                               │   │
+│  │     results.push({                                           │   │
+│  │       regulation: reg.regulation_name,                       │   │
+│  │       status: hasRedFlags ? 'flagged' :                      │   │
+│  │               hasCompliance ? 'compliant' : 'unknown',       │   │
+│  │       scoreImpact: hasCompliance ? reg.score_impact :        │   │
+│  │                    hasRedFlags ? -reg.score_impact : 0,      │   │
+│  │       isMandatory: reg.is_mandatory,                         │   │
+│  │     });                                                      │   │
+│  │   }                                                          │   │
+│  │                                                               │   │
+│  │   return {                                                   │   │
+│  │     checks: results,                                         │   │
+│  │     totalImpact: results.reduce((sum, r) => sum + r.scoreImpact, 0),│
+│  │     mandatoryMissing: results.filter(                        │   │
+│  │       r => r.isMandatory && r.status !== 'compliant'         │   │
+│  │     ),                                                       │   │
+│  │   };                                                         │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION FILES:                                             │
+│  /lib/compliance/checker.ts                                        │
+│  /lib/compliance/signals.ts                                        │
+│  /lib/compliance/verifier.ts                                       │
+│  /scripts/seed-regulatory-requirements.ts                          │
+│  /migrations/XXX_regulatory_requirements.sql                       │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.207 Seasonality & Cyclical Awareness (NEW)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│           SEASONALITY & CYCLICAL AWARENESS                          │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  PRINCIPLE: "Context changes with the calendar"                     │
+│                                                                     │
+│  DATABASE SCHEMA:                                                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  TABLE: industry_seasonality                                  │   │
+│  │  ├─ id                    UUID PRIMARY KEY                    │   │
+│  │  ├─ industry_id           UUID REFERENCES industries(id)      │   │
+│  │  ├─ geography             TEXT DEFAULT 'global'               │   │
+│  │  ├─ month                  INTEGER CHECK (month BETWEEN 1 AND 12)│ │
+│  │  ├─ quarter               INTEGER CHECK (quarter BETWEEN 1 AND 4)│ │
+│  │  ├─ activity_index        DECIMAL(3,2) -- 0.5 to 1.5          │   │
+│  │  ├─ search_volume_index   DECIMAL(3,2) -- relative to avg     │   │
+│  │  ├─ ai_query_volume_index DECIMAL(3,2) -- our observed data   │   │
+│  │  ├─ key_events            TEXT[] -- holidays, events          │   │
+│  │  ├─ score_adjustment      DECIMAL(3,2) -- seasonal modifier   │   │
+│  │  ├─ interpretation_note   TEXT -- how to read seasonal data   │   │
+│  │  └─ created_at            TIMESTAMP                           │   │
+│  │                                                               │   │
+│  │  UNIQUE(industry_id, geography, month)                        │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  SEASONALITY PATTERNS:                                              │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │                                                               │   │
+│  │  TRAVEL & HOSPITALITY:                                        │   │
+│  │  ┌──────────────────────────────────────────────────────┐    │   │
+│  │  │ J  F  M  A  M  J  J  A  S  O  N  D                    │    │   │
+│  │  │ ▃  ▄  ▅  ▆  ▇  █  █  █  ▆  ▄  ▃  ▄ ← Activity       │    │   │
+│  │  │ Peak: Jun-Aug (Summer), Dec (Holidays)               │    │   │
+│  │  │ Low: Jan-Feb (Post-holiday)                          │    │   │
+│  │  │ Score Adjustment: +5 in summer, -5 in winter         │    │   │
+│  │  └──────────────────────────────────────────────────────┘    │   │
+│  │                                                               │   │
+│  │  ─────────────────────────────────────────────────────────── │   │
+│  │                                                               │   │
+│  │  RETAIL / E-COMMERCE:                                         │   │
+│  │  ┌──────────────────────────────────────────────────────┐    │   │
+│  │  │ J  F  M  A  M  J  J  A  S  O  N  D                    │    │   │
+│  │  │ ▃  ▃  ▄  ▄  ▅  ▅  ▄  ▅  ▅  ▆  ▇  █ ← Activity       │    │   │
+│  │  │ Peak: Nov-Dec (Holiday shopping), Aug (Back-to-school)│    │   │
+│  │  │ Low: Jan-Feb (Post-holiday lull)                     │    │   │
+│  │  │ Score Adjustment: +8 in Q4, -5 in Q1                 │    │   │
+│  │  └──────────────────────────────────────────────────────┘    │   │
+│  │                                                               │   │
+│  │  ─────────────────────────────────────────────────────────── │   │
+│  │                                                               │   │
+│  │  TAX / ACCOUNTING:                                            │   │
+│  │  ┌──────────────────────────────────────────────────────┐    │   │
+│  │  │ J  F  M  A  M  J  J  A  S  O  N  D                    │    │   │
+│  │  │ ▅  ▇  █  █  ▃  ▃  ▃  ▃  ▄  ▅  ▅  ▆ ← Activity       │    │   │
+│  │  │ Peak: Jan-Apr (Tax season), Sep-Dec (Year-end)       │    │   │
+│  │  │ Low: May-Aug (Off-season)                            │    │   │
+│  │  │ Score Adjustment: +10 in Q1, -3 in Q3                │    │   │
+│  │  └──────────────────────────────────────────────────────┘    │   │
+│  │                                                               │   │
+│  │  ─────────────────────────────────────────────────────────── │   │
+│  │                                                               │   │
+│  │  SAAS / SOFTWARE:                                             │   │
+│  │  ┌──────────────────────────────────────────────────────┐    │   │
+│  │  │ J  F  M  A  M  J  J  A  S  O  N  D                    │    │   │
+│  │  │ ▅  ▅  ▆  ▆  ▆  ▆  ▄  ▄  ▆  ▆  ▆  ▄ ← Activity       │    │   │
+│  │  │ Relatively flat; slight dip in summer/December       │    │   │
+│  │  │ Budget cycles: EOQ pushes, January renewals          │    │   │
+│  │  │ Score Adjustment: Minimal seasonal variation         │    │   │
+│  │  └──────────────────────────────────────────────────────┘    │   │
+│  │                                                               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  SEASONALITY ADJUSTER:                                             │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ // /lib/seasonality/adjuster.ts                              │   │
+│  │                                                               │   │
+│  │ export async function getSeasonalContext(                    │   │
+│  │   industryId: string,                                        │   │
+│  │   date: Date = new Date()                                    │   │
+│  │ ): Promise<SeasonalContext> {                                │   │
+│  │   const month = date.getMonth() + 1;                         │   │
+│  │   const quarter = Math.ceil(month / 3);                      │   │
+│  │                                                               │   │
+│  │   const seasonality = await db.industry_seasonality.findFirst({│  │
+│  │     where: { industry_id: industryId, month }                │   │
+│  │   });                                                        │   │
+│  │                                                               │   │
+│  │   return {                                                   │   │
+│  │     activityIndex: seasonality?.activity_index ?? 1.0,       │   │
+│  │     scoreAdjustment: seasonality?.score_adjustment ?? 0,     │   │
+│  │     interpretation: seasonality?.interpretation_note ??      │   │
+│  │       'Normal seasonal period',                              │   │
+│  │     keyEvents: seasonality?.key_events ?? [],                │   │
+│  │     isHighSeason: (seasonality?.activity_index ?? 1) > 1.2,  │   │
+│  │     isLowSeason: (seasonality?.activity_index ?? 1) < 0.8,   │   │
+│  │   };                                                         │   │
+│  │ }                                                            │   │
+│  │                                                               │   │
+│  │ export function applySeasonalAdjustment(                     │   │
+│  │   score: number,                                             │   │
+│  │   context: SeasonalContext                                   │   │
+│  │ ): { adjustedScore: number; note: string } {                 │   │
+│  │   const adjusted = Math.min(100, Math.max(0,                 │   │
+│  │     score + context.scoreAdjustment                          │   │
+│  │   ));                                                        │   │
+│  │                                                               │   │
+│  │   const note = context.isHighSeason                          │   │
+│  │     ? '📈 Peak season - scores typically higher'             │   │
+│  │     : context.isLowSeason                                    │   │
+│  │     ? '📉 Off-season - scores may be lower than usual'       │   │
+│  │     : '';                                                    │   │
+│  │                                                               │   │
+│  │   return { adjustedScore: adjusted, note };                  │   │
+│  │ }                                                            │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  IMPLEMENTATION FILES:                                             │
+│  /lib/seasonality/adjuster.ts                                      │
+│  /lib/seasonality/calendar.ts                                      │
+│  /scripts/seed-industry-seasonality.ts                             │
+│  /migrations/XXX_industry_seasonality.sql                          │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
 ### 2.197 Semantic Audit Dashboard (NEW)
 
 ```
@@ -18435,6 +19734,10 @@ omArchive(userId);                           │   │
 | 5 | **SemAudit: Enum TypeScript exports** | /lib/types/enums.ts - type-safe enum definitions | Claude |
 | 5 | **SemAudit: Naming convention doc** | /docs/standards/NAMING-CONVENTIONS.md - table/column rules | Claude |
 | 5 | **SemAudit: Base table template** | /migrations/base-table-template.sql - audit columns standard | Claude |
+| 5 | **Domain: Industry taxonomy seed** | /data/industry-taxonomy.json - 50 verticals with sub-categories | Claude |
+| 5 | **Domain: Vertical prompt library v1** | /lib/prompts/verticals/ - base prompts for 10 priority verticals | Claude |
+| 5 | **Domain: vertical_prompts table** | Migration with vertical_id, prompt_template, context_terms | Claude |
+| 5 | **Domain: Geographic context base** | /lib/domain/geographic.ts - US/EU/LATAM market context | Claude |
 
 **NEW: Security Deliverables Week 1:**
 ```typescript
@@ -18576,6 +19879,11 @@ const SCORING_WEIGHTS = {
 | 5 | **RLHF: Implicit signal collector** | /lib/rlhf/implicit-signals.ts - dwell time, scroll depth tracking | Claude |
 | 5 | **RLHF: implicit_feedback_events table** | Schema: session_id, event_type, value, element_id, timestamp | Claude |
 | 5 | **RLHF: Feedback submission API** | /api/feedback/route.ts - POST endpoint with rate limiting | Claude |
+| 5 | **Domain: Domain glossary table** | Migration: domain_glossary with term, definition, vertical | Claude |
+| 5 | **Domain: Glossary seed data** | /data/glossary-seed.json - 100 terms across 10 verticals | Claude |
+| 5 | **Domain: Competitor tier schema** | /lib/domain/competitor-tiers.ts - Enterprise/Mid/SMB/Local | Claude |
+| 5 | **Domain: Industry benchmark baseline** | industry_benchmarks table + initial 10-vertical baseline | Claude |
+| 5 | **Domain: Regulatory context flags** | /lib/domain/regulatory.ts - HIPAA, PCI, SOC2 flags by vertical | Claude |
 
 **Acceptance Criteria Phase 1:**
 - [ ] User can enter URL and receive analysis
@@ -18775,6 +20083,11 @@ const SCORING_WEIGHTS = {
 | 5 | **IT: AdminForm component** | /components/admin/forms/AdminForm.tsx - standard patterns | Claude |
 | 5 | **IT: ConfirmDialog component** | /components/admin/forms/ConfirmDialog.tsx - destructive actions | Claude |
 | 5 | **IT: BulkActionBar** | /components/admin/BulkActionBar.tsx - multi-select actions | Claude |
+| 5 | **Domain: Vertical prompt selector** | /lib/domain/prompt-selector.ts - route to vertical prompts | Claude |
+| 5 | **Domain: Industry scoring weights** | industry_scoring_weights table + 10-vertical config | Claude |
+| 5 | **Domain: Moat extractor v1** | /lib/domain/moat-extractor.ts - unique selling points | Claude |
+| 5 | **Domain: Competitor tracker schema** | competitor_profiles + sov_history tables | Claude |
+| 5 | **Domain: SOV calculator v1** | /lib/domain/sov-calculator.ts - share of voice tracking | Claude |
 
 **Caching Strategy:**
 
@@ -18855,6 +20168,11 @@ const CACHE_TTL = {
 | 5 | **SemAudit: CHECK constraints** | /migrations/003_check_constraints.sql - score ranges, non-negative | Claude |
 | 5 | **SemAudit: FK ON DELETE rules** | Document ON DELETE behavior for all FK relationships | Claude |
 | 5 | **SemAudit: Orphan detection query** | /lib/data-quality/orphan-detector.ts - find orphaned records | Claude |
+| 5 | **Domain: Benchmark calculator v1** | /lib/domain/benchmark-calculator.ts - percentile scoring | Claude |
+| 5 | **Domain: Term resolver service** | /lib/domain/term-resolver.ts - glossary disambiguation | Claude |
+| 5 | **Domain: Cultural context injector** | /lib/domain/cultural-context.ts - US/EU/LATAM query mods | Claude |
+| 5 | **Domain: Seasonality config v1** | industry_seasonality table + initial 10 verticals | Claude |
+| 5 | **Domain: Expert validation queue** | expert_review_queue table + routing logic | Claude |
 
 **Freemium Gating Rules:**
 
@@ -18979,6 +20297,9 @@ const PRODUCTS = {
 | 5 | **Data: Retention policies table** | retention_policies + initial configurations | Claude |
 | 5 | **Data: Idempotent pipelines v1** | Checkpoint manager + upsert patterns | Claude |
 | 5 | **Data: Contract CI validation** | GitHub Action for contract compatibility check | Claude |
+| 5 | **Domain: Multi-market expansion** | market_contexts table + US/UK/EU/LATAM configs | Claude |
+| 5 | **Domain: Vertical prompts v2** | Expand to 25 verticals with sub-categories | Claude |
+| 5 | **Domain: Compliance checker v1** | /lib/domain/compliance-checker.ts - auto-flag by vertical | Claude |
 
 **Monitoring Schedule:**
 
@@ -19097,6 +20418,11 @@ const ALERT_THRESHOLDS = {
 | 5 | **RLHF: prompt_experiments table** | Schema: experiment_id, variants, traffic_split, metrics | Claude |
 | 5 | **RLHF: experiment_assignments table** | User-to-variant assignment tracking | Claude |
 | 5 | **RLHF: RLHF metrics dashboard** | /app/(admin)/rlhf/metrics/page.tsx - feedback loop analytics | Claude |
+| 5 | **Domain: Expert review queue UI** | /app/(admin)/domain/reviews/page.tsx - validation queue | Claude |
+| 5 | **Domain: domain_experts table** | Schema: expert_id, name, email, verticals[], credentials | Claude |
+| 5 | **Domain: Expert routing system** | /lib/domain/expert-router.ts - route by vertical expertise | Claude |
+| 5 | **Domain: Seasonality adjuster v1** | /lib/domain/seasonality-adjuster.ts - time-based context | Claude |
+| 5 | **Domain: Benchmark dashboard** | /app/(admin)/domain/benchmarks/page.tsx - percentile views | Claude |
 
 **Why Add Google/Perplexity in Phase 4?**
 - By Week 7, we should have paying customers generating revenue
@@ -19211,6 +20537,24 @@ const ALERT_THRESHOLDS = {
 | 5 | **SemAudit: Semantic health dashboard** | /app/(admin)/semantic-audit/page.tsx - unified health view | Claude |
 | 5 | **SemAudit: Enum consistency monitor** | /lib/semantic-audit/enum-auditor.ts - detect legacy values | Claude |
 | 5 | **SemAudit: JSONB ref validator** | /lib/data-quality/jsonb-ref-validator.ts - validate embedded UUIDs | Claude |
+| 5 | **Domain: Vertical prompts v3 complete** | All 50 verticals with specialized prompts | Claude |
+| 5 | **Domain: Industry benchmark 50-vertical** | Complete benchmark data for all verticals | Claude |
+| 5 | **Domain: Glossary expansion to 500 terms** | Full domain terminology across all verticals | Claude |
+| 5 | **Domain: SOV trend analysis** | /lib/domain/sov-trends.ts - momentum indicators | Claude |
+| 5 | **Domain: Competitive intelligence dashboard** | /app/(admin)/domain/competitive/page.tsx | Claude |
+| 5 | **Domain: Domain health monitor** | /lib/domain/health-monitor.ts - data freshness + coverage | Claude |
+
+**Phase 4 Domain Checklist (End of Week 8):**
+- [ ] 50 verticals with specialized prompts active
+- [ ] Industry benchmarks populated for all verticals
+- [ ] 500+ domain terms in glossary with disambiguation
+- [ ] Expert validation queue processing <24h turnaround
+- [ ] Seasonality adjustments active for 10+ cyclical industries
+- [ ] SOV tracking active with weekly trend reports
+- [ ] Competitive intelligence for top 3 competitors per analysis
+- [ ] Geographic context (US/EU/LATAM) active in prompts
+- [ ] Regulatory compliance flags showing for regulated verticals
+- [ ] Domain health dashboard showing >95% coverage
 
 **Phase 4 Dev Checklist (End of Week 8):**
 - [ ] Feature flags on Vercel Edge Config
@@ -20762,6 +22106,94 @@ Begin Phase 1, Week 1, Day 1:
 
 ---
 
+### v25.0 Domain Expert Review Summary
+
+**Reviewer:** Senior Director Domain Experts - 12,340 years aggregate experience across all top consulting firms, Fortune 500, research centers, and specialized industry practices
+
+**Review Focus:** Comprehensive domain expertise audit ensuring industry vertical depth, competitive intelligence accuracy, geographic/cultural context, and domain-specific validation mechanisms
+
+**Critical Gaps Identified (22 total across 4 categories):**
+
+**Category A: Industry Vertical Depth Gaps (6)**
+- A.1: No vertical-specific prompt libraries
+- A.2: No industry-specific scoring weights
+- A.3: No vertical benchmark databases
+- A.4: No domain terminology glossaries
+- A.5: No regulatory context per vertical
+- A.6: No seasonal/cyclical awareness
+
+**Category B: Competitive Intelligence Gaps (5)**
+- B.1: No competitor tier classification (Enterprise/Mid/SMB/Local)
+- B.2: No Share of Voice (SOV) tracking with momentum
+- B.3: No competitive moat extraction
+- B.4: No industry hierarchy for competitive context
+- B.5: No competitor data freshness monitoring
+
+**Category C: Geographic & Cultural Gaps (5)**
+- C.1: No market-specific query modifications
+- C.2: No cultural preference context injection
+- C.3: No multi-market expansion architecture
+- C.4: No regional competitor profiling
+- C.5: No language/terminology localization per market
+
+**Category D: Validation & Accuracy Gaps (6)**
+- D.1: No expert review queue for edge cases
+- D.2: No domain expert routing system
+- D.3: No vertical-specific validation rules
+- D.4: No accuracy feedback loop by domain
+- D.5: No industry expert credential verification
+- D.6: No domain coverage monitoring
+
+**Architecture Sections Added (10):**
+- 2.198: Domain Expert Architecture Gap Analysis
+- 2.199: Vertical-Specific Prompt Library Architecture
+- 2.200: Industry Benchmark Database Architecture
+- 2.201: Domain Terminology Glossary System
+- 2.202: Competitive Intelligence Framework
+- 2.203: Geographic & Cultural Context System
+- 2.204: Domain Expert Validation Layer
+- 2.205: Industry-Specific Scoring Weights
+- 2.206: Regulatory Compliance Matrix
+- 2.207: Seasonality & Cyclical Awareness
+
+**Database Tables Added (11):**
+- vertical_prompts
+- industry_benchmarks
+- domain_glossary
+- competitor_profiles
+- sov_history
+- market_contexts
+- expert_review_queue
+- domain_experts
+- industry_scoring_weights
+- regulatory_requirements
+- industry_seasonality
+
+**Tasks Added to Implementation Phases:**
+- Week 1: 4 Domain tasks (taxonomy seed, vertical prompts v1, geographic base)
+- Week 2: 5 Domain tasks (glossary, competitor tiers, benchmarks, regulatory)
+- Week 3: 5 Domain tasks (prompt selector, scoring weights, moat extractor, SOV)
+- Week 4: 5 Domain tasks (benchmark calc, term resolver, cultural context, expert queue)
+- Week 6: 3 Domain tasks (multi-market, prompts v2, compliance checker)
+- Week 7: 5 Domain tasks (expert UI, routing, seasonality, benchmark dashboard)
+- Week 8: 6 Domain tasks (prompts v3, benchmarks 50, glossary 500, SOV trends)
+
+**Phase 4 Domain Checklist Added:** 10 success criteria for domain expertise validation
+
+**Key Domain Expert Principles:**
+1. **Vertical specificity beats generic prompts** - A restaurant query is not a SaaS query
+2. **Benchmarks require industry context** - 70/100 in Healthcare ≠ 70/100 in eCommerce
+3. **Terminology disambiguation prevents noise** - "Cloud" means different things by vertical
+4. **Competitor tiers matter for accurate SOV** - Don't compare SMB to Enterprise
+5. **Geographic context shapes recommendations** - US queries ≠ EU queries ≠ LATAM queries
+6. **Regulatory flags are table stakes** - HIPAA for Healthcare is mandatory context
+7. **Seasonality affects baselines** - Tax software peaks in Q1, retail in Q4
+8. **Expert validation catches edge cases** - AI can't know everything about every vertical
+9. **SOV momentum matters more than snapshots** - Trends reveal strategic positioning
+10. **Domain health requires continuous monitoring** - Data staleness kills accuracy
+
+---
+
 *Document prepared by BCG Digital Ventures - Technology Strategy Practice*
 *Technical Review by: Senior Software Director - 300 years experience*
 *UX/UI Review by: Senior UX/UI Executive - 300 years experience, IDEO/frog/Pentagram background*
@@ -20786,6 +22218,7 @@ Begin Phase 1, Week 1, Day 1:
 *Internal Tools & DX Review by: Senior Director Internal Tools & UX Engineer - 578 years experience, ex-Stripe Internal Tools/Notion Platform/Figma Plugins/Retool/Vercel Dashboard/Linear/Raycast/Meta Internal Tools/Google Admin Console/AWS Console*
 *RLHF & Feedback Loop Review by: Senior RLHF Specialist Director - 433 years experience, ex-OpenAI RLHF/Anthropic Constitutional AI/Google DeepMind Reward/Meta FAIR Human Feedback/Microsoft Research Alignment/Cohere Human Preference/Character.AI Training/Midjourney Feedback/Scale AI Data/Surge AI Labeling/McKinsey AI Practice/BCG Gamma*
 *Semantic Audit & Data Quality Review by: Senior Lead Semantic Auditor - 543 years experience, ex-Google Data Governance/Meta Data Quality/Amazon Data Catalog/Snowflake Schema Design/dbt Labs/Great Expectations/Monte Carlo Data/Collibra/Alation/Informatica/Atlan/McKinsey Data Governance/BCG Data Strategy/Bain Analytics*
+*Domain Expert Review by: Senior Director Domain Experts - 12,340 years aggregate experience, all top consulting firms (McKinsey/BCG/Bain/Deloitte/Accenture), Fortune 500 industry leaders, specialized research centers (MIT Media Lab/Stanford HAI/Harvard Business School/INSEAD/Wharton), vertical expertise across Healthcare/SaaS/Legal/Finance/Restaurant/Retail/Manufacturing/Real Estate/Education/Professional Services*
 *For: AI Perception Engineering Agency*
 *Date: November 26, 2024*
-*Version: 24.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering + Backend Engineering + Data Visualization + CTO/CAIO Executive + COO Operations + CFO Finance + CEO Strategic + Internal Tools & DX + RLHF & Feedback Loop + Semantic Audit & Data Quality Review)*
+*Version: 25.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering + Backend Engineering + Data Visualization + CTO/CAIO Executive + COO Operations + CFO Finance + CEO Strategic + Internal Tools & DX + RLHF & Feedback Loop + Semantic Audit & Data Quality + Domain Expert Review)*

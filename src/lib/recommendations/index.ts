@@ -24,6 +24,9 @@ import type {
   RecommendationCategory,
 } from '../ai/schemas';
 
+// Re-export types for consumers
+export type { Recommendation, RecommendationPriority, RecommendationCategory };
+
 // ================================================================
 // TYPES
 // ================================================================
@@ -598,7 +601,7 @@ function checkTrigger(
     }
 
     case 'sentiment': {
-      // Check if sentiment matches
+      // Check if sentiment matches based on grade mapping
       const overallGrade = scoreResult.overallGrade;
       if (trigger.sentiment === 'negative' && (overallGrade === 'poor' || overallGrade === 'critical')) {
         return true;
@@ -606,10 +609,15 @@ function checkTrigger(
       if (trigger.sentiment === 'neutral' && overallGrade === 'average') {
         return true;
       }
-      // Check sentiment category specifically
-      const sentimentCategory = scoreResult.categories.find(c => c.category === 'sentiment');
-      if (sentimentCategory && sentimentCategory.grade === trigger.sentiment) {
+      if (trigger.sentiment === 'positive' && (overallGrade === 'excellent' || overallGrade === 'good')) {
         return true;
+      }
+      // Check sentiment category specifically based on score thresholds
+      const sentimentCategory = scoreResult.categories.find(c => c.category === 'sentiment');
+      if (sentimentCategory) {
+        if (trigger.sentiment === 'negative' && sentimentCategory.score < 40) return true;
+        if (trigger.sentiment === 'neutral' && sentimentCategory.score >= 40 && sentimentCategory.score < 60) return true;
+        if (trigger.sentiment === 'positive' && sentimentCategory.score >= 60) return true;
       }
       return false;
     }
@@ -1008,12 +1016,11 @@ export function generateRecommendations(
 
     return Ok(result);
   } catch (error) {
-    timer.failure({
-      error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    const err = error instanceof Error ? error : new Error('Unknown error');
+    timer.failure(err);
 
     return Err(new ValidationError(
-      `Failed to generate recommendations: ${error instanceof Error ? error.message : 'Unknown error'}`
+      `Failed to generate recommendations: ${err.message}`
     ));
   }
 }

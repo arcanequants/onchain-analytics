@@ -158,7 +158,7 @@ export function ScoreCircle({
   showGrade = true,
   loading = false,
   onScoreChange,
-}: ScoreCircleProps): JSX.Element {
+}: ScoreCircleProps): React.ReactElement {
   const config = SIZE_CONFIGS[size];
   const strokeWidth = customStrokeWidth ?? config.strokeWidth;
 
@@ -337,7 +337,7 @@ export interface ScoreBadgeProps {
   className?: string;
 }
 
-export function ScoreBadge({ score, className = '' }: ScoreBadgeProps): JSX.Element {
+export function ScoreBadge({ score, className = '' }: ScoreBadgeProps): React.ReactElement {
   const normalizedScore = Math.max(0, Math.min(100, Math.round(score)));
   const gradeInfo = getScoreGrade(normalizedScore);
 
@@ -373,7 +373,7 @@ export function ScoreBar({
   showValue = true,
   animate = true,
   className = '',
-}: ScoreBarProps): JSX.Element {
+}: ScoreBarProps): React.ReactElement {
   const normalizedScore = Math.max(0, Math.min(100, Math.round(score)));
   const gradeInfo = getScoreGrade(normalizedScore);
 
@@ -424,7 +424,7 @@ export function ScoreComparison({
   projectedScore,
   size = 'md',
   className = '',
-}: ScoreComparisonProps): JSX.Element {
+}: ScoreComparisonProps): React.ReactElement {
   const current = Math.max(0, Math.min(100, Math.round(currentScore)));
   const previous = previousScore !== undefined
     ? Math.max(0, Math.min(100, Math.round(previousScore)))
@@ -480,6 +480,155 @@ export function ScoreComparison({
             <span className="text-xs text-gray-500 mt-1">Projected</span>
           </div>
         </>
+      )}
+    </div>
+  );
+}
+
+// ================================================================
+// VARIANT: SCORE GAUGE (Semicircular)
+// ================================================================
+
+export interface ScoreGaugeProps {
+  /** Score value (0-100) */
+  score: number;
+  /** Size of the gauge */
+  size?: 'sm' | 'md' | 'lg';
+  /** Label below the score */
+  label?: string;
+  /** Show animated entrance */
+  animate?: boolean;
+  /** Show min/max labels */
+  showMinMax?: boolean;
+  /** Custom class name */
+  className?: string;
+}
+
+const GAUGE_SIZE_CONFIGS = {
+  sm: { width: 120, height: 70, fontSize: 18, labelSize: 10, strokeWidth: 8 },
+  md: { width: 180, height: 100, fontSize: 28, labelSize: 12, strokeWidth: 10 },
+  lg: { width: 240, height: 130, fontSize: 36, labelSize: 14, strokeWidth: 12 },
+} as const;
+
+export function ScoreGauge({
+  score,
+  size = 'md',
+  label,
+  animate = true,
+  showMinMax = true,
+  className = '',
+}: ScoreGaugeProps): React.ReactElement {
+  const config = GAUGE_SIZE_CONFIGS[size];
+  const normalizedScore = Math.max(0, Math.min(100, Math.round(score)));
+  const gradeInfo = getScoreGrade(normalizedScore);
+
+  // SVG calculations for semicircle
+  const centerX = config.width / 2;
+  const centerY = config.height - 10;
+  const radius = (config.width - config.strokeWidth * 2) / 2;
+
+  // Calculate arc paths
+  const startAngle = 180;
+  const endAngle = 0;
+  const progressAngle = startAngle - (normalizedScore / 100) * 180;
+
+  // Background arc path (full semicircle)
+  const bgArcStart = polarToCartesian(centerX, centerY, radius, startAngle);
+  const bgArcEnd = polarToCartesian(centerX, centerY, radius, endAngle);
+  const bgArcPath = `M ${bgArcStart.x} ${bgArcStart.y} A ${radius} ${radius} 0 0 1 ${bgArcEnd.x} ${bgArcEnd.y}`;
+
+  // Progress arc path
+  const progressArcEnd = polarToCartesian(centerX, centerY, radius, progressAngle);
+  const largeArc = normalizedScore > 50 ? 1 : 0;
+  const progressArcPath = normalizedScore > 0
+    ? `M ${bgArcStart.x} ${bgArcStart.y} A ${radius} ${radius} 0 ${largeArc} 1 ${progressArcEnd.x} ${progressArcEnd.y}`
+    : '';
+
+  return (
+    <div
+      className={`flex flex-col items-center ${className}`}
+      data-testid="score-gauge"
+      role="img"
+      aria-label={`Score: ${normalizedScore} - ${gradeInfo.label}`}
+    >
+      <div className="relative" style={{ width: config.width, height: config.height }}>
+        <svg
+          width={config.width}
+          height={config.height}
+          viewBox={`0 0 ${config.width} ${config.height}`}
+        >
+          {/* Background arc */}
+          <path
+            d={bgArcPath}
+            fill="none"
+            stroke="#e5e7eb"
+            strokeWidth={config.strokeWidth}
+            strokeLinecap="round"
+          />
+
+          {/* Progress arc */}
+          {normalizedScore > 0 && (
+            <path
+              d={progressArcPath}
+              fill="none"
+              stroke={gradeInfo.color}
+              strokeWidth={config.strokeWidth}
+              strokeLinecap="round"
+              className={animate ? 'transition-all duration-1000 ease-out' : ''}
+              data-testid="gauge-progress"
+            />
+          )}
+
+          {/* Min/Max labels */}
+          {showMinMax && (
+            <>
+              <text
+                x={config.strokeWidth}
+                y={config.height - 2}
+                className="fill-gray-400"
+                style={{ fontSize: config.labelSize * 0.8 }}
+              >
+                0
+              </text>
+              <text
+                x={config.width - config.strokeWidth - 10}
+                y={config.height - 2}
+                className="fill-gray-400"
+                style={{ fontSize: config.labelSize * 0.8 }}
+              >
+                100
+              </text>
+            </>
+          )}
+        </svg>
+
+        {/* Center content */}
+        <div
+          className="absolute inset-0 flex flex-col items-center justify-end pb-2"
+        >
+          <span
+            className="font-bold"
+            style={{ fontSize: config.fontSize, color: gradeInfo.color }}
+            data-testid="gauge-value"
+          >
+            {normalizedScore}
+          </span>
+          <span
+            className="font-medium -mt-1"
+            style={{ fontSize: config.labelSize, color: gradeInfo.color }}
+          >
+            {gradeInfo.label}
+          </span>
+        </div>
+      </div>
+
+      {label && (
+        <span
+          className="mt-1 text-gray-600 font-medium text-center"
+          style={{ fontSize: config.labelSize }}
+        >
+          {label}
+        </span>
       )}
     </div>
   );

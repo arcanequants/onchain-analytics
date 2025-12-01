@@ -201,6 +201,56 @@ function getClientIP(req: NextRequest): string {
   );
 }
 
+/**
+ * Extract or generate request ID from headers
+ * Supports: X-Request-ID, X-Request-Id, x-request-id
+ */
+function getOrGenerateRequestId(req: NextRequest): string {
+  const existing =
+    req.headers.get('x-request-id') ||
+    req.headers.get('X-Request-ID') ||
+    req.headers.get('X-Request-Id');
+
+  if (existing && isValidRequestId(existing)) {
+    return existing;
+  }
+
+  return crypto.randomUUID();
+}
+
+/**
+ * Validate request ID format (UUID or custom ID)
+ */
+function isValidRequestId(id: string): boolean {
+  // Accept UUIDs or alphanumeric strings up to 64 chars
+  return /^[a-zA-Z0-9-_]{1,64}$/.test(id);
+}
+
+/**
+ * Extract trace ID from headers (for distributed tracing)
+ * Supports: X-Trace-ID, traceparent (W3C format)
+ */
+function getTraceId(req: NextRequest, requestId: string): string {
+  // Check for W3C Trace Context
+  const traceparent = req.headers.get('traceparent');
+  if (traceparent) {
+    // traceparent format: version-trace_id-parent_id-flags
+    const parts = traceparent.split('-');
+    if (parts.length >= 2 && parts[1].length === 32) {
+      return parts[1];
+    }
+  }
+
+  // Check for custom trace ID header
+  const traceId = req.headers.get('x-trace-id');
+  if (traceId && isValidRequestId(traceId)) {
+    return traceId;
+  }
+
+  // Fall back to request ID as trace ID
+  return requestId;
+}
+
 function parseQueryParams(req: NextRequest): Record<string, string> {
   const params: Record<string, string> = {};
   req.nextUrl.searchParams.forEach((value, key) => {
@@ -248,13 +298,13 @@ function validateWithSchema<T>(
     return Ok(result);
   } catch (error) {
     if (error instanceof ZodError) {
-      // Zod v4+ uses .issues instead of .errors
-      const issues = error.issues || error.errors || [];
+      // Zod uses .issues for validation errors
+      const issues = error.issues || [];
       return Err(
         new SchemaValidationError(
           `Invalid ${source} parameters`,
-          issues.map((e: { path: (string | number)[]; message: string }) => ({
-            path: e.path.join('.'),
+          issues.map((e) => ({
+            path: e.path.map(String).join('.'),
             message: e.message,
           }))
         )
@@ -271,6 +321,7 @@ function validateWithSchema<T>(
 function createSuccessResponse<T>(
   data: T,
   requestId: string,
+  traceId: string,
   startTime: number,
   status: number = 200
 ): NextResponse<APIResponse<T>> {
@@ -284,13 +335,20 @@ function createSuccessResponse<T>(
         duration: Date.now() - startTime,
       },
     },
-    { status }
+    {
+      status,
+      headers: {
+        'X-Request-ID': requestId,
+        'X-Trace-ID': traceId,
+      },
+    }
   );
 }
 
 function createErrorResponse(
   error: AppError,
   requestId: string,
+  traceId: string,
   startTime: number
 ): NextResponse<APIResponse> {
   const response: APIResponse = {
@@ -307,8 +365,13 @@ function createErrorResponse(
     },
   };
 
+  // Build response headers
+  const headers: Record<string, string> = {
+    'X-Request-ID': requestId,
+    'X-Trace-ID': traceId,
+  };
+
   // Add rate limit header if applicable
-  const headers: Record<string, string> = {};
   if (error instanceof RateLimitError) {
     headers['Retry-After'] = String(error.retryAfter);
   }
@@ -364,11 +427,13 @@ export function withMiddleware<T>(
 
   return async (req: NextRequest, routeContext: { params: Record<string, string> }) => {
     const startTime = Date.now();
-    const requestId = crypto.randomUUID();
+    const requestId = getOrGenerateRequestId(req);
+    const traceId = getTraceId(req, requestId);
 
     // Create request context
     const context = createContext({
       requestId,
+      traceId,
       method: req.method,
       path: req.nextUrl.pathname,
       userIp: getClientIP(req),
@@ -388,14 +453,14 @@ export function withMiddleware<T>(
         );
         if (!rateLimitResult.ok) {
           timer.failure(rateLimitResult.error);
-          return createErrorResponse(rateLimitResult.error, requestId, startTime);
+          return createErrorResponse(rateLimitResult.error, requestId, traceId, startTime);
         }
 
         // 2. Authentication
         const authResult = await extractAuth(req);
         if (!authResult.ok) {
           timer.failure(authResult.error);
-          return createErrorResponse(authResult.error, requestId, startTime);
+          return createErrorResponse(authResult.error, requestId, traceId, startTime);
         }
 
         const auth = authResult.value;
@@ -406,7 +471,7 @@ export function withMiddleware<T>(
         if (requireAuth && !userId) {
           const error = new UnauthenticatedError('Authentication required');
           timer.failure(error);
-          return createErrorResponse(error, requestId, startTime);
+          return createErrorResponse(error, requestId, traceId, startTime);
         }
 
         // 4. Plan check
@@ -415,7 +480,7 @@ export function withMiddleware<T>(
             `This endpoint requires ${requiredPlan} plan or higher`
           );
           timer.failure(error);
-          return createErrorResponse(error, requestId, startTime);
+          return createErrorResponse(error, requestId, traceId, startTime);
         }
 
         // 5. Query validation
@@ -425,7 +490,7 @@ export function withMiddleware<T>(
           const queryResult = validateWithSchema(queryParams, querySchema, 'query');
           if (!queryResult.ok) {
             timer.failure(queryResult.error);
-            return createErrorResponse(queryResult.error, requestId, startTime);
+            return createErrorResponse(queryResult.error, requestId, traceId, startTime);
           }
           validatedQuery = queryResult.value;
         }
@@ -436,13 +501,13 @@ export function withMiddleware<T>(
           const bodyResult = await parseBody(req);
           if (!bodyResult.ok) {
             timer.failure(bodyResult.error);
-            return createErrorResponse(bodyResult.error, requestId, startTime);
+            return createErrorResponse(bodyResult.error, requestId, traceId, startTime);
           }
 
           const schemaResult = validateWithSchema(bodyResult.value, bodySchema, 'body');
           if (!schemaResult.ok) {
             timer.failure(schemaResult.error);
-            return createErrorResponse(schemaResult.error, requestId, startTime);
+            return createErrorResponse(schemaResult.error, requestId, traceId, startTime);
           }
           validatedBody = schemaResult.value;
         }
@@ -478,11 +543,11 @@ export function withMiddleware<T>(
         // 8. Handle result
         if (!result.ok) {
           timer.failure(result.error);
-          return createErrorResponse(result.error, requestId, startTime);
+          return createErrorResponse(result.error, requestId, traceId, startTime);
         }
 
         timer.success({ userId, userPlan });
-        return createSuccessResponse(result.value, requestId, startTime);
+        return createSuccessResponse(result.value, requestId, traceId, startTime);
       } catch (error) {
         // Unexpected error
         const appError =
@@ -503,7 +568,7 @@ export function withMiddleware<T>(
           });
         }
 
-        return createErrorResponse(appError, requestId, startTime);
+        return createErrorResponse(appError, requestId, traceId, startTime);
       }
     });
   };

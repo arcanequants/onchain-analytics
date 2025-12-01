@@ -16,7 +16,7 @@
 import { z } from 'zod';
 import { Result, Ok, Err } from '../result';
 import { ValidationError, ExternalServiceError } from '../errors';
-import { validateUrl, type UrlValidationResult } from '../security/url-validator';
+import { validateUrl, type URLValidationResult } from '../security/url-validator';
 import { apiLogger } from '../logger';
 
 // ================================================================
@@ -102,7 +102,7 @@ export interface ExtractedMetadata {
 export interface UrlAnalysisResult {
   success: boolean;
   metadata: ExtractedMetadata;
-  validation: UrlValidationResult;
+  validation: URLValidationResult;
   warnings: string[];
 }
 

@@ -1,18 +1,21 @@
 /**
- * AI Provider Clients - OpenAI + Anthropic
+ * AI Provider Clients - OpenAI, Anthropic, Google, Perplexity
  *
- * Phase 1, Week 1, Day 1
+ * Phase 2, Week 7, Day 1
  * Based on EXECUTIVE-ROADMAP-BCG.md Section 2.14
  *
- * Budget constraint: Start with OpenAI + Anthropic ONLY
- * Google/Perplexity deferred to Phase 4
+ * All 4 major AI providers now supported:
+ * - OpenAI (GPT-4, GPT-4o, GPT-3.5)
+ * - Anthropic (Claude 3.5, Claude 3)
+ * - Google (Gemini 1.5, Gemini 2.0)
+ * - Perplexity (Sonar models with real-time search)
  */
 
 import { z } from 'zod';
 import { aiLogger } from '../../logger';
 import { Result, Ok, Err } from '../../result';
 import { AIProviderError, RateLimitError } from '../../errors';
-import { getProviderParameters, type PromptType, type AIProvider as ProviderName } from '../prompts';
+import { getProviderParameters, type PromptType, type AIProvider as ProviderName, type PromptParameters } from '../prompts';
 
 // ================================================================
 // TYPES
@@ -100,6 +103,19 @@ const ANTHROPIC_COSTS = {
   'claude-3-opus-20240229': { input: 15, output: 75 },
 } as const;
 
+const GOOGLE_COSTS = {
+  'gemini-1.5-flash': { input: 0.075, output: 0.30 },
+  'gemini-1.5-flash-8b': { input: 0.0375, output: 0.15 },
+  'gemini-1.5-pro': { input: 1.25, output: 5.0 },
+  'gemini-2.0-flash-exp': { input: 0.075, output: 0.30 },
+} as const;
+
+const PERPLEXITY_COSTS = {
+  'llama-3.1-sonar-small-128k-online': { input: 0.2, output: 0.2 },
+  'llama-3.1-sonar-large-128k-online': { input: 1.0, output: 1.0 },
+  'llama-3.1-sonar-huge-128k-online': { input: 5.0, output: 5.0 },
+} as const;
+
 // ================================================================
 // OPENAI PROVIDER
 // ================================================================
@@ -127,7 +143,7 @@ export class OpenAIProvider implements IAIProvider {
     const timer = aiLogger.time(`openai.query`);
 
     // Get optimized parameters if prompt type is specified
-    const params = options.promptType
+    const params: Partial<PromptParameters> = options.promptType
       ? getProviderParameters(options.promptType, 'openai')
       : {};
 
@@ -343,7 +359,7 @@ export class AnthropicProvider implements IAIProvider {
     const timer = aiLogger.time(`anthropic.query`);
 
     // Get optimized parameters if prompt type is specified
-    const params = options.promptType
+    const params: Partial<PromptParameters> = options.promptType
       ? getProviderParameters(options.promptType, 'anthropic')
       : {};
 
@@ -560,6 +576,447 @@ export class AnthropicProvider implements IAIProvider {
 }
 
 // ================================================================
+// GOOGLE PROVIDER (Gemini)
+// ================================================================
+
+export class GoogleProvider implements IAIProvider {
+  readonly name: ProviderName = 'google';
+  readonly model: string;
+  private readonly apiKey: string;
+  private readonly timeout: number;
+  private readonly maxRetries: number;
+  private readonly baseUrl = 'https://generativelanguage.googleapis.com/v1beta';
+
+  constructor(config: AIProviderConfig) {
+    this.apiKey = config.apiKey;
+    this.model = config.model || 'gemini-1.5-flash'; // Budget-friendly default
+    this.timeout = config.defaultTimeout || 30000;
+    this.maxRetries = config.maxRetries || 2;
+  }
+
+  async query(
+    prompt: string,
+    options: QueryOptions = {}
+  ): Promise<Result<AIResponse, AIProviderError>> {
+    const startTime = Date.now();
+    const timer = aiLogger.time(`google.query`);
+
+    // Get optimized parameters if prompt type is specified
+    const params: Partial<PromptParameters> = options.promptType
+      ? getProviderParameters(options.promptType, 'google')
+      : {};
+
+    const requestBody = {
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: {
+        temperature: options.temperature ?? params.temperature ?? 0.3,
+        maxOutputTokens: options.maxTokens ?? params.maxTokens ?? 1000,
+        topP: options.topP ?? params.topP ?? 1.0,
+      },
+    };
+
+    let lastError: Error | null = null;
+
+    for (let attempt = 0; attempt <= this.maxRetries; attempt++) {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(
+          () => controller.abort(),
+          options.timeout || this.timeout
+        );
+
+        const response = await fetch(
+          `${this.baseUrl}/models/${this.model}:generateContent?key=${this.apiKey}`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestBody),
+            signal: controller.signal,
+          }
+        );
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+
+          // Handle rate limiting
+          if (response.status === 429) {
+            const retryAfter = parseInt(response.headers.get('retry-after') || '60', 10);
+            throw new RateLimitError(retryAfter, `Google API rate limit exceeded`);
+          }
+
+          throw new AIProviderError(
+            'google',
+            `Google API error: ${response.status} - ${errorData?.error?.message || 'Unknown error'}`,
+            response.status >= 500
+          );
+        }
+
+        const data = await response.json();
+        const latencyMs = Date.now() - startTime;
+
+        // Extract text from response
+        const content = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+
+        // Token usage from metadata
+        const usageMetadata = data.usageMetadata || {};
+
+        const result: AIResponse = {
+          content,
+          tokensUsed: {
+            input: usageMetadata.promptTokenCount || 0,
+            output: usageMetadata.candidatesTokenCount || 0,
+            total: usageMetadata.totalTokenCount || 0,
+          },
+          model: this.model,
+          provider: 'google',
+          latencyMs,
+          finishReason: this.mapFinishReason(data.candidates?.[0]?.finishReason),
+        };
+
+        timer.success({
+          model: this.model,
+          tokensUsed: result.tokensUsed.total,
+          latencyMs,
+          attempt,
+        });
+
+        return Ok(result);
+      } catch (error) {
+        lastError = error instanceof Error ? error : new Error(String(error));
+
+        if (error instanceof RateLimitError) {
+          timer.failure(error, { attempt });
+          return Err(new AIProviderError('google', error.message, true, error));
+        }
+
+        if (error instanceof Error && error.name === 'AbortError') {
+          timer.failure(error, { attempt });
+          return Err(new AIProviderError('google', 'Request timed out', true, error));
+        }
+
+        if (attempt < this.maxRetries) {
+          await this.delay(Math.pow(2, attempt) * 1000);
+        }
+      }
+    }
+
+    timer.failure(lastError!, { attempt: this.maxRetries });
+    return Err(
+      new AIProviderError(
+        'google',
+        `Failed after ${this.maxRetries + 1} attempts: ${lastError?.message}`,
+        false,
+        lastError!
+      )
+    );
+  }
+
+  parseStructured<T>(
+    response: string,
+    schema: z.ZodSchema<T>
+  ): Result<T, AIProviderError> {
+    try {
+      const jsonMatch = response.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) {
+        return Err(
+          new AIProviderError('google', 'No JSON object found in response', false)
+        );
+      }
+
+      const parsed = JSON.parse(jsonMatch[0]);
+      const validated = schema.safeParse(parsed);
+
+      if (!validated.success) {
+        return Err(
+          new AIProviderError(
+            'google',
+            `Schema validation failed: ${validated.error.message}`,
+            false
+          )
+        );
+      }
+
+      return Ok(validated.data);
+    } catch (error) {
+      return Err(
+        new AIProviderError(
+          'google',
+          `Failed to parse response: ${error instanceof Error ? error.message : String(error)}`,
+          false
+        )
+      );
+    }
+  }
+
+  calculateCost(tokensInput: number, tokensOutput: number): number {
+    const costs = GOOGLE_COSTS[this.model as keyof typeof GOOGLE_COSTS] ||
+      GOOGLE_COSTS['gemini-1.5-flash'];
+
+    return (
+      (tokensInput / 1_000_000) * costs.input +
+      (tokensOutput / 1_000_000) * costs.output
+    );
+  }
+
+  async isHealthy(): Promise<boolean> {
+    try {
+      const response = await fetch(
+        `${this.baseUrl}/models/${this.model}?key=${this.apiKey}`,
+        { signal: AbortSignal.timeout(5000) }
+      );
+      return response.ok;
+    } catch {
+      return false;
+    }
+  }
+
+  private mapFinishReason(
+    reason: string | undefined
+  ): AIResponse['finishReason'] {
+    switch (reason) {
+      case 'STOP':
+        return 'stop';
+      case 'MAX_TOKENS':
+        return 'length';
+      case 'SAFETY':
+        return 'content_filter';
+      default:
+        return 'error';
+    }
+  }
+
+  private delay(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+}
+
+// ================================================================
+// PERPLEXITY PROVIDER
+// ================================================================
+
+export class PerplexityProvider implements IAIProvider {
+  readonly name: ProviderName = 'perplexity';
+  readonly model: string;
+  private readonly apiKey: string;
+  private readonly timeout: number;
+  private readonly maxRetries: number;
+  private readonly baseUrl = 'https://api.perplexity.ai';
+
+  constructor(config: AIProviderConfig) {
+    this.apiKey = config.apiKey;
+    this.model = config.model || 'llama-3.1-sonar-small-128k-online'; // Budget-friendly default
+    this.timeout = config.defaultTimeout || 30000;
+    this.maxRetries = config.maxRetries || 2;
+  }
+
+  async query(
+    prompt: string,
+    options: QueryOptions = {}
+  ): Promise<Result<AIResponse, AIProviderError>> {
+    const startTime = Date.now();
+    const timer = aiLogger.time(`perplexity.query`);
+
+    // Get optimized parameters if prompt type is specified
+    const params: Partial<PromptParameters> = options.promptType
+      ? getProviderParameters(options.promptType, 'perplexity')
+      : {};
+
+    // Perplexity uses OpenAI-compatible API
+    const requestBody = {
+      model: this.model,
+      messages: [{ role: 'user', content: prompt }],
+      temperature: options.temperature ?? params.temperature ?? 0.3,
+      max_tokens: options.maxTokens ?? params.maxTokens ?? 1000,
+      top_p: options.topP ?? params.topP ?? 1.0,
+      frequency_penalty: options.frequencyPenalty ?? params.frequencyPenalty ?? 0,
+      presence_penalty: options.presencePenalty ?? params.presencePenalty ?? 0,
+    };
+
+    let lastError: Error | null = null;
+
+    for (let attempt = 0; attempt <= this.maxRetries; attempt++) {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(
+          () => controller.abort(),
+          options.timeout || this.timeout
+        );
+
+        const response = await fetch(`${this.baseUrl}/chat/completions`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${this.apiKey}`,
+          },
+          body: JSON.stringify(requestBody),
+          signal: controller.signal,
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+
+          if (response.status === 429) {
+            const retryAfter = parseInt(response.headers.get('retry-after') || '60', 10);
+            throw new RateLimitError(retryAfter, `Perplexity rate limit exceeded`);
+          }
+
+          throw new AIProviderError(
+            'perplexity',
+            `Perplexity API error: ${response.status} - ${errorData?.error?.message || 'Unknown error'}`,
+            response.status >= 500
+          );
+        }
+
+        const data = await response.json();
+        const latencyMs = Date.now() - startTime;
+
+        const result: AIResponse = {
+          content: data.choices?.[0]?.message?.content || '',
+          tokensUsed: {
+            input: data.usage?.prompt_tokens || 0,
+            output: data.usage?.completion_tokens || 0,
+            total: data.usage?.total_tokens || 0,
+          },
+          model: data.model || this.model,
+          provider: 'perplexity',
+          latencyMs,
+          finishReason: this.mapFinishReason(data.choices?.[0]?.finish_reason),
+        };
+
+        timer.success({
+          model: this.model,
+          tokensUsed: result.tokensUsed.total,
+          latencyMs,
+          attempt,
+        });
+
+        return Ok(result);
+      } catch (error) {
+        lastError = error instanceof Error ? error : new Error(String(error));
+
+        if (error instanceof RateLimitError) {
+          timer.failure(error, { attempt });
+          return Err(new AIProviderError('perplexity', error.message, true, error));
+        }
+
+        if (error instanceof Error && error.name === 'AbortError') {
+          timer.failure(error, { attempt });
+          return Err(new AIProviderError('perplexity', 'Request timed out', true, error));
+        }
+
+        if (attempt < this.maxRetries) {
+          await this.delay(Math.pow(2, attempt) * 1000);
+        }
+      }
+    }
+
+    timer.failure(lastError!, { attempt: this.maxRetries });
+    return Err(
+      new AIProviderError(
+        'perplexity',
+        `Failed after ${this.maxRetries + 1} attempts: ${lastError?.message}`,
+        false,
+        lastError!
+      )
+    );
+  }
+
+  parseStructured<T>(
+    response: string,
+    schema: z.ZodSchema<T>
+  ): Result<T, AIProviderError> {
+    try {
+      const jsonMatch = response.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) {
+        return Err(
+          new AIProviderError('perplexity', 'No JSON object found in response', false)
+        );
+      }
+
+      const parsed = JSON.parse(jsonMatch[0]);
+      const validated = schema.safeParse(parsed);
+
+      if (!validated.success) {
+        return Err(
+          new AIProviderError(
+            'perplexity',
+            `Schema validation failed: ${validated.error.message}`,
+            false
+          )
+        );
+      }
+
+      return Ok(validated.data);
+    } catch (error) {
+      return Err(
+        new AIProviderError(
+          'perplexity',
+          `Failed to parse response: ${error instanceof Error ? error.message : String(error)}`,
+          false
+        )
+      );
+    }
+  }
+
+  calculateCost(tokensInput: number, tokensOutput: number): number {
+    const costs = PERPLEXITY_COSTS[this.model as keyof typeof PERPLEXITY_COSTS] ||
+      PERPLEXITY_COSTS['llama-3.1-sonar-small-128k-online'];
+
+    return (
+      (tokensInput / 1_000_000) * costs.input +
+      (tokensOutput / 1_000_000) * costs.output
+    );
+  }
+
+  async isHealthy(): Promise<boolean> {
+    try {
+      // Perplexity doesn't have a simple health endpoint, so send minimal request
+      const response = await fetch(`${this.baseUrl}/chat/completions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${this.apiKey}`,
+        },
+        body: JSON.stringify({
+          model: this.model,
+          max_tokens: 1,
+          messages: [{ role: 'user', content: 'ping' }],
+        }),
+        signal: AbortSignal.timeout(5000),
+      });
+      return response.ok;
+    } catch {
+      return false;
+    }
+  }
+
+  private mapFinishReason(
+    reason: string | undefined
+  ): AIResponse['finishReason'] {
+    switch (reason) {
+      case 'stop':
+        return 'stop';
+      case 'length':
+        return 'length';
+      case 'content_filter':
+        return 'content_filter';
+      default:
+        return 'error';
+    }
+  }
+
+  private delay(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+}
+
+// ================================================================
 // MOCK PROVIDER (For Testing)
 // ================================================================
 
@@ -673,7 +1130,7 @@ export class MockAIProvider implements IAIProvider {
 // PROVIDER FACTORY
 // ================================================================
 
-export type ProviderType = 'openai' | 'anthropic';
+export type ProviderType = 'openai' | 'anthropic' | 'google' | 'perplexity';
 
 /**
  * Create an AI provider instance
@@ -687,6 +1144,10 @@ export function createProvider(
       return new OpenAIProvider(config);
     case 'anthropic':
       return new AnthropicProvider(config);
+    case 'google':
+      return new GoogleProvider(config);
+    case 'perplexity':
+      return new PerplexityProvider(config);
     default:
       throw new Error(`Unknown provider type: ${type}`);
   }
@@ -698,6 +1159,8 @@ export function createProvider(
 export function createProviders(configs: {
   openai?: AIProviderConfig;
   anthropic?: AIProviderConfig;
+  google?: AIProviderConfig;
+  perplexity?: AIProviderConfig;
 }): Map<ProviderType, IAIProvider> {
   const providers = new Map<ProviderType, IAIProvider>();
 
@@ -707,6 +1170,14 @@ export function createProviders(configs: {
 
   if (configs.anthropic) {
     providers.set('anthropic', new AnthropicProvider(configs.anthropic));
+  }
+
+  if (configs.google) {
+    providers.set('google', new GoogleProvider(configs.google));
+  }
+
+  if (configs.perplexity) {
+    providers.set('perplexity', new PerplexityProvider(configs.perplexity));
   }
 
   return providers;
@@ -719,6 +1190,8 @@ export function createProviders(configs: {
 export default {
   OpenAIProvider,
   AnthropicProvider,
+  GoogleProvider,
+  PerplexityProvider,
   MockAIProvider,
   createProvider,
   createProviders,

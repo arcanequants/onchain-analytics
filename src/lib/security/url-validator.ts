@@ -378,13 +378,12 @@ export const urlSchema = z.string()
   .min(MIN_URL_LENGTH, 'URL is too short')
   .max(MAX_URL_LENGTH, 'URL is too long')
   .refine(
-    (url) => {
+    (url: string) => {
       const result = validateUrl(url);
       return result.isValid;
     },
-    (url) => {
-      const result = validateUrl(url);
-      return { message: result.error || 'Invalid URL' };
+    {
+      message: 'Invalid URL',
     }
   )
   .transform((url) => {

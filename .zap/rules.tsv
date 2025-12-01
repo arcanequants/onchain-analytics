@@ -1,0 +1,39 @@
+# ZAP Scan Rules Configuration
+# Phase 1, Week 3, Day 5 - DevSecOps Tasks
+#
+# Format: rule_id	action	reason
+# Actions: IGNORE, WARN, FAIL
+#
+# Common false positives for Next.js applications
+
+# Informational alerts (can be noisy)
+10015	IGNORE	Re-examine Cache-control Directives - expected for static assets
+10027	IGNORE	Information Disclosure - Suspicious Comments - build comments
+
+# CSP related (handled by Next.js middleware)
+10038	WARN	Content Security Policy Header Not Set - check middleware config
+
+# Cookie flags (Supabase auth cookies have their own config)
+10029	WARN	Cookie No HttpOnly Flag - check Supabase auth config
+10011	WARN	Cookie Without Secure Flag - should be set in production
+
+# Server headers (Vercel handles these)
+10036	IGNORE	Server Leaks Version Information via "Server" Header
+10037	IGNORE	Server Leaks Information via "X-Powered-By"
+
+# Modern Authentication
+10105	WARN	Weak Authentication Method - verify if actually using basic auth
+
+# Next.js specific
+10096	IGNORE	Timestamp Disclosure - Next.js build timestamps
+
+# API specific (expected behaviors)
+40025	WARN	Proxy Disclosure - may be expected with Vercel
+40009	IGNORE	Server Side Request Forgery - analyze carefully
+
+# Rate limiting (should be handled by middleware)
+10104	WARN	User Agent Fuzzer - check rate limiting
+
+# Known issues to investigate
+90022	WARN	Application Error Disclosure
+90033	WARN	Loosely Scoped Cookie

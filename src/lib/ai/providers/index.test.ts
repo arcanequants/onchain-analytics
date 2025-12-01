@@ -1,6 +1,6 @@
 /**
  * AI Provider Clients Tests
- * Phase 1, Week 1, Day 1
+ * Phase 2, Week 7, Day 1
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
@@ -8,6 +8,8 @@ import { z } from 'zod';
 import {
   OpenAIProvider,
   AnthropicProvider,
+  GoogleProvider,
+  PerplexityProvider,
   MockAIProvider,
   createProvider,
   createProviders,
@@ -495,6 +497,484 @@ describe('AnthropicProvider', () => {
 });
 
 // ================================================================
+// GOOGLE PROVIDER TESTS
+// ================================================================
+
+describe('GoogleProvider', () => {
+  const config: AIProviderConfig = {
+    apiKey: 'test-api-key',
+    model: 'gemini-1.5-flash',
+    defaultTimeout: 5000,
+    maxRetries: 1,
+  };
+
+  beforeEach(() => {
+    mockFetch.mockReset();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  describe('constructor', () => {
+    it('should use default model if not specified', () => {
+      const provider = new GoogleProvider({ apiKey: 'test' });
+      expect(provider.model).toBe('gemini-1.5-flash');
+    });
+
+    it('should use specified model', () => {
+      const provider = new GoogleProvider({ apiKey: 'test', model: 'gemini-1.5-pro' });
+      expect(provider.model).toBe('gemini-1.5-pro');
+    });
+
+    it('should have correct provider name', () => {
+      const provider = new GoogleProvider(config);
+      expect(provider.name).toBe('google');
+    });
+  });
+
+  describe('query', () => {
+    it('should return successful response', async () => {
+      mockFetch.mockResolvedValueOnce(
+        createMockResponse(200, {
+          candidates: [{ content: { parts: [{ text: 'Hello from Gemini!' }] }, finishReason: 'STOP' }],
+          usageMetadata: { promptTokenCount: 10, candidatesTokenCount: 5, totalTokenCount: 15 },
+        })
+      );
+
+      const provider = new GoogleProvider(config);
+      const result = await provider.query('Hello');
+
+      expect(result.ok).toBe(true);
+      if (result.ok) {
+        expect(result.value.content).toBe('Hello from Gemini!');
+        expect(result.value.tokensUsed.total).toBe(15);
+        expect(result.value.provider).toBe('google');
+        expect(result.value.finishReason).toBe('stop');
+      }
+    });
+
+    it('should include API key in URL', async () => {
+      mockFetch.mockResolvedValueOnce(
+        createMockResponse(200, {
+          candidates: [{ content: { parts: [{ text: 'OK' }] }, finishReason: 'STOP' }],
+          usageMetadata: { promptTokenCount: 10, candidatesTokenCount: 5, totalTokenCount: 15 },
+        })
+      );
+
+      const provider = new GoogleProvider(config);
+      await provider.query('Test');
+
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.stringContaining('key=test-api-key'),
+        expect.objectContaining({
+          method: 'POST',
+          headers: expect.objectContaining({
+            'Content-Type': 'application/json',
+          }),
+        })
+      );
+    });
+
+    it('should use temperature from options', async () => {
+      mockFetch.mockResolvedValueOnce(
+        createMockResponse(200, {
+          candidates: [{ content: { parts: [{ text: 'OK' }] }, finishReason: 'STOP' }],
+          usageMetadata: { promptTokenCount: 10, candidatesTokenCount: 5, totalTokenCount: 15 },
+        })
+      );
+
+      const provider = new GoogleProvider(config);
+      await provider.query('Test', { temperature: 0.7 });
+
+      const call = mockFetch.mock.calls[0];
+      const body = JSON.parse(call[1].body);
+      expect(body.generationConfig.temperature).toBe(0.7);
+    });
+
+    it('should handle 429 rate limit error', async () => {
+      mockFetch.mockResolvedValueOnce(
+        createMockResponse(429, { error: { message: 'Rate limited' } }, { 'retry-after': '30' })
+      );
+
+      const provider = new GoogleProvider(config);
+      const result = await provider.query('Test');
+
+      expect(result.ok).toBe(false);
+      if (!result.ok) {
+        expect(result.error.provider).toBe('google');
+        expect(result.error.message).toContain('rate limit');
+      }
+    });
+
+    it('should handle SAFETY finish reason', async () => {
+      mockFetch.mockResolvedValueOnce(
+        createMockResponse(200, {
+          candidates: [{ content: { parts: [{ text: 'Content blocked' }] }, finishReason: 'SAFETY' }],
+          usageMetadata: { promptTokenCount: 10, candidatesTokenCount: 5, totalTokenCount: 15 },
+        })
+      );
+
+      const provider = new GoogleProvider(config);
+      const result = await provider.query('Test');
+
+      expect(result.ok).toBe(true);
+      if (result.ok) {
+        expect(result.value.finishReason).toBe('content_filter');
+      }
+    });
+
+    it('should handle MAX_TOKENS finish reason', async () => {
+      mockFetch.mockResolvedValueOnce(
+        createMockResponse(200, {
+          candidates: [{ content: { parts: [{ text: 'Truncated...' }] }, finishReason: 'MAX_TOKENS' }],
+          usageMetadata: { promptTokenCount: 10, candidatesTokenCount: 100, totalTokenCount: 110 },
+        })
+      );
+
+      const provider = new GoogleProvider(config);
+      const result = await provider.query('Test');
+
+      expect(result.ok).toBe(true);
+      if (result.ok) {
+        expect(result.value.finishReason).toBe('length');
+      }
+    });
+  });
+
+  describe('parseStructured', () => {
+    it('should parse valid JSON', () => {
+      const schema = z.object({ name: z.string(), value: z.number() });
+      const provider = new GoogleProvider(config);
+
+      const result = provider.parseStructured('{"name": "Test", "value": 42}', schema);
+
+      expect(result.ok).toBe(true);
+      if (result.ok) {
+        expect(result.value.name).toBe('Test');
+        expect(result.value.value).toBe(42);
+      }
+    });
+
+    it('should extract JSON from text', () => {
+      const schema = z.object({ status: z.string() });
+      const provider = new GoogleProvider(config);
+
+      const result = provider.parseStructured(
+        'Here is the response: {"status": "ok"} and some more text.',
+        schema
+      );
+
+      expect(result.ok).toBe(true);
+      if (result.ok) {
+        expect(result.value.status).toBe('ok');
+      }
+    });
+
+    it('should fail on invalid JSON', () => {
+      const schema = z.object({ status: z.string() });
+      const provider = new GoogleProvider(config);
+
+      const result = provider.parseStructured('not json at all', schema);
+
+      expect(result.ok).toBe(false);
+    });
+  });
+
+  describe('calculateCost', () => {
+    it('should calculate cost for gemini-1.5-flash', () => {
+      const provider = new GoogleProvider({ apiKey: 'test', model: 'gemini-1.5-flash' });
+      const cost = provider.calculateCost(1000, 500);
+
+      // $0.075/1M input, $0.30/1M output
+      expect(cost).toBeCloseTo((1000 / 1_000_000) * 0.075 + (500 / 1_000_000) * 0.30, 8);
+    });
+
+    it('should calculate cost for gemini-1.5-pro', () => {
+      const provider = new GoogleProvider({ apiKey: 'test', model: 'gemini-1.5-pro' });
+      const cost = provider.calculateCost(1000, 500);
+
+      // $1.25/1M input, $5.0/1M output
+      expect(cost).toBeCloseTo((1000 / 1_000_000) * 1.25 + (500 / 1_000_000) * 5.0, 8);
+    });
+  });
+
+  describe('isHealthy', () => {
+    it('should return true for successful health check', async () => {
+      mockFetch.mockResolvedValueOnce(createMockResponse(200, { name: 'models/gemini-1.5-flash' }));
+
+      const provider = new GoogleProvider(config);
+      const healthy = await provider.isHealthy();
+
+      expect(healthy).toBe(true);
+    });
+
+    it('should return false for failed health check', async () => {
+      mockFetch.mockResolvedValueOnce(createMockResponse(401, { error: 'Unauthorized' }));
+
+      const provider = new GoogleProvider(config);
+      const healthy = await provider.isHealthy();
+
+      expect(healthy).toBe(false);
+    });
+  });
+});
+
+// ================================================================
+// PERPLEXITY PROVIDER TESTS
+// ================================================================
+
+describe('PerplexityProvider', () => {
+  const config: AIProviderConfig = {
+    apiKey: 'test-api-key',
+    model: 'llama-3.1-sonar-small-128k-online',
+    defaultTimeout: 5000,
+    maxRetries: 1,
+  };
+
+  beforeEach(() => {
+    mockFetch.mockReset();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  describe('constructor', () => {
+    it('should use default model if not specified', () => {
+      const provider = new PerplexityProvider({ apiKey: 'test' });
+      expect(provider.model).toBe('llama-3.1-sonar-small-128k-online');
+    });
+
+    it('should use specified model', () => {
+      const provider = new PerplexityProvider({ apiKey: 'test', model: 'llama-3.1-sonar-large-128k-online' });
+      expect(provider.model).toBe('llama-3.1-sonar-large-128k-online');
+    });
+
+    it('should have correct provider name', () => {
+      const provider = new PerplexityProvider(config);
+      expect(provider.name).toBe('perplexity');
+    });
+  });
+
+  describe('query', () => {
+    it('should return successful response', async () => {
+      mockFetch.mockResolvedValueOnce(
+        createMockResponse(200, {
+          choices: [{ message: { content: 'Hello from Perplexity!' }, finish_reason: 'stop' }],
+          usage: { prompt_tokens: 10, completion_tokens: 5, total_tokens: 15 },
+          model: 'llama-3.1-sonar-small-128k-online',
+        })
+      );
+
+      const provider = new PerplexityProvider(config);
+      const result = await provider.query('Hello');
+
+      expect(result.ok).toBe(true);
+      if (result.ok) {
+        expect(result.value.content).toBe('Hello from Perplexity!');
+        expect(result.value.tokensUsed.total).toBe(15);
+        expect(result.value.provider).toBe('perplexity');
+        expect(result.value.finishReason).toBe('stop');
+      }
+    });
+
+    it('should include correct headers', async () => {
+      mockFetch.mockResolvedValueOnce(
+        createMockResponse(200, {
+          choices: [{ message: { content: 'OK' }, finish_reason: 'stop' }],
+          usage: { prompt_tokens: 10, completion_tokens: 5, total_tokens: 15 },
+        })
+      );
+
+      const provider = new PerplexityProvider(config);
+      await provider.query('Test');
+
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://api.perplexity.ai/chat/completions',
+        expect.objectContaining({
+          method: 'POST',
+          headers: expect.objectContaining({
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer test-api-key',
+          }),
+        })
+      );
+    });
+
+    it('should use OpenAI-compatible request format', async () => {
+      mockFetch.mockResolvedValueOnce(
+        createMockResponse(200, {
+          choices: [{ message: { content: 'OK' }, finish_reason: 'stop' }],
+          usage: { prompt_tokens: 10, completion_tokens: 5, total_tokens: 15 },
+        })
+      );
+
+      const provider = new PerplexityProvider(config);
+      await provider.query('Test', { temperature: 0.5, maxTokens: 500 });
+
+      const call = mockFetch.mock.calls[0];
+      const body = JSON.parse(call[1].body);
+      expect(body.model).toBe('llama-3.1-sonar-small-128k-online');
+      expect(body.messages).toEqual([{ role: 'user', content: 'Test' }]);
+      expect(body.temperature).toBe(0.5);
+      expect(body.max_tokens).toBe(500);
+    });
+
+    it('should handle 429 rate limit error', async () => {
+      mockFetch.mockResolvedValueOnce(
+        createMockResponse(429, { error: { message: 'Rate limited' } }, { 'retry-after': '30' })
+      );
+
+      const provider = new PerplexityProvider(config);
+      const result = await provider.query('Test');
+
+      expect(result.ok).toBe(false);
+      if (!result.ok) {
+        expect(result.error.provider).toBe('perplexity');
+        expect(result.error.message).toContain('rate limit');
+      }
+    });
+
+    it('should handle length finish reason', async () => {
+      mockFetch.mockResolvedValueOnce(
+        createMockResponse(200, {
+          choices: [{ message: { content: 'Truncated...' }, finish_reason: 'length' }],
+          usage: { prompt_tokens: 10, completion_tokens: 100, total_tokens: 110 },
+        })
+      );
+
+      const provider = new PerplexityProvider(config);
+      const result = await provider.query('Test');
+
+      expect(result.ok).toBe(true);
+      if (result.ok) {
+        expect(result.value.finishReason).toBe('length');
+      }
+    });
+
+    it('should handle 500 server error with retry', async () => {
+      mockFetch
+        .mockResolvedValueOnce(createMockResponse(500, { error: { message: 'Server error' } }))
+        .mockResolvedValueOnce(
+          createMockResponse(200, {
+            choices: [{ message: { content: 'OK' }, finish_reason: 'stop' }],
+            usage: { prompt_tokens: 10, completion_tokens: 5, total_tokens: 15 },
+          })
+        );
+
+      const provider = new PerplexityProvider({ ...config, maxRetries: 1 });
+      const result = await provider.query('Test');
+
+      expect(result.ok).toBe(true);
+      expect(mockFetch).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  describe('parseStructured', () => {
+    it('should parse valid JSON', () => {
+      const schema = z.object({ answer: z.string(), sources: z.array(z.string()) });
+      const provider = new PerplexityProvider(config);
+
+      const result = provider.parseStructured(
+        '{"answer": "Based on my research...", "sources": ["source1", "source2"]}',
+        schema
+      );
+
+      expect(result.ok).toBe(true);
+      if (result.ok) {
+        expect(result.value.answer).toBe('Based on my research...');
+        expect(result.value.sources).toHaveLength(2);
+      }
+    });
+
+    it('should extract JSON from text', () => {
+      const schema = z.object({ result: z.boolean() });
+      const provider = new PerplexityProvider(config);
+
+      const result = provider.parseStructured(
+        'After searching the web, here is what I found: {"result": true}. Hope this helps!',
+        schema
+      );
+
+      expect(result.ok).toBe(true);
+      if (result.ok) {
+        expect(result.value.result).toBe(true);
+      }
+    });
+
+    it('should fail on schema mismatch', () => {
+      const schema = z.object({ required: z.number() });
+      const provider = new PerplexityProvider(config);
+
+      const result = provider.parseStructured('{"optional": "value"}', schema);
+
+      expect(result.ok).toBe(false);
+    });
+  });
+
+  describe('calculateCost', () => {
+    it('should calculate cost for sonar-small', () => {
+      const provider = new PerplexityProvider({
+        apiKey: 'test',
+        model: 'llama-3.1-sonar-small-128k-online',
+      });
+      const cost = provider.calculateCost(1000, 500);
+
+      // $0.2/1M input, $0.2/1M output
+      expect(cost).toBeCloseTo((1000 / 1_000_000) * 0.2 + (500 / 1_000_000) * 0.2, 8);
+    });
+
+    it('should calculate cost for sonar-large', () => {
+      const provider = new PerplexityProvider({
+        apiKey: 'test',
+        model: 'llama-3.1-sonar-large-128k-online',
+      });
+      const cost = provider.calculateCost(1000, 500);
+
+      // $1.0/1M input, $1.0/1M output
+      expect(cost).toBeCloseTo((1000 / 1_000_000) * 1.0 + (500 / 1_000_000) * 1.0, 8);
+    });
+
+    it('should calculate cost for sonar-huge', () => {
+      const provider = new PerplexityProvider({
+        apiKey: 'test',
+        model: 'llama-3.1-sonar-huge-128k-online',
+      });
+      const cost = provider.calculateCost(1000, 500);
+
+      // $5.0/1M input, $5.0/1M output
+      expect(cost).toBeCloseTo((1000 / 1_000_000) * 5.0 + (500 / 1_000_000) * 5.0, 8);
+    });
+  });
+
+  describe('isHealthy', () => {
+    it('should return true for successful health check', async () => {
+      mockFetch.mockResolvedValueOnce(
+        createMockResponse(200, {
+          choices: [{ message: { content: 'pong' }, finish_reason: 'stop' }],
+          usage: { prompt_tokens: 1, completion_tokens: 1, total_tokens: 2 },
+        })
+      );
+
+      const provider = new PerplexityProvider(config);
+      const healthy = await provider.isHealthy();
+
+      expect(healthy).toBe(true);
+    });
+
+    it('should return false for failed health check', async () => {
+      mockFetch.mockResolvedValueOnce(createMockResponse(401, { error: 'Unauthorized' }));
+
+      const provider = new PerplexityProvider(config);
+      const healthy = await provider.isHealthy();
+
+      expect(healthy).toBe(false);
+    });
+  });
+});
+
+// ================================================================
 // MOCK PROVIDER TESTS
 // ================================================================
 
@@ -577,6 +1057,18 @@ describe('createProvider', () => {
     expect(provider).toBeInstanceOf(AnthropicProvider);
   });
 
+  it('should create Google provider', () => {
+    const provider = createProvider('google', { apiKey: 'test' });
+    expect(provider.name).toBe('google');
+    expect(provider).toBeInstanceOf(GoogleProvider);
+  });
+
+  it('should create Perplexity provider', () => {
+    const provider = createProvider('perplexity', { apiKey: 'test' });
+    expect(provider.name).toBe('perplexity');
+    expect(provider).toBeInstanceOf(PerplexityProvider);
+  });
+
   it('should throw for unknown provider', () => {
     expect(() => {
       // @ts-expect-error Testing invalid input
@@ -597,6 +1089,21 @@ describe('createProviders', () => {
     expect(providers.get('anthropic')?.name).toBe('anthropic');
   });
 
+  it('should create all four providers', () => {
+    const providers = createProviders({
+      openai: { apiKey: 'openai-key' },
+      anthropic: { apiKey: 'anthropic-key' },
+      google: { apiKey: 'google-key' },
+      perplexity: { apiKey: 'perplexity-key' },
+    });
+
+    expect(providers.size).toBe(4);
+    expect(providers.get('openai')?.name).toBe('openai');
+    expect(providers.get('anthropic')?.name).toBe('anthropic');
+    expect(providers.get('google')?.name).toBe('google');
+    expect(providers.get('perplexity')?.name).toBe('perplexity');
+  });
+
   it('should create only configured providers', () => {
     const providers = createProviders({
       openai: { apiKey: 'openai-key' },
@@ -605,6 +1112,8 @@ describe('createProviders', () => {
     expect(providers.size).toBe(1);
     expect(providers.has('openai')).toBe(true);
     expect(providers.has('anthropic')).toBe(false);
+    expect(providers.has('google')).toBe(false);
+    expect(providers.has('perplexity')).toBe(false);
   });
 
   it('should create empty map for no configs', () => {

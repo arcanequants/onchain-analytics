@@ -1,0 +1,188 @@
+# Gitleaks Configuration
+# https://github.com/gitleaks/gitleaks
+#
+# Phase 3, Week 10 - DevSecOps
+#
+# Run: gitleaks detect --source . --verbose
+# Protect: gitleaks protect --staged --verbose
+
+title = "Gitleaks Configuration for AI Perception Platform"
+
+[extend]
+# Use the default ruleset
+useDefault = true
+
+# ================================================================
+# ALLOW RULES (False Positives)
+# ================================================================
+
+[allowlist]
+description = "Allowlisted items that should not trigger alerts"
+
+# Regex patterns for paths to ignore
+paths = [
+  '''node_modules''',
+  '''\.next''',
+  '''dist''',
+  '''build''',
+  '''coverage''',
+  '''\.git''',
+  '''pnpm-lock\.yaml''',
+  '''package-lock\.json''',
+  '''\.secrets\.baseline''',
+]
+
+# Regex patterns for content to ignore
+regexes = [
+  # Example/placeholder values
+  '''EXAMPLE_''',
+  '''PLACEHOLDER''',
+  '''YOUR_.*_HERE''',
+  '''sk-or-v1-example''',
+
+  # Test fixtures and mocks
+  '''test_api_key''',
+  '''mock_secret''',
+  '''fake_token''',
+  '''dummy_''',
+
+  # Documentation examples
+  '''1234567890abcdef''',
+  '''xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx''',
+  '''0x[0-9a-fA-F]{40}''', # Ethereum addresses in docs
+
+  # Base64 encoded "test" data
+  '''dGVzdA==''',
+  '''ZXhhbXBsZQ==''',
+]
+
+# Specific commits to ignore (SHA hashes)
+commits = []
+
+# Specific files to stop tracking
+stopwords = [
+  "example",
+  "placeholder",
+  "sample",
+  "template",
+  "mock",
+  "fake",
+  "test",
+  "dummy",
+]
+
+# ================================================================
+# CUSTOM RULES
+# ================================================================
+
+[[rules]]
+id = "vectorial-data-internal-token"
+description = "Vectorial Data Internal Token"
+regex = '''vectorial[_-]?data[_-]?(api[_-]?)?key[_-]?=?\s*["']?([a-zA-Z0-9_-]{32,})["']?'''
+secretGroup = 2
+keywords = ["vectorial"]
+
+[[rules]]
+id = "supabase-service-role"
+description = "Supabase Service Role Key"
+regex = '''(eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\.[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+)'''
+keywords = ["supabase", "service_role"]
+
+[[rules]]
+id = "next-auth-secret"
+description = "NextAuth Secret"
+regex = '''NEXTAUTH_SECRET\s*=\s*["']?([a-zA-Z0-9/+=]{32,})["']?'''
+secretGroup = 1
+keywords = ["nextauth"]
+
+[[rules]]
+id = "stripe-secret-key"
+description = "Stripe Secret Key"
+regex = '''sk_(live|test)_[a-zA-Z0-9]{24,}'''
+keywords = ["stripe"]
+
+[[rules]]
+id = "openai-api-key"
+description = "OpenAI API Key"
+regex = '''sk-[a-zA-Z0-9]{20,}[a-zA-Z0-9]{28,}'''
+keywords = ["openai"]
+
+[[rules]]
+id = "anthropic-api-key"
+description = "Anthropic API Key"
+regex = '''sk-ant-[a-zA-Z0-9_-]{40,}'''
+keywords = ["anthropic"]
+
+[[rules]]
+id = "google-api-key"
+description = "Google API Key"
+regex = '''AIza[a-zA-Z0-9_-]{35}'''
+keywords = ["google"]
+
+[[rules]]
+id = "perplexity-api-key"
+description = "Perplexity API Key"
+regex = '''pplx-[a-zA-Z0-9]{40,}'''
+keywords = ["perplexity"]
+
+[[rules]]
+id = "sentry-dsn"
+description = "Sentry DSN"
+regex = '''https://[a-f0-9]+@[a-z0-9]+\.ingest\.sentry\.io/[0-9]+'''
+keywords = ["sentry"]
+
+[[rules]]
+id = "database-url"
+description = "Database Connection String"
+regex = '''(postgres|postgresql|mysql|mongodb)://[a-zA-Z0-9._-]+:[^@\s]+@[^\s]+'''
+keywords = ["database", "postgres", "mysql", "mongodb"]
+
+[[rules]]
+id = "private-key-pem"
+description = "Private Key in PEM format"
+regex = '''-----BEGIN (RSA |EC |DSA |OPENSSH )?PRIVATE KEY-----'''
+keywords = ["private", "key", "pem"]
+
+[[rules]]
+id = "jwt-secret-env"
+description = "JWT Secret in Environment Variable"
+regex = '''JWT_SECRET\s*=\s*["']?([a-zA-Z0-9/+=]{32,})["']?'''
+secretGroup = 1
+keywords = ["jwt"]
+
+[[rules]]
+id = "vercel-token"
+description = "Vercel Token"
+regex = '''VERCEL_TOKEN\s*=\s*["']?([a-zA-Z0-9_-]{24,})["']?'''
+secretGroup = 1
+keywords = ["vercel"]
+
+[[rules]]
+id = "crypto-wallet-private-key"
+description = "Cryptocurrency Wallet Private Key"
+regex = '''(0x)?[a-fA-F0-9]{64}'''
+keywords = ["private_key", "wallet", "mnemonic"]
+allowlist = { paths = ['''\.md$''', '''test''', '''mock''', '''fixture'''] }
+
+# ================================================================
+# SEVERITY LEVELS
+# ================================================================
+
+# Critical: Production secrets, API keys
+# High: Development secrets that could be misused
+# Medium: Internal tokens, non-production credentials
+# Low: Test/mock credentials
+
+# ================================================================
+# OUTPUT CONFIGURATION
+# ================================================================
+
+[report]
+# Report format: json, csv, sarif
+format = "json"
+
+# Output path (leave empty for stdout)
+path = ""
+
+# Include findings details
+verbose = true

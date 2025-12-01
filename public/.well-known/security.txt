@@ -1,0 +1,27 @@
+# Vectorial Data Security Information
+# https://www.vectorialdata.com/.well-known/security.txt
+# See RFC 9116 for format specification
+
+# Contact for reporting security vulnerabilities
+Contact: security@vectorialdata.com
+
+# Preferred languages for security reports
+Preferred-Languages: en, es
+
+# Security Policy URL
+Policy: https://www.vectorialdata.com/security-policy
+
+# PGP Key for encrypted communications (optional)
+# Encryption: https://www.vectorialdata.com/.well-known/security-pgp-key.txt
+
+# Expiration date for this security.txt file
+Expires: 2026-12-31T23:59:59.000Z
+
+# Acknowledgments page for security researchers
+# Acknowledgments: https://www.vectorialdata.com/security-acknowledgments
+
+# Canonical URL for this security.txt file
+Canonical: https://www.vectorialdata.com/.well-known/security.txt
+
+# Hiring security professionals
+# Hiring: https://www.vectorialdata.com/careers/security

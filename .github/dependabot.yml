@@ -1,0 +1,77 @@
+# Dependabot Configuration
+# Automatically creates PRs for dependency updates
+#
+# See: https://docs.github.com/en/code-security/dependabot/dependabot-version-updates
+
+version: 2
+
+updates:
+  # NPM dependencies
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/Mexico_City"
+    # Limit to 5 PRs per week to avoid overwhelming
+    open-pull-requests-limit: 5
+    # Group minor/patch updates together
+    groups:
+      development:
+        patterns:
+          - "@types/*"
+          - "@testing-library/*"
+          - "@vitest/*"
+          - "vitest"
+          - "typescript"
+          - "eslint*"
+          - "prettier*"
+        update-types:
+          - "minor"
+          - "patch"
+      production-minor:
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "@types/*"
+          - "@testing-library/*"
+          - "@vitest/*"
+          - "vitest"
+          - "typescript"
+          - "eslint*"
+          - "prettier*"
+        update-types:
+          - "minor"
+          - "patch"
+    # Automatically assign reviewers
+    reviewers:
+      - "arcanequants"
+    # Labels for PRs
+    labels:
+      - "dependencies"
+      - "automated"
+    # Commit message format
+    commit-message:
+      prefix: "chore(deps)"
+      include: "scope"
+    # Ignore specific packages
+    ignore:
+      # React 19 is intentionally used
+      - dependency-name: "react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-dom"
+        update-types: ["version-update:semver-major"]
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+      time: "09:00"
+      timezone: "America/Mexico_City"
+    labels:
+      - "dependencies"
+      - "ci/cd"
+    commit-message:
+      prefix: "ci(deps)"

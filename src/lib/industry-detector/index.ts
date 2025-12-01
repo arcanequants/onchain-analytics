@@ -248,8 +248,8 @@ export function createDetectionInput(analysis: UrlAnalysisResult): IndustryDetec
     description: metadata.description,
     ogDescription: metadata.openGraph.description,
     ogType: metadata.openGraph.type,
-    schemaOrgType: metadata.schemaOrg.type || undefined,
-    schemaOrgIndustry: metadata.schemaOrg.industry,
+    schemaOrgType: metadata.schemaOrg.types?.[0] || undefined,
+    schemaOrgIndustry: undefined, // SchemaOrgData doesn't have industry field
   };
 }
 

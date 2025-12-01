@@ -38,6 +38,9 @@ function createMockPerception(overrides: Partial<AggregatedPerception> = {}): Ag
       evaluation: { count: 2, mentionRate: 0.6, avgPosition: 2 },
       alternatives: { count: 2, mentionRate: 0.4, avgPosition: 4 },
       use_case: { count: 1, mentionRate: 0.8, avgPosition: 1 },
+      ranking: { count: 1, mentionRate: 0.5, avgPosition: 3 },
+      review: { count: 1, mentionRate: 0.4, avgPosition: null },
+      feature: { count: 1, mentionRate: 0.3, avgPosition: null },
     },
     ...overrides,
   };
@@ -740,7 +743,7 @@ describe('edge cases', () => {
   it('should handle perception with no intent breakdown', () => {
     const input = createMockInput({
       perception: createMockPerception({
-        intentBreakdown: {},
+        intentBreakdown: {} as AggregatedPerception['intentBreakdown'],
       }),
     });
 

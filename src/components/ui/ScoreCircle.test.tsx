@@ -11,6 +11,7 @@ import {
   ScoreBadge,
   ScoreBar,
   ScoreComparison,
+  ScoreGauge,
   getScoreGrade,
   getScoreInterpretation,
 } from './ScoreCircle';
@@ -352,5 +353,139 @@ describe('ScoreComparison', () => {
 
     const comparison = screen.getByTestId('score-comparison');
     expect(comparison.className).toContain('custom-comparison');
+  });
+});
+
+// ================================================================
+// SCOREGAUGE COMPONENT TESTS
+// ================================================================
+
+describe('ScoreGauge', () => {
+  it('should render with score', () => {
+    render(<ScoreGauge score={75} />);
+
+    const gauge = screen.getByTestId('score-gauge');
+    expect(gauge).toBeInTheDocument();
+
+    const value = screen.getByTestId('gauge-value');
+    expect(value).toHaveTextContent('75');
+  });
+
+  it('should render with label', () => {
+    render(<ScoreGauge score={75} label="AI Visibility" />);
+
+    expect(screen.getByText('AI Visibility')).toBeInTheDocument();
+  });
+
+  it('should show grade label', () => {
+    render(<ScoreGauge score={85} />);
+
+    expect(screen.getByText('Excellent')).toBeInTheDocument();
+  });
+
+  it('should show min/max labels by default', () => {
+    render(<ScoreGauge score={50} />);
+
+    expect(screen.getByText('0')).toBeInTheDocument();
+    expect(screen.getByText('100')).toBeInTheDocument();
+  });
+
+  it('should hide min/max labels when showMinMax is false', () => {
+    render(<ScoreGauge score={50} showMinMax={false} />);
+
+    expect(screen.queryByText('0')).not.toBeInTheDocument();
+    expect(screen.queryByText('100')).not.toBeInTheDocument();
+  });
+
+  it('should clamp score to 0-100 range', () => {
+    render(<ScoreGauge score={150} />);
+
+    const value = screen.getByTestId('gauge-value');
+    expect(value).toHaveTextContent('100');
+  });
+
+  it('should handle negative scores', () => {
+    render(<ScoreGauge score={-20} />);
+
+    const value = screen.getByTestId('gauge-value');
+    expect(value).toHaveTextContent('0');
+  });
+
+  it('should render progress arc for non-zero scores', () => {
+    render(<ScoreGauge score={50} />);
+
+    const progress = screen.getByTestId('gauge-progress');
+    expect(progress).toBeInTheDocument();
+  });
+
+  it('should not render progress arc for score 0', () => {
+    render(<ScoreGauge score={0} />);
+
+    expect(screen.queryByTestId('gauge-progress')).not.toBeInTheDocument();
+  });
+
+  it('should have accessible aria-label', () => {
+    render(<ScoreGauge score={75} />);
+
+    const gauge = screen.getByTestId('score-gauge');
+    expect(gauge).toHaveAttribute('aria-label');
+    expect(gauge.getAttribute('aria-label')).toContain('75');
+    expect(gauge.getAttribute('aria-label')).toContain('Good');
+  });
+
+  it('should apply custom className', () => {
+    render(<ScoreGauge score={75} className="custom-gauge" />);
+
+    const gauge = screen.getByTestId('score-gauge');
+    expect(gauge.className).toContain('custom-gauge');
+  });
+
+  describe('sizes', () => {
+    it('should render small size', () => {
+      render(<ScoreGauge score={75} size="sm" />);
+      expect(screen.getByTestId('score-gauge')).toBeInTheDocument();
+    });
+
+    it('should render medium size', () => {
+      render(<ScoreGauge score={75} size="md" />);
+      expect(screen.getByTestId('score-gauge')).toBeInTheDocument();
+    });
+
+    it('should render large size', () => {
+      render(<ScoreGauge score={75} size="lg" />);
+      expect(screen.getByTestId('score-gauge')).toBeInTheDocument();
+    });
+  });
+
+  describe('colors by grade', () => {
+    it('should show green for excellent score', () => {
+      render(<ScoreGauge score={90} />);
+      const progress = screen.getByTestId('gauge-progress');
+      expect(progress.getAttribute('stroke')).toBe('#22c55e');
+    });
+
+    it('should show yellow for average score', () => {
+      render(<ScoreGauge score={50} />);
+      const progress = screen.getByTestId('gauge-progress');
+      expect(progress.getAttribute('stroke')).toBe('#eab308');
+    });
+
+    it('should show red for critical score', () => {
+      render(<ScoreGauge score={10} />);
+      const progress = screen.getByTestId('gauge-progress');
+      expect(progress.getAttribute('stroke')).toBe('#ef4444');
+    });
+
+    it('should show orange for poor score', () => {
+      render(<ScoreGauge score={30} />);
+      const progress = screen.getByTestId('gauge-progress');
+      expect(progress.getAttribute('stroke')).toBe('#f97316');
+    });
+
+    it('should show lime for good score', () => {
+      render(<ScoreGauge score={70} />);
+      const progress = screen.getByTestId('gauge-progress');
+      expect(progress.getAttribute('stroke')).toBe('#84cc16');
+    });
   });
 });

@@ -1,0 +1,1189 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "lastUpdated": "2025-11-30",
+  "description": "AI Perception Industry Taxonomy - 50 verticals with sub-categories",
+  "source": "EXECUTIVE-ROADMAP-BCG.md Section 2.198-2.199",
+  "industries": [
+    {
+      "id": "saas",
+      "name": "SaaS / Software",
+      "slug": "saas",
+      "naicsCode": "5112",
+      "description": "Software as a Service and enterprise software products",
+      "subCategories": [
+        { "id": "saas-productivity", "name": "Productivity Software", "examples": ["Notion", "Asana", "Monday.com"] },
+        { "id": "saas-crm", "name": "CRM & Sales", "examples": ["Salesforce", "HubSpot", "Pipedrive"] },
+        { "id": "saas-marketing", "name": "Marketing Automation", "examples": ["Mailchimp", "ActiveCampaign", "Klaviyo"] },
+        { "id": "saas-hr", "name": "HR & Workforce", "examples": ["Workday", "BambooHR", "Gusto"] },
+        { "id": "saas-analytics", "name": "Analytics & BI", "examples": ["Tableau", "Looker", "Mixpanel"] },
+        { "id": "saas-devtools", "name": "Developer Tools", "examples": ["GitHub", "GitLab", "Vercel"] }
+      ],
+      "keyTerms": ["MRR", "ARR", "churn", "SLA", "uptime", "API", "integration", "onboarding", "subscription"],
+      "evaluationCriteria": {
+        "features": 0.30,
+        "reliability": 0.25,
+        "price": 0.20,
+        "support": 0.15,
+        "innovation": 0.10
+      },
+      "regulatoryContext": ["SOC2", "GDPR", "CCPA"],
+      "seasonality": { "peak": null, "low": null, "notes": "Generally stable year-round" }
+    },
+    {
+      "id": "fintech",
+      "name": "Fintech / Financial Services",
+      "slug": "fintech",
+      "naicsCode": "5221",
+      "description": "Financial technology, payments, and banking services",
+      "subCategories": [
+        { "id": "fintech-payments", "name": "Payment Processing", "examples": ["Stripe", "Square", "Adyen"] },
+        { "id": "fintech-banking", "name": "Digital Banking", "examples": ["Chime", "N26", "Revolut"] },
+        { "id": "fintech-lending", "name": "Lending & Credit", "examples": ["SoFi", "Affirm", "Klarna"] },
+        { "id": "fintech-investing", "name": "Investment & Trading", "examples": ["Robinhood", "Wealthfront", "Betterment"] },
+        { "id": "fintech-crypto", "name": "Cryptocurrency", "examples": ["Coinbase", "Kraken", "Gemini"] },
+        { "id": "fintech-insurance", "name": "Insurtech", "examples": ["Lemonade", "Root", "Oscar"] }
+      ],
+      "keyTerms": ["PCI-DSS", "KYC", "AML", "ACH", "wire transfer", "APY", "underwriting", "compliance"],
+      "evaluationCriteria": {
+        "trust": 0.35,
+        "security": 0.25,
+        "features": 0.20,
+        "price": 0.15,
+        "innovation": 0.05
+      },
+      "regulatoryContext": ["PCI-DSS", "SOX", "FINRA", "SEC", "GDPR"],
+      "seasonality": { "peak": "Q1", "low": null, "notes": "Tax season drives activity" }
+    },
+    {
+      "id": "healthcare",
+      "name": "Healthcare / Medical",
+      "slug": "healthcare",
+      "naicsCode": "6211",
+      "description": "Healthcare providers, medical devices, and health technology",
+      "subCategories": [
+        { "id": "healthcare-providers", "name": "Healthcare Providers", "examples": ["Mayo Clinic", "Cleveland Clinic", "Kaiser"] },
+        { "id": "healthcare-telehealth", "name": "Telehealth", "examples": ["Teladoc", "Amwell", "MDLive"] },
+        { "id": "healthcare-pharma", "name": "Pharmaceutical", "examples": ["Pfizer", "Johnson & Johnson", "Roche"] },
+        { "id": "healthcare-devices", "name": "Medical Devices", "examples": ["Medtronic", "Abbott", "Boston Scientific"] },
+        { "id": "healthcare-healthtech", "name": "Health Tech", "examples": ["Epic", "Cerner", "Veeva"] },
+        { "id": "healthcare-mental", "name": "Mental Health", "examples": ["BetterHelp", "Talkspace", "Calm"] }
+      ],
+      "keyTerms": ["HIPAA", "patient outcomes", "clinical", "EMR", "EHR", "FDA", "board certified", "accreditation"],
+      "evaluationCriteria": {
+        "trust": 0.35,
+        "outcomes": 0.30,
+        "compliance": 0.25,
+        "innovation": 0.10
+      },
+      "regulatoryContext": ["HIPAA", "FDA", "HITECH", "JCI", "AAAHC"],
+      "seasonality": { "peak": "Q4", "low": "Q3", "notes": "Open enrollment drives Q4" }
+    },
+    {
+      "id": "ecommerce",
+      "name": "E-commerce / Retail",
+      "slug": "ecommerce",
+      "naicsCode": "4541",
+      "description": "Online retail, marketplaces, and direct-to-consumer brands",
+      "subCategories": [
+        { "id": "ecommerce-marketplace", "name": "Marketplaces", "examples": ["Amazon", "eBay", "Etsy"] },
+        { "id": "ecommerce-dtc", "name": "DTC Brands", "examples": ["Warby Parker", "Glossier", "Allbirds"] },
+        { "id": "ecommerce-fashion", "name": "Fashion & Apparel", "examples": ["ASOS", "Zara", "H&M"] },
+        { "id": "ecommerce-grocery", "name": "Grocery & Food", "examples": ["Instacart", "FreshDirect", "Thrive Market"] },
+        { "id": "ecommerce-luxury", "name": "Luxury Goods", "examples": ["Farfetch", "Net-a-Porter", "Mytheresa"] },
+        { "id": "ecommerce-platforms", "name": "E-commerce Platforms", "examples": ["Shopify", "BigCommerce", "WooCommerce"] }
+      ],
+      "keyTerms": ["conversion rate", "AOV", "cart abandonment", "SKU", "fulfillment", "dropshipping", "returns"],
+      "evaluationCriteria": {
+        "product_quality": 0.30,
+        "price": 0.25,
+        "shipping": 0.20,
+        "customer_service": 0.15,
+        "selection": 0.10
+      },
+      "regulatoryContext": ["PCI-DSS", "CCPA", "GDPR", "FTC"],
+      "seasonality": { "peak": "Q4", "low": "Q1", "notes": "Holiday shopping drives Q4" }
+    },
+    {
+      "id": "marketing",
+      "name": "Marketing & Advertising",
+      "slug": "marketing",
+      "naicsCode": "5418",
+      "description": "Marketing agencies, advertising platforms, and MarTech",
+      "subCategories": [
+        { "id": "marketing-agencies", "name": "Marketing Agencies", "examples": ["WPP", "Omnicom", "Publicis"] },
+        { "id": "marketing-adtech", "name": "Ad Tech", "examples": ["Google Ads", "Meta Ads", "The Trade Desk"] },
+        { "id": "marketing-seo", "name": "SEO & Content", "examples": ["Semrush", "Ahrefs", "Moz"] },
+        { "id": "marketing-social", "name": "Social Media Marketing", "examples": ["Hootsuite", "Sprout Social", "Buffer"] },
+        { "id": "marketing-email", "name": "Email Marketing", "examples": ["Mailchimp", "Klaviyo", "ConvertKit"] },
+        { "id": "marketing-influencer", "name": "Influencer Marketing", "examples": ["AspireIQ", "Grin", "CreatorIQ"] }
+      ],
+      "keyTerms": ["ROI", "ROAS", "CPM", "CPC", "CTR", "impressions", "reach", "engagement", "attribution"],
+      "evaluationCriteria": {
+        "results": 0.35,
+        "creativity": 0.25,
+        "strategy": 0.20,
+        "price": 0.15,
+        "communication": 0.05
+      },
+      "regulatoryContext": ["FTC", "GDPR", "CCPA", "CAN-SPAM"],
+      "seasonality": { "peak": "Q4", "low": "Q1", "notes": "Budget cycles and holiday campaigns" }
+    },
+    {
+      "id": "real-estate",
+      "name": "Real Estate",
+      "slug": "real-estate",
+      "naicsCode": "5312",
+      "description": "Real estate agencies, property technology, and property management",
+      "subCategories": [
+        { "id": "real-estate-residential", "name": "Residential Sales", "examples": ["Zillow", "Redfin", "Realtor.com"] },
+        { "id": "real-estate-commercial", "name": "Commercial Real Estate", "examples": ["CBRE", "JLL", "Cushman & Wakefield"] },
+        { "id": "real-estate-proptech", "name": "PropTech", "examples": ["Opendoor", "Offerpad", "Compass"] },
+        { "id": "real-estate-rental", "name": "Rental Platforms", "examples": ["Apartments.com", "Zillow Rentals", "Zumper"] },
+        { "id": "real-estate-management", "name": "Property Management", "examples": ["AppFolio", "Buildium", "Yardi"] },
+        { "id": "real-estate-mortgage", "name": "Mortgage & Lending", "examples": ["Better.com", "Rocket Mortgage", "LoanDepot"] }
+      ],
+      "keyTerms": ["listing", "MLS", "escrow", "closing costs", "appraisal", "HOA", "cap rate", "ROI"],
+      "evaluationCriteria": {
+        "market_knowledge": 0.30,
+        "responsiveness": 0.25,
+        "track_record": 0.25,
+        "fees": 0.15,
+        "technology": 0.05
+      },
+      "regulatoryContext": ["RESPA", "Fair Housing Act", "TILA", "state licensing"],
+      "seasonality": { "peak": "Q2-Q3", "low": "Q4-Q1", "notes": "Spring/summer buying season" }
+    },
+    {
+      "id": "legal",
+      "name": "Legal Services",
+      "slug": "legal",
+      "naicsCode": "5411",
+      "description": "Law firms, legal technology, and legal services",
+      "subCategories": [
+        { "id": "legal-corporate", "name": "Corporate Law", "examples": ["Kirkland & Ellis", "Latham & Watkins", "Skadden"] },
+        { "id": "legal-litigation", "name": "Litigation", "examples": ["Quinn Emanuel", "Boies Schiller", "Gibson Dunn"] },
+        { "id": "legal-ip", "name": "Intellectual Property", "examples": ["Fish & Richardson", "Finnegan", "Knobbe Martens"] },
+        { "id": "legal-family", "name": "Family Law", "examples": ["local specialists"] },
+        { "id": "legal-immigration", "name": "Immigration Law", "examples": ["Fragomen", "Berry Appleman", "BAL"] },
+        { "id": "legal-legaltech", "name": "Legal Tech", "examples": ["Clio", "LegalZoom", "Rocket Lawyer"] }
+      ],
+      "keyTerms": ["litigation", "counsel", "precedent", "jurisdiction", "retainer", "billable", "malpractice", "bar association"],
+      "evaluationCriteria": {
+        "expertise": 0.40,
+        "track_record": 0.30,
+        "reputation": 0.20,
+        "accessibility": 0.10
+      },
+      "regulatoryContext": ["state bar", "ABA", "ethics rules"],
+      "seasonality": { "peak": null, "low": null, "notes": "Generally stable, some M&A peaks in Q4" }
+    },
+    {
+      "id": "education",
+      "name": "Education & EdTech",
+      "slug": "education",
+      "naicsCode": "6111",
+      "description": "Educational institutions, online learning, and education technology",
+      "subCategories": [
+        { "id": "education-higher", "name": "Higher Education", "examples": ["Harvard", "MIT", "Stanford"] },
+        { "id": "education-k12", "name": "K-12 Education", "examples": ["Khan Academy", "IXL", "Newsela"] },
+        { "id": "education-online", "name": "Online Learning", "examples": ["Coursera", "Udemy", "LinkedIn Learning"] },
+        { "id": "education-bootcamp", "name": "Coding Bootcamps", "examples": ["General Assembly", "Flatiron", "Springboard"] },
+        { "id": "education-language", "name": "Language Learning", "examples": ["Duolingo", "Babbel", "Rosetta Stone"] },
+        { "id": "education-corporate", "name": "Corporate Training", "examples": ["Cornerstone", "Degreed", "Pluralsight"] }
+      ],
+      "keyTerms": ["curriculum", "accreditation", "certification", "LMS", "pedagogy", "outcomes", "enrollment"],
+      "evaluationCriteria": {
+        "quality": 0.35,
+        "outcomes": 0.30,
+        "price": 0.20,
+        "flexibility": 0.10,
+        "support": 0.05
+      },
+      "regulatoryContext": ["FERPA", "accreditation bodies", "state education boards"],
+      "seasonality": { "peak": "Q3", "low": "Q2", "notes": "Back-to-school drives Q3" }
+    },
+    {
+      "id": "hospitality",
+      "name": "Hospitality & Travel",
+      "slug": "hospitality",
+      "naicsCode": "7211",
+      "description": "Hotels, travel agencies, and hospitality services",
+      "subCategories": [
+        { "id": "hospitality-hotels", "name": "Hotels & Resorts", "examples": ["Marriott", "Hilton", "Hyatt"] },
+        { "id": "hospitality-ota", "name": "Online Travel Agencies", "examples": ["Booking.com", "Expedia", "Hotels.com"] },
+        { "id": "hospitality-airlines", "name": "Airlines", "examples": ["Delta", "United", "American"] },
+        { "id": "hospitality-vacation", "name": "Vacation Rentals", "examples": ["Airbnb", "VRBO", "Vacasa"] },
+        { "id": "hospitality-experiences", "name": "Experiences & Tours", "examples": ["Viator", "GetYourGuide", "Klook"] },
+        { "id": "hospitality-cruise", "name": "Cruise Lines", "examples": ["Royal Caribbean", "Carnival", "Norwegian"] }
+      ],
+      "keyTerms": ["occupancy", "ADR", "RevPAR", "booking", "cancellation", "loyalty", "concierge"],
+      "evaluationCriteria": {
+        "location": 0.30,
+        "service": 0.25,
+        "amenities": 0.20,
+        "price": 0.20,
+        "cleanliness": 0.05
+      },
+      "regulatoryContext": ["ADA", "health codes", "tourism boards"],
+      "seasonality": { "peak": "Q2-Q3", "low": "Q1", "notes": "Summer vacation season" }
+    },
+    {
+      "id": "restaurant",
+      "name": "Restaurant & Food Service",
+      "slug": "restaurant",
+      "naicsCode": "7225",
+      "description": "Restaurants, food delivery, and food service businesses",
+      "subCategories": [
+        { "id": "restaurant-fine-dining", "name": "Fine Dining", "examples": ["Eleven Madison Park", "The French Laundry", "Alinea"] },
+        { "id": "restaurant-casual", "name": "Casual Dining", "examples": ["Olive Garden", "Applebee's", "Chili's"] },
+        { "id": "restaurant-fast-casual", "name": "Fast Casual", "examples": ["Chipotle", "Panera", "Sweetgreen"] },
+        { "id": "restaurant-qsr", "name": "Quick Service", "examples": ["McDonald's", "Starbucks", "Chick-fil-A"] },
+        { "id": "restaurant-delivery", "name": "Food Delivery", "examples": ["DoorDash", "Uber Eats", "Grubhub"] },
+        { "id": "restaurant-ghost", "name": "Ghost Kitchens", "examples": ["CloudKitchens", "Kitchen United", "Reef"] }
+      ],
+      "keyTerms": ["cuisine", "ambiance", "service", "portion", "freshness", "reservation", "health score", "farm-to-table"],
+      "evaluationCriteria": {
+        "food_quality": 0.35,
+        "service": 0.25,
+        "ambiance": 0.20,
+        "value": 0.15,
+        "cleanliness": 0.05
+      },
+      "regulatoryContext": ["health department", "food safety", "liquor license", "ADA"],
+      "seasonality": { "peak": "Q4", "low": "Q1", "notes": "Holiday dining and summer outdoor season" }
+    },
+    {
+      "id": "automotive",
+      "name": "Automotive",
+      "slug": "automotive",
+      "naicsCode": "4411",
+      "description": "Automotive manufacturers, dealers, and automotive services",
+      "subCategories": [
+        { "id": "automotive-oem", "name": "Auto Manufacturers", "examples": ["Toyota", "Ford", "Tesla"] },
+        { "id": "automotive-dealers", "name": "Dealerships", "examples": ["CarMax", "AutoNation", "Carvana"] },
+        { "id": "automotive-parts", "name": "Parts & Accessories", "examples": ["AutoZone", "O'Reilly", "NAPA"] },
+        { "id": "automotive-service", "name": "Auto Service", "examples": ["Jiffy Lube", "Firestone", "Midas"] },
+        { "id": "automotive-rental", "name": "Car Rental", "examples": ["Enterprise", "Hertz", "Avis"] },
+        { "id": "automotive-ev", "name": "Electric Vehicles", "examples": ["Tesla", "Rivian", "Lucid"] }
+      ],
+      "keyTerms": ["MPG", "warranty", "financing", "trade-in", "MSRP", "lease", "maintenance", "recall"],
+      "evaluationCriteria": {
+        "reliability": 0.30,
+        "value": 0.25,
+        "features": 0.20,
+        "safety": 0.15,
+        "service": 0.10
+      },
+      "regulatoryContext": ["NHTSA", "EPA", "state DMV", "lemon laws"],
+      "seasonality": { "peak": "Q2-Q3", "low": "Q1", "notes": "Spring/summer car buying season" }
+    },
+    {
+      "id": "construction",
+      "name": "Construction & Home Services",
+      "slug": "construction",
+      "naicsCode": "2361",
+      "description": "Construction companies, contractors, and home services",
+      "subCategories": [
+        { "id": "construction-general", "name": "General Contractors", "examples": ["Turner", "Bechtel", "Skanska"] },
+        { "id": "construction-residential", "name": "Home Builders", "examples": ["D.R. Horton", "Lennar", "PulteGroup"] },
+        { "id": "construction-renovation", "name": "Renovation", "examples": ["local contractors"] },
+        { "id": "construction-hvac", "name": "HVAC", "examples": ["Carrier", "Trane", "Lennox"] },
+        { "id": "construction-plumbing", "name": "Plumbing", "examples": ["Roto-Rooter", "local plumbers"] },
+        { "id": "construction-electrical", "name": "Electrical", "examples": ["local electricians"] }
+      ],
+      "keyTerms": ["contractor", "estimate", "permit", "inspection", "warranty", "subcontractor", "timeline", "budget"],
+      "evaluationCriteria": {
+        "quality": 0.35,
+        "reliability": 0.25,
+        "price": 0.20,
+        "communication": 0.15,
+        "warranty": 0.05
+      },
+      "regulatoryContext": ["building codes", "OSHA", "contractor licensing", "permits"],
+      "seasonality": { "peak": "Q2-Q3", "low": "Q4-Q1", "notes": "Spring/summer construction season" }
+    },
+    {
+      "id": "fitness",
+      "name": "Fitness & Wellness",
+      "slug": "fitness",
+      "naicsCode": "7139",
+      "description": "Gyms, fitness apps, and wellness services",
+      "subCategories": [
+        { "id": "fitness-gyms", "name": "Gyms & Health Clubs", "examples": ["Planet Fitness", "Equinox", "LA Fitness"] },
+        { "id": "fitness-boutique", "name": "Boutique Fitness", "examples": ["SoulCycle", "Barry's", "Orangetheory"] },
+        { "id": "fitness-apps", "name": "Fitness Apps", "examples": ["Peloton", "Strava", "MyFitnessPal"] },
+        { "id": "fitness-yoga", "name": "Yoga & Pilates", "examples": ["CorePower", "YogaWorks", "Club Pilates"] },
+        { "id": "fitness-personal", "name": "Personal Training", "examples": ["Equinox", "Life Time", "local trainers"] },
+        { "id": "fitness-nutrition", "name": "Nutrition & Diet", "examples": ["Noom", "WW", "Herbalife"] }
+      ],
+      "keyTerms": ["membership", "classes", "personal training", "equipment", "recovery", "nutrition", "goals"],
+      "evaluationCriteria": {
+        "facilities": 0.30,
+        "classes": 0.25,
+        "price": 0.20,
+        "location": 0.15,
+        "community": 0.10
+      },
+      "regulatoryContext": ["health department", "trainer certification", "ADA"],
+      "seasonality": { "peak": "Q1", "low": "Q3", "notes": "New Year resolutions drive Q1" }
+    },
+    {
+      "id": "beauty",
+      "name": "Beauty & Personal Care",
+      "slug": "beauty",
+      "naicsCode": "4461",
+      "description": "Cosmetics, skincare, and personal care products",
+      "subCategories": [
+        { "id": "beauty-cosmetics", "name": "Cosmetics", "examples": ["Sephora", "MAC", "NARS"] },
+        { "id": "beauty-skincare", "name": "Skincare", "examples": ["The Ordinary", "CeraVe", "Drunk Elephant"] },
+        { "id": "beauty-haircare", "name": "Haircare", "examples": ["Olaplex", "Dyson", "Living Proof"] },
+        { "id": "beauty-salons", "name": "Salons & Spas", "examples": ["Drybar", "European Wax Center", "local salons"] },
+        { "id": "beauty-fragrances", "name": "Fragrances", "examples": ["Chanel", "Dior", "Jo Malone"] },
+        { "id": "beauty-mens", "name": "Men's Grooming", "examples": ["Harry's", "Dollar Shave Club", "Manscaped"] }
+      ],
+      "keyTerms": ["ingredients", "cruelty-free", "organic", "dermatologist-tested", "SPF", "anti-aging"],
+      "evaluationCriteria": {
+        "effectiveness": 0.35,
+        "ingredients": 0.25,
+        "price": 0.20,
+        "brand": 0.15,
+        "sustainability": 0.05
+      },
+      "regulatoryContext": ["FDA", "EU cosmetics regulation", "cruelty-free certification"],
+      "seasonality": { "peak": "Q4", "low": "Q1", "notes": "Holiday gifting drives Q4" }
+    },
+    {
+      "id": "insurance",
+      "name": "Insurance",
+      "slug": "insurance",
+      "naicsCode": "5241",
+      "description": "Insurance providers and insurance technology",
+      "subCategories": [
+        { "id": "insurance-auto", "name": "Auto Insurance", "examples": ["GEICO", "Progressive", "State Farm"] },
+        { "id": "insurance-home", "name": "Home Insurance", "examples": ["Allstate", "Liberty Mutual", "Farmers"] },
+        { "id": "insurance-life", "name": "Life Insurance", "examples": ["Northwestern Mutual", "MetLife", "Prudential"] },
+        { "id": "insurance-health", "name": "Health Insurance", "examples": ["UnitedHealthcare", "Aetna", "Cigna"] },
+        { "id": "insurance-business", "name": "Business Insurance", "examples": ["Travelers", "Hartford", "Chubb"] },
+        { "id": "insurance-insurtech", "name": "Insurtech", "examples": ["Lemonade", "Root", "Hippo"] }
+      ],
+      "keyTerms": ["premium", "deductible", "coverage", "claim", "underwriting", "policy", "beneficiary"],
+      "evaluationCriteria": {
+        "coverage": 0.30,
+        "price": 0.25,
+        "claims_process": 0.25,
+        "customer_service": 0.15,
+        "reputation": 0.05
+      },
+      "regulatoryContext": ["state insurance commissioners", "NAIC", "DOI"],
+      "seasonality": { "peak": "Q4-Q1", "low": "Q3", "notes": "Open enrollment and tax season" }
+    },
+    {
+      "id": "logistics",
+      "name": "Logistics & Shipping",
+      "slug": "logistics",
+      "naicsCode": "4931",
+      "description": "Shipping, freight, and logistics services",
+      "subCategories": [
+        { "id": "logistics-parcel", "name": "Parcel Delivery", "examples": ["UPS", "FedEx", "USPS"] },
+        { "id": "logistics-freight", "name": "Freight & Trucking", "examples": ["XPO", "J.B. Hunt", "Werner"] },
+        { "id": "logistics-3pl", "name": "3PL Providers", "examples": ["DHL Supply Chain", "C.H. Robinson", "Kuehne+Nagel"] },
+        { "id": "logistics-last-mile", "name": "Last Mile", "examples": ["Amazon Logistics", "OnTrac", "LaserShip"] },
+        { "id": "logistics-freight-tech", "name": "Freight Tech", "examples": ["Flexport", "Convoy", "Uber Freight"] },
+        { "id": "logistics-warehousing", "name": "Warehousing", "examples": ["Prologis", "Amazon Fulfillment", "ShipBob"] }
+      ],
+      "keyTerms": ["tracking", "delivery time", "freight", "LTL", "FTL", "fulfillment", "supply chain"],
+      "evaluationCriteria": {
+        "reliability": 0.35,
+        "speed": 0.25,
+        "price": 0.20,
+        "tracking": 0.15,
+        "coverage": 0.05
+      },
+      "regulatoryContext": ["DOT", "FMCSA", "customs", "hazmat"],
+      "seasonality": { "peak": "Q4", "low": "Q1", "notes": "Holiday shipping drives Q4" }
+    },
+    {
+      "id": "manufacturing",
+      "name": "Manufacturing",
+      "slug": "manufacturing",
+      "naicsCode": "3111",
+      "description": "Manufacturing companies and industrial production",
+      "subCategories": [
+        { "id": "manufacturing-industrial", "name": "Industrial Equipment", "examples": ["Caterpillar", "John Deere", "Honeywell"] },
+        { "id": "manufacturing-electronics", "name": "Electronics", "examples": ["Apple", "Samsung", "Foxconn"] },
+        { "id": "manufacturing-food", "name": "Food & Beverage", "examples": ["Nestle", "PepsiCo", "Kraft Heinz"] },
+        { "id": "manufacturing-chemicals", "name": "Chemicals", "examples": ["BASF", "Dow", "DuPont"] },
+        { "id": "manufacturing-textiles", "name": "Textiles & Apparel", "examples": ["Nike", "Adidas", "VF Corp"] },
+        { "id": "manufacturing-aerospace", "name": "Aerospace", "examples": ["Boeing", "Lockheed Martin", "Northrop Grumman"] }
+      ],
+      "keyTerms": ["OEM", "supply chain", "quality control", "lead time", "MOQ", "ISO", "lean manufacturing"],
+      "evaluationCriteria": {
+        "quality": 0.35,
+        "reliability": 0.25,
+        "price": 0.20,
+        "lead_time": 0.15,
+        "innovation": 0.05
+      },
+      "regulatoryContext": ["OSHA", "EPA", "ISO standards", "industry-specific"],
+      "seasonality": { "peak": null, "low": null, "notes": "Varies by sector" }
+    },
+    {
+      "id": "energy",
+      "name": "Energy & Utilities",
+      "slug": "energy",
+      "naicsCode": "2211",
+      "description": "Energy production, utilities, and clean energy",
+      "subCategories": [
+        { "id": "energy-utilities", "name": "Utilities", "examples": ["Duke Energy", "Southern Company", "Exelon"] },
+        { "id": "energy-oil-gas", "name": "Oil & Gas", "examples": ["ExxonMobil", "Chevron", "Shell"] },
+        { "id": "energy-renewable", "name": "Renewable Energy", "examples": ["NextEra", "First Solar", "Vestas"] },
+        { "id": "energy-solar", "name": "Solar", "examples": ["SunPower", "Sunrun", "Tesla Solar"] },
+        { "id": "energy-ev-charging", "name": "EV Charging", "examples": ["ChargePoint", "EVgo", "Electrify America"] },
+        { "id": "energy-storage", "name": "Energy Storage", "examples": ["Tesla Energy", "Fluence", "LG Energy"] }
+      ],
+      "keyTerms": ["renewable", "carbon footprint", "grid", "generation", "transmission", "efficiency"],
+      "evaluationCriteria": {
+        "reliability": 0.30,
+        "price": 0.25,
+        "sustainability": 0.25,
+        "service": 0.15,
+        "innovation": 0.05
+      },
+      "regulatoryContext": ["FERC", "EPA", "state PUCs", "NERC"],
+      "seasonality": { "peak": "Q3", "low": "Q2", "notes": "Summer/winter peak demand" }
+    },
+    {
+      "id": "telecommunications",
+      "name": "Telecommunications",
+      "slug": "telecommunications",
+      "naicsCode": "5173",
+      "description": "Telecom providers, mobile carriers, and communications",
+      "subCategories": [
+        { "id": "telecom-mobile", "name": "Mobile Carriers", "examples": ["Verizon", "AT&T", "T-Mobile"] },
+        { "id": "telecom-internet", "name": "Internet Service", "examples": ["Comcast", "Spectrum", "Cox"] },
+        { "id": "telecom-enterprise", "name": "Enterprise Communications", "examples": ["Cisco", "RingCentral", "Twilio"] },
+        { "id": "telecom-satellite", "name": "Satellite", "examples": ["Starlink", "HughesNet", "Viasat"] },
+        { "id": "telecom-voip", "name": "VoIP", "examples": ["Vonage", "8x8", "Dialpad"] },
+        { "id": "telecom-5g", "name": "5G Infrastructure", "examples": ["Ericsson", "Nokia", "Qualcomm"] }
+      ],
+      "keyTerms": ["bandwidth", "latency", "coverage", "data plan", "5G", "fiber", "unlimited"],
+      "evaluationCriteria": {
+        "coverage": 0.30,
+        "speed": 0.25,
+        "price": 0.25,
+        "reliability": 0.15,
+        "support": 0.05
+      },
+      "regulatoryContext": ["FCC", "spectrum licensing", "net neutrality"],
+      "seasonality": { "peak": "Q4", "low": "Q1", "notes": "Holiday device sales drive Q4" }
+    },
+    {
+      "id": "media",
+      "name": "Media & Entertainment",
+      "slug": "media",
+      "naicsCode": "5121",
+      "description": "Media companies, streaming, and entertainment",
+      "subCategories": [
+        { "id": "media-streaming", "name": "Streaming", "examples": ["Netflix", "Disney+", "HBO Max"] },
+        { "id": "media-music", "name": "Music Streaming", "examples": ["Spotify", "Apple Music", "Amazon Music"] },
+        { "id": "media-gaming", "name": "Gaming", "examples": ["PlayStation", "Xbox", "Nintendo"] },
+        { "id": "media-news", "name": "News & Publishing", "examples": ["New York Times", "Washington Post", "WSJ"] },
+        { "id": "media-social", "name": "Social Media", "examples": ["Meta", "TikTok", "X/Twitter"] },
+        { "id": "media-sports", "name": "Sports Media", "examples": ["ESPN", "NFL Network", "DAZN"] }
+      ],
+      "keyTerms": ["content", "subscribers", "engagement", "original content", "licensing", "streaming"],
+      "evaluationCriteria": {
+        "content_library": 0.35,
+        "price": 0.25,
+        "user_experience": 0.20,
+        "original_content": 0.15,
+        "features": 0.05
+      },
+      "regulatoryContext": ["FCC", "copyright", "COPPA", "content moderation"],
+      "seasonality": { "peak": "Q4", "low": "Q2", "notes": "Holiday subscriptions and releases" }
+    },
+    {
+      "id": "consulting",
+      "name": "Consulting & Professional Services",
+      "slug": "consulting",
+      "naicsCode": "5416",
+      "description": "Management consulting, strategy, and professional services",
+      "subCategories": [
+        { "id": "consulting-strategy", "name": "Strategy Consulting", "examples": ["McKinsey", "BCG", "Bain"] },
+        { "id": "consulting-management", "name": "Management Consulting", "examples": ["Deloitte", "Accenture", "PwC"] },
+        { "id": "consulting-it", "name": "IT Consulting", "examples": ["IBM", "Capgemini", "Cognizant"] },
+        { "id": "consulting-hr", "name": "HR Consulting", "examples": ["Mercer", "Korn Ferry", "Willis Towers Watson"] },
+        { "id": "consulting-financial", "name": "Financial Advisory", "examples": ["EY", "KPMG", "Grant Thornton"] },
+        { "id": "consulting-boutique", "name": "Boutique Consulting", "examples": ["Oliver Wyman", "L.E.K.", "Simon-Kucher"] }
+      ],
+      "keyTerms": ["engagement", "deliverables", "transformation", "strategy", "implementation", "ROI"],
+      "evaluationCriteria": {
+        "expertise": 0.35,
+        "track_record": 0.25,
+        "fit": 0.20,
+        "price": 0.15,
+        "communication": 0.05
+      },
+      "regulatoryContext": ["industry-specific", "SOX", "professional standards"],
+      "seasonality": { "peak": "Q4-Q1", "low": "Q3", "notes": "Budget planning and year-end projects" }
+    },
+    {
+      "id": "accounting",
+      "name": "Accounting & Tax",
+      "slug": "accounting",
+      "naicsCode": "5412",
+      "description": "Accounting firms, tax services, and bookkeeping",
+      "subCategories": [
+        { "id": "accounting-big4", "name": "Big 4 Firms", "examples": ["Deloitte", "PwC", "EY", "KPMG"] },
+        { "id": "accounting-regional", "name": "Regional Firms", "examples": ["BDO", "RSM", "Grant Thornton"] },
+        { "id": "accounting-tax", "name": "Tax Services", "examples": ["H&R Block", "TurboTax", "Jackson Hewitt"] },
+        { "id": "accounting-bookkeeping", "name": "Bookkeeping", "examples": ["Bench", "Pilot", "QuickBooks Live"] },
+        { "id": "accounting-software", "name": "Accounting Software", "examples": ["QuickBooks", "Xero", "FreshBooks"] },
+        { "id": "accounting-payroll", "name": "Payroll Services", "examples": ["ADP", "Paychex", "Gusto"] }
+      ],
+      "keyTerms": ["CPA", "audit", "tax return", "GAAP", "compliance", "bookkeeping", "payroll"],
+      "evaluationCriteria": {
+        "expertise": 0.35,
+        "accuracy": 0.25,
+        "responsiveness": 0.20,
+        "price": 0.15,
+        "technology": 0.05
+      },
+      "regulatoryContext": ["AICPA", "IRS", "state CPA boards", "PCAOB"],
+      "seasonality": { "peak": "Q1", "low": "Q3", "notes": "Tax season drives Q1" }
+    },
+    {
+      "id": "hr-staffing",
+      "name": "HR & Staffing",
+      "slug": "hr-staffing",
+      "naicsCode": "5613",
+      "description": "Staffing agencies, HR services, and recruiting",
+      "subCategories": [
+        { "id": "hr-recruiting", "name": "Recruiting", "examples": ["Robert Half", "Hays", "Kelly Services"] },
+        { "id": "hr-executive-search", "name": "Executive Search", "examples": ["Korn Ferry", "Spencer Stuart", "Heidrick"] },
+        { "id": "hr-temp-staffing", "name": "Temp Staffing", "examples": ["Manpower", "Randstad", "Adecco"] },
+        { "id": "hr-peo", "name": "PEO Services", "examples": ["ADP TotalSource", "Insperity", "TriNet"] },
+        { "id": "hr-background", "name": "Background Checks", "examples": ["Sterling", "Checkr", "GoodHire"] },
+        { "id": "hr-job-boards", "name": "Job Boards", "examples": ["LinkedIn", "Indeed", "Glassdoor"] }
+      ],
+      "keyTerms": ["placement", "temp-to-perm", "contract", "headhunter", "talent acquisition", "onboarding"],
+      "evaluationCriteria": {
+        "quality_of_candidates": 0.35,
+        "speed": 0.25,
+        "cost": 0.20,
+        "retention": 0.15,
+        "communication": 0.05
+      },
+      "regulatoryContext": ["EEOC", "FLSA", "state employment laws", "I-9"],
+      "seasonality": { "peak": "Q1-Q2", "low": "Q4", "notes": "New year hiring and budget cycles" }
+    },
+    {
+      "id": "nonprofit",
+      "name": "Nonprofit & NGO",
+      "slug": "nonprofit",
+      "naicsCode": "8131",
+      "description": "Nonprofit organizations, charities, and NGOs",
+      "subCategories": [
+        { "id": "nonprofit-charity", "name": "Charitable Organizations", "examples": ["Red Cross", "Salvation Army", "Feeding America"] },
+        { "id": "nonprofit-health", "name": "Health Nonprofits", "examples": ["St. Jude", "American Cancer Society", "March of Dimes"] },
+        { "id": "nonprofit-education", "name": "Educational Nonprofits", "examples": ["Teach for America", "Khan Academy", "DonorsChoose"] },
+        { "id": "nonprofit-environment", "name": "Environmental", "examples": ["Sierra Club", "WWF", "Nature Conservancy"] },
+        { "id": "nonprofit-humanitarian", "name": "Humanitarian", "examples": ["UNICEF", "Doctors Without Borders", "World Vision"] },
+        { "id": "nonprofit-foundations", "name": "Foundations", "examples": ["Gates Foundation", "Ford Foundation", "Rockefeller"] }
+      ],
+      "keyTerms": ["donation", "501(c)(3)", "impact", "mission", "volunteer", "grant", "fundraising"],
+      "evaluationCriteria": {
+        "impact": 0.35,
+        "transparency": 0.25,
+        "efficiency": 0.20,
+        "reputation": 0.15,
+        "governance": 0.05
+      },
+      "regulatoryContext": ["IRS 501(c)", "state charity registration", "GAAP for nonprofits"],
+      "seasonality": { "peak": "Q4", "low": "Q1", "notes": "Year-end giving drives Q4" }
+    },
+    {
+      "id": "government",
+      "name": "Government & Public Sector",
+      "slug": "government",
+      "naicsCode": "9211",
+      "description": "Government agencies and public sector services",
+      "subCategories": [
+        { "id": "government-federal", "name": "Federal Agencies", "examples": ["IRS", "SSA", "VA"] },
+        { "id": "government-state", "name": "State Government", "examples": ["state agencies"] },
+        { "id": "government-local", "name": "Local Government", "examples": ["city/county agencies"] },
+        { "id": "government-defense", "name": "Defense", "examples": ["DoD", "Army", "Navy"] },
+        { "id": "government-contractors", "name": "Government Contractors", "examples": ["Lockheed Martin", "Raytheon", "General Dynamics"] },
+        { "id": "government-civic-tech", "name": "Civic Tech", "examples": ["Code for America", "USDS", "18F"] }
+      ],
+      "keyTerms": ["procurement", "RFP", "compliance", "clearance", "contract", "public service"],
+      "evaluationCriteria": {
+        "compliance": 0.35,
+        "capability": 0.25,
+        "price": 0.20,
+        "past_performance": 0.15,
+        "security": 0.05
+      },
+      "regulatoryContext": ["FAR", "DFAR", "FedRAMP", "FISMA"],
+      "seasonality": { "peak": "Q3", "low": "Q4", "notes": "Fiscal year end in September" }
+    },
+    {
+      "id": "agriculture",
+      "name": "Agriculture & Farming",
+      "slug": "agriculture",
+      "naicsCode": "1111",
+      "description": "Agriculture, farming, and agricultural technology",
+      "subCategories": [
+        { "id": "agriculture-farming", "name": "Farming Operations", "examples": ["Cargill", "ADM", "Bunge"] },
+        { "id": "agriculture-equipment", "name": "Farm Equipment", "examples": ["John Deere", "Case IH", "AGCO"] },
+        { "id": "agriculture-seeds", "name": "Seeds & Biotech", "examples": ["Monsanto/Bayer", "Corteva", "Syngenta"] },
+        { "id": "agriculture-organic", "name": "Organic Farming", "examples": ["Organic Valley", "Earthbound Farm", "Amy's"] },
+        { "id": "agriculture-agtech", "name": "AgTech", "examples": ["Indigo", "Farmers Business Network", "Plenty"] },
+        { "id": "agriculture-livestock", "name": "Livestock", "examples": ["Tyson", "JBS", "Cargill Protein"] }
+      ],
+      "keyTerms": ["yield", "crop", "harvest", "sustainable", "organic", "GMO", "irrigation"],
+      "evaluationCriteria": {
+        "quality": 0.35,
+        "sustainability": 0.25,
+        "reliability": 0.20,
+        "price": 0.15,
+        "innovation": 0.05
+      },
+      "regulatoryContext": ["USDA", "FDA", "EPA", "organic certification"],
+      "seasonality": { "peak": "Q2-Q3", "low": "Q4-Q1", "notes": "Planting and harvest seasons" }
+    },
+    {
+      "id": "gaming-esports",
+      "name": "Gaming & Esports",
+      "slug": "gaming-esports",
+      "naicsCode": "7132",
+      "description": "Video games, esports, and gaming platforms",
+      "subCategories": [
+        { "id": "gaming-publishers", "name": "Game Publishers", "examples": ["Activision", "EA", "Take-Two"] },
+        { "id": "gaming-platforms", "name": "Gaming Platforms", "examples": ["Steam", "Epic Games", "PlayStation"] },
+        { "id": "gaming-mobile", "name": "Mobile Gaming", "examples": ["Supercell", "King", "Zynga"] },
+        { "id": "gaming-esports-orgs", "name": "Esports Organizations", "examples": ["Cloud9", "TSM", "FaZe Clan"] },
+        { "id": "gaming-streaming", "name": "Game Streaming", "examples": ["Twitch", "YouTube Gaming", "Kick"] },
+        { "id": "gaming-hardware", "name": "Gaming Hardware", "examples": ["NVIDIA", "AMD", "Razer"] }
+      ],
+      "keyTerms": ["gameplay", "graphics", "multiplayer", "esports", "streaming", "microtransactions"],
+      "evaluationCriteria": {
+        "gameplay": 0.35,
+        "graphics": 0.25,
+        "community": 0.20,
+        "price": 0.15,
+        "support": 0.05
+      },
+      "regulatoryContext": ["ESRB", "PEGI", "loot box regulations", "COPPA"],
+      "seasonality": { "peak": "Q4", "low": "Q1", "notes": "Holiday releases and gifts" }
+    },
+    {
+      "id": "cannabis",
+      "name": "Cannabis & CBD",
+      "slug": "cannabis",
+      "naicsCode": "4539",
+      "description": "Legal cannabis, CBD products, and ancillary services",
+      "subCategories": [
+        { "id": "cannabis-cultivators", "name": "Cultivators", "examples": ["Curaleaf", "Trulieve", "Green Thumb"] },
+        { "id": "cannabis-dispensaries", "name": "Dispensaries", "examples": ["MedMen", "Harvest", "Planet 13"] },
+        { "id": "cannabis-cbd", "name": "CBD Products", "examples": ["Charlotte's Web", "cbdMD", "Medterra"] },
+        { "id": "cannabis-technology", "name": "Cannabis Tech", "examples": ["Leafly", "Weedmaps", "Dutchie"] },
+        { "id": "cannabis-beverages", "name": "Cannabis Beverages", "examples": ["Cann", "CERIA", "Lagunitas Hi-Fi"] },
+        { "id": "cannabis-ancillary", "name": "Ancillary Services", "examples": ["Akerna", "LeafLink", "Metrc"] }
+      ],
+      "keyTerms": ["THC", "CBD", "strain", "edibles", "tincture", "dispensary", "medical marijuana"],
+      "evaluationCriteria": {
+        "product_quality": 0.35,
+        "selection": 0.25,
+        "price": 0.20,
+        "service": 0.15,
+        "compliance": 0.05
+      },
+      "regulatoryContext": ["state cannabis laws", "FDA", "DEA", "seed-to-sale tracking"],
+      "seasonality": { "peak": "Q2", "low": "Q1", "notes": "4/20 drives April sales" }
+    },
+    {
+      "id": "pet",
+      "name": "Pet & Animal Care",
+      "slug": "pet",
+      "naicsCode": "4539",
+      "description": "Pet products, veterinary services, and pet care",
+      "subCategories": [
+        { "id": "pet-food", "name": "Pet Food", "examples": ["Chewy", "Blue Buffalo", "Hill's"] },
+        { "id": "pet-supplies", "name": "Pet Supplies", "examples": ["Petco", "PetSmart", "Amazon Pets"] },
+        { "id": "pet-veterinary", "name": "Veterinary", "examples": ["VCA", "Banfield", "BluePearl"] },
+        { "id": "pet-insurance", "name": "Pet Insurance", "examples": ["Trupanion", "Petplan", "Healthy Paws"] },
+        { "id": "pet-grooming", "name": "Grooming & Boarding", "examples": ["Dogtopia", "Camp Bow Wow", "Wag Hotels"] },
+        { "id": "pet-technology", "name": "Pet Tech", "examples": ["Rover", "Wag", "Fi"] }
+      ],
+      "keyTerms": ["breed", "nutrition", "veterinarian", "grooming", "boarding", "adoption"],
+      "evaluationCriteria": {
+        "product_quality": 0.35,
+        "pet_welfare": 0.25,
+        "price": 0.20,
+        "convenience": 0.15,
+        "expertise": 0.05
+      },
+      "regulatoryContext": ["FDA", "AAFCO", "state veterinary boards", "USDA"],
+      "seasonality": { "peak": "Q4", "low": "Q1", "notes": "Holiday pet adoptions and gifts" }
+    },
+    {
+      "id": "security",
+      "name": "Security Services",
+      "slug": "security",
+      "naicsCode": "5616",
+      "description": "Physical and cybersecurity services",
+      "subCategories": [
+        { "id": "security-physical", "name": "Physical Security", "examples": ["Securitas", "G4S", "Allied Universal"] },
+        { "id": "security-home", "name": "Home Security", "examples": ["ADT", "Ring", "SimpliSafe"] },
+        { "id": "security-cyber", "name": "Cybersecurity", "examples": ["CrowdStrike", "Palo Alto", "Fortinet"] },
+        { "id": "security-identity", "name": "Identity & Access", "examples": ["Okta", "Auth0", "Ping Identity"] },
+        { "id": "security-mssp", "name": "Managed Security", "examples": ["IBM Security", "Secureworks", "Arctic Wolf"] },
+        { "id": "security-investigation", "name": "Investigation", "examples": ["Kroll", "FTI Consulting", "Stroz Friedberg"] }
+      ],
+      "keyTerms": ["threat", "vulnerability", "breach", "monitoring", "firewall", "SOC", "incident response"],
+      "evaluationCriteria": {
+        "effectiveness": 0.35,
+        "reliability": 0.25,
+        "response_time": 0.20,
+        "price": 0.15,
+        "technology": 0.05
+      },
+      "regulatoryContext": ["state licensing", "NIST", "ISO 27001", "SOC 2"],
+      "seasonality": { "peak": "Q4", "low": "Q2", "notes": "Year-end security reviews and audits" }
+    },
+    {
+      "id": "events",
+      "name": "Events & Conferences",
+      "slug": "events",
+      "naicsCode": "7114",
+      "description": "Event planning, venues, and conference services",
+      "subCategories": [
+        { "id": "events-corporate", "name": "Corporate Events", "examples": ["Freeman", "Cvent", "Eventbrite"] },
+        { "id": "events-venues", "name": "Venues", "examples": ["convention centers", "hotels", "unique venues"] },
+        { "id": "events-weddings", "name": "Weddings", "examples": ["The Knot", "Zola", "WeddingWire"] },
+        { "id": "events-conferences", "name": "Conference Organizers", "examples": ["Informa", "Reed Exhibitions", "Clarion"] },
+        { "id": "events-virtual", "name": "Virtual Events", "examples": ["Hopin", "Zoom Events", "Bizzabo"] },
+        { "id": "events-catering", "name": "Catering", "examples": ["local caterers", "Sodexo", "Compass Group"] }
+      ],
+      "keyTerms": ["venue", "catering", "attendance", "registration", "sponsorship", "networking"],
+      "evaluationCriteria": {
+        "venue_quality": 0.30,
+        "organization": 0.25,
+        "price": 0.20,
+        "experience": 0.20,
+        "technology": 0.05
+      },
+      "regulatoryContext": ["health & safety", "fire codes", "ADA", "liquor licensing"],
+      "seasonality": { "peak": "Q2-Q3", "low": "Q4", "notes": "Spring/fall conference seasons" }
+    },
+    {
+      "id": "cleaning",
+      "name": "Cleaning & Janitorial",
+      "slug": "cleaning",
+      "naicsCode": "5617",
+      "description": "Commercial and residential cleaning services",
+      "subCategories": [
+        { "id": "cleaning-commercial", "name": "Commercial Cleaning", "examples": ["ABM", "ServiceMaster", "Jani-King"] },
+        { "id": "cleaning-residential", "name": "Residential Cleaning", "examples": ["Molly Maid", "Merry Maids", "The Maids"] },
+        { "id": "cleaning-specialized", "name": "Specialized Cleaning", "examples": ["SERVPRO", "Belfor", "ServiceMaster Restore"] },
+        { "id": "cleaning-carpet", "name": "Carpet & Floor", "examples": ["Stanley Steemer", "Chem-Dry", "Zerorez"] },
+        { "id": "cleaning-window", "name": "Window Cleaning", "examples": ["Fish Window Cleaning", "local providers"] },
+        { "id": "cleaning-on-demand", "name": "On-Demand", "examples": ["Handy", "TaskRabbit", "Homeaglow"] }
+      ],
+      "keyTerms": ["deep cleaning", "sanitization", "green cleaning", "recurring", "move-in/out"],
+      "evaluationCriteria": {
+        "quality": 0.35,
+        "reliability": 0.25,
+        "price": 0.20,
+        "flexibility": 0.15,
+        "eco_friendly": 0.05
+      },
+      "regulatoryContext": ["OSHA", "EPA", "licensing", "bonding"],
+      "seasonality": { "peak": "Q1", "low": "Q3", "notes": "Spring cleaning and year-end" }
+    },
+    {
+      "id": "moving",
+      "name": "Moving & Storage",
+      "slug": "moving",
+      "naicsCode": "4841",
+      "description": "Moving companies and storage facilities",
+      "subCategories": [
+        { "id": "moving-local", "name": "Local Moving", "examples": ["Two Men and a Truck", "College Hunks", "local movers"] },
+        { "id": "moving-long-distance", "name": "Long Distance", "examples": ["United Van Lines", "Allied", "Mayflower"] },
+        { "id": "moving-corporate", "name": "Corporate Relocation", "examples": ["Graebel", "Sirva", "Cartus"] },
+        { "id": "moving-storage", "name": "Self Storage", "examples": ["Public Storage", "Extra Space", "CubeSmart"] },
+        { "id": "moving-portable", "name": "Portable Storage", "examples": ["PODS", "1-800-PACK-RAT", "U-Pack"] },
+        { "id": "moving-truck-rental", "name": "Truck Rental", "examples": ["U-Haul", "Penske", "Budget Truck"] }
+      ],
+      "keyTerms": ["estimate", "packing", "loading", "insurance", "storage unit", "climate controlled"],
+      "evaluationCriteria": {
+        "reliability": 0.30,
+        "care": 0.25,
+        "price": 0.25,
+        "communication": 0.15,
+        "insurance": 0.05
+      },
+      "regulatoryContext": ["DOT", "FMCSA", "state licensing", "insurance"],
+      "seasonality": { "peak": "Q2-Q3", "low": "Q4-Q1", "notes": "Summer moving season" }
+    },
+    {
+      "id": "childcare",
+      "name": "Childcare & Education",
+      "slug": "childcare",
+      "naicsCode": "6244",
+      "description": "Daycare, preschools, and children's education",
+      "subCategories": [
+        { "id": "childcare-centers", "name": "Daycare Centers", "examples": ["Bright Horizons", "KinderCare", "Learning Care"] },
+        { "id": "childcare-preschool", "name": "Preschools", "examples": ["Montessori", "Goddard School", "Primrose"] },
+        { "id": "childcare-nanny", "name": "Nanny Services", "examples": ["Care.com", "Sittercity", "UrbanSitter"] },
+        { "id": "childcare-tutoring", "name": "Tutoring", "examples": ["Kumon", "Sylvan", "Mathnasium"] },
+        { "id": "childcare-enrichment", "name": "Enrichment", "examples": ["The Little Gym", "Gymboree", "Music Together"] },
+        { "id": "childcare-afterschool", "name": "After-School", "examples": ["Boys & Girls Clubs", "YMCA", "local programs"] }
+      ],
+      "keyTerms": ["curriculum", "ratio", "licensing", "safety", "development", "potty training"],
+      "evaluationCriteria": {
+        "safety": 0.35,
+        "curriculum": 0.25,
+        "staff": 0.20,
+        "location": 0.15,
+        "price": 0.05
+      },
+      "regulatoryContext": ["state licensing", "NAEYC", "health & safety", "background checks"],
+      "seasonality": { "peak": "Q3", "low": "Q2", "notes": "Back-to-school enrollment" }
+    },
+    {
+      "id": "senior-care",
+      "name": "Senior Care & Assisted Living",
+      "slug": "senior-care",
+      "naicsCode": "6233",
+      "description": "Senior living, home care, and assisted living",
+      "subCategories": [
+        { "id": "senior-assisted", "name": "Assisted Living", "examples": ["Brookdale", "Sunrise", "Atria"] },
+        { "id": "senior-memory", "name": "Memory Care", "examples": ["Silverado", "Sunrise Memory Care", "Arden Courts"] },
+        { "id": "senior-home-care", "name": "Home Care", "examples": ["Home Instead", "Visiting Angels", "Comfort Keepers"] },
+        { "id": "senior-nursing", "name": "Nursing Homes", "examples": ["Genesis", "Life Care Centers", "HCR ManorCare"] },
+        { "id": "senior-ccrc", "name": "CCRCs", "examples": ["Erickson Living", "Acts Retirement", "Vi Living"] },
+        { "id": "senior-technology", "name": "Senior Tech", "examples": ["Medical Guardian", "Life Alert", "GrandPad"] }
+      ],
+      "keyTerms": ["ADL", "memory care", "Medicare", "Medicaid", "skilled nursing", "respite care"],
+      "evaluationCriteria": {
+        "care_quality": 0.35,
+        "staff_ratio": 0.25,
+        "facilities": 0.20,
+        "price": 0.15,
+        "activities": 0.05
+      },
+      "regulatoryContext": ["CMS", "state licensing", "Medicare/Medicaid", "HIPAA"],
+      "seasonality": { "peak": null, "low": null, "notes": "Generally stable year-round" }
+    },
+    {
+      "id": "funeral",
+      "name": "Funeral & Memorial",
+      "slug": "funeral",
+      "naicsCode": "8122",
+      "description": "Funeral homes, cremation, and memorial services",
+      "subCategories": [
+        { "id": "funeral-homes", "name": "Funeral Homes", "examples": ["Dignity Memorial", "SCI", "local funeral homes"] },
+        { "id": "funeral-cremation", "name": "Cremation Services", "examples": ["Neptune Society", "Cremation Society", "local providers"] },
+        { "id": "funeral-preneed", "name": "Pre-Need Planning", "examples": ["Dignity Memorial", "Precoa", "Homesteaders"] },
+        { "id": "funeral-cemetery", "name": "Cemeteries", "examples": ["StoneMor", "Carriage Services", "local cemeteries"] },
+        { "id": "funeral-online", "name": "Online Memorial", "examples": ["Everdays", "GatheringUs", "Legacy.com"] },
+        { "id": "funeral-caskets", "name": "Caskets & Urns", "examples": ["Batesville", "Matthews", "Costco Caskets"] }
+      ],
+      "keyTerms": ["service", "cremation", "burial", "obituary", "memorial", "pre-planning"],
+      "evaluationCriteria": {
+        "compassion": 0.35,
+        "professionalism": 0.25,
+        "price_transparency": 0.20,
+        "facilities": 0.15,
+        "reputation": 0.05
+      },
+      "regulatoryContext": ["FTC Funeral Rule", "state licensing", "cemetery regulations"],
+      "seasonality": { "peak": "Q1", "low": "Q3", "notes": "Higher mortality in winter" }
+    },
+    {
+      "id": "photography",
+      "name": "Photography & Video",
+      "slug": "photography",
+      "naicsCode": "5419",
+      "description": "Photography, videography, and visual content services",
+      "subCategories": [
+        { "id": "photography-wedding", "name": "Wedding Photography", "examples": ["local photographers"] },
+        { "id": "photography-portrait", "name": "Portrait Studios", "examples": ["JCPenney Portraits", "Picture People", "Lifetouch"] },
+        { "id": "photography-commercial", "name": "Commercial Photography", "examples": ["Getty", "Shutterstock contributors"] },
+        { "id": "photography-video", "name": "Video Production", "examples": ["local videographers", "production companies"] },
+        { "id": "photography-drone", "name": "Drone Photography", "examples": ["DroneBase", "local operators"] },
+        { "id": "photography-stock", "name": "Stock Media", "examples": ["Getty", "Shutterstock", "Adobe Stock"] }
+      ],
+      "keyTerms": ["portfolio", "editing", "retouching", "prints", "digital files", "rights"],
+      "evaluationCriteria": {
+        "quality": 0.35,
+        "style": 0.25,
+        "price": 0.20,
+        "reliability": 0.15,
+        "turnaround": 0.05
+      },
+      "regulatoryContext": ["copyright", "model releases", "FAA (drone)"],
+      "seasonality": { "peak": "Q2-Q3", "low": "Q1", "notes": "Wedding and event season" }
+    },
+    {
+      "id": "printing",
+      "name": "Printing & Signage",
+      "slug": "printing",
+      "naicsCode": "3231",
+      "description": "Commercial printing, signage, and promotional products",
+      "subCategories": [
+        { "id": "printing-commercial", "name": "Commercial Printing", "examples": ["Vistaprint", "PrintingForLess", "Minuteman Press"] },
+        { "id": "printing-promotional", "name": "Promotional Products", "examples": ["4imprint", "Staples Promotional", "Cimpress"] },
+        { "id": "printing-signage", "name": "Signage", "examples": ["FASTSIGNS", "Signs Now", "Signarama"] },
+        { "id": "printing-packaging", "name": "Packaging", "examples": ["Packlane", "Custom Ink", "Sticker Mule"] },
+        { "id": "printing-apparel", "name": "Custom Apparel", "examples": ["Custom Ink", "Printful", "Bonfire"] },
+        { "id": "printing-digital", "name": "Large Format", "examples": ["FedEx Office", "local print shops"] }
+      ],
+      "keyTerms": ["proof", "CMYK", "bleed", "turnaround", "quantity", "substrate"],
+      "evaluationCriteria": {
+        "quality": 0.35,
+        "price": 0.25,
+        "turnaround": 0.20,
+        "options": 0.15,
+        "service": 0.05
+      },
+      "regulatoryContext": ["trademark", "copyright", "environmental"],
+      "seasonality": { "peak": "Q4", "low": "Q1", "notes": "Holiday marketing materials" }
+    },
+    {
+      "id": "jewelry",
+      "name": "Jewelry & Watches",
+      "slug": "jewelry",
+      "naicsCode": "4483",
+      "description": "Jewelry retailers, watchmakers, and luxury accessories",
+      "subCategories": [
+        { "id": "jewelry-fine", "name": "Fine Jewelry", "examples": ["Tiffany", "Cartier", "Harry Winston"] },
+        { "id": "jewelry-fashion", "name": "Fashion Jewelry", "examples": ["Pandora", "Kendra Scott", "BaubleBar"] },
+        { "id": "jewelry-diamond", "name": "Diamond Retailers", "examples": ["Blue Nile", "James Allen", "Brilliant Earth"] },
+        { "id": "jewelry-watches", "name": "Watches", "examples": ["Rolex", "Omega", "TAG Heuer"] },
+        { "id": "jewelry-custom", "name": "Custom Jewelry", "examples": ["local jewelers", "CustomMade"] },
+        { "id": "jewelry-repair", "name": "Repair & Appraisal", "examples": ["local jewelers"] }
+      ],
+      "keyTerms": ["carat", "clarity", "setting", "certification", "appraisal", "warranty"],
+      "evaluationCriteria": {
+        "quality": 0.35,
+        "design": 0.25,
+        "price": 0.20,
+        "certification": 0.15,
+        "service": 0.05
+      },
+      "regulatoryContext": ["FTC jewelry guides", "hallmarking", "conflict-free certification"],
+      "seasonality": { "peak": "Q4-Q1", "low": "Q2-Q3", "notes": "Holiday and Valentine's Day" }
+    },
+    {
+      "id": "furniture",
+      "name": "Furniture & Home Decor",
+      "slug": "furniture",
+      "naicsCode": "4421",
+      "description": "Furniture retailers and home decor",
+      "subCategories": [
+        { "id": "furniture-mass", "name": "Mass Market", "examples": ["IKEA", "Wayfair", "Ashley Furniture"] },
+        { "id": "furniture-premium", "name": "Premium", "examples": ["Crate & Barrel", "West Elm", "Room & Board"] },
+        { "id": "furniture-luxury", "name": "Luxury", "examples": ["Restoration Hardware", "Ethan Allen", "Pottery Barn"] },
+        { "id": "furniture-mattress", "name": "Mattresses", "examples": ["Casper", "Purple", "Tempur-Pedic"] },
+        { "id": "furniture-outdoor", "name": "Outdoor", "examples": ["Frontgate", "Polywood", "Brown Jordan"] },
+        { "id": "furniture-office", "name": "Office Furniture", "examples": ["Herman Miller", "Steelcase", "Branch"] }
+      ],
+      "keyTerms": ["assembly", "delivery", "warranty", "materials", "dimensions", "customization"],
+      "evaluationCriteria": {
+        "quality": 0.35,
+        "style": 0.25,
+        "price": 0.20,
+        "delivery": 0.15,
+        "durability": 0.05
+      },
+      "regulatoryContext": ["CPSC", "flammability standards", "formaldehyde"],
+      "seasonality": { "peak": "Q1-Q2", "low": "Q4", "notes": "Post-holiday and spring refresh" }
+    },
+    {
+      "id": "home-improvement",
+      "name": "Home Improvement",
+      "slug": "home-improvement",
+      "naicsCode": "4441",
+      "description": "Home improvement retailers and services",
+      "subCategories": [
+        { "id": "home-improvement-retail", "name": "Retail Stores", "examples": ["Home Depot", "Lowe's", "Menards"] },
+        { "id": "home-improvement-flooring", "name": "Flooring", "examples": ["Floor & Decor", "LL Flooring", "Empire Today"] },
+        { "id": "home-improvement-kitchen", "name": "Kitchen & Bath", "examples": ["Kohler", "Moen", "Ferguson"] },
+        { "id": "home-improvement-windows", "name": "Windows & Doors", "examples": ["Pella", "Andersen", "Marvin"] },
+        { "id": "home-improvement-roofing", "name": "Roofing", "examples": ["GAF", "Owens Corning", "CertainTeed"] },
+        { "id": "home-improvement-smart", "name": "Smart Home", "examples": ["Nest", "Ring", "Lutron"] }
+      ],
+      "keyTerms": ["DIY", "installation", "warranty", "materials", "permit", "contractor"],
+      "evaluationCriteria": {
+        "quality": 0.30,
+        "selection": 0.25,
+        "price": 0.25,
+        "installation": 0.15,
+        "warranty": 0.05
+      },
+      "regulatoryContext": ["building codes", "permits", "EPA lead paint", "Energy Star"],
+      "seasonality": { "peak": "Q2-Q3", "low": "Q4-Q1", "notes": "Spring/summer renovation season" }
+    },
+    {
+      "id": "sports",
+      "name": "Sports & Recreation",
+      "slug": "sports",
+      "naicsCode": "4511",
+      "description": "Sporting goods, recreation, and sports teams",
+      "subCategories": [
+        { "id": "sports-retail", "name": "Sporting Goods Retail", "examples": ["Dick's", "REI", "Academy Sports"] },
+        { "id": "sports-apparel", "name": "Athletic Apparel", "examples": ["Nike", "Adidas", "Under Armour"] },
+        { "id": "sports-equipment", "name": "Equipment", "examples": ["Wilson", "Callaway", "Trek"] },
+        { "id": "sports-outdoor", "name": "Outdoor Recreation", "examples": ["REI", "Bass Pro", "Cabela's"] },
+        { "id": "sports-teams", "name": "Professional Teams", "examples": ["NFL teams", "NBA teams", "MLB teams"] },
+        { "id": "sports-leagues", "name": "Youth Sports", "examples": ["Little League", "AYSO", "Pop Warner"] }
+      ],
+      "keyTerms": ["gear", "equipment", "performance", "training", "league", "registration"],
+      "evaluationCriteria": {
+        "quality": 0.35,
+        "performance": 0.25,
+        "price": 0.20,
+        "selection": 0.15,
+        "expertise": 0.05
+      },
+      "regulatoryContext": ["CPSC", "safety standards", "youth sports regulations"],
+      "seasonality": { "peak": "Q3", "low": "Q1", "notes": "Back-to-school and sports seasons" }
+    },
+    {
+      "id": "art-crafts",
+      "name": "Arts & Crafts",
+      "slug": "art-crafts",
+      "naicsCode": "4512",
+      "description": "Art supplies, crafts, and creative materials",
+      "subCategories": [
+        { "id": "art-supplies", "name": "Art Supplies", "examples": ["Blick", "Michaels", "Jerry's Artarama"] },
+        { "id": "art-crafts-retail", "name": "Craft Stores", "examples": ["Michaels", "Joann", "Hobby Lobby"] },
+        { "id": "art-sewing", "name": "Sewing & Fabric", "examples": ["Joann", "Mood Fabrics", "Hancock Fabrics"] },
+        { "id": "art-framing", "name": "Framing", "examples": ["Framebridge", "Michaels Custom Framing", "local framers"] },
+        { "id": "art-classes", "name": "Art Classes", "examples": ["local studios", "Painting with a Twist", "Sur La Table"] },
+        { "id": "art-handmade", "name": "Handmade Marketplace", "examples": ["Etsy", "Artfire", "iCraft"] }
+      ],
+      "keyTerms": ["supplies", "materials", "DIY", "handmade", "custom", "classes"],
+      "evaluationCriteria": {
+        "quality": 0.35,
+        "selection": 0.25,
+        "price": 0.20,
+        "inspiration": 0.15,
+        "classes": 0.05
+      },
+      "regulatoryContext": ["CPSC", "ASTM art materials", "toy safety (for kids' crafts)"],
+      "seasonality": { "peak": "Q4", "low": "Q2", "notes": "Holiday crafting and back-to-school" }
+    },
+    {
+      "id": "music",
+      "name": "Music & Instruments",
+      "slug": "music",
+      "naicsCode": "4511",
+      "description": "Musical instruments, lessons, and music services",
+      "subCategories": [
+        { "id": "music-instruments", "name": "Instruments", "examples": ["Guitar Center", "Sweetwater", "Sam Ash"] },
+        { "id": "music-lessons", "name": "Music Lessons", "examples": ["local teachers", "School of Rock", "Fender Play"] },
+        { "id": "music-pro-audio", "name": "Pro Audio", "examples": ["Sweetwater", "B&H", "Musician's Friend"] },
+        { "id": "music-sheet", "name": "Sheet Music", "examples": ["Hal Leonard", "Musicnotes", "Sheet Music Plus"] },
+        { "id": "music-streaming", "name": "Music Streaming", "examples": ["Spotify", "Apple Music", "Amazon Music"] },
+        { "id": "music-recording", "name": "Recording Studios", "examples": ["local studios"] }
+      ],
+      "keyTerms": ["instrument", "lessons", "practice", "gear", "recording", "performance"],
+      "evaluationCriteria": {
+        "quality": 0.35,
+        "selection": 0.25,
+        "price": 0.20,
+        "expertise": 0.15,
+        "service": 0.05
+      },
+      "regulatoryContext": ["copyright", "ASCAP/BMI", "FCC (broadcast)"],
+      "seasonality": { "peak": "Q4", "low": "Q2", "notes": "Holiday gift season" }
+    },
+    {
+      "id": "books",
+      "name": "Books & Publishing",
+      "slug": "books",
+      "naicsCode": "4512",
+      "description": "Bookstores, publishers, and literary services",
+      "subCategories": [
+        { "id": "books-retail", "name": "Bookstores", "examples": ["Barnes & Noble", "Powell's", "indie bookstores"] },
+        { "id": "books-online", "name": "Online Books", "examples": ["Amazon Books", "Bookshop.org", "ThriftBooks"] },
+        { "id": "books-ebooks", "name": "E-books & Audiobooks", "examples": ["Kindle", "Audible", "Libby"] },
+        { "id": "books-publishing", "name": "Publishing", "examples": ["Penguin Random House", "HarperCollins", "Simon & Schuster"] },
+        { "id": "books-self-publishing", "name": "Self-Publishing", "examples": ["KDP", "IngramSpark", "Blurb"] },
+        { "id": "books-academic", "name": "Academic Publishing", "examples": ["Elsevier", "Springer", "Wiley"] }
+      ],
+      "keyTerms": ["author", "genre", "bestseller", "ISBN", "e-book", "audiobook"],
+      "evaluationCriteria": {
+        "selection": 0.35,
+        "price": 0.25,
+        "discovery": 0.20,
+        "format_options": 0.15,
+        "community": 0.05
+      },
+      "regulatoryContext": ["copyright", "ISBN", "accessibility"],
+      "seasonality": { "peak": "Q4", "low": "Q1", "notes": "Holiday gift season" }
+    },
+    {
+      "id": "biotech",
+      "name": "Biotechnology",
+      "slug": "biotech",
+      "naicsCode": "5417",
+      "description": "Biotechnology, life sciences, and research",
+      "subCategories": [
+        { "id": "biotech-pharma", "name": "Biopharma", "examples": ["Amgen", "Gilead", "Regeneron"] },
+        { "id": "biotech-diagnostics", "name": "Diagnostics", "examples": ["Quest", "LabCorp", "IDEXX"] },
+        { "id": "biotech-genomics", "name": "Genomics", "examples": ["Illumina", "10x Genomics", "Pacific Biosciences"] },
+        { "id": "biotech-research", "name": "Research Tools", "examples": ["Thermo Fisher", "Agilent", "Bio-Rad"] },
+        { "id": "biotech-cell-gene", "name": "Cell & Gene Therapy", "examples": ["Novartis CAR-T", "bluebird bio", "Spark"] },
+        { "id": "biotech-synthetic", "name": "Synthetic Biology", "examples": ["Ginkgo Bioworks", "Zymergen", "Twist Bioscience"] }
+      ],
+      "keyTerms": ["clinical trial", "FDA approval", "pipeline", "molecular", "genomics", "research"],
+      "evaluationCriteria": {
+        "science": 0.35,
+        "pipeline": 0.25,
+        "team": 0.20,
+        "funding": 0.15,
+        "partnerships": 0.05
+      },
+      "regulatoryContext": ["FDA", "EMA", "GLP", "GMP", "IRB"],
+      "seasonality": { "peak": null, "low": null, "notes": "Driven by trial results and FDA decisions" }
+    },
+    {
+      "id": "aerospace",
+      "name": "Aerospace & Defense",
+      "slug": "aerospace",
+      "naicsCode": "3364",
+      "description": "Aerospace manufacturers, defense contractors, and space technology",
+      "subCategories": [
+        { "id": "aerospace-commercial", "name": "Commercial Aerospace", "examples": ["Boeing", "Airbus", "Embraer"] },
+        { "id": "aerospace-defense", "name": "Defense", "examples": ["Lockheed Martin", "Raytheon", "Northrop Grumman"] },
+        { "id": "aerospace-space", "name": "Space", "examples": ["SpaceX", "Blue Origin", "Rocket Lab"] },
+        { "id": "aerospace-satellites", "name": "Satellites", "examples": ["Starlink", "Planet Labs", "Maxar"] },
+        { "id": "aerospace-drones", "name": "Drones/UAVs", "examples": ["DJI", "General Atomics", "Northrop Grumman"] },
+        { "id": "aerospace-suppliers", "name": "Suppliers", "examples": ["Spirit AeroSystems", "TransDigm", "Heico"] }
+      ],
+      "keyTerms": ["contract", "program", "clearance", "ITAR", "certification", "launch"],
+      "evaluationCriteria": {
+        "capability": 0.35,
+        "reliability": 0.25,
+        "compliance": 0.20,
+        "innovation": 0.15,
+        "cost": 0.05
+      },
+      "regulatoryContext": ["FAA", "DoD", "ITAR", "NASA", "security clearance"],
+      "seasonality": { "peak": "Q3", "low": "Q4", "notes": "Government fiscal year end" }
+    }
+  ],
+  "metadata": {
+    "totalIndustries": 50,
+    "totalSubCategories": 300,
+    "naicsVersion": "2022",
+    "evaluationCriteriaSum": "Must equal 1.0 per industry",
+    "regulatoryContextNote": "Primary regulations only, not exhaustive"
+  }
+}

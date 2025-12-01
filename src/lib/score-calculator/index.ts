@@ -861,12 +861,11 @@ export function calculateScore(input: ScoreCalculatorInput): Result<ScoreResult,
 
     return Ok(result);
   } catch (error) {
-    timer.failure({
-      error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    const err = error instanceof Error ? error : new Error('Unknown error');
+    timer.failure(err);
 
     return Err(new ValidationError(
-      `Failed to calculate score: ${error instanceof Error ? error.message : 'Unknown error'}`
+      `Failed to calculate score: ${err.message}`
     ));
   }
 }

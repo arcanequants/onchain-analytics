@@ -174,7 +174,7 @@ export class Logger {
       version: this.version,
       ...contextFields,
       ...this.baseFields,
-      ...(fields && redact(fields, this.redactKeys)),
+      ...(fields ? (redact(fields, this.redactKeys) as LogFields) : {}),
     };
 
     // Output as JSON
@@ -347,6 +347,17 @@ export const jobLogger = logger.child({ component: 'jobs' });
 export const authLogger = logger.child({ component: 'auth' });
 
 // ================================================================
+// FACTORY FUNCTION
+// ================================================================
+
+/**
+ * Create a new logger instance with the given name/component
+ */
+export function createLogger(name: string, options?: Omit<LoggerOptions, 'service'>): Logger {
+  return new Logger(options).child({ component: name });
+}
+
+// ================================================================
 // EXPORTS
 // ================================================================
 
@@ -358,4 +369,5 @@ export default {
   apiLogger,
   jobLogger,
   authLogger,
+  createLogger,
 };

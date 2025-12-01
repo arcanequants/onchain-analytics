@@ -1561,3 +1561,19 @@ tbody tr:hover td {
     transform: none !important;
   }
 }
+
+/* ============================================
+   ANALYSIS PROGRESS ANIMATIONS
+   ============================================ */
+
+/* Shimmer animation for progress bars */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
+/* Spinner animation (already exists in Tailwind as animate-spin) */

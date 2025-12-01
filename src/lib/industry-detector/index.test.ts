@@ -396,8 +396,8 @@ describe('createDetectionInput', () => {
           type: 'website',
         },
         schemaOrg: {
-          type: 'Organization',
-          industry: 'Technology',
+          types: ['Organization'],
+          name: 'Example Company',
         },
       },
       warnings: [],
@@ -413,7 +413,8 @@ describe('createDetectionInput', () => {
     expect(input.ogDescription).toBe('OG Description');
     expect(input.ogType).toBe('website');
     expect(input.schemaOrgType).toBe('Organization');
-    expect(input.schemaOrgIndustry).toBe('Technology');
+    // SchemaOrgData doesn't have industry field - it's extracted elsewhere
+    expect(input.schemaOrgIndustry).toBeUndefined();
   });
 
   it('should handle missing brand name', () => {

@@ -47,10 +47,12 @@ describe('ResultsPage', () => {
     it('should render tab navigation', () => {
       render(<ResultsPage params={defaultParams} />);
 
-      expect(screen.getByText('Overview')).toBeInTheDocument();
-      expect(screen.getByText('Categories')).toBeInTheDocument();
-      expect(screen.getByText('Recommendations')).toBeInTheDocument();
-      expect(screen.getByText('Details')).toBeInTheDocument();
+      // Tab navigation has responsive text (mobile/desktop variants)
+      expect(screen.getAllByText('Overview').length).toBeGreaterThan(0);
+      expect(screen.getAllByText('Categories').length).toBeGreaterThan(0);
+      // "Recommendations" shows as "Recs" on mobile, full text on desktop
+      expect(screen.getAllByText(/Recs|Recommendations/).length).toBeGreaterThan(0);
+      expect(screen.getAllByText('Details').length).toBeGreaterThan(0);
     });
 
     it('should display analysis ID in footer', () => {
@@ -73,7 +75,8 @@ describe('ResultsPage', () => {
     it('should switch to Categories tab when clicked', () => {
       render(<ResultsPage params={defaultParams} />);
 
-      fireEvent.click(screen.getByText('Categories'));
+      // Use getAllByText since there are mobile/desktop text variants
+      fireEvent.click(screen.getAllByText('Categories')[0]);
 
       // Should show category details
       expect(screen.getByText('AI Visibility')).toBeInTheDocument();
@@ -83,7 +86,8 @@ describe('ResultsPage', () => {
     it('should switch to Recommendations tab when clicked', () => {
       render(<ResultsPage params={defaultParams} />);
 
-      fireEvent.click(screen.getByText('Recommendations'));
+      // Use getAllByText since there are mobile/desktop text variants (Recs/Recommendations)
+      fireEvent.click(screen.getAllByText(/Recs|Recommendations/)[0]);
 
       // Should show recommendations
       expect(screen.getByText('Implement Comprehensive Schema Markup')).toBeInTheDocument();
@@ -93,7 +97,8 @@ describe('ResultsPage', () => {
     it('should switch to Details tab when clicked', () => {
       render(<ResultsPage params={defaultParams} />);
 
-      fireEvent.click(screen.getByText('Details'));
+      // Use getAllByText since there are mobile/desktop text variants
+      fireEvent.click(screen.getAllByText('Details')[0]);
 
       // Should show provider and intent details
       expect(screen.getByText('AI Provider Performance')).toBeInTheDocument();
@@ -136,7 +141,7 @@ describe('ResultsPage', () => {
     it('should display all score categories', () => {
       render(<ResultsPage params={defaultParams} />);
 
-      fireEvent.click(screen.getByText('Categories'));
+      fireEvent.click(screen.getAllByText('Categories')[0]);
 
       // All categories should be visible
       expect(screen.getByText('AI Visibility')).toBeInTheDocument();
@@ -150,7 +155,7 @@ describe('ResultsPage', () => {
     it('should show category weights', () => {
       render(<ResultsPage params={defaultParams} />);
 
-      fireEvent.click(screen.getByText('Categories'));
+      fireEvent.click(screen.getAllByText('Categories')[0]);
 
       // Weight should be shown (e.g., "Weight: 35%")
       expect(screen.getByText('Weight: 35%')).toBeInTheDocument();
@@ -161,7 +166,7 @@ describe('ResultsPage', () => {
     it('should display recommendation count', () => {
       render(<ResultsPage params={defaultParams} />);
 
-      fireEvent.click(screen.getByText('Recommendations'));
+      fireEvent.click(screen.getAllByText(/Recs|Recommendations/)[0]);
 
       // Should show count - may appear multiple times (count header + indices)
       const countElements = screen.getAllByText('3');
@@ -171,7 +176,7 @@ describe('ResultsPage', () => {
     it('should display all recommendations with priority badges', () => {
       render(<ResultsPage params={defaultParams} />);
 
-      fireEvent.click(screen.getByText('Recommendations'));
+      fireEvent.click(screen.getAllByText(/Recs|Recommendations/)[0]);
 
       expect(screen.getByText('critical')).toBeInTheDocument();
       expect(screen.getAllByText('high')).toHaveLength(2);
@@ -180,7 +185,7 @@ describe('ResultsPage', () => {
     it('should display impact and effort estimates', () => {
       render(<ResultsPage params={defaultParams} />);
 
-      fireEvent.click(screen.getByText('Recommendations'));
+      fireEvent.click(screen.getAllByText(/Recs|Recommendations/)[0]);
 
       // Impact badges - may appear multiple times
       const impactElements = screen.getAllByText(/\+25 pts impact/);
@@ -193,7 +198,7 @@ describe('ResultsPage', () => {
     it('should expand recommendation to show action items', () => {
       render(<ResultsPage params={defaultParams} />);
 
-      fireEvent.click(screen.getByText('Recommendations'));
+      fireEvent.click(screen.getAllByText(/Recs|Recommendations/)[0]);
 
       // Click expand button
       const showDetailsButtons = screen.getAllByText('Show action items');
@@ -208,7 +213,7 @@ describe('ResultsPage', () => {
     it('should display provider performance', () => {
       render(<ResultsPage params={defaultParams} />);
 
-      fireEvent.click(screen.getByText('Details'));
+      fireEvent.click(screen.getAllByText('Details')[0]);
 
       expect(screen.getByText('AI Provider Performance')).toBeInTheDocument();
       expect(screen.getByText(/OpenAI/)).toBeInTheDocument();
@@ -218,18 +223,18 @@ describe('ResultsPage', () => {
     it('should display intent breakdown', () => {
       render(<ResultsPage params={defaultParams} />);
 
-      fireEvent.click(screen.getByText('Details'));
+      fireEvent.click(screen.getAllByText('Details')[0]);
 
       expect(screen.getByText('Query Intent Performance')).toBeInTheDocument();
       // "Recommendations" appears multiple times (tab + intent label)
-      expect(screen.getAllByText('Recommendations').length).toBeGreaterThan(0);
+      expect(screen.getAllByText(/Recs|Recommendations/).length).toBeGreaterThan(0);
       expect(screen.getByText('Comparisons')).toBeInTheDocument();
     });
 
     it('should display technical details', () => {
       render(<ResultsPage params={defaultParams} />);
 
-      fireEvent.click(screen.getByText('Details'));
+      fireEvent.click(screen.getAllByText('Details')[0]);
 
       expect(screen.getByText('Technical Details')).toBeInTheDocument();
       expect(screen.getByText('Algorithm Version')).toBeInTheDocument();
@@ -325,7 +330,7 @@ describe('ResultsPage', () => {
     it('should show action items when expanded', () => {
       render(<ResultsPage params={defaultParams} />);
 
-      fireEvent.click(screen.getByText('Recommendations'));
+      fireEvent.click(screen.getAllByText(/Recs|Recommendations/)[0]);
 
       const expandButtons = screen.getAllByText('Show action items');
       fireEvent.click(expandButtons[0]);
@@ -336,7 +341,7 @@ describe('ResultsPage', () => {
     it('should show category labels', () => {
       render(<ResultsPage params={defaultParams} />);
 
-      fireEvent.click(screen.getByText('Recommendations'));
+      fireEvent.click(screen.getAllByText(/Recs|Recommendations/)[0]);
 
       expect(screen.getByText('Structured Data')).toBeInTheDocument();
       // "Content" may appear multiple times (category label + other text)
@@ -356,11 +361,15 @@ describe('ResultsPage', () => {
     it('should have accessible tab navigation', () => {
       render(<ResultsPage params={defaultParams} />);
 
-      // All tabs should be buttons
-      expect(screen.getByRole('button', { name: 'Overview' })).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: 'Categories' })).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: 'Recommendations' })).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: 'Details' })).toBeInTheDocument();
+      // All tabs should be buttons - using getAllByRole since there are multiple spans in each button
+      const buttons = screen.getAllByRole('button');
+      const buttonTexts = buttons.map(b => b.textContent);
+
+      // Check that tab buttons exist (they have both mobile and desktop text)
+      expect(buttonTexts.some(t => t?.includes('Overview'))).toBe(true);
+      expect(buttonTexts.some(t => t?.includes('Categories'))).toBe(true);
+      expect(buttonTexts.some(t => t?.includes('Recs') || t?.includes('Recommendations'))).toBe(true);
+      expect(buttonTexts.some(t => t?.includes('Details'))).toBe(true);
     });
   });
 
@@ -387,19 +396,25 @@ describe('ProviderComparison Component', () => {
   it('should display provider labels correctly', () => {
     render(<ResultsPage params={{ id: 'test' }} />);
 
-    fireEvent.click(screen.getByText('Details'));
+    fireEvent.click(screen.getAllByText('Details')[0]);
 
-    expect(screen.getByText('OpenAI (GPT)')).toBeInTheDocument();
-    expect(screen.getByText('Anthropic (Claude)')).toBeInTheDocument();
+    // AIProviderCard shows provider name (e.g., "OpenAI") and description (e.g., "ChatGPT / GPT-4")
+    expect(screen.getByText('OpenAI')).toBeInTheDocument();
+    expect(screen.getByText('Anthropic')).toBeInTheDocument();
   });
 
   it('should display mention rates', () => {
     render(<ResultsPage params={{ id: 'test' }} />);
 
-    fireEvent.click(screen.getByText('Details'));
+    fireEvent.click(screen.getAllByText('Details')[0]);
 
-    expect(screen.getByText('67% mentions')).toBeInTheDocument();
-    expect(screen.getByText('60% mentions')).toBeInTheDocument();
+    // AIProviderCard shows "Mention Rate" label with percentage value separately
+    const mentionRateLabels = screen.getAllByText('Mention Rate');
+    expect(mentionRateLabels.length).toBeGreaterThan(0);
+
+    // Check that percentage values are displayed (67% and 60%)
+    expect(screen.getByText('67%')).toBeInTheDocument();
+    expect(screen.getByText('60%')).toBeInTheDocument();
   });
 });
 
@@ -407,7 +422,7 @@ describe('IntentBreakdown Component', () => {
   it('should display intent labels correctly', () => {
     render(<ResultsPage params={{ id: 'test' }} />);
 
-    fireEvent.click(screen.getByText('Details'));
+    fireEvent.click(screen.getAllByText('Details')[0]);
 
     // Intent labels in the breakdown
     const intentSection = screen.getByText('Query Intent Performance').closest('div');
@@ -417,7 +432,7 @@ describe('IntentBreakdown Component', () => {
   it('should sort intents by score', () => {
     render(<ResultsPage params={{ id: 'test' }} />);
 
-    fireEvent.click(screen.getByText('Details'));
+    fireEvent.click(screen.getAllByText('Details')[0]);
 
     // Highest score (Recommendations: 75) should be first
     // This is tested by checking the order in the DOM

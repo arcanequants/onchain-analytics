@@ -467,19 +467,19 @@ describe('serverEnv accessor', () => {
   });
 
   it('should provide isProduction helper', async () => {
-    process.env.NODE_ENV = 'production';
+    (process.env as Record<string, string>).NODE_ENV = 'production';
     const { serverEnv } = await import('./index');
     expect(serverEnv.isProduction()).toBe(true);
   });
 
   it('should provide isDevelopment helper', async () => {
-    process.env.NODE_ENV = 'development';
+    (process.env as Record<string, string>).NODE_ENV = 'development';
     const { serverEnv } = await import('./index');
     expect(serverEnv.isDevelopment()).toBe(true);
   });
 
   it('should provide isTest helper', async () => {
-    process.env.NODE_ENV = 'test';
+    (process.env as Record<string, string>).NODE_ENV = 'test';
     const { serverEnv } = await import('./index');
     expect(serverEnv.isTest()).toBe(true);
   });
@@ -500,7 +500,7 @@ describe('Environment Integration', () => {
 
   it('should handle complete production-like config', async () => {
     // Set up production-like environment
-    process.env.NODE_ENV = 'production';
+    (process.env as Record<string, string>).NODE_ENV = 'production';
     process.env.OPENAI_API_KEY = 'sk-prod-openai-key';
     process.env.ANTHROPIC_API_KEY = 'sk-ant-prod-key';
     process.env.DATABASE_URL = 'postgresql://prod:pass@db.example.com:5432/app';
@@ -523,7 +523,7 @@ describe('Environment Integration', () => {
   });
 
   it('should handle minimal development config', async () => {
-    process.env.NODE_ENV = 'development';
+    (process.env as Record<string, string>).NODE_ENV = 'development';
     process.env.OPENAI_API_KEY = 'sk-dev';
     process.env.ANTHROPIC_API_KEY = 'sk-ant-dev';
 

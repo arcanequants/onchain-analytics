@@ -1,0 +1,194 @@
+# Pre-commit Configuration
+# https://pre-commit.com/
+#
+# Install: pip install pre-commit && pre-commit install
+# Run: pre-commit run --all-files
+#
+# Phase 3, Week 10 - DevSecOps Backlog Item
+
+repos:
+  # ================================================================
+  # GITLEAKS - Secret Detection
+  # ================================================================
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.18.4
+    hooks:
+      - id: gitleaks
+        name: gitleaks (detect hardcoded secrets)
+        description: Detect hardcoded secrets using Gitleaks
+        entry: gitleaks protect --staged --verbose --redact
+        language: golang
+        pass_filenames: false
+
+  # ================================================================
+  # DETECT-SECRETS - Alternative Secret Detection
+  # ================================================================
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+        name: detect-secrets (scan for secrets)
+        description: Scan for secrets with detect-secrets
+        args:
+          - --baseline
+          - .secrets.baseline
+        exclude: |
+          (?x)^(
+            package-lock\.json|
+            pnpm-lock\.yaml|
+            \.secrets\.baseline|
+            \.gitleaks\.toml
+          )$
+
+  # ================================================================
+  # ESLINT - JavaScript/TypeScript Linting
+  # ================================================================
+  - repo: local
+    hooks:
+      - id: eslint
+        name: eslint (lint JS/TS files)
+        description: Lint JavaScript and TypeScript files
+        entry: npx eslint --fix --max-warnings=0
+        language: system
+        types: [file]
+        files: \.(js|jsx|ts|tsx)$
+        exclude: |
+          (?x)^(
+            node_modules/|
+            \.next/|
+            dist/|
+            build/|
+            coverage/
+          )
+
+  # ================================================================
+  # TYPESCRIPT - Type Checking
+  # ================================================================
+  - repo: local
+    hooks:
+      - id: typescript
+        name: typescript (type check)
+        description: Run TypeScript type checking
+        entry: npx tsc --noEmit --skipLibCheck
+        language: system
+        types: [file]
+        files: \.(ts|tsx)$
+        pass_filenames: false
+
+  # ================================================================
+  # PRETTIER - Code Formatting
+  # ================================================================
+  - repo: local
+    hooks:
+      - id: prettier
+        name: prettier (format code)
+        description: Format code with Prettier
+        entry: npx prettier --write --ignore-unknown
+        language: system
+        types: [file]
+        files: \.(js|jsx|ts|tsx|json|md|css|scss|yaml|yml)$
+        exclude: |
+          (?x)^(
+            node_modules/|
+            \.next/|
+            dist/|
+            build/|
+            coverage/|
+            package-lock\.json|
+            pnpm-lock\.yaml
+          )
+
+  # ================================================================
+  # STANDARD HOOKS
+  # ================================================================
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      # Prevent large files from being committed
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+        name: check-added-large-files
+
+      # Prevent merge conflicts from being committed
+      - id: check-merge-conflict
+        name: check-merge-conflict
+
+      # Detect private keys
+      - id: detect-private-key
+        name: detect-private-key
+
+      # Ensure files end with newline
+      - id: end-of-file-fixer
+        name: end-of-file-fixer
+        exclude: |
+          (?x)^(
+            node_modules/|
+            \.next/|
+            dist/|
+            build/
+          )
+
+      # Remove trailing whitespace
+      - id: trailing-whitespace
+        name: trailing-whitespace
+        exclude: |
+          (?x)^(
+            node_modules/|
+            \.next/|
+            dist/|
+            build/|
+            \.md$
+          )
+
+      # Check YAML syntax
+      - id: check-yaml
+        name: check-yaml
+        args: ['--unsafe']
+
+      # Check JSON syntax
+      - id: check-json
+        name: check-json
+        exclude: tsconfig\.json$
+
+      # Check TOML syntax
+      - id: check-toml
+        name: check-toml
+
+      # Validate case of filenames
+      - id: check-case-conflict
+        name: check-case-conflict
+
+      # Check for debugger statements
+      - id: debug-statements
+        name: debug-statements
+
+  # ================================================================
+  # COMMITLINT - Conventional Commits
+  # ================================================================
+  - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
+    rev: v9.18.0
+    hooks:
+      - id: commitlint
+        name: commitlint (check commit message)
+        stages: [commit-msg]
+        additional_dependencies: ['@commitlint/config-conventional']
+
+# ================================================================
+# DEFAULT STAGES
+# ================================================================
+default_stages: [commit]
+
+# ================================================================
+# CI CONFIGURATION
+# ================================================================
+ci:
+  autofix_commit_msg: |
+    [pre-commit.ci] auto fixes from pre-commit hooks
+
+    For more information, see https://pre-commit.ci
+  autofix_prs: true
+  autoupdate_branch: ''
+  autoupdate_commit_msg: '[pre-commit.ci] pre-commit autoupdate'
+  autoupdate_schedule: weekly
+  skip: [eslint, typescript, prettier]
+  submodules: false

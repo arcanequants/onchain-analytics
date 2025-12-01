@@ -1,16 +1,13 @@
 import { defineConfig, devices } from '@playwright/test';
 
 /**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// require('dotenv').config();
-
-/**
+ * Playwright Configuration
+ * Phase 4, Week 8 - E2E and Visual Regression Testing
+ *
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: './tests/e2e',
+  testDir: './tests',
 
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -30,6 +27,22 @@ export default defineConfig({
     ['json', { outputFile: 'playwright-report/results.json' }],
     ['junit', { outputFile: 'playwright-report/results.xml' }]
   ],
+
+  /* Visual comparison settings for screenshot testing */
+  expect: {
+    toHaveScreenshot: {
+      maxDiffPixels: 100,
+      maxDiffPixelRatio: 0.1,
+      animations: 'disabled',
+    },
+    toMatchSnapshot: {
+      maxDiffPixelRatio: 0.1,
+    },
+  },
+
+  /* Snapshot output directory */
+  snapshotDir: './tests/visual/__snapshots__',
+  snapshotPathTemplate: '{snapshotDir}/{testFileDir}/{testFileName}-{arg}{ext}',
 
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {

@@ -35,6 +35,18 @@
     {
       "path": "/api/cron/rlhf-report",
       "schedule": "0 0 1 * *"
+    },
+    {
+      "path": "/api/cron/monitor",
+      "schedule": "*/5 * * * *"
+    },
+    {
+      "path": "/api/cron/detect-drift",
+      "schedule": "0 */6 * * *"
+    },
+    {
+      "path": "/api/cron/enforce-retention",
+      "schedule": "0 3 * * *"
     }
   ]
 }

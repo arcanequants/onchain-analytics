@@ -25366,5 +25366,109 @@ Begin Phase 1, Week 1, Day 1:
 *DevSecOps Engineering Review by: Senior Director DevSecOps Engineer - 1,290 years aggregate experience, ex-Google Cloud Security/AWS Security/Microsoft Azure DevOps/Netflix Platform Security/Stripe Infrastructure Security/GitHub Actions Platform/GitLab Security/HashiCorp Vault/Datadog Security/Snyk/McKinsey Cyber/BCG Digital Ventures/Deloitte Cyber*
 *CISO Security Review by: Senior CISO (Chief Information Security Officer) - 730 years aggregate experience, ex-Google Security/Amazon AWS Security/Microsoft CISO Office/Meta Security/JPMorgan Chase Cyber/Goldman Sachs Technology Risk/Deloitte Cyber/PwC Cybersecurity/EY Digital Trust/NIST Cybersecurity Framework Committee/ISO 27001 Lead Auditor*
 *For: AI Perception Engineering Agency*
-*Date: November 27, 2024*
-*Version: 28.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering + Backend Engineering + Data Visualization + CTO/CAIO Executive + COO Operations + CFO Finance + CEO Strategic + Internal Tools & DX + RLHF & Feedback Loop + Semantic Audit & Data Quality + Domain Expert + AI Governance & Ethics + DevSecOps Engineering + CISO Security Review)*
+*Date: December 3, 2024*
+*Version: 29.0 (Technical + UX/UI + AI/Data + KG/SEO + Content + Full Stack + Reputation/PR + Prompt Engineering + Ontology + Computational Linguistics + LLM Behavioral Research + Adversarial AI Security + MLOps + Data Engineering + Backend Engineering + Data Visualization + CTO/CAIO Executive + COO Operations + CFO Finance + CEO Strategic + Internal Tools & DX + RLHF & Feedback Loop + Semantic Audit & Data Quality + Domain Expert + AI Governance & Ethics + DevSecOps Engineering + CISO Security Review + Platform Audit Critical Fixes)*
+
+---
+
+## ADDENDUM: PHASE 4 WEEK 9 - PLATFORM AUDIT & CRITICAL FIXES
+
+**Added: December 3, 2024**
+**Purpose:** Address critical issues identified during comprehensive platform audit before production testing.
+
+### Context
+
+A comprehensive platform audit on December 3, 2024 identified several critical gaps:
+- 7 cron endpoints defined in `vercel.json` that return 404 (no route files exist)
+- 5 required legal pages missing (Terms, Privacy, Cookies, About, Contact)
+- 8 admin pages still using mock data instead of real data
+
+### Priority 1: Critical - Missing Cron Endpoints (7 items)
+
+These cron jobs are actively running in Vercel but returning 404 errors:
+
+| # | Endpoint | Schedule | Purpose | Impact |
+|---|----------|----------|---------|--------|
+| 9.1.1 | `/api/cron/collect-gas` | Every minute | Collect Base network gas metrics | HIGH - Data gap |
+| 9.1.2 | `/api/cron/collect-fear-greed` | Hourly | Fetch fear/greed index | HIGH - Data gap |
+| 9.1.3 | `/api/cron/collect-events` | Every 6 hours | Collect crypto events | MEDIUM - Data gap |
+| 9.1.4 | `/api/cron/collect-prices` | Every 5 minutes | Token price collection | HIGH - Core feature |
+| 9.1.5 | `/api/cron/collect-dex` | Hourly | DEX volume/liquidity data | MEDIUM - Data gap |
+| 9.1.6 | `/api/cron/collect-tvl` | Hourly | Protocol TVL tracking | MEDIUM - Data gap |
+| 9.1.7 | `/api/cron/cleanup-old-data` | Daily 2am | Data retention enforcement | HIGH - Storage/compliance |
+
+**Implementation Notes:**
+- Each endpoint must log to `cron_executions` table
+- Use existing Supabase service client pattern
+- Follow existing cron route structure (authorization header validation)
+- Connect to appropriate external APIs (CoinGecko, DefiLlama, etc.)
+
+### Priority 2: Critical - Missing Legal Pages (5 items)
+
+Required for legal compliance (GDPR, cookie consent, terms of service):
+
+| # | Page | Route | Purpose |
+|---|------|-------|---------|
+| 9.2.1 | Terms of Service | `/terms` | Legal terms, acceptable use, limitations |
+| 9.2.2 | Privacy Policy | `/privacy` | GDPR-compliant data handling disclosure |
+| 9.2.3 | Cookie Policy | `/cookies` | Cookie usage disclosure and consent info |
+| 9.2.4 | About | `/about` | Company/product information |
+| 9.2.5 | Contact | `/contact` | Contact form or information |
+
+**Implementation Notes:**
+- Use consistent legal page layout component
+- Include last updated dates
+- Link from footer component
+- Consider i18n for international users
+
+### Priority 3: Medium - Admin Pages with Mock Data (8 items)
+
+These pages exist but display hardcoded/mock data instead of real data:
+
+| # | Page | Route | Current State | Required Integration |
+|---|------|-------|---------------|---------------------|
+| 9.3.1 | Queues | `/admin/queues` | Mock queue/job data | Background job tracking |
+| 9.3.2 | Notifications | `/admin/notifications` | Mock notification data | Notification system |
+| 9.3.3 | Semantic Audit | `/admin/semantic-audit` | Mock health scores | Semantic health metrics |
+| 9.3.4 | RLHF Corrections | `/admin/rlhf/corrections` | Mock correction data | `feedback` table |
+| 9.3.5 | RLHF Metrics | `/admin/rlhf/metrics` | Mock RLHF metrics | RLHF analytics |
+| 9.3.6 | RLHF Calibration | `/admin/rlhf/calibration` | Mock calibration data | Model calibration |
+| 9.3.7 | API Playground | `/admin/api-playground` | Mock API responses | Live API testing |
+| 9.3.8 | Data Quality | `/admin/data-quality` | Mock quality rules | Quality metrics |
+
+### Priority 4: Low - Sync vercel.json with Existing Crons (3 items)
+
+Route files exist but not scheduled in Vercel:
+
+| # | Endpoint | Route Exists | Add to vercel.json | Suggested Schedule |
+|---|----------|--------------|-------------------|-------------------|
+| 9.4.1 | `/api/cron/monitor` | Yes | Add | `*/5 * * * *` (5 min) |
+| 9.4.2 | `/api/cron/detect-drift` | Yes | Add | `0 */6 * * *` (6 hours) |
+| 9.4.3 | `/api/cron/enforce-retention` | Yes | Add | `0 3 * * *` (3am daily) |
+
+### Success Criteria for Week 9
+
+- [ ] All 7 cron endpoints return 200 and log to `cron_executions`
+- [ ] All 5 legal pages accessible and linked from footer
+- [ ] All 8 admin pages display real data (no mock data)
+- [ ] All 10 cron jobs scheduled in `vercel.json`
+- [ ] Production deployment successful
+- [ ] No 404 errors in Vercel logs for cron endpoints
+
+### Estimated Effort
+
+| Priority | Items | Estimated Hours | Complexity |
+|----------|-------|-----------------|------------|
+| P1: Cron Endpoints | 7 | 4-6 hours | Medium |
+| P2: Legal Pages | 5 | 2-3 hours | Low |
+| P3: Admin Mock Data | 8 | 6-8 hours | Medium-High |
+| P4: Sync vercel.json | 3 | 0.5 hours | Low |
+| **Total** | **23** | **12.5-17.5 hours** | - |
+
+---
+
+### Version History Update
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 29.0 | December 3, 2024 | Added Phase 4 Week 9: Platform Audit & Critical Fixes (23 items) |

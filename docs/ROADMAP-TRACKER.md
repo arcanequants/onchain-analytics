@@ -3,8 +3,8 @@
 **IMPORTANTE**: Este archivo sigue EXACTAMENTE la estructura del `EXECUTIVE-ROADMAP-BCG.md`.
 No uses otro sistema de numeración. Actualiza este archivo al completar cada tarea.
 
-**Ultima Actualizacion**: 2025-12-02
-**Posicion Actual**: Phase 4, Week 8 COMPLETADO - Extended Checklists 96% (488/510 items)
+**Ultima Actualizacion**: 2025-12-03
+**Posicion Actual**: Phase 4, Week 9 EN PROGRESO - Platform Audit & Critical Fixes
 
 ---
 
@@ -1205,3 +1205,85 @@ No uses otro sistema de numeración. Actualiza este archivo al completar cada ta
 - CFO Finance: 27/30 (90%) - 3 tareas condicionales (si hay inversores)
 - CTO/CAIO Executive: 23/24 (96%) - 1 tarea condicional
 - COO Operations: 23/24 (96%) - 1 tarea ya lista
+
+---
+
+## PHASE 4: WEEK 9 - PLATFORM AUDIT & CRITICAL FIXES [IN PROGRESS]
+
+### Fecha: 2025-12-03
+### Objetivo: Resolver issues críticos identificados en auditoría de plataforma
+
+---
+
+### PRIORIDAD ALTA: Cron Endpoints Faltantes (7 endpoints)
+
+Los siguientes cron jobs están definidos en `vercel.json` pero los endpoints **NO EXISTEN** (retornan 404):
+
+| Endpoint | Schedule | Status | Archivo |
+|----------|----------|--------|---------|
+| `/api/cron/collect-gas` | `* * * * *` | [x] | `src/app/api/cron/collect-gas/route.ts` |
+| `/api/cron/collect-fear-greed` | `0 * * * *` | [x] | `src/app/api/cron/collect-fear-greed/route.ts` |
+| `/api/cron/collect-events` | `0 */6 * * *` | [x] | `src/app/api/cron/collect-events/route.ts` |
+| `/api/cron/collect-prices` | `*/5 * * * *` | [x] | `src/app/api/cron/collect-prices/route.ts` |
+| `/api/cron/collect-dex` | `0 * * * *` | [x] | `src/app/api/cron/collect-dex/route.ts` |
+| `/api/cron/collect-tvl` | `0 * * * *` | [x] | `src/app/api/cron/collect-tvl/route.ts` |
+| `/api/cron/cleanup-old-data` | `0 2 * * *` | [x] | `src/app/api/cron/cleanup-old-data/route.ts` |
+
+---
+
+### PRIORIDAD ALTA: Páginas Legales Faltantes (5 páginas)
+
+Páginas requeridas para cumplimiento legal que **NO EXISTEN**:
+
+| Página | Ruta | Status | Archivo |
+|--------|------|--------|---------|
+| Términos y Condiciones | `/terms` | [x] | `src/app/terms/page.tsx` |
+| Política de Privacidad | `/privacy` | [x] | `src/app/privacy/page.tsx` |
+| Política de Cookies | `/cookies` | [x] | `src/app/cookies/page.tsx` |
+| Acerca de | `/about` | [x] | `src/app/about/page.tsx` |
+| Contacto | `/contact` | [x] | `src/app/contact/page.tsx` |
+
+---
+
+### PRIORIDAD MEDIA: Admin Pages con Mock Data (8 páginas)
+
+Las siguientes páginas admin usan datos ficticios y requieren integración con datos reales:
+
+| Página | Archivo | Línea Mock | Status |
+|--------|---------|------------|--------|
+| Queues | `src/app/admin/queues/page.tsx` | L65 | [ ] |
+| Notifications | `src/app/admin/notifications/page.tsx` | L45 | [ ] |
+| Semantic Audit | `src/app/admin/semantic-audit/page.tsx` | L75 | [ ] |
+| RLHF Corrections | `src/app/admin/rlhf/corrections/page.tsx` | L64 | [ ] |
+| RLHF Metrics | `src/app/admin/rlhf/metrics/page.tsx` | L70 | [ ] |
+| RLHF Calibration | `src/app/admin/rlhf/calibration/page.tsx` | L54 | [ ] |
+| API Playground | `src/app/admin/api-playground/page.tsx` | L178 | [ ] |
+| Data Quality | `src/app/admin/data-quality/page.tsx` | L62 | [ ] |
+
+---
+
+### Admin Pages con Datos Reales (9 páginas) ✅ COMPLETADAS
+
+| Página | Archivo | Fuente de Datos |
+|--------|---------|-----------------|
+| Health Dashboard | `src/app/admin/health/page.tsx` | `/api/health/deep` |
+| Cron Jobs | `src/app/admin/cron/page.tsx` | `cron_executions` table |
+| Audit Log | `src/app/admin/audit/page.tsx` | `audit_log` table |
+| Feature Flags | `src/app/admin/feature-flags/page.tsx` | `feature_flags` table |
+| Vendors | `src/app/admin/vendors/page.tsx` | Health checks + config |
+| Costs | `src/app/admin/costs/page.tsx` | Vendor costs + runway |
+| CEO Dashboard | `src/app/admin/ceo/page.tsx` | Métricas reales + OKRs |
+| Finance | `src/app/admin/finance/page.tsx` | Runway + costs |
+| Ops | `src/app/admin/ops/page.tsx` | Ops metrics + SLAs |
+
+---
+
+### ADICIONAL: Sincronizar vercel.json con crons existentes
+
+Crons que existen como route files pero NO están en `vercel.json`:
+
+| Endpoint | Route File Existe | En vercel.json |
+|----------|-------------------|----------------|
+| `/api/cron/monitor` | ✅ | [x] Agregado |
+| `/api/cron/detect-drift` | ✅ | [x] Agregado |
+| `/api/cron/enforce-retention` | ✅ | [x] Agregado |

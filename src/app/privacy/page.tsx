@@ -1,0 +1,254 @@
+/**
+ * Privacy Policy Page
+ * Phase 4, Week 9 - Legal Pages
+ *
+ * GDPR-compliant privacy policy for the platform.
+ */
+
+import { Metadata } from 'next';
+import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy | Vectorial Data',
+  description: 'Privacy policy explaining how Vectorial Data collects, uses, and protects your data.',
+  openGraph: {
+    title: 'Privacy Policy | Vectorial Data',
+    description: 'Privacy policy explaining how Vectorial Data collects, uses, and protects your data.',
+    type: 'website',
+  },
+};
+
+export default function PrivacyPage() {
+  return (
+    <div className="min-h-screen bg-gray-900">
+      {/* Header */}
+      <div className="bg-gradient-to-b from-indigo-900/50 to-gray-900 py-16 px-4">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-4xl font-bold text-white mb-4">Privacy Policy</h1>
+          <p className="text-xl text-gray-300">Effective Date: December 3, 2024</p>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="max-w-4xl mx-auto px-4 py-12">
+        <div className="prose prose-invert prose-lg max-w-none">
+          {/* Introduction */}
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold text-white mb-4">1. Introduction</h2>
+            <p className="text-gray-300 leading-relaxed">
+              Vectorial Data (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) is committed to protecting your privacy. This
+              Privacy Policy explains how we collect, use, disclose, and safeguard your information
+              when you use our on-chain analytics platform and related services.
+            </p>
+          </section>
+
+          {/* Information We Collect */}
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold text-white mb-4">2. Information We Collect</h2>
+
+            <h3 className="text-xl font-medium text-white mb-3">2.1 Information You Provide</h3>
+            <ul className="list-disc list-inside text-gray-300 space-y-2 mb-4">
+              <li>Account information (email address, username, password)</li>
+              <li>Profile information (name, company, role)</li>
+              <li>Payment information (processed by our payment provider)</li>
+              <li>Communications (support requests, feedback)</li>
+              <li>Wallet addresses you choose to track</li>
+            </ul>
+
+            <h3 className="text-xl font-medium text-white mb-3">2.2 Information Collected Automatically</h3>
+            <ul className="list-disc list-inside text-gray-300 space-y-2 mb-4">
+              <li>Device information (browser type, operating system)</li>
+              <li>Usage data (pages visited, features used, time spent)</li>
+              <li>IP address and approximate location</li>
+              <li>Cookies and similar technologies</li>
+            </ul>
+
+            <h3 className="text-xl font-medium text-white mb-3">2.3 Blockchain Data</h3>
+            <p className="text-gray-300 leading-relaxed">
+              We collect and process publicly available blockchain data, including transaction
+              histories, wallet balances, smart contract interactions, and on-chain activities. This
+              data is publicly accessible on blockchain networks.
+            </p>
+          </section>
+
+          {/* How We Use Your Information */}
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold text-white mb-4">3. How We Use Your Information</h2>
+            <p className="text-gray-300 leading-relaxed mb-4">We use your information to:</p>
+            <ul className="list-disc list-inside text-gray-300 space-y-2">
+              <li>Provide, maintain, and improve our Services</li>
+              <li>Process transactions and send related information</li>
+              <li>Send you technical notices and support messages</li>
+              <li>Respond to your comments and questions</li>
+              <li>Analyze usage patterns and trends</li>
+              <li>Detect, investigate, and prevent fraudulent activities</li>
+              <li>Comply with legal obligations</li>
+            </ul>
+          </section>
+
+          {/* Legal Basis for Processing (GDPR) */}
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold text-white mb-4">4. Legal Basis for Processing</h2>
+            <p className="text-gray-300 leading-relaxed mb-4">
+              Under GDPR, we process your personal data based on:
+            </p>
+            <ul className="list-disc list-inside text-gray-300 space-y-2">
+              <li><strong>Contract:</strong> To provide the Services you requested</li>
+              <li><strong>Legitimate Interest:</strong> To improve our Services and communicate with you</li>
+              <li><strong>Consent:</strong> For marketing communications (which you can withdraw)</li>
+              <li><strong>Legal Obligation:</strong> To comply with applicable laws</li>
+            </ul>
+          </section>
+
+          {/* Data Sharing */}
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold text-white mb-4">5. Data Sharing</h2>
+            <p className="text-gray-300 leading-relaxed mb-4">
+              We may share your information with:
+            </p>
+            <ul className="list-disc list-inside text-gray-300 space-y-2">
+              <li><strong>Service Providers:</strong> Third parties that help us operate our Services</li>
+              <li><strong>Analytics Partners:</strong> To understand usage patterns</li>
+              <li><strong>Legal Authorities:</strong> When required by law or to protect rights</li>
+              <li><strong>Business Transfers:</strong> In connection with a merger or acquisition</li>
+            </ul>
+            <p className="text-gray-300 leading-relaxed mt-4">
+              We do not sell your personal information to third parties.
+            </p>
+          </section>
+
+          {/* Data Retention */}
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold text-white mb-4">6. Data Retention</h2>
+            <p className="text-gray-300 leading-relaxed">
+              We retain your personal data only for as long as necessary to fulfill the purposes for
+              which it was collected, including to satisfy legal, accounting, or reporting
+              requirements. Account data is retained for the duration of your account. After account
+              deletion, we may retain certain data for up to 30 days for backup purposes and as
+              required by law.
+            </p>
+          </section>
+
+          {/* Your Rights */}
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold text-white mb-4">7. Your Rights</h2>
+            <p className="text-gray-300 leading-relaxed mb-4">
+              Under applicable data protection laws, you have the right to:
+            </p>
+            <ul className="list-disc list-inside text-gray-300 space-y-2">
+              <li><strong>Access:</strong> Request a copy of your personal data</li>
+              <li><strong>Rectification:</strong> Request correction of inaccurate data</li>
+              <li><strong>Erasure:</strong> Request deletion of your data (&quot;right to be forgotten&quot;)</li>
+              <li><strong>Restriction:</strong> Request limitation of processing</li>
+              <li><strong>Portability:</strong> Receive your data in a structured format</li>
+              <li><strong>Object:</strong> Object to processing based on legitimate interests</li>
+              <li><strong>Withdraw Consent:</strong> Withdraw consent at any time</li>
+            </ul>
+            <p className="text-gray-300 leading-relaxed mt-4">
+              To exercise these rights, contact us at{' '}
+              <a href="mailto:privacy@vectorialdata.com" className="text-indigo-400 hover:text-indigo-300">
+                privacy@vectorialdata.com
+              </a>
+            </p>
+          </section>
+
+          {/* International Transfers */}
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold text-white mb-4">8. International Data Transfers</h2>
+            <p className="text-gray-300 leading-relaxed">
+              Your information may be transferred to and processed in countries other than your own.
+              We ensure appropriate safeguards are in place, such as Standard Contractual Clauses, to
+              protect your data in accordance with applicable law.
+            </p>
+          </section>
+
+          {/* Security */}
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold text-white mb-4">9. Security</h2>
+            <p className="text-gray-300 leading-relaxed">
+              We implement appropriate technical and organizational measures to protect your personal
+              data, including encryption, access controls, and regular security assessments. However,
+              no method of transmission over the Internet is 100% secure.
+            </p>
+          </section>
+
+          {/* Children's Privacy */}
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold text-white mb-4">10. Children&apos;s Privacy</h2>
+            <p className="text-gray-300 leading-relaxed">
+              Our Services are not intended for individuals under 18 years of age. We do not
+              knowingly collect personal information from children. If you believe we have collected
+              information from a child, please contact us immediately.
+            </p>
+          </section>
+
+          {/* Changes to Policy */}
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold text-white mb-4">11. Changes to This Policy</h2>
+            <p className="text-gray-300 leading-relaxed">
+              We may update this Privacy Policy from time to time. We will notify you of any changes
+              by posting the new policy on this page and updating the &quot;Effective Date.&quot; We encourage
+              you to review this policy periodically.
+            </p>
+          </section>
+
+          {/* Contact */}
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold text-white mb-4">12. Contact Us</h2>
+            <p className="text-gray-300 leading-relaxed">
+              If you have questions about this Privacy Policy or wish to exercise your rights, please
+              contact us:
+            </p>
+            <div className="mt-4 bg-gray-800/50 border border-gray-700 rounded-lg p-4">
+              <p className="text-gray-300">
+                <strong>Email:</strong>{' '}
+                <a href="mailto:privacy@vectorialdata.com" className="text-indigo-400 hover:text-indigo-300">
+                  privacy@vectorialdata.com
+                </a>
+              </p>
+              <p className="text-gray-300 mt-2">
+                <strong>Data Protection Officer:</strong>{' '}
+                <a href="mailto:dpo@vectorialdata.com" className="text-indigo-400 hover:text-indigo-300">
+                  dpo@vectorialdata.com
+                </a>
+              </p>
+            </div>
+          </section>
+        </div>
+
+        {/* Related Links */}
+        <div className="mt-12 pt-8 border-t border-gray-700">
+          <h3 className="text-lg font-semibold text-white mb-4">Related Policies</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Link
+              href="/terms"
+              className="bg-gray-800/50 border border-gray-700 rounded-lg p-4 hover:border-indigo-500 transition-colors"
+            >
+              <p className="font-medium text-white">Terms of Service</p>
+              <p className="text-sm text-gray-400">Our terms and conditions</p>
+            </Link>
+            <Link
+              href="/cookies"
+              className="bg-gray-800/50 border border-gray-700 rounded-lg p-4 hover:border-indigo-500 transition-colors"
+            >
+              <p className="font-medium text-white">Cookie Policy</p>
+              <p className="text-sm text-gray-400">How we use cookies</p>
+            </Link>
+            <Link
+              href="/contact"
+              className="bg-gray-800/50 border border-gray-700 rounded-lg p-4 hover:border-indigo-500 transition-colors"
+            >
+              <p className="font-medium text-white">Contact Us</p>
+              <p className="text-sm text-gray-400">Get in touch</p>
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer Note */}
+      <div className="text-center py-8 text-xs text-gray-500">
+        <p>Last updated: December 3, 2024</p>
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,228 @@
+# Commit Signature Verification Workflow
+# Phase 1, Week 3, Day 5 - DevSecOps Tasks
+#
+# Verifies that all commits in a PR are signed
+# Part of supply chain security measures
+
+name: Verify Commit Signatures
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+      - develop
+      - 'release/**'
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  verify-signatures:
+    name: Verify Commit Signatures
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get PR commits
+        id: pr_commits
+        run: |
+          # Get the base and head SHAs
+          BASE_SHA=${{ github.event.pull_request.base.sha }}
+          HEAD_SHA=${{ github.event.pull_request.head.sha }}
+
+          echo "base_sha=$BASE_SHA" >> $GITHUB_OUTPUT
+          echo "head_sha=$HEAD_SHA" >> $GITHUB_OUTPUT
+
+          # Count commits
+          COMMIT_COUNT=$(git rev-list --count $BASE_SHA..$HEAD_SHA)
+          echo "commit_count=$COMMIT_COUNT" >> $GITHUB_OUTPUT
+
+      - name: Verify signatures
+        id: verify
+        run: |
+          BASE_SHA=${{ steps.pr_commits.outputs.base_sha }}
+          HEAD_SHA=${{ steps.pr_commits.outputs.head_sha }}
+
+          echo "Verifying commits from $BASE_SHA to $HEAD_SHA"
+          echo ""
+
+          UNSIGNED_COMMITS=""
+          SIGNED_COUNT=0
+          UNSIGNED_COUNT=0
+
+          # Check each commit
+          while IFS= read -r commit; do
+            SIGNATURE_STATUS=$(git log -1 --format="%G?" $commit)
+            AUTHOR=$(git log -1 --format="%an <%ae>" $commit)
+            SHORT_SHA=$(git log -1 --format="%h" $commit)
+            SUBJECT=$(git log -1 --format="%s" $commit)
+
+            case $SIGNATURE_STATUS in
+              G)
+                echo "✅ $SHORT_SHA - Good signature: $SUBJECT"
+                SIGNED_COUNT=$((SIGNED_COUNT + 1))
+                ;;
+              U)
+                echo "✅ $SHORT_SHA - Good signature (unknown trust): $SUBJECT"
+                SIGNED_COUNT=$((SIGNED_COUNT + 1))
+                ;;
+              X)
+                echo "✅ $SHORT_SHA - Good signature (expired): $SUBJECT"
+                SIGNED_COUNT=$((SIGNED_COUNT + 1))
+                ;;
+              Y)
+                echo "✅ $SHORT_SHA - Good signature (expired key): $SUBJECT"
+                SIGNED_COUNT=$((SIGNED_COUNT + 1))
+                ;;
+              R)
+                echo "⚠️ $SHORT_SHA - Good signature (revoked key): $SUBJECT"
+                SIGNED_COUNT=$((SIGNED_COUNT + 1))
+                ;;
+              E|B)
+                echo "❌ $SHORT_SHA - Unsigned or bad signature: $SUBJECT"
+                echo "   Author: $AUTHOR"
+                UNSIGNED_COMMITS="$UNSIGNED_COMMITS- \`$SHORT_SHA\`: $SUBJECT (by $AUTHOR)\n"
+                UNSIGNED_COUNT=$((UNSIGNED_COUNT + 1))
+                ;;
+              N)
+                echo "❌ $SHORT_SHA - No signature: $SUBJECT"
+                echo "   Author: $AUTHOR"
+                UNSIGNED_COMMITS="$UNSIGNED_COMMITS- \`$SHORT_SHA\`: $SUBJECT (by $AUTHOR)\n"
+                UNSIGNED_COUNT=$((UNSIGNED_COUNT + 1))
+                ;;
+              *)
+                echo "⚠️ $SHORT_SHA - Unknown signature status ($SIGNATURE_STATUS): $SUBJECT"
+                ;;
+            esac
+          done < <(git rev-list $BASE_SHA..$HEAD_SHA)
+
+          echo ""
+          echo "Summary: $SIGNED_COUNT signed, $UNSIGNED_COUNT unsigned"
+
+          # Set outputs
+          echo "signed_count=$SIGNED_COUNT" >> $GITHUB_OUTPUT
+          echo "unsigned_count=$UNSIGNED_COUNT" >> $GITHUB_OUTPUT
+
+          # Store unsigned commits for comment
+          if [ $UNSIGNED_COUNT -gt 0 ]; then
+            echo "unsigned_commits<<EOF" >> $GITHUB_OUTPUT
+            echo -e "$UNSIGNED_COMMITS" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+            echo "has_unsigned=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_unsigned=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check for bypass comment
+        id: bypass
+        if: steps.verify.outputs.has_unsigned == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const comments = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number
+            });
+
+            const bypassComment = comments.data.find(c =>
+              c.body.includes('/bypass-signature-check') &&
+              (c.author_association === 'OWNER' ||
+               c.author_association === 'MEMBER')
+            );
+
+            if (bypassComment) {
+              core.setOutput('bypassed', 'true');
+              core.setOutput('bypass_by', bypassComment.user.login);
+              core.setOutput('bypass_reason', bypassComment.body);
+            } else {
+              core.setOutput('bypassed', 'false');
+            }
+
+      - name: Comment on PR (unsigned commits found)
+        if: steps.verify.outputs.has_unsigned == 'true' && steps.bypass.outputs.bypassed != 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const unsignedCount = '${{ steps.verify.outputs.unsigned_count }}';
+            const unsignedCommits = `${{ steps.verify.outputs.unsigned_commits }}`;
+
+            const body = `## ⚠️ Unsigned Commits Detected
+
+            This PR contains **${unsignedCount}** unsigned commit(s):
+
+            ${unsignedCommits}
+
+            ### How to Fix
+
+            1. **Enable commit signing** - See [Signed Commits Guide](../docs/security/SIGNED-COMMITS-GUIDE.md)
+
+            2. **Re-sign your commits:**
+               \`\`\`bash
+               # Rebase and sign all commits
+               git rebase --exec 'git commit --amend --no-edit -S' HEAD~${unsignedCount}
+
+               # Force push (be careful!)
+               git push --force-with-lease
+               \`\`\`
+
+            3. **Verify your signature:**
+               \`\`\`bash
+               git log --show-signature -1
+               \`\`\`
+
+            ### Emergency Bypass
+
+            If you absolutely must merge without signatures (requires admin):
+            \`\`\`
+            /bypass-signature-check REASON: <your justification>
+            \`\`\`
+
+            ---
+            *This check is part of our supply chain security measures.*`;
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: body
+            });
+
+      - name: Comment on PR (bypass used)
+        if: steps.verify.outputs.has_unsigned == 'true' && steps.bypass.outputs.bypassed == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const bypassBy = '${{ steps.bypass.outputs.bypass_by }}';
+
+            const body = `## ⚠️ Signature Check Bypassed
+
+            @${bypassBy} has bypassed the signature check for this PR.
+
+            **Note:** This bypass has been logged for audit purposes. Unsigned commits should be avoided whenever possible.`;
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: body
+            });
+
+      - name: Fail if unsigned (without bypass)
+        if: steps.verify.outputs.has_unsigned == 'true' && steps.bypass.outputs.bypassed != 'true'
+        run: |
+          echo "❌ This PR contains unsigned commits."
+          echo "Please sign your commits before merging."
+          echo "See the PR comment for instructions."
+          exit 1
+
+      - name: Success summary
+        if: steps.verify.outputs.has_unsigned != 'true'
+        run: |
+          echo "✅ All ${{ steps.verify.outputs.signed_count }} commits are properly signed!"

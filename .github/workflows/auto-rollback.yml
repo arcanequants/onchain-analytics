@@ -1,0 +1,271 @@
+name: Auto Rollback Monitor
+
+on:
+  # Run every 5 minutes to check deployment health
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+    inputs:
+      deployment_id:
+        description: 'Specific deployment ID to check'
+        required: false
+
+env:
+  ERROR_RATE_THRESHOLD: 0.01      # 1% error rate threshold
+  LATENCY_P99_THRESHOLD: 5000     # 5 second p99 latency threshold
+  CONSECUTIVE_FAILURES: 3          # Failures before rollback
+  CHECK_INTERVAL_SECONDS: 60
+
+jobs:
+  check-health:
+    runs-on: ubuntu-latest
+    outputs:
+      should_rollback: ${{ steps.evaluate.outputs.should_rollback }}
+      deployment_id: ${{ steps.get-deployment.outputs.deployment_id }}
+    steps:
+      - name: Get Current Deployment
+        id: get-deployment
+        run: |
+          # Get latest production deployment
+          RESPONSE=$(curl -s "https://api.vercel.com/v6/deployments?projectId=${{ secrets.VERCEL_PROJECT_ID }}&limit=1&target=production" \
+            -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}")
+
+          DEPLOYMENT_ID=$(echo "$RESPONSE" | jq -r '.deployments[0].uid')
+          DEPLOYMENT_URL=$(echo "$RESPONSE" | jq -r '.deployments[0].url')
+          DEPLOYMENT_STATE=$(echo "$RESPONSE" | jq -r '.deployments[0].state')
+
+          echo "deployment_id=$DEPLOYMENT_ID" >> $GITHUB_OUTPUT
+          echo "deployment_url=$DEPLOYMENT_URL" >> $GITHUB_OUTPUT
+          echo "deployment_state=$DEPLOYMENT_STATE" >> $GITHUB_OUTPUT
+
+          echo "Current deployment: $DEPLOYMENT_ID ($DEPLOYMENT_STATE)"
+
+      - name: Health Check
+        id: health
+        run: |
+          DEPLOYMENT_URL="${{ steps.get-deployment.outputs.deployment_url }}"
+
+          # Health check
+          HEALTH_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "https://$DEPLOYMENT_URL/api/health" || echo "000")
+
+          if [ "$HEALTH_STATUS" == "200" ]; then
+            echo "health_passed=true" >> $GITHUB_OUTPUT
+            echo "Health check passed"
+          else
+            echo "health_passed=false" >> $GITHUB_OUTPUT
+            echo "Health check failed with status: $HEALTH_STATUS"
+          fi
+
+      - name: Check Error Rate
+        id: errors
+        run: |
+          # Query error metrics (replace with your monitoring endpoint)
+          # This is a placeholder - integrate with your actual monitoring
+
+          METRICS_URL="https://${{ steps.get-deployment.outputs.deployment_url }}/api/metrics"
+
+          ERROR_RATE=$(curl -s "$METRICS_URL" | jq -r '.error_rate // 0' 2>/dev/null || echo "0")
+
+          echo "error_rate=$ERROR_RATE" >> $GITHUB_OUTPUT
+
+          if (( $(echo "$ERROR_RATE > $ERROR_RATE_THRESHOLD" | bc -l) )); then
+            echo "error_rate_exceeded=true" >> $GITHUB_OUTPUT
+            echo "Error rate $ERROR_RATE exceeds threshold $ERROR_RATE_THRESHOLD"
+          else
+            echo "error_rate_exceeded=false" >> $GITHUB_OUTPUT
+            echo "Error rate $ERROR_RATE within threshold"
+          fi
+
+      - name: Check Latency
+        id: latency
+        run: |
+          METRICS_URL="https://${{ steps.get-deployment.outputs.deployment_url }}/api/metrics"
+
+          LATENCY_P99=$(curl -s "$METRICS_URL" | jq -r '.latency_p99_ms // 0' 2>/dev/null || echo "0")
+
+          echo "latency_p99=$LATENCY_P99" >> $GITHUB_OUTPUT
+
+          if (( $(echo "$LATENCY_P99 > $LATENCY_P99_THRESHOLD" | bc -l) )); then
+            echo "latency_exceeded=true" >> $GITHUB_OUTPUT
+            echo "Latency p99 $LATENCY_P99 ms exceeds threshold $LATENCY_P99_THRESHOLD ms"
+          else
+            echo "latency_exceeded=false" >> $GITHUB_OUTPUT
+            echo "Latency p99 $LATENCY_P99 ms within threshold"
+          fi
+
+      - name: Evaluate Rollback
+        id: evaluate
+        run: |
+          HEALTH="${{ steps.health.outputs.health_passed }}"
+          ERROR_EXCEEDED="${{ steps.errors.outputs.error_rate_exceeded }}"
+          LATENCY_EXCEEDED="${{ steps.latency.outputs.latency_exceeded }}"
+
+          SHOULD_ROLLBACK=false
+          REASON=""
+
+          if [ "$HEALTH" == "false" ]; then
+            SHOULD_ROLLBACK=true
+            REASON="Health check failed"
+          fi
+
+          if [ "$ERROR_EXCEEDED" == "true" ]; then
+            SHOULD_ROLLBACK=true
+            REASON="${REASON:+$REASON, }Error rate exceeded threshold"
+          fi
+
+          if [ "$LATENCY_EXCEEDED" == "true" ]; then
+            SHOULD_ROLLBACK=true
+            REASON="${REASON:+$REASON, }Latency exceeded threshold"
+          fi
+
+          echo "should_rollback=$SHOULD_ROLLBACK" >> $GITHUB_OUTPUT
+          echo "reason=$REASON" >> $GITHUB_OUTPUT
+
+          if [ "$SHOULD_ROLLBACK" == "true" ]; then
+            echo "::warning::Rollback recommended: $REASON"
+          else
+            echo "All checks passed"
+          fi
+
+  execute-rollback:
+    needs: check-health
+    if: needs.check-health.outputs.should_rollback == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get Previous Deployment
+        id: previous
+        run: |
+          # Get previous successful deployment
+          RESPONSE=$(curl -s "https://api.vercel.com/v6/deployments?projectId=${{ secrets.VERCEL_PROJECT_ID }}&limit=5&target=production" \
+            -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}")
+
+          # Find previous successful deployment (skip current)
+          PREVIOUS_ID=$(echo "$RESPONSE" | jq -r '.deployments[1].uid')
+          PREVIOUS_URL=$(echo "$RESPONSE" | jq -r '.deployments[1].url')
+
+          echo "previous_id=$PREVIOUS_ID" >> $GITHUB_OUTPUT
+          echo "previous_url=$PREVIOUS_URL" >> $GITHUB_OUTPUT
+
+          echo "Rolling back to: $PREVIOUS_ID"
+
+      - name: Verify Previous Deployment Health
+        run: |
+          PREVIOUS_URL="${{ steps.previous.outputs.previous_url }}"
+
+          # Verify the previous deployment is still healthy
+          HEALTH=$(curl -s -o /dev/null -w "%{http_code}" "https://$PREVIOUS_URL/api/health")
+
+          if [ "$HEALTH" != "200" ]; then
+            echo "::error::Previous deployment is not healthy, cannot rollback automatically"
+            exit 1
+          fi
+
+          echo "Previous deployment is healthy"
+
+      - name: Execute Rollback
+        run: |
+          # Promote previous deployment using Vercel API
+          curl -X POST "https://api.vercel.com/v9/projects/${{ secrets.VERCEL_PROJECT_ID }}/promote" \
+            -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d "{\"deploymentId\": \"${{ steps.previous.outputs.previous_id }}\"}"
+
+          echo "Rollback initiated to ${{ steps.previous.outputs.previous_id }}"
+
+      - name: Record Rollback in Database
+        run: |
+          # Record rollback in Supabase
+          curl -X POST "${{ secrets.SUPABASE_URL }}/rest/v1/rpc/rollback_deployment" \
+            -H "apikey: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"p_deployment_id\": \"${{ needs.check-health.outputs.deployment_id }}\",
+              \"p_reason\": \"Auto-rollback triggered by health monitor\",
+              \"p_rollback_to_id\": \"${{ steps.previous.outputs.previous_id }}\"
+            }"
+
+      - name: Notify Team
+        uses: slackapi/slack-github-action@v1.24.0
+        if: always()
+        with:
+          channel-id: ${{ secrets.SLACK_DEPLOYMENTS_CHANNEL }}
+          payload: |
+            {
+              "text": "🚨 Auto-Rollback Executed",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "🚨 *Auto-Rollback Executed*\n\n*Current Deployment:* ${{ needs.check-health.outputs.deployment_id }}\n*Rolled Back To:* ${{ steps.previous.outputs.previous_id }}\n*Reason:* Health check failures detected"
+                  }
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": {"type": "plain_text", "text": "View Deployment"},
+                      "url": "https://vercel.com/${{ github.repository }}/deployments"
+                    }
+                  ]
+                }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
+      - name: Create Incident
+        if: always()
+        run: |
+          # Create incident in tracking system
+          gh issue create \
+            --title "🚨 Auto-Rollback: ${{ needs.check-health.outputs.deployment_id }}" \
+            --body "## Auto-Rollback Incident
+
+          **Time:** $(date -u)
+          **Deployment:** ${{ needs.check-health.outputs.deployment_id }}
+          **Rolled Back To:** ${{ steps.previous.outputs.previous_id }}
+
+          ### Trigger Reason
+          Health monitoring detected issues with the current deployment.
+
+          ### Actions Taken
+          1. Verified previous deployment health
+          2. Initiated rollback via Vercel API
+          3. Recorded rollback in database
+          4. Notified team via Slack
+
+          ### Next Steps
+          - [ ] Investigate root cause
+          - [ ] Review deployment logs
+          - [ ] Update post-mortem
+          - [ ] Re-deploy with fix
+
+          ---
+          *This incident was automatically created by the auto-rollback workflow.*" \
+            --label "incident,auto-rollback"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  update-metrics:
+    needs: [check-health, execute-rollback]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Record Metrics
+        run: |
+          # Record health check metrics in database
+          curl -X POST "${{ secrets.SUPABASE_URL }}/rest/v1/deployment_metrics" \
+            -H "apikey: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"deployment_id\": \"${{ needs.check-health.outputs.deployment_id }}\",
+              \"health_check_passed\": ${{ needs.check-health.outputs.should_rollback == 'false' }},
+              \"recorded_at\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"
+            }"

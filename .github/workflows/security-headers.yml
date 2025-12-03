@@ -1,0 +1,289 @@
+name: Security Headers Validation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Run daily at 6 AM UTC
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+env:
+  PRODUCTION_URL: https://aiperception.agency
+  STAGING_URL: https://staging.aiperception.agency
+
+jobs:
+  validate-headers:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        url:
+          - https://aiperception.agency
+          - https://aiperception.agency/api/health
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check Security Headers
+        id: headers
+        run: |
+          URL="${{ matrix.url }}"
+          echo "Checking headers for: $URL"
+
+          # Get all response headers
+          HEADERS=$(curl -sI "$URL" | tr -d '\r')
+
+          # Initialize scores
+          SCORE=0
+          MAX_SCORE=100
+          ISSUES=""
+
+          # Check Strict-Transport-Security
+          if echo "$HEADERS" | grep -qi "strict-transport-security"; then
+            HSTS=$(echo "$HEADERS" | grep -i "strict-transport-security")
+            echo "✅ HSTS: $HSTS"
+            SCORE=$((SCORE + 15))
+
+            # Check for max-age >= 1 year
+            if echo "$HSTS" | grep -q "max-age=31536000"; then
+              SCORE=$((SCORE + 5))
+            else
+              ISSUES="$ISSUES\n- HSTS max-age should be at least 31536000 (1 year)"
+            fi
+          else
+            echo "❌ Missing: Strict-Transport-Security"
+            ISSUES="$ISSUES\n- Missing Strict-Transport-Security header"
+          fi
+
+          # Check X-Content-Type-Options
+          if echo "$HEADERS" | grep -qi "x-content-type-options: nosniff"; then
+            echo "✅ X-Content-Type-Options: nosniff"
+            SCORE=$((SCORE + 10))
+          else
+            echo "❌ Missing: X-Content-Type-Options"
+            ISSUES="$ISSUES\n- Missing X-Content-Type-Options: nosniff"
+          fi
+
+          # Check X-Frame-Options
+          if echo "$HEADERS" | grep -qi "x-frame-options"; then
+            XFO=$(echo "$HEADERS" | grep -i "x-frame-options")
+            echo "✅ X-Frame-Options: $XFO"
+            SCORE=$((SCORE + 10))
+          else
+            echo "❌ Missing: X-Frame-Options"
+            ISSUES="$ISSUES\n- Missing X-Frame-Options header"
+          fi
+
+          # Check Content-Security-Policy
+          if echo "$HEADERS" | grep -qi "content-security-policy"; then
+            echo "✅ Content-Security-Policy present"
+            SCORE=$((SCORE + 20))
+          else
+            echo "❌ Missing: Content-Security-Policy"
+            ISSUES="$ISSUES\n- Missing Content-Security-Policy header"
+          fi
+
+          # Check X-XSS-Protection (deprecated but still checked)
+          if echo "$HEADERS" | grep -qi "x-xss-protection"; then
+            echo "✅ X-XSS-Protection present"
+            SCORE=$((SCORE + 5))
+          fi
+
+          # Check Referrer-Policy
+          if echo "$HEADERS" | grep -qi "referrer-policy"; then
+            echo "✅ Referrer-Policy present"
+            SCORE=$((SCORE + 10))
+          else
+            echo "❌ Missing: Referrer-Policy"
+            ISSUES="$ISSUES\n- Missing Referrer-Policy header"
+          fi
+
+          # Check Permissions-Policy
+          if echo "$HEADERS" | grep -qi "permissions-policy"; then
+            echo "✅ Permissions-Policy present"
+            SCORE=$((SCORE + 10))
+          else
+            echo "⚠️ Missing: Permissions-Policy"
+            ISSUES="$ISSUES\n- Missing Permissions-Policy header"
+          fi
+
+          # Check for insecure headers
+          if echo "$HEADERS" | grep -qi "server:"; then
+            SERVER=$(echo "$HEADERS" | grep -i "server:")
+            echo "⚠️ Server header exposed: $SERVER"
+            ISSUES="$ISSUES\n- Server header should be removed or minimized"
+          fi
+
+          if echo "$HEADERS" | grep -qi "x-powered-by"; then
+            echo "⚠️ X-Powered-By header exposed"
+            ISSUES="$ISSUES\n- X-Powered-By header should be removed"
+          fi
+
+          # Calculate percentage
+          PERCENTAGE=$((SCORE * 100 / MAX_SCORE))
+
+          echo "score=$SCORE" >> $GITHUB_OUTPUT
+          echo "max_score=$MAX_SCORE" >> $GITHUB_OUTPUT
+          echo "percentage=$PERCENTAGE" >> $GITHUB_OUTPUT
+
+          if [ -n "$ISSUES" ]; then
+            echo "has_issues=true" >> $GITHUB_OUTPUT
+            echo -e "$ISSUES" > issues.txt
+          else
+            echo "has_issues=false" >> $GITHUB_OUTPUT
+          fi
+
+          echo ""
+          echo "Security Score: $SCORE/$MAX_SCORE ($PERCENTAGE%)"
+
+      - name: Grade Security Headers
+        id: grade
+        run: |
+          PERCENTAGE=${{ steps.headers.outputs.percentage }}
+
+          if [ $PERCENTAGE -ge 90 ]; then
+            GRADE="A"
+          elif [ $PERCENTAGE -ge 80 ]; then
+            GRADE="B"
+          elif [ $PERCENTAGE -ge 70 ]; then
+            GRADE="C"
+          elif [ $PERCENTAGE -ge 60 ]; then
+            GRADE="D"
+          else
+            GRADE="F"
+          fi
+
+          echo "grade=$GRADE" >> $GITHUB_OUTPUT
+          echo "Security Grade: $GRADE"
+
+      - name: Create Report
+        run: |
+          cat > security-headers-report.md << EOF
+          # Security Headers Report
+
+          **URL:** ${{ matrix.url }}
+          **Date:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          **Grade:** ${{ steps.grade.outputs.grade }}
+          **Score:** ${{ steps.headers.outputs.score }}/${{ steps.headers.outputs.max_score }} (${{ steps.headers.outputs.percentage }}%)
+
+          ## Issues Found
+          EOF
+
+          if [ -f issues.txt ]; then
+            cat issues.txt >> security-headers-report.md
+          else
+            echo "No issues found." >> security-headers-report.md
+          fi
+
+          cat >> security-headers-report.md << 'EOF'
+
+          ## Recommended Headers
+
+          ### Strict-Transport-Security
+          \`\`\`
+          Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+          \`\`\`
+
+          ### Content-Security-Policy
+          \`\`\`
+          Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://api.* wss://*;
+          \`\`\`
+
+          ### X-Frame-Options
+          \`\`\`
+          X-Frame-Options: DENY
+          \`\`\`
+
+          ### X-Content-Type-Options
+          \`\`\`
+          X-Content-Type-Options: nosniff
+          \`\`\`
+
+          ### Referrer-Policy
+          \`\`\`
+          Referrer-Policy: strict-origin-when-cross-origin
+          \`\`\`
+
+          ### Permissions-Policy
+          \`\`\`
+          Permissions-Policy: accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()
+          \`\`\`
+
+          ---
+          *Generated by Security Headers Validation workflow*
+          EOF
+
+      - name: Upload Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-headers-${{ hashFiles(matrix.url) }}
+          path: security-headers-report.md
+          retention-days: 30
+
+      - name: Fail on Low Grade
+        if: steps.grade.outputs.grade == 'F'
+        run: |
+          echo "::error::Security headers grade is F. Minimum required is D."
+          exit 1
+
+  validate-csp:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check CSP Configuration
+        run: |
+          # Get CSP header
+          CSP=$(curl -sI "${{ env.PRODUCTION_URL }}" | grep -i "content-security-policy" | cut -d: -f2-)
+
+          if [ -z "$CSP" ]; then
+            echo "::warning::No CSP header found"
+            exit 0
+          fi
+
+          echo "Current CSP:"
+          echo "$CSP"
+          echo ""
+
+          # Check for unsafe directives
+          if echo "$CSP" | grep -q "unsafe-inline"; then
+            echo "⚠️ 'unsafe-inline' detected - consider using nonces or hashes"
+          fi
+
+          if echo "$CSP" | grep -q "unsafe-eval"; then
+            echo "⚠️ 'unsafe-eval' detected - this is a security risk"
+          fi
+
+          if echo "$CSP" | grep -q "data:"; then
+            echo "⚠️ 'data:' URIs detected - review if necessary"
+          fi
+
+          # Check for required directives
+          REQUIRED_DIRECTIVES="default-src script-src style-src img-src"
+
+          for directive in $REQUIRED_DIRECTIVES; do
+            if echo "$CSP" | grep -q "$directive"; then
+              echo "✅ $directive present"
+            else
+              echo "❌ $directive missing"
+            fi
+          done
+
+  aggregate-results:
+    needs: [validate-headers, validate-csp]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Summary
+        run: |
+          echo "# Security Headers Validation Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Date:** $(date -u)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Headers Validation | ${{ needs.validate-headers.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| CSP Validation | ${{ needs.validate-csp.result }} |" >> $GITHUB_STEP_SUMMARY

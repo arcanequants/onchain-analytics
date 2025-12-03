@@ -1,0 +1,322 @@
+# DAST (Dynamic Application Security Testing) Workflow
+# Phase 1, Week 3, Day 5 - DevSecOps Tasks
+#
+# Runs OWASP ZAP scans against the production application weekly
+# Also runs on-demand via workflow_dispatch
+
+name: DAST Security Scan
+
+on:
+  schedule:
+    # Run weekly on Sundays at 2:00 AM UTC
+    - cron: '0 2 * * 0'
+  workflow_dispatch:
+    inputs:
+      scan_type:
+        description: 'Type of scan to run'
+        required: true
+        default: 'baseline'
+        type: choice
+        options:
+          - baseline
+          - full
+          - api
+      target_url:
+        description: 'Target URL (leave empty for production)'
+        required: false
+        default: ''
+
+env:
+  # Default target URL (production)
+  DEFAULT_TARGET_URL: ${{ vars.PRODUCTION_URL || 'https://aiperception.agency' }}
+  # API endpoint for results
+  RESULTS_API_URL: ${{ vars.PRODUCTION_URL || 'https://aiperception.agency' }}/api/admin/security-scans
+
+jobs:
+  # ================================================================
+  # OWASP ZAP BASELINE SCAN
+  # ================================================================
+  zap-baseline:
+    if: ${{ github.event.inputs.scan_type == 'baseline' || github.event_name == 'schedule' }}
+    name: ZAP Baseline Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      security-events: write
+      issues: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Determine target URL
+        id: target
+        run: |
+          if [ -n "${{ github.event.inputs.target_url }}" ]; then
+            echo "url=${{ github.event.inputs.target_url }}" >> $GITHUB_OUTPUT
+          else
+            echo "url=${{ env.DEFAULT_TARGET_URL }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create ZAP config
+        run: |
+          mkdir -p zap-config
+          cat > zap-config/options.conf << 'EOF'
+          # ZAP Configuration
+          # Disable alerts for known false positives
+          disabledRules=10015,10024,10027
+          EOF
+
+      - name: ZAP Baseline Scan
+        uses: zaproxy/action-baseline@v0.11.0
+        with:
+          target: ${{ steps.target.outputs.url }}
+          rules_file_name: '.zap/rules.tsv'
+          cmd_options: '-a -j -I'
+          fail_action: false
+          allow_issue_writing: true
+          issue_title: '[DAST] ZAP Baseline Scan Report'
+
+      - name: Upload ZAP report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: zap-baseline-report-${{ github.run_id }}
+          path: |
+            report_html.html
+            report_json.json
+            report_md.md
+          retention-days: 30
+
+      - name: Parse and save results
+        if: always()
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          if [ -f "report_json.json" ]; then
+            # Extract summary from ZAP report
+            HIGH=$(jq '[.site[].alerts[] | select(.riskcode == "3")] | length' report_json.json || echo 0)
+            MEDIUM=$(jq '[.site[].alerts[] | select(.riskcode == "2")] | length' report_json.json || echo 0)
+            LOW=$(jq '[.site[].alerts[] | select(.riskcode == "1")] | length' report_json.json || echo 0)
+            INFO=$(jq '[.site[].alerts[] | select(.riskcode == "0")] | length' report_json.json || echo 0)
+
+            echo "Findings: High=$HIGH, Medium=$MEDIUM, Low=$LOW, Info=$INFO"
+
+            # Would save to database here if SUPABASE credentials available
+            # curl -X POST "$RESULTS_API_URL" ...
+          fi
+
+  # ================================================================
+  # OWASP ZAP FULL SCAN
+  # ================================================================
+  zap-full:
+    if: ${{ github.event.inputs.scan_type == 'full' }}
+    name: ZAP Full Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    permissions:
+      contents: read
+      security-events: write
+      issues: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Determine target URL
+        id: target
+        run: |
+          if [ -n "${{ github.event.inputs.target_url }}" ]; then
+            echo "url=${{ github.event.inputs.target_url }}" >> $GITHUB_OUTPUT
+          else
+            echo "url=${{ env.DEFAULT_TARGET_URL }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: ZAP Full Scan
+        uses: zaproxy/action-full-scan@v0.8.0
+        with:
+          target: ${{ steps.target.outputs.url }}
+          rules_file_name: '.zap/rules.tsv'
+          cmd_options: '-a -j'
+          fail_action: false
+          allow_issue_writing: true
+          issue_title: '[DAST] ZAP Full Scan Report'
+
+      - name: Upload ZAP report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: zap-full-report-${{ github.run_id }}
+          path: |
+            report_html.html
+            report_json.json
+            report_md.md
+          retention-days: 90
+
+  # ================================================================
+  # OWASP ZAP API SCAN
+  # ================================================================
+  zap-api:
+    if: ${{ github.event.inputs.scan_type == 'api' }}
+    name: ZAP API Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: read
+      security-events: write
+      issues: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Determine target URL
+        id: target
+        run: |
+          if [ -n "${{ github.event.inputs.target_url }}" ]; then
+            echo "url=${{ github.event.inputs.target_url }}" >> $GITHUB_OUTPUT
+          else
+            echo "url=${{ env.DEFAULT_TARGET_URL }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Generate OpenAPI spec
+        run: |
+          # Generate OpenAPI spec from route definitions if available
+          # For now, use a placeholder
+          cat > openapi.json << 'EOF'
+          {
+            "openapi": "3.0.0",
+            "info": {
+              "title": "AI Perception Agency API",
+              "version": "1.0.0"
+            },
+            "servers": [
+              {
+                "url": "${{ steps.target.outputs.url }}"
+              }
+            ],
+            "paths": {
+              "/api/health": {
+                "get": {
+                  "summary": "Health check",
+                  "responses": {
+                    "200": {
+                      "description": "OK"
+                    }
+                  }
+                }
+              },
+              "/api/analyze": {
+                "post": {
+                  "summary": "Analyze brand perception",
+                  "requestBody": {
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "type": "object",
+                          "properties": {
+                            "url": {"type": "string"},
+                            "brandName": {"type": "string"}
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "responses": {
+                    "200": {
+                      "description": "Analysis result"
+                    }
+                  }
+                }
+              }
+            }
+          }
+          EOF
+
+      - name: ZAP API Scan
+        uses: zaproxy/action-api-scan@v0.6.0
+        with:
+          target: openapi.json
+          format: openapi
+          cmd_options: '-a -j'
+          fail_action: false
+          allow_issue_writing: true
+          issue_title: '[DAST] ZAP API Scan Report'
+
+      - name: Upload ZAP report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: zap-api-report-${{ github.run_id }}
+          path: |
+            report_html.html
+            report_json.json
+            report_md.md
+          retention-days: 90
+
+  # ================================================================
+  # NOTIFY ON CRITICAL FINDINGS
+  # ================================================================
+  notify:
+    needs: [zap-baseline]
+    if: always() && needs.zap-baseline.result != 'skipped'
+    name: Notify on Findings
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download report
+        uses: actions/download-artifact@v4
+        with:
+          name: zap-baseline-report-${{ github.run_id }}
+          path: ./reports
+        continue-on-error: true
+
+      - name: Check for critical findings
+        id: check
+        run: |
+          if [ -f "reports/report_json.json" ]; then
+            HIGH=$(jq '[.site[].alerts[] | select(.riskcode == "3")] | length' reports/report_json.json 2>/dev/null || echo 0)
+            if [ "$HIGH" -gt 0 ]; then
+              echo "critical=true" >> $GITHUB_OUTPUT
+              echo "high_count=$HIGH" >> $GITHUB_OUTPUT
+            else
+              echo "critical=false" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "critical=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create issue for critical findings
+        if: steps.check.outputs.critical == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issueTitle = `[SECURITY] Critical DAST findings detected - ${new Date().toISOString().split('T')[0]}`;
+            const issueBody = `
+            ## Critical Security Findings
+
+            The weekly DAST scan has detected **${{ steps.check.outputs.high_count }}** high-risk findings.
+
+            ### Action Required
+            1. Review the [scan artifacts](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            2. Triage each finding
+            3. Create remediation tasks for valid issues
+            4. Mark false positives in ZAP rules file
+
+            ### Scan Details
+            - **Run ID**: ${{ github.run_id }}
+            - **Target**: ${{ env.DEFAULT_TARGET_URL }}
+            - **Timestamp**: ${new Date().toISOString()}
+
+            /cc @${{ github.repository_owner }}
+            `;
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: issueTitle,
+              body: issueBody,
+              labels: ['security', 'dast', 'critical']
+            });

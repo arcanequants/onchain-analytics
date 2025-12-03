@@ -1,0 +1,139 @@
+name: Load Testing
+
+on:
+  workflow_dispatch:
+    inputs:
+      scenario:
+        description: 'Test scenario to run'
+        required: true
+        default: 'smoke'
+        type: choice
+        options:
+          - smoke
+          - load
+          - stress
+          - spike
+      environment:
+        description: 'Target environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+  schedule:
+    # Run smoke tests daily at 6 AM UTC
+    - cron: '0 6 * * *'
+
+env:
+  K6_CLOUD_TOKEN: ${{ secrets.K6_CLOUD_TOKEN }}
+
+jobs:
+  load-test:
+    name: Run Load Tests (${{ inputs.scenario || 'smoke' }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set environment URL
+        id: env
+        run: |
+          if [ "${{ inputs.environment }}" == "production" ]; then
+            echo "BASE_URL=https://aiperception.agency" >> $GITHUB_OUTPUT
+          else
+            echo "BASE_URL=https://staging.aiperception.agency" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Install k6
+        run: |
+          sudo gpg -k
+          sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
+          echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt-get update
+          sudo apt-get install k6
+
+      - name: Create results directory
+        run: mkdir -p tests/load/results
+
+      - name: Run k6 load test
+        run: |
+          k6 run \
+            --scenario ${{ inputs.scenario || 'smoke' }} \
+            --out json=tests/load/results/metrics.json \
+            tests/load/k6-load-test.js
+        env:
+          BASE_URL: ${{ steps.env.outputs.BASE_URL }}
+          API_KEY: ${{ secrets.LOAD_TEST_API_KEY }}
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: load-test-results-${{ github.run_id }}
+          path: tests/load/results/
+          retention-days: 30
+
+      - name: Check thresholds
+        id: check
+        run: |
+          if [ -f tests/load/results/summary.json ]; then
+            PASSED=$(jq -r '.thresholds_passed' tests/load/results/summary.json)
+            if [ "$PASSED" == "false" ]; then
+              echo "::error::Load test thresholds failed"
+              exit 1
+            fi
+          fi
+
+      - name: Post results to Slack
+        if: failure() && inputs.environment == 'production'
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          payload: |
+            {
+              "text": ":warning: Load test failed for ${{ inputs.environment }}",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Load Test Failed*\n\nScenario: `${{ inputs.scenario || 'smoke' }}`\nEnvironment: `${{ inputs.environment }}`\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Results>"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  analyze-results:
+    name: Analyze Results
+    runs-on: ubuntu-latest
+    needs: load-test
+    if: always()
+
+    steps:
+      - name: Download results
+        uses: actions/download-artifact@v4
+        with:
+          name: load-test-results-${{ github.run_id }}
+          path: results
+
+      - name: Generate summary
+        run: |
+          if [ -f results/summary.json ]; then
+            echo "## Load Test Results" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+            echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+            echo "| Duration | $(jq -r '.duration / 1000 | round' results/summary.json)s |" >> $GITHUB_STEP_SUMMARY
+            echo "| Max VUs | $(jq -r '.vus_max' results/summary.json) |" >> $GITHUB_STEP_SUMMARY
+            echo "| Total Requests | $(jq -r '.requests_total' results/summary.json) |" >> $GITHUB_STEP_SUMMARY
+            echo "| Failed Requests | $(jq -r '.requests_failed' results/summary.json) |" >> $GITHUB_STEP_SUMMARY
+            echo "| Avg Response Time | $(jq -r '.response_time_avg | round' results/summary.json)ms |" >> $GITHUB_STEP_SUMMARY
+            echo "| p95 Response Time | $(jq -r '.response_time_p95 | round' results/summary.json)ms |" >> $GITHUB_STEP_SUMMARY
+            echo "| p99 Response Time | $(jq -r '.response_time_p99 | round' results/summary.json)ms |" >> $GITHUB_STEP_SUMMARY
+            echo "| Thresholds Passed | $(jq -r '.thresholds_passed' results/summary.json) |" >> $GITHUB_STEP_SUMMARY
+          fi

@@ -1,0 +1,189 @@
+# Pull Request Checks
+# Additional checks that run only on PRs
+#
+# Jobs:
+#   1. PR Title Validation (Conventional Commits)
+#   2. Bundle Size Check
+#   3. Lighthouse Performance Audit (optional)
+
+name: PR Checks
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, edited]
+
+env:
+  NODE_VERSION: '20'
+  PNPM_VERSION: '9'
+
+jobs:
+  # ============================================================
+  # JOB 1: PR Title Validation
+  # ============================================================
+  validate-pr-title:
+    name: Validate PR Title
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Validate PR title format
+        uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: |
+            feat
+            fix
+            docs
+            style
+            refactor
+            perf
+            test
+            build
+            ci
+            chore
+            revert
+          requireScope: false
+          subjectPattern: ^(?![A-Z]).+$
+          subjectPatternError: |
+            The subject "{subject}" found in the pull request title "{title}"
+            doesn't match the expected pattern. The subject should start with
+            a lowercase letter and describe the change in imperative mood.
+
+          # Example valid titles:
+          #   feat: add new analysis endpoint
+          #   fix: resolve race condition in provider queries
+          #   docs: update API documentation
+          #   test: add integration tests for health endpoint
+
+  # ============================================================
+  # JOB 2: Bundle Size Check
+  # ============================================================
+  bundle-size:
+    name: Bundle Size
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    env:
+      NODE_ENV: production
+      NEXT_PUBLIC_APP_URL: https://example.com
+      OPENAI_API_KEY: build-placeholder
+      ANTHROPIC_API_KEY: build-placeholder
+      PERPLEXITY_API_KEY: build-placeholder
+      NEXT_TELEMETRY_DISABLED: 1
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build and analyze bundle
+        run: |
+          pnpm build
+          echo "## Bundle Analysis" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Get the sizes of key bundles
+          if [ -d ".next/static/chunks" ]; then
+            echo "### Chunk Sizes" >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+            du -sh .next/static/chunks/* | sort -hr | head -20 >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Total build size
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Total Build Size" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          du -sh .next >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+
+  # ============================================================
+  # JOB 3: Code Quality Metrics
+  # ============================================================
+  code-quality:
+    name: Code Quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check for console.log statements
+        run: |
+          echo "## Code Quality Check" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Check for console.log (excluding test files and intentional logs)
+          if grep -rn "console\.log" --include="*.ts" --include="*.tsx" \
+             --exclude-dir=node_modules --exclude-dir=.next \
+             --exclude="*.test.ts" --exclude="*.test.tsx" \
+             --exclude="*.spec.ts" --exclude="*.spec.tsx" \
+             src/ 2>/dev/null; then
+            echo "::warning::Found console.log statements in source code"
+            echo "### Warning: console.log found" >> $GITHUB_STEP_SUMMARY
+            echo "Consider using structured logging instead." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "### No console.log statements found" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Check TODO/FIXME comments
+        run: |
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### TODO/FIXME Comments" >> $GITHUB_STEP_SUMMARY
+
+          TODO_COUNT=$(grep -rn "TODO\|FIXME" --include="*.ts" --include="*.tsx" \
+             --exclude-dir=node_modules --exclude-dir=.next \
+             src/ 2>/dev/null | wc -l || echo "0")
+
+          echo "Found ${TODO_COUNT} TODO/FIXME comments" >> $GITHUB_STEP_SUMMARY
+
+          if [ "$TODO_COUNT" -gt 20 ]; then
+            echo "::warning::High number of TODO/FIXME comments: ${TODO_COUNT}"
+          fi
+
+      - name: Check for TypeScript 'any' usage
+        run: |
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### TypeScript 'any' Usage" >> $GITHUB_STEP_SUMMARY
+
+          ANY_COUNT=$(grep -rn ": any" --include="*.ts" --include="*.tsx" \
+             --exclude-dir=node_modules --exclude-dir=.next \
+             src/ 2>/dev/null | wc -l || echo "0")
+
+          echo "Found ${ANY_COUNT} uses of 'any' type" >> $GITHUB_STEP_SUMMARY
+
+          if [ "$ANY_COUNT" -gt 50 ]; then
+            echo "::warning::High number of 'any' types: ${ANY_COUNT}"
+          fi

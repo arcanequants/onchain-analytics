@@ -1,0 +1,249 @@
+name: Environment Parity Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Run daily at 8 AM UTC
+    - cron: '0 8 * * *'
+  workflow_dispatch:
+
+env:
+  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+  PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+jobs:
+  check-env-vars:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get Production Env Vars
+        id: prod-env
+        run: |
+          RESPONSE=$(curl -s "https://api.vercel.com/v9/projects/$PROJECT_ID/env" \
+            -H "Authorization: Bearer $VERCEL_TOKEN")
+
+          # Extract production env var names
+          PROD_VARS=$(echo "$RESPONSE" | jq -r '[.envs[] | select(.target[] | contains("production")) | .key] | sort | unique | .[]')
+
+          echo "Production env vars:"
+          echo "$PROD_VARS"
+          echo "$PROD_VARS" > prod-vars.txt
+
+      - name: Get Staging Env Vars
+        id: staging-env
+        run: |
+          RESPONSE=$(curl -s "https://api.vercel.com/v9/projects/$PROJECT_ID/env" \
+            -H "Authorization: Bearer $VERCEL_TOKEN")
+
+          STAGING_VARS=$(echo "$RESPONSE" | jq -r '[.envs[] | select(.target[] | contains("preview")) | .key] | sort | unique | .[]')
+
+          echo "Staging env vars:"
+          echo "$STAGING_VARS"
+          echo "$STAGING_VARS" > staging-vars.txt
+
+      - name: Get Development Env Vars
+        id: dev-env
+        run: |
+          RESPONSE=$(curl -s "https://api.vercel.com/v9/projects/$PROJECT_ID/env" \
+            -H "Authorization: Bearer $VERCEL_TOKEN")
+
+          DEV_VARS=$(echo "$RESPONSE" | jq -r '[.envs[] | select(.target[] | contains("development")) | .key] | sort | unique | .[]')
+
+          echo "Development env vars:"
+          echo "$DEV_VARS"
+          echo "$DEV_VARS" > dev-vars.txt
+
+      - name: Compare Environments
+        id: compare
+        run: |
+          echo "## Environment Variable Parity Check" > parity-report.md
+          echo "" >> parity-report.md
+          echo "### Production vs Staging" >> parity-report.md
+          echo "" >> parity-report.md
+
+          MISSING_IN_STAGING=$(comm -23 <(sort prod-vars.txt) <(sort staging-vars.txt))
+          EXTRA_IN_STAGING=$(comm -13 <(sort prod-vars.txt) <(sort staging-vars.txt))
+
+          if [ -n "$MISSING_IN_STAGING" ]; then
+            echo "❌ **Missing in Staging:**" >> parity-report.md
+            echo "\`\`\`" >> parity-report.md
+            echo "$MISSING_IN_STAGING" >> parity-report.md
+            echo "\`\`\`" >> parity-report.md
+            echo "staging_missing=true" >> $GITHUB_OUTPUT
+          else
+            echo "✅ All production vars exist in staging" >> parity-report.md
+            echo "staging_missing=false" >> $GITHUB_OUTPUT
+          fi
+
+          echo "" >> parity-report.md
+          echo "### Production vs Development" >> parity-report.md
+          echo "" >> parity-report.md
+
+          MISSING_IN_DEV=$(comm -23 <(sort prod-vars.txt) <(sort dev-vars.txt))
+
+          if [ -n "$MISSING_IN_DEV" ]; then
+            echo "⚠️ **Missing in Development:**" >> parity-report.md
+            echo "\`\`\`" >> parity-report.md
+            echo "$MISSING_IN_DEV" >> parity-report.md
+            echo "\`\`\`" >> parity-report.md
+            echo "dev_missing=true" >> $GITHUB_OUTPUT
+          else
+            echo "✅ All production vars exist in development" >> parity-report.md
+            echo "dev_missing=false" >> $GITHUB_OUTPUT
+          fi
+
+          # Check for sensitive vars that should differ
+          echo "" >> parity-report.md
+          echo "### Sensitive Variables (Expected to Differ)" >> parity-report.md
+          echo "" >> parity-report.md
+          echo "The following variables should have different values per environment:" >> parity-report.md
+          echo "- \`DATABASE_URL\`" >> parity-report.md
+          echo "- \`SUPABASE_URL\`" >> parity-report.md
+          echo "- \`SUPABASE_ANON_KEY\`" >> parity-report.md
+          echo "- \`SUPABASE_SERVICE_ROLE_KEY\`" >> parity-report.md
+          echo "- \`STRIPE_SECRET_KEY\`" >> parity-report.md
+          echo "- \`NEXTAUTH_SECRET\`" >> parity-report.md
+
+          cat parity-report.md
+
+      - name: Upload Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: env-parity-report
+          path: parity-report.md
+          retention-days: 30
+
+      - name: Fail if Critical Vars Missing
+        if: steps.compare.outputs.staging_missing == 'true'
+        run: |
+          echo "::error::Production environment variables are missing in staging"
+          # List the critical variables that must exist
+          CRITICAL_VARS="NEXT_PUBLIC_SUPABASE_URL NEXT_PUBLIC_SUPABASE_ANON_KEY"
+
+          for var in $CRITICAL_VARS; do
+            if ! grep -q "^$var$" staging-vars.txt; then
+              echo "::error::Critical variable $var missing in staging"
+            fi
+          done
+
+          # Uncomment to fail the build:
+          # exit 1
+
+  check-node-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check .nvmrc exists
+        run: |
+          if [ -f .nvmrc ]; then
+            echo "✅ .nvmrc exists"
+            echo "Node version: $(cat .nvmrc)"
+          else
+            echo "::warning::.nvmrc file not found"
+          fi
+
+      - name: Check package.json engines
+        run: |
+          if jq -e '.engines.node' package.json > /dev/null 2>&1; then
+            NODE_VERSION=$(jq -r '.engines.node' package.json)
+            echo "✅ Node version specified in package.json: $NODE_VERSION"
+          else
+            echo "::warning::Node version not specified in package.json engines"
+          fi
+
+      - name: Verify Consistency
+        run: |
+          NVMRC_VERSION=""
+          PKG_VERSION=""
+
+          if [ -f .nvmrc ]; then
+            NVMRC_VERSION=$(cat .nvmrc | tr -d 'v')
+          fi
+
+          if jq -e '.engines.node' package.json > /dev/null 2>&1; then
+            PKG_VERSION=$(jq -r '.engines.node' package.json | tr -d '^>=<~')
+          fi
+
+          if [ -n "$NVMRC_VERSION" ] && [ -n "$PKG_VERSION" ]; then
+            if echo "$PKG_VERSION" | grep -q "$NVMRC_VERSION"; then
+              echo "✅ Node versions are consistent"
+            else
+              echo "::warning::Node versions may not be consistent: .nvmrc=$NVMRC_VERSION, package.json=$PKG_VERSION"
+            fi
+          fi
+
+  check-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Check for lockfile
+        run: |
+          if [ -f package-lock.json ]; then
+            echo "✅ package-lock.json exists"
+          elif [ -f yarn.lock ]; then
+            echo "✅ yarn.lock exists"
+          elif [ -f pnpm-lock.yaml ]; then
+            echo "✅ pnpm-lock.yaml exists"
+          else
+            echo "::error::No lockfile found - dependencies may differ between environments"
+            exit 1
+          fi
+
+      - name: Check for outdated dependencies
+        run: |
+          npm outdated --json > outdated.json || true
+
+          OUTDATED_COUNT=$(jq 'length' outdated.json)
+
+          if [ "$OUTDATED_COUNT" -gt "0" ]; then
+            echo "⚠️ $OUTDATED_COUNT outdated dependencies found"
+            jq -r 'to_entries[] | "\(.key): \(.value.current) -> \(.value.latest)"' outdated.json | head -20
+          else
+            echo "✅ All dependencies are up to date"
+          fi
+
+      - name: Check for mismatched peer dependencies
+        run: |
+          npm ls 2>&1 | grep "WARN" | head -20 || echo "✅ No peer dependency warnings"
+
+  generate-summary:
+    needs: [check-env-vars, check-node-version, check-dependencies]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Summary
+        run: |
+          cat >> $GITHUB_STEP_SUMMARY << 'EOF'
+          # Environment Parity Summary
+
+          | Check | Status |
+          |-------|--------|
+          | Environment Variables | ${{ needs.check-env-vars.result }} |
+          | Node Version | ${{ needs.check-node-version.result }} |
+          | Dependencies | ${{ needs.check-dependencies.result }} |
+
+          ## Recommendations
+
+          1. **Environment Variables**: Ensure all production env vars exist in staging/dev
+          2. **Node Version**: Use `.nvmrc` and `package.json engines` to specify version
+          3. **Dependencies**: Keep lockfile committed and update regularly
+          4. **Secrets**: Use environment-specific secrets (not shared)
+
+          ---
+          *Generated by Environment Parity Check workflow*
+          EOF

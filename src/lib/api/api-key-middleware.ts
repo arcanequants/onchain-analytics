@@ -13,8 +13,8 @@ import {
   hasPermission,
   recordUsage,
   parseAuthorizationHeader,
-  type ApiKeyPermission,
 } from '../api-keys/api-key-service';
+import { type ApiKeyPermission } from '../api-keys/types';
 
 // ================================================================
 // TYPES
@@ -260,7 +260,7 @@ export function withApiKey<T>(
       let query: Record<string, string> = {};
       if (querySchema) {
         const rawQuery = parseQueryParams(req);
-        query = validateWithSchema(rawQuery, querySchema, 'query');
+        query = validateWithSchema(rawQuery, querySchema, 'query') as Record<string, string>;
       } else {
         query = parseQueryParams(req);
       }

@@ -17,6 +17,9 @@ vi.mock('next/navigation', () => ({
   }),
 }));
 
+// Mock scrollIntoView for JSDOM
+Element.prototype.scrollIntoView = vi.fn();
+
 describe('CommandPalette', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -277,7 +280,8 @@ describe('CommandPalette', () => {
         },
       ];
 
-      render(<CommandPalette commands={customCommands} />);
+      // Use higher maxResults to ensure custom commands are visible alongside defaults
+      render(<CommandPalette commands={customCommands} maxResults={20} />);
 
       fireEvent.keyDown(window, { key: 'k', metaKey: true });
 
@@ -294,13 +298,13 @@ describe('CommandPalette', () => {
         {
           id: 'shortcut-test',
           label: 'Shortcut Command',
-          shortcut: ['⌘', 'S'],
+          shortcut: ['Ctrl', 'S'],
           category: 'actions',
           action: vi.fn(),
         },
       ];
 
-      render(<CommandPalette commands={customCommands} />);
+      render(<CommandPalette commands={customCommands} maxResults={20} />);
 
       fireEvent.keyDown(window, { key: 'k', metaKey: true });
 
@@ -308,7 +312,13 @@ describe('CommandPalette', () => {
         expect(screen.getByPlaceholderText(/type a command/i)).toBeInTheDocument();
       });
 
-      expect(screen.getByText('⌘')).toBeInTheDocument();
+      // Search for the custom command to filter down results
+      const input = screen.getByPlaceholderText(/type a command/i);
+      await userEvent.type(input, 'shortcut');
+
+      // Check for the specific shortcut keys (Ctrl and S)
+      const kbdElements = screen.getAllByText('Ctrl');
+      expect(kbdElements.length).toBeGreaterThan(0);
       expect(screen.getByText('S')).toBeInTheDocument();
     });
   });

@@ -297,15 +297,16 @@ export function canUseMonitoring(
     };
   }
 
-  const frequencyRank: Record<MonitoringFrequency, number> = {
-    false: 0,
-    weekly: 1,
-    daily: 2,
-    hourly: 3,
-  };
+  function getFrequencyRank(freq: MonitoringFrequency): number {
+    if (freq === false) return 0;
+    if (freq === 'weekly') return 1;
+    if (freq === 'daily') return 2;
+    if (freq === 'hourly') return 3;
+    return 0;
+  }
 
-  const planRank = frequencyRank[limits.monitoring];
-  const requestedRank = frequencyRank[frequency];
+  const planRank = getFrequencyRank(limits.monitoring);
+  const requestedRank = getFrequencyRank(frequency);
 
   if (requestedRank > planRank) {
     return {
@@ -602,14 +603,11 @@ function findTierWithFeature(feature: keyof PlanConfig): PlanTier {
  * Find the minimum tier that has specific monitoring frequency
  */
 function findTierWithMonitoring(frequency: MonitoringFrequency): PlanTier {
-  const frequencyTiers: Record<MonitoringFrequency, PlanTier> = {
-    false: 'free',
-    weekly: 'starter',
-    daily: 'pro',
-    hourly: 'enterprise',
-  };
-
-  return frequencyTiers[frequency] || 'enterprise';
+  if (frequency === false) return 'free';
+  if (frequency === 'weekly') return 'starter';
+  if (frequency === 'daily') return 'pro';
+  if (frequency === 'hourly') return 'enterprise';
+  return 'enterprise';
 }
 
 /**

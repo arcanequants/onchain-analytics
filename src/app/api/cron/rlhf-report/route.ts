@@ -12,7 +12,7 @@ import {
   formatReportAsMarkdown,
   formatReportAsJSON,
 } from '@/lib/rlhf/monthly-report';
-import { supabase } from '@/lib/supabase/client';
+import { supabase } from '@/lib/supabase';
 
 // Verify CRON secret for security
 function verifyCronSecret(request: NextRequest): boolean {

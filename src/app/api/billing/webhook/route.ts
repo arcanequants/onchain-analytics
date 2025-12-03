@@ -42,13 +42,15 @@ async function handleCheckoutSessionCompleted(
   const planId = extractPlanFromSubscription(subscription);
 
   // TODO: Update user subscription in database
+  // Get current period end from first subscription item
+  const currentPeriodEnd = subscription.items?.data?.[0]?.current_period_end;
   console.log('[Webhook] Updating user subscription:', {
     userId,
     customerId,
     subscriptionId,
     planId,
     status: subscription.status,
-    currentPeriodEnd: new Date(subscription.current_period_end * 1000),
+    currentPeriodEnd: currentPeriodEnd ? new Date(currentPeriodEnd * 1000) : null,
   });
 
   // In production, update the database:
@@ -136,8 +138,9 @@ async function handleInvoicePaymentSucceeded(
 ): Promise<void> {
   console.log('[Webhook] Invoice payment succeeded:', invoice.id);
 
-  const customerId = invoice.customer as string;
-  const subscriptionId = invoice.subscription as string;
+  const customerId = typeof invoice.customer === 'string' ? invoice.customer : invoice.customer?.id;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const subscriptionId = (invoice as any).subscription as string | null;
   const amountPaid = invoice.amount_paid;
 
   console.log('[Webhook] Payment details:', {
@@ -157,8 +160,9 @@ async function handleInvoicePaymentFailed(
 ): Promise<void> {
   console.log('[Webhook] Invoice payment failed:', invoice.id);
 
-  const customerId = invoice.customer as string;
-  const subscriptionId = invoice.subscription as string;
+  const customerId = typeof invoice.customer === 'string' ? invoice.customer : invoice.customer?.id;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const subscriptionId = (invoice as any).subscription as string | null;
 
   console.log('[Webhook] Failed payment:', {
     invoiceId: invoice.id,

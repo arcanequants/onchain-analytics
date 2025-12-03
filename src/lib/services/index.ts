@@ -300,12 +300,11 @@ export class ServiceFactory {
     // AI Orchestrator (lazy - requires API keys)
     container.register(ServiceKeys.AI_ORCHESTRATOR, async () => {
       const { createOrchestrator } = await import('../ai/orchestrator');
-      const { getEnvConfig } = await import('../env');
-      const config = getEnvConfig();
+      const { serverEnv } = await import('../env');
 
       return createOrchestrator({
-        openaiApiKey: config.openaiApiKey,
-        anthropicApiKey: config.anthropicApiKey,
+        openaiApiKey: serverEnv.OPENAI_API_KEY,
+        anthropicApiKey: serverEnv.ANTHROPIC_API_KEY,
         mode: 'fallback',
         enableCircuitBreaker: true,
       });
@@ -314,14 +313,16 @@ export class ServiceFactory {
     // Database (lazy)
     container.register(ServiceKeys.DATABASE, async () => {
       const { createClient } = await import('@supabase/supabase-js');
-      const { getEnvConfig } = await import('../env');
-      const config = getEnvConfig();
+      const { clientEnv } = await import('../env');
+
+      const supabaseUrl = clientEnv.NEXT_PUBLIC_SUPABASE_URL || '';
+      const supabaseAnonKey = clientEnv.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
       return {
-        getClient: () => createClient(config.supabaseUrl, config.supabaseAnonKey),
+        getClient: () => createClient(supabaseUrl, supabaseAnonKey),
         isHealthy: async () => {
           try {
-            const client = createClient(config.supabaseUrl, config.supabaseAnonKey);
+            const client = createClient(supabaseUrl, supabaseAnonKey);
             const { error } = await client.from('_health').select('1').limit(1);
             return !error;
           } catch {

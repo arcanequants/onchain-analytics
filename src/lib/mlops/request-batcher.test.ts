@@ -104,7 +104,10 @@ describe('RequestBatcher', () => {
 
       const promise = batcher.add(5);
 
-      await vi.advanceTimersByTimeAsync(200);
+      // Advance through initial attempt + retry delay + second attempt
+      await vi.advanceTimersByTimeAsync(100); // Initial wait
+      await vi.advanceTimersByTimeAsync(1000); // Retry delay
+      await vi.advanceTimersByTimeAsync(100); // Process after retry
 
       const result = await promise;
       expect(result).toBe(10);
@@ -116,18 +119,31 @@ describe('RequestBatcher', () => {
 
       const promise = batcher.add(5);
 
-      // Advance through all retries
-      await vi.advanceTimersByTimeAsync(1000);
+      // Set up the expectation first to avoid unhandled rejection warnings
+      const expectation = expect(promise).rejects.toThrow('Max retries exceeded');
 
-      await expect(promise).rejects.toThrow('Max retries exceeded');
+      // Flush immediately to start processing
+      batcher.flush();
+
+      // Advance through all retry cycles:
+      // Each retry cycle: process attempt + retryDelayMs (50ms) + maxWaitMs (100ms)
+      // maxRetries=2, so 3 total attempts (initial + 2 retries)
+      for (let i = 0; i < 3; i++) {
+        await vi.advanceTimersByTimeAsync(50); // retryDelayMs
+        await vi.advanceTimersByTimeAsync(100); // maxWaitMs for next batch
+      }
+
+      await expectation;
     });
   });
 
   describe('Metrics', () => {
     it('should track batch metrics', async () => {
-      await batcher.add(1);
-      await batcher.add(2);
+      // Don't await add() - store promise and flush first
+      const promise1 = batcher.add(1);
+      const promise2 = batcher.add(2);
       await batcher.flush();
+      await Promise.all([promise1, promise2]);
 
       const metrics = batcher.getMetrics();
       expect(metrics.length).toBe(1);
@@ -137,12 +153,16 @@ describe('RequestBatcher', () => {
     });
 
     it('should calculate aggregate metrics', async () => {
-      await batcher.add(1);
+      // First batch
+      const p1 = batcher.add(1);
       await batcher.flush();
+      await p1;
 
-      await batcher.add(2);
-      await batcher.add(3);
+      // Second batch
+      const p2 = batcher.add(2);
+      const p3 = batcher.add(3);
       await batcher.flush();
+      await Promise.all([p2, p3]);
 
       const aggregate = batcher.getAggregateMetrics();
       expect(aggregate.totalBatches).toBe(2);
@@ -151,8 +171,9 @@ describe('RequestBatcher', () => {
     });
 
     it('should clear metrics', async () => {
-      await batcher.add(1);
+      const p1 = batcher.add(1);
       await batcher.flush();
+      await p1;
 
       batcher.clearMetrics();
       expect(batcher.getMetrics().length).toBe(0);
@@ -202,8 +223,9 @@ describe('RequestBatcher', () => {
         onBatchComplete: onComplete,
       });
 
-      await batcherWithCallback.add(1);
+      const promise = batcherWithCallback.add(1);
       await batcherWithCallback.flush();
+      await promise;
 
       expect(onComplete).toHaveBeenCalledTimes(1);
       expect(onComplete).toHaveBeenCalledWith(
@@ -223,8 +245,10 @@ describe('AIModelBatcher', () => {
     const processor = vi.fn().mockResolvedValue([{ result: 'ok' }]);
     const batcher = new AIModelBatcher(processor);
 
-    await batcher.add({ prompt: 'test' });
+    const promise = batcher.add({ prompt: 'test' });
+    // Advance timer to trigger the batch processing
     await vi.advanceTimersByTimeAsync(50);
+    await promise;
 
     expect(processor).toHaveBeenCalled();
 

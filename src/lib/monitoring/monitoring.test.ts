@@ -505,14 +505,22 @@ describe('Alerts', () => {
 
   describe('formatAlertDate', () => {
     it('should format today', () => {
-      const today = new Date().toISOString().split('T')[0];
-      expect(formatAlertDate(today)).toBe('Today');
+      // Use local date string format to match what formatAlertDate expects
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, '0');
+      const day = String(today.getDate()).padStart(2, '0');
+      const dateStr = `${year}-${month}-${day}`;
+      expect(formatAlertDate(dateStr)).toBe('Today');
     });
 
     it('should format yesterday', () => {
       const yesterday = new Date();
       yesterday.setDate(yesterday.getDate() - 1);
-      const dateStr = yesterday.toISOString().split('T')[0];
+      const year = yesterday.getFullYear();
+      const month = String(yesterday.getMonth() + 1).padStart(2, '0');
+      const day = String(yesterday.getDate()).padStart(2, '0');
+      const dateStr = `${year}-${month}-${day}`;
       expect(formatAlertDate(dateStr)).toBe('Yesterday');
     });
   });

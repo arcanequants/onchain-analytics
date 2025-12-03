@@ -48,7 +48,13 @@ export async function redirectToCheckout(
     return { error: 'Stripe is not initialized' };
   }
 
-  const result = await stripe.redirectToCheckout({
+  // Use type assertion for Stripe's redirectToCheckout method
+  // The method exists at runtime but types may vary between versions
+  const stripeWithCheckout = stripe as typeof stripe & {
+    redirectToCheckout: (options: { sessionId: string }) => Promise<{ error?: { message?: string } }>;
+  };
+
+  const result = await stripeWithCheckout.redirectToCheckout({
     sessionId: params.sessionId,
   });
 

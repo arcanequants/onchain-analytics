@@ -11,7 +11,7 @@ import {
   createSSEResponse,
   type AnalysisStage,
 } from '@/lib/sse';
-import { getAnalysis, updateAnalysis } from '../../route';
+import { getAnalysis, updateAnalysis } from '@/lib/analysis/store';
 
 // ================================================================
 // TYPES

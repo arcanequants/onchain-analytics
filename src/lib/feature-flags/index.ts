@@ -1,12 +1,19 @@
 /**
  * Feature Flags Module
  *
- * Phase 1, Week 2
- * Environment-based feature flags for gradual rollouts and A/B testing.
+ * Phase 1, Week 2 + Phase 4, Week 8 (Edge Config)
  *
- * Usage:
+ * Provides two modes:
+ * 1. Environment-based flags (default, no external deps)
+ * 2. Vercel Edge Config flags (low-latency, real-time updates)
+ *
+ * Usage (environment-based):
  *   import { isFeatureEnabled, getFeatureValue } from '@/lib/feature-flags';
  *   if (isFeatureEnabled('new_scoring_algorithm')) { ... }
+ *
+ * Usage (Edge Config):
+ *   import { isEdgeFlagEnabled, evaluateEdgeFlag } from '@/lib/feature-flags';
+ *   if (await isEdgeFlagEnabled('new_scoring_algorithm', { userId })) { ... }
  */
 
 import { z } from 'zod';
@@ -402,3 +409,32 @@ export const FeatureFlags = {
 // ================================================================
 
 export type { FeatureFlag, FeatureFlagState };
+
+// ================================================================
+// EDGE CONFIG EXPORTS (Phase 4, Week 8)
+// ================================================================
+
+export {
+  // Main API
+  EdgeFeatureFlags,
+  getEdgeFlags,
+  resetEdgeFlags,
+  isEdgeFlagEnabled,
+  evaluateEdgeFlag,
+  // Utilities
+  generateEdgeConfigItems,
+  validateEdgeConfigConnection,
+  // Default flags
+  DEFAULT_EDGE_FLAGS,
+} from './edge-config';
+
+export type {
+  // Types
+  FlagEnvironment,
+  TargetingOperator,
+  TargetingCondition,
+  TargetingRule,
+  EdgeFeatureFlag,
+  FlagEvaluationContext,
+  FlagEvaluationResult,
+} from './edge-config';

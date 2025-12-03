@@ -216,7 +216,7 @@ export const RECOMMENDED_INDEXES: IndexDefinition[] = [
 // QUERY BUILDER
 // ================================================================
 
-export class QueryBuilder<T extends Record<string, unknown>> {
+export class QueryBuilder<T extends object> {
   private _select: string[] = ['*'];
   private _filters: string[] = [];
   private _params: unknown[] = [];

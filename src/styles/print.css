@@ -1,0 +1,510 @@
+/**
+ * Print Stylesheet for Charts and Reports
+ *
+ * Phase 4, Week 8 Extended - Data Visualization Checklist
+ *
+ * Features:
+ * - Optimized chart rendering for print
+ * - Page break controls
+ * - Color adjustments for print
+ * - Hidden interactive elements
+ * - Proper margins and sizing
+ */
+
+/* ============================================================================
+   PRINT MEDIA QUERY
+   ============================================================================ */
+
+@media print {
+  /* --------------------------------------------------------------------------
+     GLOBAL PRINT SETTINGS
+     -------------------------------------------------------------------------- */
+
+  *,
+  *::before,
+  *::after {
+    /* Use high contrast colors for print */
+    color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  html {
+    font-size: 12pt;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+    font-family: "Times New Roman", Times, serif;
+    line-height: 1.4;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* --------------------------------------------------------------------------
+     PAGE SETUP
+     -------------------------------------------------------------------------- */
+
+  @page {
+    size: A4;
+    margin: 2cm 1.5cm;
+  }
+
+  @page :first {
+    margin-top: 1cm;
+  }
+
+  /* --------------------------------------------------------------------------
+     HIDE NON-PRINTABLE ELEMENTS
+     -------------------------------------------------------------------------- */
+
+  /* Navigation and interactive elements */
+  nav,
+  header,
+  footer,
+  aside,
+  .navbar,
+  .sidebar,
+  .navigation,
+  .menu,
+  .breadcrumb {
+    display: none !important;
+  }
+
+  /* Buttons and interactive controls */
+  button,
+  .button,
+  .btn,
+  [role="button"],
+  input[type="button"],
+  input[type="submit"] {
+    display: none !important;
+  }
+
+  /* Form elements */
+  input,
+  select,
+  textarea,
+  .form-control {
+    display: none !important;
+  }
+
+  /* Modals and overlays */
+  .modal,
+  .dialog,
+  .overlay,
+  .popup,
+  .tooltip,
+  .dropdown-menu {
+    display: none !important;
+  }
+
+  /* Loading states */
+  .loading,
+  .skeleton,
+  .spinner,
+  .loader,
+  [class*="skeleton"],
+  [class*="loading"] {
+    display: none !important;
+  }
+
+  /* Interactive chart controls */
+  .chart-controls,
+  .chart-toolbar,
+  .chart-legend-toggle,
+  .zoom-controls,
+  .pan-controls {
+    display: none !important;
+  }
+
+  /* Social and sharing */
+  .share-buttons,
+  .social-links,
+  .feedback-widget {
+    display: none !important;
+  }
+
+  /* Ads and promotional */
+  .ad,
+  .advertisement,
+  .promo,
+  .upgrade-prompt,
+  .cta-banner {
+    display: none !important;
+  }
+
+  /* --------------------------------------------------------------------------
+     TYPOGRAPHY FOR PRINT
+     -------------------------------------------------------------------------- */
+
+  h1 {
+    font-size: 24pt;
+    margin-top: 0;
+    page-break-after: avoid;
+  }
+
+  h2 {
+    font-size: 18pt;
+    margin-top: 1.5em;
+    page-break-after: avoid;
+  }
+
+  h3 {
+    font-size: 14pt;
+    margin-top: 1.2em;
+    page-break-after: avoid;
+  }
+
+  h4, h5, h6 {
+    font-size: 12pt;
+    page-break-after: avoid;
+  }
+
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* --------------------------------------------------------------------------
+     LINKS
+     -------------------------------------------------------------------------- */
+
+  a {
+    color: black !important;
+    text-decoration: underline;
+  }
+
+  /* Show URL after links */
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+    color: #666;
+  }
+
+  /* Don't show URL for internal links */
+  a[href^="#"]::after,
+  a[href^="/"]::after {
+    content: none;
+  }
+
+  /* --------------------------------------------------------------------------
+     CHARTS AND VISUALIZATIONS
+     -------------------------------------------------------------------------- */
+
+  /* Chart containers */
+  .chart-container,
+  .chart-wrapper,
+  [class*="chart"] {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    margin: 1em 0;
+  }
+
+  /* SVG charts */
+  svg {
+    max-width: 100%;
+    height: auto;
+    page-break-inside: avoid;
+  }
+
+  /* Canvas charts - ensure they print */
+  canvas {
+    max-width: 100%;
+    page-break-inside: avoid;
+  }
+
+  /* Chart legends */
+  .chart-legend,
+  .legend {
+    page-break-inside: avoid;
+    margin-top: 0.5em;
+  }
+
+  /* Score displays */
+  .score-circle,
+  .score-gauge,
+  .score-display {
+    page-break-inside: avoid;
+  }
+
+  /* Radar charts */
+  .radar-chart {
+    page-break-inside: avoid;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  /* Comparison charts */
+  .comparison-chart {
+    page-break-inside: avoid;
+  }
+
+  /* Trend charts */
+  .trend-chart {
+    page-break-inside: avoid;
+    min-height: 200px;
+  }
+
+  /* --------------------------------------------------------------------------
+     SCORE COLORS FOR PRINT
+     -------------------------------------------------------------------------- */
+
+  /* Ensure score colors print correctly */
+  .score-excellent,
+  [data-score-level="excellent"] {
+    background-color: #10B981 !important;
+    color: white !important;
+  }
+
+  .score-good,
+  [data-score-level="good"] {
+    background-color: #3B82F6 !important;
+    color: white !important;
+  }
+
+  .score-average,
+  [data-score-level="average"] {
+    background-color: #F59E0B !important;
+    color: black !important;
+  }
+
+  .score-poor,
+  [data-score-level="poor"] {
+    background-color: #F97316 !important;
+    color: white !important;
+  }
+
+  .score-critical,
+  [data-score-level="critical"] {
+    background-color: #EF4444 !important;
+    color: white !important;
+  }
+
+  /* --------------------------------------------------------------------------
+     PROVIDER COLORS FOR PRINT
+     -------------------------------------------------------------------------- */
+
+  .provider-openai {
+    background-color: #00A67E !important;
+  }
+
+  .provider-anthropic {
+    background-color: #D97706 !important;
+  }
+
+  .provider-google {
+    background-color: #4285F4 !important;
+  }
+
+  .provider-perplexity {
+    background-color: #7C3AED !important;
+  }
+
+  /* --------------------------------------------------------------------------
+     TABLES
+     -------------------------------------------------------------------------- */
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    page-break-inside: auto;
+  }
+
+  tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  th, td {
+    border: 1px solid #333;
+    padding: 8px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #f0f0f0 !important;
+    font-weight: bold;
+  }
+
+  /* --------------------------------------------------------------------------
+     CARDS AND PANELS
+     -------------------------------------------------------------------------- */
+
+  .card,
+  .panel,
+  .metric-card {
+    border: 1px solid #ccc;
+    padding: 1em;
+    margin: 0.5em 0;
+    page-break-inside: avoid;
+    background: white !important;
+  }
+
+  /* --------------------------------------------------------------------------
+     IMAGES
+     -------------------------------------------------------------------------- */
+
+  img {
+    max-width: 100%;
+    height: auto;
+    page-break-inside: avoid;
+  }
+
+  /* --------------------------------------------------------------------------
+     PAGE BREAKS
+     -------------------------------------------------------------------------- */
+
+  .page-break-before {
+    page-break-before: always;
+    break-before: page;
+  }
+
+  .page-break-after {
+    page-break-after: always;
+    break-after: page;
+  }
+
+  .no-page-break {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Section breaks */
+  .report-section {
+    page-break-before: always;
+  }
+
+  .report-section:first-child {
+    page-break-before: avoid;
+  }
+
+  /* --------------------------------------------------------------------------
+     REPORT SPECIFIC STYLES
+     -------------------------------------------------------------------------- */
+
+  /* Report header */
+  .report-header {
+    text-align: center;
+    margin-bottom: 2em;
+    padding-bottom: 1em;
+    border-bottom: 2px solid #333;
+  }
+
+  .report-title {
+    font-size: 28pt;
+    margin-bottom: 0.5em;
+  }
+
+  .report-subtitle {
+    font-size: 14pt;
+    color: #666;
+  }
+
+  .report-date {
+    font-size: 10pt;
+    color: #888;
+  }
+
+  /* Report footer */
+  .report-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 9pt;
+    color: #666;
+    padding: 0.5em;
+    border-top: 1px solid #ccc;
+  }
+
+  /* Executive summary */
+  .executive-summary {
+    background: #f9f9f9 !important;
+    padding: 1.5em;
+    margin: 1em 0;
+    border-left: 4px solid #333;
+    page-break-inside: avoid;
+  }
+
+  /* Key metrics row */
+  .key-metrics {
+    display: flex;
+    justify-content: space-around;
+    margin: 1em 0;
+    page-break-inside: avoid;
+  }
+
+  .key-metric {
+    text-align: center;
+    padding: 1em;
+  }
+
+  .key-metric-value {
+    font-size: 24pt;
+    font-weight: bold;
+  }
+
+  .key-metric-label {
+    font-size: 10pt;
+    color: #666;
+  }
+
+  /* Recommendations list */
+  .recommendations-list {
+    page-break-inside: avoid;
+  }
+
+  .recommendation-item {
+    margin: 0.5em 0;
+    padding: 0.5em;
+    border-left: 3px solid #3B82F6;
+    background: #f9f9f9 !important;
+  }
+
+  /* --------------------------------------------------------------------------
+     UTILITIES
+     -------------------------------------------------------------------------- */
+
+  /* Force show elements that should be visible in print */
+  .print-show {
+    display: block !important;
+  }
+
+  /* Hide elements only in print */
+  .print-hide,
+  .no-print {
+    display: none !important;
+  }
+
+  /* Print-only content */
+  .print-only {
+    display: block !important;
+  }
+
+  /* Grayscale option for ink saving */
+  .print-grayscale {
+    filter: grayscale(100%);
+  }
+
+  /* High contrast mode */
+  .print-high-contrast {
+    filter: contrast(1.2);
+  }
+}
+
+/* ============================================================================
+   SCREEN-ONLY STYLES (hidden in print)
+   ============================================================================ */
+
+@media screen {
+  .print-only {
+    display: none !important;
+  }
+}

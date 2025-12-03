@@ -337,20 +337,20 @@ export class ResponseCache {
     try {
       // Delete from Redis using SCAN (Upstash compatible)
       if (this.redis) {
-        let cursor = 0;
+        let cursor = '0';
         do {
           const result = await this.redis.scan(cursor, {
             match: fullPattern.replace('*', '*'),
             count: 100,
           });
-          cursor = result[0];
-          const keys = result[1];
+          cursor = String(result[0]);
+          const keys = result[1] as string[];
 
           if (keys.length > 0) {
             await this.redis.del(...keys);
             deleted += keys.length;
           }
-        } while (cursor !== 0);
+        } while (cursor !== '0');
       }
 
       // Delete from memory cache

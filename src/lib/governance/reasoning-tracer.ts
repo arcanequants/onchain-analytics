@@ -90,7 +90,7 @@ export interface TraceBuilder {
 // =====================================================
 
 export class ReasoningTracer {
-  private supabase: ReturnType<typeof createClient>;
+  private supabase: any;
   private activeTraces = new Map<string, TraceBuilderImpl>();
 
   constructor(supabaseUrl: string, supabaseKey: string) {
@@ -213,20 +213,20 @@ export class ReasoningTracer {
       return [];
     }
 
-    return data.map(row => ({
-      id: row.id,
-      decisionId: row.decision_id,
-      decisionType: row.decision_type,
-      modelId: row.model_id,
-      finalOutcome: row.final_outcome,
-      finalConfidence: row.final_confidence,
-      finalConfidenceScore: row.final_confidence_score,
-      summaryText: row.summary_text,
-      summaryPoints: row.summary_bullet_points,
+    return data.map((row: Record<string, unknown>) => ({
+      id: row.id as string,
+      decisionId: row.decision_id as string,
+      decisionType: row.decision_type as string,
+      modelId: row.model_id as string,
+      finalOutcome: row.final_outcome as string,
+      finalConfidence: row.final_confidence as ConfidenceLevel,
+      finalConfidenceScore: row.final_confidence_score as number,
+      summaryText: row.summary_text as string,
+      summaryPoints: row.summary_bullet_points as string[],
       steps: [],
-      detailLevel: row.detail_level,
-      totalDurationMs: row.total_reasoning_ms,
-      createdAt: new Date(row.created_at)
+      detailLevel: row.detail_level as DetailLevel,
+      totalDurationMs: row.total_reasoning_ms as number,
+      createdAt: new Date(row.created_at as string)
     }));
   }
 

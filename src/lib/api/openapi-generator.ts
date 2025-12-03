@@ -15,7 +15,13 @@ import {
 } from '@asteasolutions/zod-to-openapi';
 
 // Extend Zod with OpenAPI metadata support
-extendZodWithOpenApi(z);
+// Note: In Zod v4, this may need to be handled differently
+try {
+  extendZodWithOpenApi(z);
+} catch {
+  // If extension fails (Zod v4 compatibility), continue without it
+  console.warn('Could not extend Zod with OpenAPI - using fallback');
+}
 
 // Import all schemas
 import {
@@ -43,10 +49,26 @@ const registry = new OpenAPIRegistry();
 // SCHEMA REGISTRATION WITH OPENAPI METADATA
 // ================================================================
 
+// Helper to safely add OpenAPI metadata
+function withOpenApi<T extends z.ZodTypeAny>(
+  schema: T,
+  metadata: { description?: string; example?: unknown }
+): T {
+  // Check if openapi method exists (added by extendZodWithOpenApi)
+  if (typeof (schema as unknown as { openapi?: unknown }).openapi === 'function') {
+    return (schema as unknown as { openapi: (meta: typeof metadata) => T }).openapi(metadata);
+  }
+  // Fallback: return schema as-is with description via .describe()
+  if (metadata.description) {
+    return schema.describe(metadata.description) as T;
+  }
+  return schema;
+}
+
 // Common schemas
 const ConfidenceScore = registry.register(
   'ConfidenceScore',
-  ConfidenceScoreSchema.openapi({
+  withOpenApi(ConfidenceScoreSchema, {
     description: 'Confidence score from 0 to 1',
     example: 0.85,
   })
@@ -54,7 +76,7 @@ const ConfidenceScore = registry.register(
 
 const PerceptionScore = registry.register(
   'PerceptionScore',
-  PerceptionScoreSchema.openapi({
+  withOpenApi(PerceptionScoreSchema, {
     description: 'AI perception score from 0 to 100',
     example: 72,
   })
@@ -62,7 +84,7 @@ const PerceptionScore = registry.register(
 
 const AIProvider = registry.register(
   'AIProvider',
-  AIProviderSchema.openapi({
+  withOpenApi(AIProviderSchema, {
     description: 'Supported AI provider identifiers',
     example: 'openai',
   })
@@ -71,7 +93,7 @@ const AIProvider = registry.register(
 // Request/Response schemas
 const AnalysisRequest = registry.register(
   'AnalysisRequest',
-  AnalysisRequestSchema.openapi({
+  withOpenApi(AnalysisRequestSchema, {
     description: 'Request body for initiating a brand perception analysis',
     example: {
       url: 'https://example.com',
@@ -85,7 +107,7 @@ const AnalysisRequest = registry.register(
 
 const AnalysisStatus = registry.register(
   'AnalysisStatus',
-  AnalysisStatusSchema.openapi({
+  withOpenApi(AnalysisStatusSchema, {
     description: 'Current status of an analysis job',
     example: {
       id: '550e8400-e29b-41d4-a716-446655440000',
@@ -99,7 +121,7 @@ const AnalysisStatus = registry.register(
 
 const IndustryDetection = registry.register(
   'IndustryDetection',
-  IndustryDetectionSchema.openapi({
+  withOpenApi(IndustryDetectionSchema, {
     description: 'Detected industry classification for a brand',
     example: {
       industry: 'saas',
@@ -115,35 +137,35 @@ const IndustryDetection = registry.register(
 
 const BrandMentionsResponse = registry.register(
   'BrandMentionsResponse',
-  BrandMentionsResponseSchema.openapi({
+  withOpenApi(BrandMentionsResponseSchema, {
     description: 'Analysis of brand mentions in AI responses',
   })
 );
 
 const RecommendationsResponse = registry.register(
   'RecommendationsResponse',
-  RecommendationsResponseSchema.openapi({
+  withOpenApi(RecommendationsResponseSchema, {
     description: 'Actionable recommendations to improve AI visibility',
   })
 );
 
 const SentimentAnalysis = registry.register(
   'SentimentAnalysis',
-  SentimentAnalysisSchema.openapi({
+  withOpenApi(SentimentAnalysisSchema, {
     description: 'Detailed sentiment analysis of brand perception',
   })
 );
 
 const HallucinationCheck = registry.register(
   'HallucinationCheck',
-  HallucinationCheckSchema.openapi({
+  withOpenApi(HallucinationCheckSchema, {
     description: 'Verification result for AI-generated claims',
   })
 );
 
 const FullAnalysisResponse = registry.register(
   'FullAnalysisResponse',
-  FullAnalysisResponseSchema.openapi({
+  withOpenApi(FullAnalysisResponseSchema, {
     description: 'Complete analysis response with all components',
   })
 );
@@ -158,7 +180,7 @@ const ErrorResponseSchema = z.object({
 
 const ErrorResponse = registry.register(
   'ErrorResponse',
-  ErrorResponseSchema.openapi({
+  withOpenApi(ErrorResponseSchema, {
     description: 'Standard error response format (RFC 7807 Problem Details)',
     example: {
       error: 'Invalid URL provided',
@@ -196,7 +218,7 @@ const HealthCheckSchema = z.object({
 
 const HealthCheck = registry.register(
   'HealthCheck',
-  HealthCheckSchema.openapi({
+  withOpenApi(HealthCheckSchema, {
     description: 'Health check response showing service status',
     example: {
       status: 'healthy',

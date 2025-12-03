@@ -65,3 +65,12 @@ export {
   type RecommendationResponseProps,
   type OutcomeFollowUpProps,
 } from './RecommendationOutcome';
+
+// General feedback widgets (Phase 4, Week 8)
+export {
+  FeedbackWidget,
+  ThumbsFeedback,
+  NPSSurvey,
+  type FeedbackData as GeneralFeedbackData,
+  type FeedbackType as GeneralFeedbackType,
+} from './FeedbackWidget';

@@ -98,7 +98,7 @@ export interface ExplanationRequest {
 // =====================================================
 
 export class ContrastiveExplainer {
-  private supabase: ReturnType<typeof createClient>;
+  private supabase: any;
   private explanationCache = new Map<string, ContrastiveExplanation>();
 
   constructor(supabaseUrl: string, supabaseKey: string) {
@@ -278,25 +278,25 @@ export class ContrastiveExplainer {
       return [];
     }
 
-    return data.map(row => ({
-      id: row.id,
-      decisionId: row.decision_id,
-      decisionType: row.decision_type,
-      modelId: row.model_id,
+    return data.map((row: Record<string, unknown>) => ({
+      id: row.id as string,
+      decisionId: row.decision_id as string,
+      decisionType: row.decision_type as string,
+      modelId: row.model_id as string,
       actualOutcome: {
-        label: row.actual_outcome_label,
+        label: row.actual_outcome_label as string,
         value: row.actual_outcome,
-        confidence: row.actual_confidence
+        confidence: row.actual_confidence as number
       },
       contrastOutcome: {
-        label: row.contrast_outcome_label,
+        label: row.contrast_outcome_label as string,
         value: row.contrast_outcome,
-        confidence: row.contrast_confidence
+        confidence: row.contrast_confidence as number
       },
-      explanationType: row.explanation_type,
-      differentiatingFactors: row.differentiating_factors,
-      summary: row.explanation_summary,
-      createdAt: new Date(row.created_at)
+      explanationType: row.explanation_type as ExplanationType,
+      differentiatingFactors: row.differentiating_factors as DifferentiatingFactor[],
+      summary: row.explanation_summary as string,
+      createdAt: new Date(row.created_at as string)
     }));
   }
 

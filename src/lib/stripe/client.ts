@@ -22,7 +22,7 @@ export function getStripeClient(): Stripe {
     }
 
     stripeClient = new Stripe(STRIPE_CONFIG.secretKey, {
-      apiVersion: '2025-04-30.basil',
+      apiVersion: '2025-11-17.clover',
       typescript: true,
       appInfo: {
         name: 'AI Perception',
@@ -309,11 +309,11 @@ export async function getInvoices(
 
 export async function getUpcomingInvoice(
   customerId: string
-): Promise<Stripe.UpcomingInvoice | null> {
+): Promise<Stripe.Invoice | null> {
   const stripe = getStripeClient();
 
   try {
-    return await stripe.invoices.retrieveUpcoming({
+    return await stripe.invoices.createPreview({
       customer: customerId,
     });
   } catch (error) {
@@ -409,8 +409,10 @@ export function formatSubscriptionPeriod(subscription: Stripe.Subscription): {
   start: Date;
   end: Date;
 } {
+  // In newer Stripe API versions, period is in items
+  const firstItem = subscription.items.data[0];
   return {
-    start: new Date(subscription.current_period_start * 1000),
-    end: new Date(subscription.current_period_end * 1000),
+    start: new Date(firstItem.current_period_start * 1000),
+    end: new Date(firstItem.current_period_end * 1000),
   };
 }

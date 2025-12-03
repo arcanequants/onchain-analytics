@@ -193,7 +193,7 @@ export function debounceAsync<T extends (...args: unknown[]) => Promise<unknown>
     }
 
     // Create a new promise
-    return new Promise((resolve, reject) => {
+    return new Promise<Awaited<ReturnType<T>>>((resolve, reject) => {
       // If there's a pending promise, reject it
       if (pendingPromise) {
         pendingPromise.reject(new Error('Superseded by newer call'));
@@ -441,7 +441,7 @@ export function memoize<T extends (...args: unknown[]) => unknown>(
     get: () => cache.size,
   });
 
-  (memoized as { clear: () => void }).clear = () => cache.clear();
+  (memoized as unknown as { clear: () => void }).clear = () => cache.clear();
 
   return memoized as T & { clear: () => void; size: number };
 }

@@ -122,14 +122,18 @@ describe('DemographicParityAnalyzer', () => {
   describe('analyzeAttribute()', () => {
     it('should detect no/low bias in balanced groups', () => {
       // Create balanced data: 50% positive rate for all groups
-      const records = createBalancedRecords('gender', ['male', 'female'], 0.5, 100);
+      // Using deterministic approach instead of random to avoid flakiness
+      const records = createBiasedRecords('gender', {
+        male: { count: 100, positiveRate: 0.5 },
+        female: { count: 100, positiveRate: 0.5 },
+      });
       analyzer.addRecords(records);
 
       const result = analyzer.analyzeAttribute('gender');
 
-      // Random variance may create some disparity, so accept none, low, or moderate
-      expect(['none', 'low', 'moderate']).toContain(result.biasLevel);
-      expect(result.disparityRatio).toBeGreaterThan(0.7);
+      // With exactly equal rates, should be no or low bias
+      expect(['none', 'low']).toContain(result.biasLevel);
+      expect(result.disparityRatio).toBeGreaterThan(0.9);
     });
 
     it('should detect high bias in imbalanced groups', () => {

@@ -6,10 +6,8 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { getOpenAPISpecJSON, getOpenAPISpecYAML } from '@/lib/api/openapi-generator';
 
-export const dynamic = 'force-static';
-export const revalidate = 3600; // Revalidate every hour
+export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/openapi
@@ -28,6 +26,9 @@ export async function GET(request: NextRequest) {
   const format = searchParams.get('format') || 'json';
 
   try {
+    // Dynamic import to avoid build-time issues with zod-to-openapi
+    const { getOpenAPISpecJSON, getOpenAPISpecYAML } = await import('@/lib/api/openapi-generator');
+
     if (format === 'yaml') {
       const yamlSpec = getOpenAPISpecYAML();
       return new NextResponse(yamlSpec, {
@@ -55,6 +56,7 @@ export async function GET(request: NextRequest) {
       {
         error: 'Failed to generate OpenAPI specification',
         code: 'OPENAPI_GENERATION_ERROR',
+        message: error instanceof Error ? error.message : 'Unknown error',
       },
       { status: 500 }
     );

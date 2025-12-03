@@ -198,11 +198,12 @@ export function mockConsole(): ConsoleMocks {
     },
   };
 
-  console.log = mocks.log;
-  console.warn = mocks.warn;
-  console.error = mocks.error;
-  console.info = mocks.info;
-  console.debug = mocks.debug;
+  // Use type assertions to assign mock functions to console
+  console.log = mocks.log as unknown as typeof console.log;
+  console.warn = mocks.warn as unknown as typeof console.warn;
+  console.error = mocks.error as unknown as typeof console.error;
+  console.info = mocks.info as unknown as typeof console.info;
+  console.debug = mocks.debug as unknown as typeof console.debug;
 
   return mocks;
 }

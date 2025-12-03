@@ -307,7 +307,7 @@ export function UserDashboard({
   const planConfig = PLAN_LIMITS[user.plan];
 
   // Calculate usage stats
-  const analysesUsed = usage.analysesThisMonth;
+  const analysesUsed = usage.analysesUsed;
   const analysesLimit = planConfig.analysesPerMonth;
   const analysesRemaining = analysesLimit - analysesUsed;
 

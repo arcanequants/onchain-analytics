@@ -111,7 +111,7 @@ export const CreateBrandSchema = z.object({
   industry: z.string().optional(),
   logo: z.string().url().optional(),
   competitors: z.array(z.string()).max(10).optional(),
-  metadata: z.record(z.unknown()).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
 });
 
 export type CreateBrandInput = z.infer<typeof CreateBrandSchema>;
@@ -189,7 +189,7 @@ export const CreateWebhookSchema = z.object({
     'webhook.test',
   ])).min(1),
   description: z.string().max(500).optional(),
-  metadata: z.record(z.unknown()).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
 });
 
 export type CreateWebhookInput = z.infer<typeof CreateWebhookSchema>;
@@ -208,7 +208,7 @@ export const UpdateWebhookSchema = z.object({
   ])).min(1).optional(),
   description: z.string().max(500).optional(),
   isActive: z.boolean().optional(),
-  metadata: z.record(z.unknown()).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
 });
 
 export type UpdateWebhookInput = z.infer<typeof UpdateWebhookSchema>;
@@ -266,7 +266,7 @@ export const CreateApiKeySchema = z.object({
   ])).min(1).optional(),
   expiresInDays: z.number().int().positive().max(365).optional(),
   rateLimit: z.number().int().positive().max(10000).optional(),
-  metadata: z.record(z.unknown()).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
 });
 
 export type CreateApiKeyInput = z.infer<typeof CreateApiKeySchema>;
@@ -287,7 +287,7 @@ export const UpdateApiKeySchema = z.object({
   ])).min(1).optional(),
   isActive: z.boolean().optional(),
   rateLimit: z.number().int().positive().max(10000).optional(),
-  metadata: z.record(z.unknown()).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
 });
 
 export type UpdateApiKeyInput = z.infer<typeof UpdateApiKeySchema>;

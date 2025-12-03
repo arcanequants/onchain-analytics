@@ -6,7 +6,7 @@
  * feedback analysis, and recommendation accuracy.
  */
 
-import { supabase } from '@/lib/supabase/client';
+import { supabase } from '@/lib/supabase';
 
 // ================================================================
 // Types
@@ -182,7 +182,7 @@ function calculateAccuracyMetrics(outcomes: any[]): RLHFMetrics['accuracyMetrics
 
   let calibrationError = 0;
   let calibrationCount = 0;
-  Object.entries(calibrationGroups).forEach(([bucket, stats]) => {
+  (Object.entries(calibrationGroups) as [string, { total: number; accurate: number }][]).forEach(([bucket, stats]) => {
     const expectedAccuracy = parseFloat(bucket);
     const actualAccuracy = stats.accurate / stats.total;
     calibrationError += Math.abs(expectedAccuracy - actualAccuracy);
@@ -219,7 +219,7 @@ function calculateEngagementMetrics(sessions: any[]): RLHFMetrics['userEngagemen
     },
     {} as Record<string, number>
   );
-  const returnUsers = Object.values(userSessions).filter((count) => count > 1).length;
+  const returnUsers = (Object.values(userSessions) as number[]).filter((count) => count > 1).length;
 
   return {
     activeUsers: uniqueUsers,
@@ -316,7 +316,7 @@ function identifyTopIssues(feedback: any[]): RLHFMetrics['topIssues'] {
     );
 
   // Sort by count and take top 5
-  return Object.entries(issueGroups)
+  return (Object.entries(issueGroups) as [string, { count: number; resolved: number }][])
     .sort(([, a], [, b]) => b.count - a.count)
     .slice(0, 5)
     .map(([category, stats]) => ({

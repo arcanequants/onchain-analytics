@@ -353,18 +353,22 @@ export class OrphanDetector {
     const { childTable, childColumn, parentTable, parentColumn } = relationship;
 
     // Get all unique FK values from child table
+    // Use '*' to avoid Supabase parser issues with dynamic column names
     const { data: childRows, error: childError } = await this.supabase
       .from(childTable)
-      .select(`id, ${childColumn}, created_at`)
+      .select('*')
       .not(childColumn, 'is', null)
       .limit(this.config.maxOrphansPerRelationship * 10);
 
     if (childError || !childRows) return [];
 
+    // Cast to array of records for dynamic property access
+    const rows = childRows as unknown as Record<string, unknown>[];
+
     // Get unique FK values
     const fkValues = [
       ...new Set(
-        childRows
+        rows
           .map((r) => r[childColumn])
           .filter((v) => v !== null && v !== undefined)
       ),
@@ -375,27 +379,28 @@ export class OrphanDetector {
     // Check which parents exist
     const { data: parentRows, error: parentError } = await this.supabase
       .from(parentTable)
-      .select(parentColumn)
+      .select('*')
       .in(parentColumn, fkValues as string[]);
 
     if (parentError) return [];
 
+    const parentRecords = parentRows as unknown as Record<string, unknown>[];
     const existingParents = new Set(
-      (parentRows ?? []).map((r) => r[parentColumn])
+      parentRecords.map((r) => r[parentColumn])
     );
 
     // Find orphans
     const orphans: OrphanRecord[] = [];
-    for (const row of childRows) {
+    for (const row of rows) {
       const fkValue = row[childColumn];
       if (fkValue && !existingParents.has(fkValue)) {
         orphans.push({
-          id: row.id,
+          id: row.id as string,
           table: childTable,
           column: childColumn,
-          missingParentId: fkValue,
+          missingParentId: fkValue as string,
           parentTable,
-          createdAt: row.created_at,
+          createdAt: row.created_at as string,
         });
 
         if (orphans.length >= this.config.maxOrphansPerRelationship) {

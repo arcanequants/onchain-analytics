@@ -74,3 +74,37 @@ export {
   // Factory
   createPairConstructor,
 } from './pair-constructor';
+
+// Reward model (satisfaction prediction)
+export {
+  // Types
+  type AnalysisFeatures,
+  type RewardPrediction,
+  type RewardFactor,
+  type RewardModelVersion,
+  type ValidationResult,
+  // Constants
+  DEFAULT_FEATURE_WEIGHTS,
+  SATISFACTION_THRESHOLDS,
+  TARGET_ACCURACY,
+  // Class
+  RewardModel,
+  // Factory
+  createRewardModel,
+} from './reward-model';
+
+// Labeling efficiency tracking
+export {
+  // Types
+  type LabelingEfficiencyMetrics,
+  type EfficiencyComparison,
+  type LabelingSession,
+  type ActiveLearningImpact,
+  // Constants
+  TARGET_IMPROVEMENT,
+  BASELINE_METRICS,
+  // Class
+  LabelingEfficiencyTracker,
+  // Factory
+  createLabelingEfficiencyTracker,
+} from './labeling-efficiency';

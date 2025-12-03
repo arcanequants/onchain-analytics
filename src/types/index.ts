@@ -11,6 +11,9 @@ export * from './database.types';
 // Re-import Database for the utility types
 import type { Database } from './database.types';
 
+// Import types needed for composite types
+import type { AIProvider as AIProviderType, Chain as ChainType, GasStatus as GasStatusType } from './enums';
+
 // ================================================================
 // UTILITY TYPES
 // ================================================================
@@ -311,7 +314,7 @@ export interface AnalysisResult {
   confidenceScore: number;
   competitors: Competitor[];
   recommendations: Recommendation[];
-  providers: AIProvider[];
+  providers: AIProviderType[];
   processingTimeMs: number;
   createdAt: string;
   completedAt: string;
@@ -319,11 +322,11 @@ export interface AnalysisResult {
 
 /** Gas tracker response */
 export interface GasTrackerData {
-  chain: Chain;
+  chain: ChainType;
   gasPrice: number;
   baseFee: number;
   priorityFee: number;
-  status: GasStatus;
+  status: GasStatusType;
   blockNumber: number;
   updatedAt: string;
 }

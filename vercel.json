@@ -27,6 +27,14 @@
     {
       "path": "/api/cron/cleanup-old-data",
       "schedule": "0 2 * * *"
+    },
+    {
+      "path": "/api/cron/mine-preference-pairs",
+      "schedule": "0 */6 * * *"
+    },
+    {
+      "path": "/api/cron/rlhf-report",
+      "schedule": "0 0 1 * *"
     }
   ]
 }

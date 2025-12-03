@@ -190,6 +190,153 @@ export type {
 } from './absa';
 
 // ================================================================
+// PHASE 4 WEEK 8 - COMPUTATIONAL LINGUISTICS EXTENSIONS
+// ================================================================
+
+// Temporal Expression Extraction (Extended)
+export {
+  extractTemporalExpressions,
+} from './temporal-extraction';
+
+export type {
+  TemporalType as ExtendedTemporalType,
+  RecencyLevel,
+  TemporalExpression as ExtendedTemporalExpression,
+  TemporalAnalysis,
+} from './temporal-extraction';
+
+// Discourse Marker Classification (Extended)
+export {
+  analyzeDiscourse,
+} from './discourse-markers';
+
+export type {
+  DiscourseFunction as ExtendedDiscourseFunction,
+  ArgumentRole,
+  DiscourseMarker as ExtendedDiscourseMarker,
+  ArgumentComponent as DiscourseArgumentComponent,
+  DiscourseAnalysis,
+} from './discourse-markers';
+
+// Query Intent Classification
+export {
+  classifyQueryIntent,
+  getIntentDescription,
+} from './query-intent';
+
+export type {
+  QueryIntent,
+  QueryModifier,
+  QueryEntity,
+  IntentClassification,
+  QueryConstraint,
+} from './query-intent';
+
+// Comparative/Superlative Pattern Detection
+export {
+  analyzeComparativePatterns,
+  getComparisonSummary,
+} from './comparative-patterns';
+
+export type {
+  ComparisonType,
+  ComparisonDirection,
+  ComparisonDimension,
+  ComparisonPattern,
+  ComparisonAnalysis,
+} from './comparative-patterns';
+
+// Multi-lingual NLP Pipeline
+export {
+  detectLanguage,
+  tokenize as multilingualTokenize,
+  splitSentences,
+  analyzeSentiment as analyzeMultilingualSentiment,
+  extractEntities as extractMultilingualEntities,
+  analyzeMultilingual,
+} from './multilingual-pipeline';
+
+export type {
+  SupportedLanguage,
+  LanguageDetectionResult,
+  Token,
+  MultilingualAnalysis,
+} from './multilingual-pipeline';
+
+// Topic Modeling (BERTopic-inspired)
+export {
+  buildTopicModel,
+  clusterCompetitorMentions,
+  getTopicSummary,
+} from './topic-modeling';
+
+export type {
+  Document as TopicDocument,
+  Topic,
+  DocumentTopicAssignment,
+  TopicModelResult,
+  CompetitorCluster,
+} from './topic-modeling';
+
+// Quotation/Attribution Parsing
+export {
+  parseQuotations,
+  getQuotationSummary,
+  extractSources,
+} from './quotation-parser';
+
+export type {
+  QuotationType,
+  Quote,
+  Attribution,
+  QuotationAnalysis,
+} from './quotation-parser';
+
+// NLP Quality Dashboard
+export {
+  recordParseResult,
+  measureNLPFunction,
+  getModuleStats,
+  generateQualityReport,
+  getDashboardSummary,
+  getActiveAlerts,
+  clearOldAlerts,
+  QUALITY_THRESHOLDS,
+} from './quality-dashboard';
+
+export type {
+  ParseResult,
+  NLPModule,
+  ParseMetrics,
+  ModuleStats,
+  QualityReport,
+  QualityAlert,
+  QualityTrend,
+} from './quality-dashboard';
+
+// Argumentation Mining
+export {
+  extractArgumentUnits,
+  detectArgumentScheme,
+  detectRelationships,
+  calculateArgumentStrength,
+  buildArgumentStructure,
+  analyzeArgumentation,
+  extractClaimPremiseConclusion,
+} from './argumentation-mining';
+
+export type {
+  ArgumentComponent,
+  ArgumentRelation,
+  ArgumentScheme,
+  ArgumentStrength,
+  ArgumentUnit,
+  ArgumentRelationship,
+  ArgumentStructure as ArgumentationStructure,
+  ArgumentationAnalysis,
+} from './argumentation-mining';
+
+// ================================================================
 // CONVENIENCE FUNCTIONS
 // ================================================================
 

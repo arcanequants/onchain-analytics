@@ -360,8 +360,9 @@ async function detectVercelDrift(): Promise<{ drifts: DriftItem[]; errors: strin
 // DATABASE OPERATIONS
 // ================================================================
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function saveDriftResults(
-  supabase: ReturnType<typeof createClient>,
+  supabase: any,
   result: DriftDetectionResult
 ): Promise<void> {
   // Record cron execution

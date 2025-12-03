@@ -8,7 +8,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { PricingCard, BillingToggle } from '@/components/billing/PricingCard';
 import { PLANS, type PlanId } from '@/lib/stripe/config';
@@ -52,10 +52,10 @@ const faqs = [
 ];
 
 // ================================================================
-// MAIN COMPONENT
+// PRICING CONTENT COMPONENT
 // ================================================================
 
-export default function PricingPage() {
+function PricingContent() {
   const searchParams = useSearchParams();
   const [isAnnual, setIsAnnual] = useState(false);
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
@@ -335,5 +335,29 @@ export default function PricingPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+// ================================================================
+// LOADING FALLBACK
+// ================================================================
+
+function PricingLoading() {
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex items-center justify-center">
+      <div className="animate-spin h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full" />
+    </div>
+  );
+}
+
+// ================================================================
+// MAIN PAGE COMPONENT
+// ================================================================
+
+export default function PricingPage() {
+  return (
+    <Suspense fallback={<PricingLoading />}>
+      <PricingContent />
+    </Suspense>
   );
 }

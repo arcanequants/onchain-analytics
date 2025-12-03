@@ -251,7 +251,7 @@ async function enforcePolicy(policy: RetentionPolicy): Promise<RetentionResult> 
 }
 
 async function deleteExpiredRecords(
-  supabase: ReturnType<typeof createClient>,
+  supabase: any,
   tableName: string,
   dateColumn: string,
   cutoffDate: string
@@ -297,7 +297,7 @@ async function deleteExpiredRecords(
 }
 
 async function anonymizeExpiredRecords(
-  supabase: ReturnType<typeof createClient>,
+  supabase: any,
   tableName: string,
   dateColumn: string,
   cutoffDate: string
@@ -329,7 +329,7 @@ async function anonymizeExpiredRecords(
 }
 
 async function archiveExpiredRecords(
-  supabase: ReturnType<typeof createClient>,
+  supabase: any,
   tableName: string,
   dateColumn: string,
   cutoffDate: string
@@ -361,7 +361,7 @@ async function archiveExpiredRecords(
 }
 
 async function notifyAndDeleteRecords(
-  supabase: ReturnType<typeof createClient>,
+  supabase: any,
   policy: RetentionPolicy,
   cutoffDate: string
 ): Promise<{ deleted: number; notified: number }> {
@@ -422,7 +422,7 @@ async function notifyAndDeleteRecords(
 }
 
 async function logRetentionAction(
-  supabase: ReturnType<typeof createClient>,
+  supabase: any,
   action: {
     action: string;
     table_name: string;
@@ -441,7 +441,7 @@ async function logRetentionAction(
 }
 
 async function recordCronExecution(
-  supabase: ReturnType<typeof createClient>,
+  supabase: any,
   result: CronExecutionResult
 ): Promise<void> {
   await supabase.from('cron_executions').insert({

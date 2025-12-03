@@ -23,10 +23,15 @@
     "pre-commit": "pre-commit run --all-files",
     "pre-commit:setup": "./scripts/setup-pre-commit.sh",
     "security:scan": "gitleaks detect --source . --verbose",
-    "security:secrets": "detect-secrets scan"
+    "security:secrets": "detect-secrets scan",
+    "dev:setup": "npx ts-node scripts/dev-setup.ts",
+    "dev:seed": "npx ts-node scripts/seed-database.ts",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@asteasolutions/zod-to-openapi": "^8.1.0",
+    "@heroicons/react": "^2.2.0",
     "@react-email/render": "^2.0.0",
     "@sentry/nextjs": "^10.25.0",
     "@stripe/stripe-js": "^8.5.3",
@@ -36,6 +41,7 @@
     "@upstash/ratelimit": "^2.0.7",
     "@upstash/redis": "^1.35.6",
     "@vercel/analytics": "^1.5.0",
+    "@vercel/edge-config": "^1.4.3",
     "date-fns": "^4.1.0",
     "dotenv": "^17.2.3",
     "nanoid": "^5.1.6",
@@ -54,6 +60,7 @@
     "@playwright/test": "^1.56.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",

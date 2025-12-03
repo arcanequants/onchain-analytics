@@ -346,17 +346,27 @@ export function groupAlertsByDate(alertList: Alert[]): AlertGroup[] {
 
 /**
  * Format date for display
+ * @param dateStr - Date string in YYYY-MM-DD format (local date, not UTC)
  */
 export function formatAlertDate(dateStr: string): string {
-  const date = new Date(dateStr);
+  // Parse date string as local date (not UTC) by adding time component
+  // This prevents timezone-related off-by-one errors
+  const [year, month, day] = dateStr.split('-').map(Number);
+  const date = new Date(year, month - 1, day); // month is 0-indexed
+
   const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
   const yesterday = new Date(today);
   yesterday.setDate(yesterday.getDate() - 1);
 
-  if (date.toDateString() === today.toDateString()) {
+  const dateNormalized = new Date(date);
+  dateNormalized.setHours(0, 0, 0, 0);
+
+  if (dateNormalized.getTime() === today.getTime()) {
     return 'Today';
   }
-  if (date.toDateString() === yesterday.toDateString()) {
+  if (dateNormalized.getTime() === yesterday.getTime()) {
     return 'Yesterday';
   }
 

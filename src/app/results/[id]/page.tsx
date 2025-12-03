@@ -37,7 +37,7 @@ import type { RecommendationsResult, Recommendation } from '@/lib/recommendation
 // ================================================================
 
 interface ResultsPageProps {
-  params: { id: string } | Promise<{ id: string }>;
+  params: Promise<{ id: string }>;
 }
 
 // Mock data for development - will be replaced with API call
@@ -513,10 +513,8 @@ function IntentBreakdown({ intentScores }: { intentScores: ScoreResult['intentSc
 // ================================================================
 
 export default function ResultsPage({ params }: ResultsPageProps) {
-  // Handle both sync and async params (Next.js 15 compatibility)
-  // In production Next.js 15, params is a Promise. In tests, it's a plain object.
-  const resolvedParams = 'then' in params ? React.use(params) : params;
-  const { id } = resolvedParams;
+  // Next.js 15: params is always a Promise
+  const { id } = React.use(params);
 
   // TODO: Fetch actual data based on id
   const scoreResult = MOCK_SCORE_RESULT;

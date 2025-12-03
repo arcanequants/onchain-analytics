@@ -8,7 +8,7 @@
 
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { PLANS, type PlanId } from '@/lib/stripe/config';
@@ -113,10 +113,10 @@ function FeatureUnlock({ feature, delay }: FeatureUnlockProps) {
 }
 
 // ================================================================
-// MAIN COMPONENT
+// CONTENT COMPONENT (WITH SEARCH PARAMS)
 // ================================================================
 
-export default function BillingSuccessPage() {
+function BillingSuccessContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [showConfetti, setShowConfetti] = useState(true);
@@ -269,5 +269,29 @@ export default function BillingSuccessPage() {
         }
       `}</style>
     </div>
+  );
+}
+
+// ================================================================
+// LOADING FALLBACK
+// ================================================================
+
+function BillingSuccessLoading() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-950">
+      <div className="animate-spin h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full" />
+    </div>
+  );
+}
+
+// ================================================================
+// MAIN PAGE COMPONENT
+// ================================================================
+
+export default function BillingSuccessPage() {
+  return (
+    <Suspense fallback={<BillingSuccessLoading />}>
+      <BillingSuccessContent />
+    </Suspense>
   );
 }

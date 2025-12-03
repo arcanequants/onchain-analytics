@@ -101,6 +101,7 @@ import type {
   FieldSchema,
   ReferentialIntegrityCheck,
   AnomalyType,
+  SchemaValidationError,
 } from './types';
 import { DEFAULT_AUDIT_CONFIG } from './types';
 import { validateRules } from './rules';
@@ -150,8 +151,17 @@ export function generateAuditReport(
     : [];
 
   // Schema validation (validate first 100 records)
+  type SchemaAccumulator = {
+    valid: boolean;
+    errors: SchemaValidationError[];
+    warnings: SchemaValidationError[];
+    validatedFields: string[];
+    extraFields: Set<string>;
+    missingFields: Set<string>;
+  };
+
   const schemaValidation = config.enableSchemaValidation && options.schema
-    ? records.slice(0, 100).reduce(
+    ? records.slice(0, 100).reduce<SchemaAccumulator>(
         (acc, record) => {
           const result = _validateSchema(record, options.schema!);
           acc.valid = acc.valid && result.valid;
@@ -163,8 +173,8 @@ export function generateAuditReport(
         },
         {
           valid: true,
-          errors: [] as typeof schemaValidation.errors,
-          warnings: [] as typeof schemaValidation.warnings,
+          errors: [],
+          warnings: [],
           validatedFields: Object.keys(options.schema),
           extraFields: new Set<string>(),
           missingFields: new Set<string>(),

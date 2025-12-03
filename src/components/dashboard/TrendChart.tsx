@@ -535,7 +535,7 @@ export function MultiSeriesTrendChart({
                 return (
                   <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-3">
                     <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">
-                      {formatDate(label)}
+                      {formatDate(String(label ?? ''))}
                     </p>
                     {payload.map((p, idx) => (
                       <div key={idx} className="flex items-center space-x-2">

@@ -1,16 +1,21 @@
 /**
  * Feature Flags Admin UI
  *
- * Phase 4, Week 8 Extended
+ * Phase 4, Week 8 - Updated to use REAL data from feature_flags table
  * Manage feature rollouts with targeting rules
  */
 
 import { Metadata } from 'next';
+import { createClient } from '@supabase/supabase-js';
 
 export const metadata: Metadata = {
   title: 'Feature Flags | Admin',
   robots: 'noindex, nofollow',
 };
+
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 // ================================================================
 // TYPES
@@ -32,163 +37,107 @@ interface FeatureFlag {
   name: string;
   description: string;
   status: FlagStatus;
-  rolloutPercentage: number;
+  rollout_percentage: number;
   environments: FlagEnvironment[];
-  targetRules: TargetRule[];
-  createdAt: string;
-  updatedAt: string;
-  createdBy: string;
-  isKillSwitch: boolean;
+  target_rules: TargetRule[];
+  created_at: string;
+  updated_at: string;
+  created_by: string;
+  is_kill_switch: boolean;
+  metadata?: Record<string, unknown>;
 }
 
 interface FlagStats {
   total: number;
   enabled: number;
-  inRollout: number;
+  in_rollout: number;
   disabled: number;
+  kill_switches: number;
 }
 
 // ================================================================
-// MOCK DATA
+// DATA FETCHING - REAL DATA
 // ================================================================
 
 async function getFeatureFlags(): Promise<FeatureFlag[]> {
-  return [
-    {
-      id: 'flag_001',
-      key: 'new_scoring_algorithm',
-      name: 'New Scoring Algorithm',
-      description: 'Use the improved v2 scoring algorithm with better accuracy',
-      status: 'rollout',
-      rolloutPercentage: 25,
-      environments: ['production', 'staging'],
-      targetRules: [
-        { type: 'percentage', value: 25, enabled: true },
-        { type: 'plan', value: 'enterprise', enabled: true },
-      ],
-      createdAt: '2024-11-15T10:00:00Z',
-      updatedAt: '2024-11-28T14:30:00Z',
-      createdBy: 'alberto@example.com',
-      isKillSwitch: false,
-    },
-    {
-      id: 'flag_002',
-      key: 'ai_recommendations_v2',
-      name: 'AI Recommendations V2',
-      description: 'Enhanced AI-powered recommendations with industry context',
-      status: 'enabled',
-      rolloutPercentage: 100,
-      environments: ['production', 'staging', 'development'],
-      targetRules: [
-        { type: 'percentage', value: 100, enabled: true },
-      ],
-      createdAt: '2024-10-01T08:00:00Z',
-      updatedAt: '2024-11-20T12:00:00Z',
-      createdBy: 'alberto@example.com',
-      isKillSwitch: false,
-    },
-    {
-      id: 'flag_003',
-      key: 'competitor_analysis',
-      name: 'Competitor Analysis',
-      description: 'Show competitor comparison in results page',
-      status: 'rollout',
-      rolloutPercentage: 50,
-      environments: ['production'],
-      targetRules: [
-        { type: 'percentage', value: 50, enabled: true },
-        { type: 'segment', value: 'power_users', enabled: true },
-      ],
-      createdAt: '2024-11-10T09:00:00Z',
-      updatedAt: '2024-11-27T16:45:00Z',
-      createdBy: 'alberto@example.com',
-      isKillSwitch: false,
-    },
-    {
-      id: 'flag_004',
-      key: 'stripe_payments',
-      name: 'Stripe Payments',
-      description: 'Enable Stripe payment processing (KILL SWITCH)',
-      status: 'enabled',
-      rolloutPercentage: 100,
-      environments: ['production', 'staging'],
-      targetRules: [],
-      createdAt: '2024-09-01T10:00:00Z',
-      updatedAt: '2024-11-25T11:00:00Z',
-      createdBy: 'alberto@example.com',
-      isKillSwitch: true,
-    },
-    {
-      id: 'flag_005',
-      key: 'dark_mode',
-      name: 'Dark Mode',
-      description: 'Enable dark mode theme toggle',
-      status: 'disabled',
-      rolloutPercentage: 0,
-      environments: ['development'],
-      targetRules: [],
-      createdAt: '2024-11-20T15:00:00Z',
-      updatedAt: '2024-11-20T15:00:00Z',
-      createdBy: 'alberto@example.com',
-      isKillSwitch: false,
-    },
-    {
-      id: 'flag_006',
-      key: 'beta_dashboard',
-      name: 'Beta Dashboard',
-      description: 'New dashboard design with improved analytics',
-      status: 'rollout',
-      rolloutPercentage: 10,
-      environments: ['production'],
-      targetRules: [
-        { type: 'user_ids', value: ['user_001', 'user_002', 'user_003'], enabled: true },
-        { type: 'percentage', value: 10, enabled: true },
-      ],
-      createdAt: '2024-11-25T14:00:00Z',
-      updatedAt: '2024-11-28T09:00:00Z',
-      createdBy: 'alberto@example.com',
-      isKillSwitch: false,
-    },
-    {
-      id: 'flag_007',
-      key: 'ai_provider_fallback',
-      name: 'AI Provider Fallback',
-      description: 'Automatic fallback to secondary AI provider (KILL SWITCH)',
-      status: 'enabled',
-      rolloutPercentage: 100,
-      environments: ['production', 'staging', 'development'],
-      targetRules: [],
-      createdAt: '2024-10-15T11:00:00Z',
-      updatedAt: '2024-11-26T10:30:00Z',
-      createdBy: 'alberto@example.com',
-      isKillSwitch: true,
-    },
-    {
-      id: 'flag_008',
-      key: 'webhook_notifications',
-      name: 'Webhook Notifications',
-      description: 'Send webhooks for analysis completion events',
-      status: 'enabled',
-      rolloutPercentage: 100,
-      environments: ['production'],
-      targetRules: [
-        { type: 'plan', value: 'enterprise', enabled: true },
-      ],
-      createdAt: '2024-11-05T13:00:00Z',
-      updatedAt: '2024-11-22T17:00:00Z',
-      createdBy: 'alberto@example.com',
-      isKillSwitch: false,
-    },
-  ];
+  try {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+    if (!supabaseUrl || !supabaseKey) {
+      console.warn('Supabase not configured for feature flags');
+      return [];
+    }
+
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    const { data, error } = await supabase
+      .from('feature_flags')
+      .select('*')
+      .is('deleted_at', null)
+      .order('is_kill_switch', { ascending: false })
+      .order('updated_at', { ascending: false });
+
+    if (error) {
+      // Table might not exist yet
+      if (error.code === '42P01') {
+        console.warn('feature_flags table does not exist yet. Run migration first.');
+        return [];
+      }
+      console.error('Failed to fetch feature flags:', error);
+      return [];
+    }
+
+    return data || [];
+  } catch (error) {
+    console.error('Failed to fetch feature flags:', error);
+    return [];
+  }
 }
 
 async function getFlagStats(): Promise<FlagStats> {
-  const flags = await getFeatureFlags();
+  try {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+    if (!supabaseUrl || !supabaseKey) {
+      return getEmptyStats();
+    }
+
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    // Try to get stats from view
+    const { data, error } = await supabase
+      .from('feature_flags_stats')
+      .select('*')
+      .single();
+
+    if (error) {
+      // View might not exist, calculate manually from flags
+      const flags = await getFeatureFlags();
+      return {
+        total: flags.length,
+        enabled: flags.filter(f => f.status === 'enabled').length,
+        in_rollout: flags.filter(f => f.status === 'rollout').length,
+        disabled: flags.filter(f => f.status === 'disabled').length,
+        kill_switches: flags.filter(f => f.is_kill_switch).length,
+      };
+    }
+
+    return data || getEmptyStats();
+  } catch (error) {
+    console.error('Failed to fetch flag stats:', error);
+    return getEmptyStats();
+  }
+}
+
+function getEmptyStats(): FlagStats {
   return {
-    total: flags.length,
-    enabled: flags.filter(f => f.status === 'enabled').length,
-    inRollout: flags.filter(f => f.status === 'rollout').length,
-    disabled: flags.filter(f => f.status === 'disabled').length,
+    total: 0,
+    enabled: 0,
+    in_rollout: 0,
+    disabled: 0,
+    kill_switches: 0,
   };
 }
 
@@ -204,13 +153,13 @@ function formatDate(isoDate: string): string {
   });
 }
 
-function getStatusColor(status: FlagStatus): string {
-  const colors: Record<FlagStatus, string> = {
-    enabled: 'bg-green-500',
-    disabled: 'bg-gray-500',
-    rollout: 'bg-yellow-500',
-  };
-  return colors[status];
+function formatTimeAgo(isoDate: string): string {
+  const seconds = Math.floor((Date.now() - new Date(isoDate).getTime()) / 1000);
+  if (seconds < 0) return 'just now';
+  if (seconds < 60) return `${seconds}s ago`;
+  if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+  if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
+  return `${Math.floor(seconds / 86400)}d ago`;
 }
 
 function getStatusBadge(status: FlagStatus): string {
@@ -219,7 +168,7 @@ function getStatusBadge(status: FlagStatus): string {
     disabled: 'bg-gray-500/20 text-gray-400 border-gray-500/30',
     rollout: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
   };
-  return badges[status];
+  return badges[status] || 'bg-gray-500/20 text-gray-400 border-gray-500/30';
 }
 
 function getEnvBadge(env: FlagEnvironment): string {
@@ -228,7 +177,7 @@ function getEnvBadge(env: FlagEnvironment): string {
     staging: 'bg-yellow-500/20 text-yellow-400',
     development: 'bg-blue-500/20 text-blue-400',
   };
-  return badges[env];
+  return badges[env] || 'bg-gray-500/20 text-gray-400';
 }
 
 // ================================================================
@@ -261,7 +210,7 @@ function RolloutBar({ percentage }: { percentage: number }) {
 }
 
 function TargetRuleBadge({ rule }: { rule: TargetRule }) {
-  const labels: Record<TargetType, string> = {
+  const labels: Record<string, string> = {
     percentage: `${rule.value}% rollout`,
     user_ids: `${Array.isArray(rule.value) ? rule.value.length : 0} users`,
     plan: `Plan: ${rule.value}`,
@@ -270,22 +219,25 @@ function TargetRuleBadge({ rule }: { rule: TargetRule }) {
 
   return (
     <span className="px-2 py-0.5 text-xs bg-gray-700 text-gray-300 rounded">
-      {labels[rule.type]}
+      {labels[rule.type] || rule.type}
     </span>
   );
 }
 
 function FlagCard({ flag }: { flag: FeatureFlag }) {
+  const targetRules = Array.isArray(flag.target_rules) ? flag.target_rules : [];
+  const hasRules = targetRules.length > 0;
+
   return (
     <div className={`p-6 bg-gray-800 rounded-xl border transition-colors ${
-      flag.isKillSwitch ? 'border-red-500/50' : 'border-gray-700'
+      flag.is_kill_switch ? 'border-red-500/50' : 'border-gray-700'
     }`}>
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
         <div className="flex-1">
           <div className="flex items-center gap-2">
             <h3 className="font-semibold text-white">{flag.name}</h3>
-            {flag.isKillSwitch && (
+            {flag.is_kill_switch && (
               <span className="px-2 py-0.5 text-xs bg-red-500/20 text-red-400 rounded border border-red-500/30">
                 Kill Switch
               </span>
@@ -299,19 +251,19 @@ function FlagCard({ flag }: { flag: FeatureFlag }) {
       </div>
 
       {/* Description */}
-      <p className="text-sm text-gray-400 mb-4">{flag.description}</p>
+      <p className="text-sm text-gray-400 mb-4">{flag.description || 'No description'}</p>
 
       {/* Rollout Progress */}
       <div className="mb-4">
         <div className="text-xs text-gray-500 mb-1">Rollout Progress</div>
-        <RolloutBar percentage={flag.rolloutPercentage} />
+        <RolloutBar percentage={flag.rollout_percentage} />
       </div>
 
       {/* Environments */}
       <div className="mb-4">
         <div className="text-xs text-gray-500 mb-2">Environments</div>
         <div className="flex gap-2">
-          {flag.environments.map(env => (
+          {(flag.environments || []).map(env => (
             <span key={env} className={`px-2 py-0.5 text-xs rounded ${getEnvBadge(env)}`}>
               {env}
             </span>
@@ -320,21 +272,21 @@ function FlagCard({ flag }: { flag: FeatureFlag }) {
       </div>
 
       {/* Target Rules */}
-      {flag.targetRules.length > 0 && (
+      {hasRules && (
         <div className="mb-4">
           <div className="text-xs text-gray-500 mb-2">Targeting Rules</div>
           <div className="flex flex-wrap gap-2">
-            {flag.targetRules.filter(r => r.enabled).map((rule, i) => (
+            {targetRules.filter(r => r.enabled).map((rule, i) => (
               <TargetRuleBadge key={i} rule={rule} />
             ))}
           </div>
         </div>
       )}
 
-      {/* Actions */}
+      {/* Footer */}
       <div className="flex items-center justify-between pt-4 border-t border-gray-700">
         <span className="text-xs text-gray-500">
-          Updated {formatDate(flag.updatedAt)}
+          Updated {formatTimeAgo(flag.updated_at)}
         </span>
         <div className="flex gap-2">
           <button className="px-3 py-1.5 bg-gray-700 hover:bg-gray-600 text-white rounded text-xs transition-colors">
@@ -342,7 +294,7 @@ function FlagCard({ flag }: { flag: FeatureFlag }) {
           </button>
           {flag.status === 'enabled' ? (
             <button className={`px-3 py-1.5 rounded text-xs transition-colors ${
-              flag.isKillSwitch
+              flag.is_kill_switch
                 ? 'bg-red-600 hover:bg-red-700 text-white'
                 : 'bg-gray-700 hover:bg-gray-600 text-white'
             }`}>
@@ -359,46 +311,30 @@ function FlagCard({ flag }: { flag: FeatureFlag }) {
   );
 }
 
-function FilterBar() {
+function EmptyState() {
   return (
-    <div className="flex flex-wrap items-center gap-4 p-4 bg-gray-800 rounded-lg border border-gray-700">
-      <div className="flex items-center gap-2">
-        <label className="text-sm text-gray-400">Status:</label>
-        <select className="px-3 py-1.5 bg-gray-700 border border-gray-600 rounded text-white text-sm">
-          <option value="all">All</option>
-          <option value="enabled">Enabled</option>
-          <option value="rollout">In Rollout</option>
-          <option value="disabled">Disabled</option>
-        </select>
+    <div className="bg-gray-800 rounded-xl border border-gray-700 p-12 text-center">
+      <div className="text-gray-400 mb-4">
+        <svg className="w-16 h-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
+        </svg>
       </div>
-
-      <div className="flex items-center gap-2">
-        <label className="text-sm text-gray-400">Environment:</label>
-        <select className="px-3 py-1.5 bg-gray-700 border border-gray-600 rounded text-white text-sm">
-          <option value="all">All</option>
-          <option value="production">Production</option>
-          <option value="staging">Staging</option>
-          <option value="development">Development</option>
-        </select>
-      </div>
-
-      <div className="flex items-center gap-2">
-        <label className="text-sm text-gray-400">Type:</label>
-        <select className="px-3 py-1.5 bg-gray-700 border border-gray-600 rounded text-white text-sm">
-          <option value="all">All</option>
-          <option value="kill_switch">Kill Switches</option>
-          <option value="feature">Features</option>
-        </select>
-      </div>
-
-      <div className="flex-1" />
-
-      <div className="relative">
-        <input
-          type="text"
-          placeholder="Search flags..."
-          className="px-3 py-1.5 bg-gray-700 border border-gray-600 rounded text-white text-sm placeholder-gray-500 w-48"
-        />
+      <h3 className="text-lg font-medium text-white mb-2">No Feature Flags Yet</h3>
+      <p className="text-gray-400 text-sm mb-6">
+        Feature flags will appear here once created.
+        <br />
+        Make sure the feature_flags migration has been applied.
+      </p>
+      <div className="flex justify-center gap-4">
+        <a
+          href="/admin/health"
+          className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg text-sm transition-colors"
+        >
+          Check System Health
+        </a>
+        <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm transition-colors">
+          Create First Flag
+        </button>
       </div>
     </div>
   );
@@ -412,8 +348,8 @@ export default async function FeatureFlagsPage() {
   const [flags, stats] = await Promise.all([getFeatureFlags(), getFlagStats()]);
 
   // Separate kill switches for prominence
-  const killSwitches = flags.filter(f => f.isKillSwitch);
-  const regularFlags = flags.filter(f => !f.isKillSwitch);
+  const killSwitches = flags.filter(f => f.is_kill_switch);
+  const regularFlags = flags.filter(f => !f.is_kill_switch);
 
   return (
     <div className="min-h-screen bg-gray-900 p-8">
@@ -422,7 +358,9 @@ export default async function FeatureFlagsPage() {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-2xl font-bold text-white">Feature Flags</h1>
-            <p className="text-gray-400 text-sm mt-1">Manage feature rollouts and kill switches</p>
+            <p className="text-gray-400 text-sm mt-1">
+              Real-time data from feature_flags table
+            </p>
           </div>
           <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm flex items-center gap-2 transition-colors">
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -433,75 +371,79 @@ export default async function FeatureFlagsPage() {
         </div>
 
         {/* Stats */}
-        <section className="mb-6 grid grid-cols-4 gap-4">
+        <section className="mb-6 grid grid-cols-2 md:grid-cols-5 gap-4">
           <StatCard label="Total Flags" value={stats.total} />
           <StatCard label="Enabled" value={stats.enabled} color="text-green-400" />
-          <StatCard label="In Rollout" value={stats.inRollout} color="text-yellow-400" />
+          <StatCard label="In Rollout" value={stats.in_rollout} color="text-yellow-400" />
           <StatCard label="Disabled" value={stats.disabled} color="text-gray-400" />
+          <StatCard label="Kill Switches" value={stats.kill_switches} color="text-red-400" />
         </section>
 
-        {/* Filters */}
-        <section className="mb-6">
-          <FilterBar />
-        </section>
-
-        {/* Kill Switches Section */}
-        {killSwitches.length > 0 && (
-          <section className="mb-8">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-3 h-3 rounded-full bg-red-500" />
-              <h2 className="text-lg font-semibold text-white">Kill Switches</h2>
-              <span className="text-sm text-gray-500">({killSwitches.length})</span>
+        {/* Migration Notice */}
+        {flags.length === 0 && (
+          <div className="mb-6 p-4 bg-yellow-900/20 border border-yellow-500/30 rounded-lg">
+            <div className="flex items-center gap-2 text-yellow-400">
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span className="font-medium">Migration Required</span>
             </div>
-            <div className="grid md:grid-cols-2 gap-4">
-              {killSwitches.map(flag => (
-                <FlagCard key={flag.id} flag={flag} />
-              ))}
-            </div>
-          </section>
+            <p className="text-yellow-400/80 text-sm mt-2">
+              The feature_flags table may not exist yet. Run the migration:
+            </p>
+            <code className="block mt-2 p-2 bg-gray-900 rounded text-xs text-gray-300">
+              supabase/migrations/20251202_feature_flags.sql
+            </code>
+          </div>
         )}
 
-        {/* Feature Flags Section */}
-        <section>
-          <div className="flex items-center gap-2 mb-4">
-            <div className="w-3 h-3 rounded-full bg-blue-500" />
-            <h2 className="text-lg font-semibold text-white">Feature Flags</h2>
-            <span className="text-sm text-gray-500">({regularFlags.length})</span>
-          </div>
-          <div className="grid md:grid-cols-2 gap-4">
-            {regularFlags.map(flag => (
-              <FlagCard key={flag.id} flag={flag} />
-            ))}
-          </div>
-        </section>
+        {flags.length === 0 ? (
+          <EmptyState />
+        ) : (
+          <>
+            {/* Kill Switches Section */}
+            {killSwitches.length > 0 && (
+              <section className="mb-8">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="w-3 h-3 rounded-full bg-red-500" />
+                  <h2 className="text-lg font-semibold text-white">Kill Switches</h2>
+                  <span className="text-sm text-gray-500">({killSwitches.length})</span>
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                  {killSwitches.map(flag => (
+                    <FlagCard key={flag.id} flag={flag} />
+                  ))}
+                </div>
+              </section>
+            )}
 
-        {/* Audit Info */}
-        <section className="mt-8 p-4 bg-gray-800/50 rounded-lg border border-gray-700/50">
-          <h3 className="text-sm font-medium text-gray-400 mb-2">Recent Changes</h3>
-          <div className="space-y-2 text-sm">
-            <div className="flex items-center gap-2 text-gray-500">
-              <span className="w-2 h-2 rounded-full bg-yellow-500" />
-              <span>competitor_analysis rollout increased to 50%</span>
-              <span className="text-gray-600">- 2 hours ago</span>
-            </div>
-            <div className="flex items-center gap-2 text-gray-500">
-              <span className="w-2 h-2 rounded-full bg-green-500" />
-              <span>ai_recommendations_v2 enabled for all users</span>
-              <span className="text-gray-600">- 1 day ago</span>
-            </div>
-            <div className="flex items-center gap-2 text-gray-500">
-              <span className="w-2 h-2 rounded-full bg-blue-500" />
-              <span>beta_dashboard created with 10% rollout</span>
-              <span className="text-gray-600">- 3 days ago</span>
-            </div>
-          </div>
-        </section>
+            {/* Feature Flags Section */}
+            <section>
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-3 h-3 rounded-full bg-blue-500" />
+                <h2 className="text-lg font-semibold text-white">Feature Flags</h2>
+                <span className="text-sm text-gray-500">({regularFlags.length})</span>
+              </div>
+              {regularFlags.length === 0 ? (
+                <div className="bg-gray-800 rounded-lg border border-gray-700 p-8 text-center">
+                  <p className="text-gray-400">No feature flags (only kill switches exist)</p>
+                </div>
+              ) : (
+                <div className="grid md:grid-cols-2 gap-4">
+                  {regularFlags.map(flag => (
+                    <FlagCard key={flag.id} flag={flag} />
+                  ))}
+                </div>
+              )}
+            </section>
+          </>
+        )}
 
         {/* Footer */}
         <footer className="mt-12 pt-6 border-t border-gray-800">
           <div className="flex justify-between text-sm text-gray-500">
             <span>Hash-based deterministic rollout enabled</span>
-            <span>Feature Flags v1.0</span>
+            <span>Data fetched at {new Date().toLocaleTimeString()}</span>
           </div>
         </footer>
       </div>

@@ -1,142 +1,67 @@
-# 🚨 PROJECT CONFIGURATION - READ FIRST 🚨
+# Onchain Analytics - Project Configuration
 
-**ALWAYS CHECK THIS FILE BEFORE RUNNING ANY COMMAND**
+## CRITICAL: Project Identifiers
 
----
-
-## Project Information
-
-| Property | Value |
-|----------|-------|
-| **Project Name** | Onchain Analytics |
-| **Repository** | arcanequants/onchain-analytics |
-| **Production URL** | https://www.vectorialdata.com |
-| **Vercel Project ID** | prj_TjGvYSYOj2pCoE7Q8amrBf7wZ8CP |
-| **Vercel Project Name** | onchain-analytics |
-| **Database** | Supabase (xkrkqntnpzkwzqkbfyex) |
-
----
-
-## ⚠️ IMPORTANT: URLs to Use
-
-### ✅ CORRECT URLs (USE THESE):
-- Production: `https://www.vectorialdata.com`
-- Vercel: `https://app-arcanequants-projects.vercel.app` (auto-generated)
-- API Base: `https://www.vectorialdata.com/api`
-
-### ❌ WRONG URLs (DO NOT USE):
-- ~~https://crypto-lotto-six.vercel.app~~ (DIFFERENT PROJECT!)
-- ~~https://cryptolotto.app~~ (DIFFERENT PROJECT!)
-
----
-
-## API Endpoints
-
-### CRON Jobs (use vectorialdata.com):
-```bash
-# TVL Collection
-curl -X GET "https://www.vectorialdata.com/api/cron/collect-tvl" \
-  -H "Authorization: Bearer L+e90h3WQtfGF0I/P/dTuKAVA0S9q5IZ7Nb3hiu9rsI="
-
-# DEX Collection
-curl -X GET "https://www.vectorialdata.com/api/cron/collect-dex" \
-  -H "Authorization: Bearer L+e90h3WQtfGF0I/P/dTuKAVA0S9q5IZ7Nb3hiu9rsI="
-
-# Gas Collection
-curl -X GET "https://www.vectorialdata.com/api/cron/collect-gas" \
-  -H "Authorization: Bearer L+e90h3WQtfGF0I/P/dTuKAVA0S9q5IZ7Nb3hiu9rsI="
-
-# Prices Collection
-curl -X GET "https://www.vectorialdata.com/api/cron/collect-prices" \
-  -H "Authorization: Bearer L+e90h3WQtfGF0I/P/dTuKAVA0S9q5IZ7Nb3hiu9rsI="
-
-# Fear & Greed Collection
-curl -X GET "https://www.vectorialdata.com/api/cron/collect-fear-greed" \
-  -H "Authorization: Bearer L+e90h3WQtfGF0I/P/dTuKAVA0S9q5IZ7Nb3hiu9rsI="
-
-# Events Collection
-curl -X GET "https://www.vectorialdata.com/api/cron/collect-events" \
-  -H "Authorization: Bearer L+e90h3WQtfGF0I/P/dTuKAVA0S9q5IZ7Nb3hiu9rsI="
-
-# Cleanup Old Data (runs daily at 2 AM)
-curl -X GET "https://www.vectorialdata.com/api/cron/cleanup-old-data" \
-  -H "Authorization: Bearer L+e90h3WQtfGF0I/P/dTuKAVA0S9q5IZ7Nb3hiu9rsI="
 ```
-
-### Public API Endpoints:
-```bash
-# TVL Data
-curl "https://www.vectorialdata.com/api/tvl?chain=all&limit=10"
-
-# DEX Data
-curl "https://www.vectorialdata.com/api/dex?chain=all&limit=10"
-
-# Gas Data
-curl "https://www.vectorialdata.com/api/gas"
-
-# Prices Data
-curl "https://www.vectorialdata.com/api/prices?limit=10"
+┌─────────────────────────────────────────────────────────────────┐
+│  THIS PROJECT: onchain-analytics / vectorialdata.com            │
+│  Supabase Project ID: xkrkqntnpzkwzqkbfyex                      │
+│  Vercel Project ID: prj_pQLaGTCD6fgF8JDWxWUWpAPPBZB4            │
+├─────────────────────────────────────────────────────────────────┤
+│  ⚠️  DO NOT USE: fjxbuyxephlfoivcpckd (this is crypto-lotto)    │
+└─────────────────────────────────────────────────────────────────┘
 ```
-
----
 
 ## Supabase Configuration
 
 | Property | Value |
 |----------|-------|
-| **Project ID** | xkrkqntnpzkwzqkbfyex |
-| **Dashboard** | https://supabase.com/dashboard/project/xkrkqntnpzkwzqkbfyex |
-| **Database Host** | db.xkrkqntnpzkwzqkbfyex.supabase.co |
-| **Database Port** | 5432 |
-| **Database User** | postgres |
-| **Database Password** | muxmos-toxqoq-8dyCfi |
-
----
+| Project ID | `xkrkqntnpzkwzqkbfyex` |
+| URL | `https://xkrkqntnpzkwzqkbfyex.supabase.co` |
+| Dashboard | https://supabase.com/dashboard/project/xkrkqntnpzkwzqkbfyex |
+| SQL Editor | https://supabase.com/dashboard/project/xkrkqntnpzkwzqkbfyex/sql/new |
+| DB Host (Pooler) | `aws-0-us-west-1.pooler.supabase.com` |
+| DB Port | `6543` |
+| DB User | `postgres.xkrkqntnpzkwzqkbfyex` |
+| DB Name | `postgres` |
 
 ## Vercel Configuration
 
 | Property | Value |
 |----------|-------|
-| **Access Token** | KlnUFDSXZt2fNFse7QFs5OG9 |
-| **Project ID** | prj_TjGvYSYOj2pCoE7Q8amrBf7wZ8CP |
-| **Team ID** | team_7jDtAKalGLbMoub2ZnOejvLI |
-| **CRON Secret** | L+e90h3WQtfGF0I/P/dTuKAVA0S9q5IZ7Nb3hiu9rsI= |
+| Project ID | `prj_pQLaGTCD6fgF8JDWxWUWpAPPBZB4` |
+| Production URL | https://vectorialdata.com |
+| Dashboard | https://vercel.com/arcanequants-projects/app |
 
----
+## GitHub Configuration
 
-## Environment Variables
+| Property | Value |
+|----------|-------|
+| Repository | `arcanequants/onchain-analytics` |
+| URL | https://github.com/arcanequants/onchain-analytics |
+
+## Environment Variables Location
+
+- Development: `.env.local`
+- Production: Vercel Environment Variables
+
+## Scripts
+
+All migration scripts use `scripts/db-config.sh` which contains the correct credentials.
 
 ```bash
-# Supabase
-NEXT_PUBLIC_SUPABASE_URL=https://xkrkqntnpzkwzqkbfyex.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhrcmtxbnRucHprd3pxa2JmeWV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzNDgzNzMsImV4cCI6MjA3ODkyNDM3M30.szioW9K48P4KKw_BmhmH-Kj7mNGZekEB2WFv1bM317M
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhrcmtxbnRucHprd3pxa2JmeWV4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MzM0ODM3MywiZXhwIjoyMDc4OTI0MzczfQ.MP3KudtKW2fiIOM0TxR-bhxtihi3k4z0vnyf7_NS_4c
-
-# CRON
-CRON_SECRET=L+e90h3WQtfGF0I/P/dTuKAVA0S9q5IZ7Nb3hiu9rsI=
-
-# APIs
-NEXT_PUBLIC_COINGECKO_API_KEY=(if needed)
+# Run any migration
+./scripts/apply-rlhf-migration.sh
+./scripts/apply-tvl-migration.sh
+./scripts/apply-token-prices-migration.sh
+# etc.
 ```
 
----
+## WRONG Project (DO NOT USE)
 
-## 🚨 BEFORE RUNNING ANY COMMAND, ASK:
+The following is for a DIFFERENT project (crypto-lotto):
 
-1. ✅ Am I using **www.vectorialdata.com**?
-2. ✅ Am I using **Vercel Project ID: prj_TjGvYSYOj2pCoE7Q8amrBf7wZ8CP**?
-3. ✅ Am I using **Supabase Project: xkrkqntnpzkwzqkbfyex**?
-
-If the answer to ANY of these is NO, STOP and check this file again.
-
----
-
-## Recent Deployments
-
-- **2025-01-19**: TVL tracking feature deployed
-- **2025-01-19**: DEX tracking feature deployed
-- **Production URL**: https://www.vectorialdata.com
-
----
-
-**REMEMBER: This is NOT crypto-lotto-six. This is onchain-analytics (vectorialdata.com)**
+- ❌ `fjxbuyxephlfoivcpckd`
+- ❌ `https://fjxbuyxephlfoivcpckd.supabase.co`
+- ❌ `postgres.fjxbuyxephlfoivcpckd`
+- ❌ Password: `Cryptolotto2025!`

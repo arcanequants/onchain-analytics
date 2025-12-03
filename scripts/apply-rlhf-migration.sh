@@ -1,30 +1,57 @@
 #!/bin/bash
-# Apply RLHF tables migration to Supabase
+# ================================================================
+# Apply RLHF Tables Migration
+# Project: onchain-analytics (xkrkqntnpzkwzqkbfyex)
+# ================================================================
 
-# Supabase connection details
-DB_HOST="aws-0-us-west-1.pooler.supabase.com"
-DB_PORT="6543"
-DB_NAME="postgres"
-DB_USER="postgres.fjxbuyxephlfoivcpckd"
+set -e
 
-echo "Applying RLHF tables migration..."
-echo "================================="
+# Load database configuration
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/db-config.sh"
 
-PGPASSWORD="${PGPASSWORD}" psql -h "$DB_HOST" -p "$DB_PORT" -d "$DB_NAME" -U "$DB_USER" -f "supabase/migrations/20241203_rlhf_tables.sql"
+echo "=================================================="
+echo "Applying RLHF Tables Migration"
+echo "=================================================="
+echo ""
 
-if [ $? -eq 0 ]; then
-  echo ""
-  echo "Migration applied successfully!"
-  echo ""
-  echo "Tables created:"
-  echo "  - user_feedback"
-  echo "  - score_corrections"
-  echo "  - preference_pairs"
-  echo "  - calibration_data"
-  echo "  - calibration_adjustments"
-  echo "  - rlhf_training_runs"
-else
-  echo ""
-  echo "Migration failed!"
+MIGRATION_FILE="supabase/migrations/20241203_rlhf_tables.sql"
+
+if [ ! -f "$MIGRATION_FILE" ]; then
+  echo "❌ Migration file not found: $MIGRATION_FILE"
   exit 1
 fi
+
+echo "📄 Migration file: $MIGRATION_FILE"
+echo "🗄️  Database: $DB_USER@$DB_HOST:$DB_PORT/$DB_NAME"
+echo ""
+
+# Check if psql is available
+if ! command -v psql &> /dev/null; then
+  echo "⚠️  psql not installed. Apply migration manually:"
+  echo ""
+  echo "1. Go to: $SQL_EDITOR_URL"
+  echo "2. Copy contents of: $MIGRATION_FILE"
+  echo "3. Paste and run in SQL Editor"
+  echo ""
+  echo "Or install PostgreSQL:"
+  echo "  brew install postgresql"
+  exit 1
+fi
+
+echo "Applying migration..."
+run_migration "$MIGRATION_FILE"
+
+echo ""
+echo "=================================================="
+echo "✅ RLHF Migration Applied Successfully"
+echo "=================================================="
+echo ""
+echo "Tables created:"
+echo "  - user_feedback"
+echo "  - score_corrections"
+echo "  - preference_pairs"
+echo "  - calibration_data"
+echo "  - calibration_adjustments"
+echo "  - rlhf_training_runs"
+echo ""

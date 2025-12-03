@@ -1,58 +1,63 @@
 #!/bin/bash
 # ================================================================
-# Apply AI Perception Core Migration to Supabase
-# Phase 1, Week 1, Day 1
+# Apply AI Perception Core Migration
+# Project: onchain-analytics (xkrkqntnpzkwzqkbfyex)
 # ================================================================
 
 set -e
 
-echo "🚀 Applying AI Perception Core Migration..."
+# Load database configuration
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/db-config.sh"
+
+echo "=================================================="
+echo "Applying AI Perception Core Migration"
+echo "=================================================="
 echo ""
 
-# Check for required environment variables
-if [ -z "$1" ]; then
-  echo "Usage: ./scripts/apply-ai-perception-migration.sh <SUPABASE_DB_PASSWORD>"
-  echo ""
-  echo "Get your database password from:"
-  echo "  Supabase Dashboard → Project Settings → Database → Connection string"
+MIGRATION_FILE="supabase/migrations/20251127_ai_perception_core.sql"
+
+if [ ! -f "$MIGRATION_FILE" ]; then
+  echo "❌ Migration file not found: $MIGRATION_FILE"
   exit 1
 fi
 
-DB_PASSWORD="$1"
-DB_HOST="aws-0-us-east-1.pooler.supabase.com"
-DB_PORT="6543"
-DB_NAME="postgres"
-DB_USER="postgres.fjxbuyxephlfoivcpckd"
-
-echo "📦 Connecting to Supabase database..."
-echo "   Host: $DB_HOST"
-echo "   Database: $DB_NAME"
+echo "📄 Migration file: $MIGRATION_FILE"
+echo "🗄️  Database: $DB_USER@$DB_HOST:$DB_PORT/$DB_NAME"
 echo ""
 
-# Apply the migration
-PGPASSWORD="$DB_PASSWORD" psql \
-  -h "$DB_HOST" \
-  -p "$DB_PORT" \
-  -d "$DB_NAME" \
-  -U "$DB_USER" \
-  -f ./supabase/migrations/20251127_ai_perception_core.sql
+# Check if psql is available
+if ! command -v psql &> /dev/null; then
+  echo "⚠️  psql not installed. Apply migration manually:"
+  echo ""
+  echo "1. Go to: $SQL_EDITOR_URL"
+  echo "2. Copy contents of: $MIGRATION_FILE"
+  echo "3. Paste and run in SQL Editor"
+  echo ""
+  exit 1
+fi
+
+echo "Applying migration..."
+run_migration "$MIGRATION_FILE"
 
 echo ""
-echo "✅ Migration applied successfully!"
+echo "=================================================="
+echo "✅ AI Perception Core Migration Applied"
+echo "=================================================="
 echo ""
-echo "📋 Tables created:"
-echo "   - user_profiles"
-echo "   - industries (with 20 seed categories)"
-echo "   - analyses"
-echo "   - ai_responses"
-echo "   - competitors"
-echo "   - recommendations"
-echo "   - ai_subscriptions"
-echo "   - usage_tracking"
-echo "   - hallucination_reports"
-echo "   - api_cost_tracking"
-echo "   - daily_cost_summary"
+echo "Tables created:"
+echo "  - user_profiles"
+echo "  - industries (with seed data)"
+echo "  - analyses"
+echo "  - ai_responses"
+echo "  - competitors"
+echo "  - recommendations"
+echo "  - ai_subscriptions"
+echo "  - usage_tracking"
+echo "  - hallucination_reports"
+echo "  - api_cost_tracking"
+echo "  - daily_cost_summary"
 echo ""
-echo "🔒 RLS policies enabled on all tables"
+echo "🔒 RLS policies enabled"
 echo "⚡ Triggers and functions created"
 echo ""

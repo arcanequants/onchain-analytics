@@ -1,27 +1,52 @@
 #!/bin/bash
-
+# ================================================================
 # Apply Token Prices Migration
-# This script creates the necessary tables for token price tracking
+# Project: onchain-analytics (xkrkqntnpzkwzqkbfyex)
+# ================================================================
 
-echo "🔧 Applying Token Prices Migration..."
+set -e
 
-# Read the SQL file
-SQL_CONTENT=$(cat supabase/migrations/20250117_token_prices.sql)
+# Load database configuration
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/db-config.sh"
 
-# Split into individual statements and execute them
-# Using Supabase SQL Editor approach via REST API
-
-echo "📊 Creating token_prices table..."
-echo "📈 Creating token_price_history table..."
-echo "🔥 Creating trending_coins table..."
-
-# For now, we'll document that this needs to be run manually in Supabase SQL Editor
-echo "⚠️  MANUAL STEP REQUIRED:"
-echo "1. Go to: https://supabase.com/dashboard/project/fjxbuyxephlfoivcpckd/sql/new"
-echo "2. Copy the contents of: supabase/migrations/20250117_token_prices.sql"
-echo "3. Paste and run in the SQL Editor"
+echo "=================================================="
+echo "Applying Token Prices Migration"
+echo "=================================================="
 echo ""
-echo "Or use psql:"
-echo "PGPASSWORD='Cryptolotto2025!' psql -h aws-0-us-west-1.pooler.supabase.com -p 6543 -U postgres.fjxbuyxephlfoivcpckd -d postgres -f supabase/migrations/20250117_token_prices.sql"
 
-echo "✅ Migration file ready at: supabase/migrations/20250117_token_prices.sql"
+MIGRATION_FILE="supabase/migrations/20250117_token_prices.sql"
+
+if [ ! -f "$MIGRATION_FILE" ]; then
+  echo "❌ Migration file not found: $MIGRATION_FILE"
+  exit 1
+fi
+
+echo "📄 Migration file: $MIGRATION_FILE"
+echo "🗄️  Database: $DB_USER@$DB_HOST:$DB_PORT/$DB_NAME"
+echo ""
+
+# Check if psql is available
+if ! command -v psql &> /dev/null; then
+  echo "⚠️  psql not installed. Apply migration manually:"
+  echo ""
+  echo "1. Go to: $SQL_EDITOR_URL"
+  echo "2. Copy contents of: $MIGRATION_FILE"
+  echo "3. Paste and run in SQL Editor"
+  echo ""
+  exit 1
+fi
+
+echo "Applying migration..."
+run_migration "$MIGRATION_FILE"
+
+echo ""
+echo "=================================================="
+echo "✅ Token Prices Migration Applied"
+echo "=================================================="
+echo ""
+echo "Tables created:"
+echo "  - token_prices"
+echo "  - token_price_history"
+echo "  - trending_coins"
+echo ""

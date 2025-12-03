@@ -749,7 +749,7 @@ main branch
 
 ### Supabase Resources
 
-- [ ] Project: `fjxbuyxephlfoivcpckd`
+- [ ] Project: `xkrkqntnpzkwzqkbfyex`
 - [ ] Database settings
 - [ ] Auth configuration
 - [ ] Storage buckets

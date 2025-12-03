@@ -110,27 +110,37 @@ async function getMetricsData(): Promise<MetricsData> {
 
     const data = await res.json();
 
-    // Check if we have real data
-    if (data.overview?.totalFeedback > 0) {
+    // Check if we have real data from the updated API
+    if (data.hasData || data.overview?.totalFeedback > 0) {
+      const totalFeedback = data.overview?.totalFeedback || 0;
+      const thumbsUp = data.overview?.thumbsUp || 0;
+      const thumbsDown = data.overview?.thumbsDown || 0;
+
       return {
         feedback: {
-          totalFeedback: data.overview.totalFeedback || 0,
-          thumbsUp: 0,
-          thumbsDown: 0,
-          avgRating: data.overview.averageRating || 0,
-          feedbackRate: 0,
-          signalToNoise: 0,
+          totalFeedback,
+          thumbsUp,
+          thumbsDown,
+          avgRating: data.overview?.avgRating || 0,
+          feedbackRate: totalFeedback > 0 ? 100 : 0, // Placeholder
+          signalToNoise: totalFeedback > 0 ? (thumbsUp / Math.max(1, thumbsUp + thumbsDown)) : 0,
         },
-        preferences: emptyState.preferences,
-        rewardModel: {
-          currentVersion: 'v1.0',
-          accuracy: data.overview.modelAccuracy || 0,
+        preferences: {
+          totalPairs: data.preferencePairs || 0,
+          explicitPairs: data.preferencePairs || 0,
+          implicitPairs: 0,
+          weeklyTarget: 1000,
+          agreementRate: 0,
+        },
+        rewardModel: data.latestTraining ? {
+          currentVersion: data.latestTraining.modelVersion || 'v1.0',
+          accuracy: data.latestTraining.accuracyAfter || 0,
           precision: 0,
           recall: 0,
           f1Score: 0,
-          lastTrainedAt: data.overview.lastTraining || '',
-          trainingDataSize: 0,
-        },
+          lastTrainedAt: data.latestTraining.completedAt || '',
+          trainingDataSize: totalFeedback,
+        } : emptyState.rewardModel,
         activeLearning: emptyState.activeLearning,
         loopLatency: emptyState.loopLatency,
         experiments: emptyState.experiments,

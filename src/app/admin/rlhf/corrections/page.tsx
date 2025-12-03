@@ -65,7 +65,7 @@ interface QueueStats {
 
 const API_BASE = process.env.NEXT_PUBLIC_APP_URL || 'https://vectorialdata.com';
 
-async function getCorrectionsData(): Promise<{ stats: QueueStats; items: Correction[] }> {
+async function getCorrectionsData(): Promise<{ stats: QueueStats; items: Correction[]; hasData: boolean }> {
   try {
     const res = await fetch(`${API_BASE}/api/admin/rlhf?type=corrections`, {
       next: { revalidate: 30 },
@@ -76,10 +76,38 @@ async function getCorrectionsData(): Promise<{ stats: QueueStats; items: Correct
       return {
         stats: { pending: 0, underReview: 0, approved: 0, rejected: 0, avgReviewTime: 0, todayReviewed: 0 },
         items: [],
+        hasData: false,
       };
     }
 
     const data = await res.json();
+
+    // Map API response to page format
+    const items: Correction[] = (data.items || []).map((item: {
+      id: string;
+      brandName: string;
+      brandDomain: string;
+      originalScore: number;
+      correctedScore?: number;
+      correctionType: CorrectionType;
+      status: CorrectionStatus;
+      priority: Priority;
+      createdAt: string;
+      reason?: string;
+    }) => ({
+      id: item.id,
+      brandName: item.brandName,
+      brandDomain: item.brandDomain,
+      originalScore: item.originalScore,
+      correctedScore: item.correctedScore,
+      correctionType: item.correctionType as CorrectionType,
+      correctionReason: item.reason || '',
+      status: item.status as CorrectionStatus,
+      priority: item.priority as Priority,
+      submittedBy: 'User',
+      submittedAt: item.createdAt,
+    }));
+
     return {
       stats: {
         pending: data.stats?.pendingReview || 0,
@@ -89,13 +117,15 @@ async function getCorrectionsData(): Promise<{ stats: QueueStats; items: Correct
         avgReviewTime: 0,
         todayReviewed: 0,
       },
-      items: data.items || [],
+      items,
+      hasData: data.hasData || items.length > 0,
     };
   } catch (error) {
     console.error('Error fetching corrections data:', error);
     return {
       stats: { pending: 0, underReview: 0, approved: 0, rejected: 0, avgReviewTime: 0, todayReviewed: 0 },
       items: [],
+      hasData: false,
     };
   }
 }

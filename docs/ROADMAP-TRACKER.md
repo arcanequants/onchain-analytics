@@ -1245,20 +1245,24 @@ Páginas requeridas para cumplimiento legal que **NO EXISTEN**:
 
 ---
 
-### PRIORIDAD MEDIA: Admin Pages con Mock Data (8 páginas)
+### PRIORIDAD MEDIA: Admin Pages con Mock Data (8 páginas) ✅ COMPLETADAS
 
-Las siguientes páginas admin usan datos ficticios y requieren integración con datos reales:
+Las siguientes páginas admin ahora están conectadas a APIs reales:
 
-| Página | Archivo | Línea Mock | Status |
-|--------|---------|------------|--------|
-| Queues | `src/app/admin/queues/page.tsx` | L65 | [ ] |
-| Notifications | `src/app/admin/notifications/page.tsx` | L45 | [ ] |
-| Semantic Audit | `src/app/admin/semantic-audit/page.tsx` | L75 | [ ] |
-| RLHF Corrections | `src/app/admin/rlhf/corrections/page.tsx` | L64 | [ ] |
-| RLHF Metrics | `src/app/admin/rlhf/metrics/page.tsx` | L70 | [ ] |
-| RLHF Calibration | `src/app/admin/rlhf/calibration/page.tsx` | L54 | [ ] |
-| API Playground | `src/app/admin/api-playground/page.tsx` | L178 | [ ] |
-| Data Quality | `src/app/admin/data-quality/page.tsx` | L62 | [ ] |
+| Página | Archivo | API Endpoint | Status |
+|--------|---------|--------------|--------|
+| Queues | `src/app/admin/queues/page.tsx` | `/api/admin/queues` | [x] |
+| Notifications | `src/app/admin/notifications/page.tsx` | `/api/admin/notifications` | [x] |
+| Semantic Audit | `src/app/admin/semantic-audit/page.tsx` | `/api/admin/semantic-audit` | [x] |
+| RLHF Corrections | `src/app/admin/rlhf/corrections/page.tsx` | `/api/admin/rlhf?type=corrections` | [x] ¹ |
+| RLHF Metrics | `src/app/admin/rlhf/metrics/page.tsx` | `/api/admin/rlhf?type=metrics` | [x] ¹ |
+| RLHF Calibration | `src/app/admin/rlhf/calibration/page.tsx` | `/api/admin/rlhf?type=calibration` | [x] ¹ |
+| API Playground | `src/app/admin/api-playground/page.tsx` | Mock intencional | [x] ² |
+| Data Quality | `src/app/admin/data-quality/page.tsx` | `/api/admin/data-quality` | [x] |
+
+**Notas:**
+¹ RLHF API devuelve estado vacío - las tablas de feedback/calibración no existen aún
+² API Playground usa respuestas simuladas intencionalmente (es un sandbox de pruebas)
 
 ---
 

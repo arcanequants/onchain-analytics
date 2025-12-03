@@ -60,94 +60,44 @@ interface QueueStats {
 }
 
 // ================================================================
-// MOCK DATA
+// DATA FETCHING - Uses real API
 // ================================================================
 
-async function getQueueStats(): Promise<QueueStats> {
-  return {
-    pending: 23,
-    underReview: 5,
-    approved: 156,
-    rejected: 42,
-    avgReviewTime: 12,
-    todayReviewed: 8,
-  };
-}
+const API_BASE = process.env.NEXT_PUBLIC_APP_URL || 'https://vectorialdata.com';
 
-async function getPendingCorrections(): Promise<Correction[]> {
-  return [
-    {
-      id: 'corr_001',
-      brandName: 'Acme Corp',
-      brandDomain: 'acme.com',
-      originalScore: 72,
-      correctedScore: 58,
-      correctionType: 'score_too_high',
-      correctionReason:
-        'AI mentions Acme as a "leading provider" but they are a small player in the CRM market. Only 2% market share.',
-      status: 'pending',
-      priority: 'high',
-      submittedBy: 'user_12345',
-      submittedAt: new Date(Date.now() - 1000 * 60 * 30).toISOString(),
-      evidenceUrls: ['https://example.com/market-report'],
-    },
-    {
-      id: 'corr_002',
-      brandName: 'TechStart Inc',
-      brandDomain: 'techstart.io',
-      originalScore: 45,
-      correctedScore: 68,
-      correctionType: 'score_too_low',
-      correctionReason:
-        "TechStart was recently featured in TechCrunch and raised Series B. AI doesn't know about recent coverage.",
-      status: 'pending',
-      priority: 'medium',
-      submittedBy: 'user_67890',
-      submittedAt: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
-      evidenceUrls: ['https://techcrunch.com/techstart-funding'],
-    },
-    {
-      id: 'corr_003',
-      brandName: 'SafeBank',
-      brandDomain: 'safebank.com',
-      originalScore: 81,
-      correctionType: 'hallucination',
-      correctionReason:
-        'AI claimed SafeBank offers cryptocurrency trading, which is completely false. They are a traditional bank.',
-      status: 'pending',
-      priority: 'critical',
-      submittedBy: 'user_11111',
-      submittedAt: new Date(Date.now() - 1000 * 60 * 15).toISOString(),
-    },
-    {
-      id: 'corr_004',
-      brandName: 'GreenEnergy Co',
-      brandDomain: 'greenenergy.co',
-      originalScore: 55,
-      correctedScore: 52,
-      correctionType: 'wrong_sentiment',
-      correctionReason:
-        "AI rated sentiment as 'positive' but the mentions are actually neutral. They just list the company without opinion.",
-      status: 'pending',
-      priority: 'low',
-      submittedBy: 'user_22222',
-      submittedAt: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString(),
-    },
-    {
-      id: 'corr_005',
-      brandName: 'FastShip Logistics',
-      brandDomain: 'fastship.com',
-      originalScore: 68,
-      correctionType: 'competitor_confusion',
-      correctionReason:
-        'AI confused FastShip with FastFreight (competitor). Mentioned FastFreight achievements as FastShip.',
-      status: 'under_review',
-      priority: 'high',
-      submittedBy: 'user_33333',
-      submittedAt: new Date(Date.now() - 1000 * 60 * 60 * 1).toISOString(),
-      reviewedBy: 'admin_001',
-    },
-  ];
+async function getCorrectionsData(): Promise<{ stats: QueueStats; items: Correction[] }> {
+  try {
+    const res = await fetch(`${API_BASE}/api/admin/rlhf?type=corrections`, {
+      next: { revalidate: 30 },
+    });
+
+    if (!res.ok) {
+      console.error('Failed to fetch corrections data:', res.status);
+      return {
+        stats: { pending: 0, underReview: 0, approved: 0, rejected: 0, avgReviewTime: 0, todayReviewed: 0 },
+        items: [],
+      };
+    }
+
+    const data = await res.json();
+    return {
+      stats: {
+        pending: data.stats?.pendingReview || 0,
+        underReview: 0,
+        approved: data.stats?.applied || 0,
+        rejected: data.stats?.rejected || 0,
+        avgReviewTime: 0,
+        todayReviewed: 0,
+      },
+      items: data.items || [],
+    };
+  } catch (error) {
+    console.error('Error fetching corrections data:', error);
+    return {
+      stats: { pending: 0, underReview: 0, approved: 0, rejected: 0, avgReviewTime: 0, todayReviewed: 0 },
+      items: [],
+    };
+  }
 }
 
 // ================================================================
@@ -398,7 +348,7 @@ function FilterBar() {
 // ================================================================
 
 export default async function CorrectionReviewPage() {
-  const [stats, corrections] = await Promise.all([getQueueStats(), getPendingCorrections()]);
+  const { stats, items: corrections } = await getCorrectionsData();
 
   return (
     <div className="min-h-screen bg-gray-900 p-8">
@@ -452,9 +402,20 @@ export default async function CorrectionReviewPage() {
 
         {/* Corrections List */}
         <section className="space-y-4">
-          {corrections.map((correction) => (
-            <CorrectionCard key={correction.id} correction={correction} />
-          ))}
+          {corrections.length === 0 ? (
+            <div className="p-12 bg-gray-800 rounded-xl border border-gray-700 text-center">
+              <div className="text-4xl mb-4">-</div>
+              <h3 className="text-lg font-medium text-white mb-2">No Corrections Pending</h3>
+              <p className="text-gray-400 text-sm">
+                RLHF correction tables are not configured yet. Once user corrections are submitted,
+                they will appear here for review.
+              </p>
+            </div>
+          ) : (
+            corrections.map((correction) => (
+              <CorrectionCard key={correction.id} correction={correction} />
+            ))
+          )}
         </section>
 
         {/* Pagination */}

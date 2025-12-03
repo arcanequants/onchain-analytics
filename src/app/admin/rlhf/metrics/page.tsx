@@ -67,95 +67,84 @@ interface ExperimentMetrics {
 }
 
 // ================================================================
-// MOCK DATA
+// DATA FETCHING - Uses real API
 // ================================================================
 
-async function getFeedbackMetrics(): Promise<FeedbackMetrics> {
-  return {
-    totalFeedback: 4523,
-    thumbsUp: 3891,
-    thumbsDown: 632,
-    avgRating: 4.2,
-    feedbackRate: 23.5,
-    signalToNoise: 0.78,
+const API_BASE = process.env.NEXT_PUBLIC_APP_URL || 'https://vectorialdata.com';
+
+interface MetricsData {
+  feedback: FeedbackMetrics;
+  preferences: PreferencePairMetrics;
+  rewardModel: RewardModelMetrics;
+  activeLearning: ActiveLearningMetrics;
+  loopLatency: LoopLatencyMetrics;
+  experiments: ExperimentMetrics;
+  feedbackTrend: { date: string; positive: number; negative: number }[];
+  recentExperiments: { name: string; status: 'running' | 'completed' | 'paused'; lift: number | null; significance: number | null }[];
+  hasData: boolean;
+}
+
+async function getMetricsData(): Promise<MetricsData> {
+  // Default empty state
+  const emptyState: MetricsData = {
+    feedback: { totalFeedback: 0, thumbsUp: 0, thumbsDown: 0, avgRating: 0, feedbackRate: 0, signalToNoise: 0 },
+    preferences: { totalPairs: 0, explicitPairs: 0, implicitPairs: 0, weeklyTarget: 1000, agreementRate: 0 },
+    rewardModel: { currentVersion: 'N/A', accuracy: 0, precision: 0, recall: 0, f1Score: 0, lastTrainedAt: '', trainingDataSize: 0 },
+    activeLearning: { uncertainCases: 0, labeledThisWeek: 0, labelingEfficiencyGain: 0, strategicRequestsSent: 0, responseRate: 0 },
+    loopLatency: { feedbackToIngestion: 0, ingestionToProcessing: 0, processingToModelUpdate: 0, totalLatency: 0, updateFrequency: 'Not configured' },
+    experiments: { activeExperiments: 0, completedExperiments: 0, avgLift: 0, significantWins: 0 },
+    feedbackTrend: [],
+    recentExperiments: [],
+    hasData: false,
   };
-}
 
-async function getPreferencePairMetrics(): Promise<PreferencePairMetrics> {
-  return {
-    totalPairs: 1247,
-    explicitPairs: 423,
-    implicitPairs: 824,
-    weeklyTarget: 1000,
-    agreementRate: 0.82,
-  };
-}
+  try {
+    const res = await fetch(`${API_BASE}/api/admin/rlhf?type=metrics`, {
+      next: { revalidate: 60 },
+    });
 
-async function getRewardModelMetrics(): Promise<RewardModelMetrics> {
-  return {
-    currentVersion: 'v2.3.1',
-    accuracy: 0.78,
-    precision: 0.81,
-    recall: 0.75,
-    f1Score: 0.78,
-    lastTrainedAt: '2024-11-28T04:00:00Z',
-    trainingDataSize: 45000,
-  };
-}
+    if (!res.ok) {
+      console.error('Failed to fetch RLHF metrics:', res.status);
+      return emptyState;
+    }
 
-async function getActiveLearningMetrics(): Promise<ActiveLearningMetrics> {
-  return {
-    uncertainCases: 234,
-    labeledThisWeek: 89,
-    labelingEfficiencyGain: 34,
-    strategicRequestsSent: 156,
-    responseRate: 0.42,
-  };
-}
+    const data = await res.json();
 
-async function getLoopLatencyMetrics(): Promise<LoopLatencyMetrics> {
-  return {
-    feedbackToIngestion: 150,
-    ingestionToProcessing: 2500,
-    processingToModelUpdate: 14400000, // 4 hours in ms
-    totalLatency: 14402650,
-    updateFrequency: 'Daily at 4 AM UTC',
-  };
-}
+    // Check if we have real data
+    if (data.overview?.totalFeedback > 0) {
+      return {
+        feedback: {
+          totalFeedback: data.overview.totalFeedback || 0,
+          thumbsUp: 0,
+          thumbsDown: 0,
+          avgRating: data.overview.averageRating || 0,
+          feedbackRate: 0,
+          signalToNoise: 0,
+        },
+        preferences: emptyState.preferences,
+        rewardModel: {
+          currentVersion: 'v1.0',
+          accuracy: data.overview.modelAccuracy || 0,
+          precision: 0,
+          recall: 0,
+          f1Score: 0,
+          lastTrainedAt: data.overview.lastTraining || '',
+          trainingDataSize: 0,
+        },
+        activeLearning: emptyState.activeLearning,
+        loopLatency: emptyState.loopLatency,
+        experiments: emptyState.experiments,
+        feedbackTrend: data.trends || [],
+        recentExperiments: [],
+        hasData: true,
+      };
+    }
 
-async function getExperimentMetrics(): Promise<ExperimentMetrics> {
-  return {
-    activeExperiments: 3,
-    completedExperiments: 12,
-    avgLift: 8.5,
-    significantWins: 7,
-  };
-}
-
-async function getFeedbackTrend(): Promise<{ date: string; positive: number; negative: number }[]> {
-  return [
-    { date: '11/22', positive: 145, negative: 23 },
-    { date: '11/23', positive: 178, negative: 31 },
-    { date: '11/24', positive: 156, negative: 28 },
-    { date: '11/25', positive: 189, negative: 25 },
-    { date: '11/26', positive: 201, negative: 34 },
-    { date: '11/27', positive: 167, negative: 29 },
-    { date: '11/28', positive: 192, negative: 27 },
-  ];
-}
-
-async function getRecentExperiments(): Promise<{
-  name: string;
-  status: 'running' | 'completed' | 'paused';
-  lift: number | null;
-  significance: number | null;
-}[]> {
-  return [
-    { name: 'Longer recommendations', status: 'running', lift: null, significance: null },
-    { name: 'Industry-specific prompts', status: 'completed', lift: 12.3, significance: 0.98 },
-    { name: 'CoT vs Direct scoring', status: 'completed', lift: 8.7, significance: 0.95 },
-    { name: 'Temperature 0.3 vs 0.7', status: 'paused', lift: -2.1, significance: 0.72 },
-  ];
+    return emptyState;
+  } catch (error) {
+    console.error('Error fetching RLHF metrics:', error);
+    return emptyState;
+  }
 }
 
 // ================================================================
@@ -334,7 +323,7 @@ function ExperimentRow({ experiment }: {
 // ================================================================
 
 export default async function RLHFMetricsPage() {
-  const [
+  const {
     feedback,
     preferences,
     rewardModel,
@@ -343,16 +332,8 @@ export default async function RLHFMetricsPage() {
     experiments,
     feedbackTrend,
     recentExperiments,
-  ] = await Promise.all([
-    getFeedbackMetrics(),
-    getPreferencePairMetrics(),
-    getRewardModelMetrics(),
-    getActiveLearningMetrics(),
-    getLoopLatencyMetrics(),
-    getExperimentMetrics(),
-    getFeedbackTrend(),
-    getRecentExperiments(),
-  ]);
+    hasData,
+  } = await getMetricsData();
 
   return (
     <div className="min-h-screen bg-gray-900 p-8">
@@ -372,6 +353,18 @@ export default async function RLHFMetricsPage() {
             </button>
           </div>
         </div>
+
+        {/* No Data Notice */}
+        {!hasData && (
+          <div className="mb-8 p-6 bg-gray-800 rounded-xl border border-gray-700 text-center">
+            <div className="text-4xl mb-4">-</div>
+            <h3 className="text-lg font-medium text-white mb-2">No RLHF Data Available</h3>
+            <p className="text-gray-400 text-sm max-w-md mx-auto">
+              RLHF feedback tables are not configured yet. Once the RLHF pipeline is set up
+              and users start providing feedback, metrics will appear here.
+            </p>
+          </div>
+        )}
 
         {/* Key Metrics Row */}
         <section className="mb-8 grid grid-cols-6 gap-4">

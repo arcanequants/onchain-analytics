@@ -51,175 +51,54 @@ interface RecentAdjustment {
 }
 
 // ================================================================
-// MOCK DATA
+// DATA FETCHING - Uses real API
 // ================================================================
 
-async function getIndustryCalibrations(): Promise<IndustryCalibration[]> {
-  return [
-    {
-      industry: 'Technology',
-      calibrationCurve: [
-        { predicted: 10, actual: 12, count: 45 },
-        { predicted: 20, actual: 22, count: 89 },
-        { predicted: 30, actual: 31, count: 156 },
-        { predicted: 40, actual: 41, count: 234 },
-        { predicted: 50, actual: 49, count: 312 },
-        { predicted: 60, actual: 58, count: 287 },
-        { predicted: 70, actual: 68, count: 198 },
-        { predicted: 80, actual: 78, count: 134 },
-        { predicted: 90, actual: 88, count: 67 },
-      ],
-      mae: 2.1,
-      rmse: 2.8,
-      r2: 0.94,
-      brier: 0.08,
-      samples: 1522,
-      lastUpdated: '2024-11-28T10:00:00Z',
-      adjustmentFactor: 0.98,
-    },
-    {
-      industry: 'Healthcare',
-      calibrationCurve: [
-        { predicted: 10, actual: 15, count: 23 },
-        { predicted: 20, actual: 26, count: 45 },
-        { predicted: 30, actual: 35, count: 78 },
-        { predicted: 40, actual: 44, count: 112 },
-        { predicted: 50, actual: 52, count: 145 },
-        { predicted: 60, actual: 61, count: 134 },
-        { predicted: 70, actual: 69, count: 98 },
-        { predicted: 80, actual: 77, count: 56 },
-        { predicted: 90, actual: 86, count: 28 },
-      ],
-      mae: 3.8,
-      rmse: 4.5,
-      r2: 0.89,
-      brier: 0.12,
-      samples: 719,
-      lastUpdated: '2024-11-27T14:30:00Z',
-      adjustmentFactor: 1.04,
-    },
-    {
-      industry: 'Finance',
-      calibrationCurve: [
-        { predicted: 10, actual: 11, count: 34 },
-        { predicted: 20, actual: 21, count: 67 },
-        { predicted: 30, actual: 30, count: 98 },
-        { predicted: 40, actual: 39, count: 145 },
-        { predicted: 50, actual: 48, count: 178 },
-        { predicted: 60, actual: 58, count: 156 },
-        { predicted: 70, actual: 69, count: 112 },
-        { predicted: 80, actual: 79, count: 78 },
-        { predicted: 90, actual: 89, count: 45 },
-      ],
-      mae: 1.5,
-      rmse: 1.9,
-      r2: 0.97,
-      brier: 0.05,
-      samples: 913,
-      lastUpdated: '2024-11-28T09:00:00Z',
-      adjustmentFactor: 1.00,
-    },
-    {
-      industry: 'E-commerce',
-      calibrationCurve: [
-        { predicted: 10, actual: 8, count: 56 },
-        { predicted: 20, actual: 17, count: 98 },
-        { predicted: 30, actual: 26, count: 145 },
-        { predicted: 40, actual: 36, count: 189 },
-        { predicted: 50, actual: 46, count: 234 },
-        { predicted: 60, actual: 56, count: 198 },
-        { predicted: 70, actual: 66, count: 145 },
-        { predicted: 80, actual: 76, count: 89 },
-        { predicted: 90, actual: 87, count: 45 },
-      ],
-      mae: 4.2,
-      rmse: 4.8,
-      r2: 0.91,
-      brier: 0.11,
-      samples: 1199,
-      lastUpdated: '2024-11-26T16:00:00Z',
-      adjustmentFactor: 1.06,
-    },
-    {
-      industry: 'Education',
-      calibrationCurve: [
-        { predicted: 10, actual: 14, count: 12 },
-        { predicted: 20, actual: 25, count: 23 },
-        { predicted: 30, actual: 36, count: 45 },
-        { predicted: 40, actual: 47, count: 67 },
-        { predicted: 50, actual: 56, count: 78 },
-        { predicted: 60, actual: 65, count: 56 },
-        { predicted: 70, actual: 73, count: 34 },
-        { predicted: 80, actual: 82, count: 23 },
-        { predicted: 90, actual: 91, count: 12 },
-      ],
-      mae: 5.1,
-      rmse: 5.8,
-      r2: 0.85,
-      brier: 0.15,
-      samples: 350,
-      lastUpdated: '2024-11-25T11:00:00Z',
-      adjustmentFactor: 1.08,
-    },
-    {
-      industry: 'Real Estate',
-      calibrationCurve: [
-        { predicted: 10, actual: 9, count: 18 },
-        { predicted: 20, actual: 19, count: 34 },
-        { predicted: 30, actual: 29, count: 56 },
-        { predicted: 40, actual: 40, count: 78 },
-        { predicted: 50, actual: 51, count: 89 },
-        { predicted: 60, actual: 62, count: 78 },
-        { predicted: 70, actual: 71, count: 56 },
-        { predicted: 80, actual: 81, count: 34 },
-        { predicted: 90, actual: 91, count: 18 },
-      ],
-      mae: 1.2,
-      rmse: 1.5,
-      r2: 0.98,
-      brier: 0.04,
-      samples: 461,
-      lastUpdated: '2024-11-28T08:00:00Z',
-      adjustmentFactor: 1.01,
-    },
-  ];
+const API_BASE = process.env.NEXT_PUBLIC_APP_URL || 'https://vectorialdata.com';
+
+interface CalibrationData {
+  calibrations: IndustryCalibration[];
+  stats: CalibrationStats;
+  adjustments: RecentAdjustment[];
+  hasData: boolean;
 }
 
-async function getCalibrationStats(): Promise<CalibrationStats> {
-  const calibrations = await getIndustryCalibrations();
-  return {
-    totalIndustries: calibrations.length,
-    wellCalibrated: calibrations.filter(c => c.mae < 3).length,
-    needsAttention: calibrations.filter(c => c.mae >= 4).length,
-    totalSamples: calibrations.reduce((sum, c) => sum + c.samples, 0),
-    avgMae: calibrations.reduce((sum, c) => sum + c.mae, 0) / calibrations.length,
+async function getCalibrationData(): Promise<CalibrationData> {
+  // Default empty state
+  const emptyState: CalibrationData = {
+    calibrations: [],
+    stats: { totalIndustries: 0, wellCalibrated: 0, needsAttention: 0, totalSamples: 0, avgMae: 0 },
+    adjustments: [],
+    hasData: false,
   };
-}
 
-async function getRecentAdjustments(): Promise<RecentAdjustment[]> {
-  return [
-    {
-      industry: 'E-commerce',
-      oldFactor: 1.04,
-      newFactor: 1.06,
-      reason: 'Systematic underscoring detected in holiday season',
-      timestamp: '2024-11-26T16:00:00Z',
-    },
-    {
-      industry: 'Education',
-      oldFactor: 1.05,
-      newFactor: 1.08,
-      reason: 'Low sample bias correction after feedback review',
-      timestamp: '2024-11-25T11:00:00Z',
-    },
-    {
-      industry: 'Healthcare',
-      oldFactor: 1.02,
-      newFactor: 1.04,
-      reason: 'HIPAA-related content penalty adjustment',
-      timestamp: '2024-11-24T09:30:00Z',
-    },
-  ];
+  try {
+    const res = await fetch(`${API_BASE}/api/admin/rlhf?type=calibration`, {
+      next: { revalidate: 60 },
+    });
+
+    if (!res.ok) {
+      console.error('Failed to fetch calibration data:', res.status);
+      return emptyState;
+    }
+
+    const data = await res.json();
+
+    // Check if we have real data
+    if (data.industries && data.industries.length > 0) {
+      return {
+        calibrations: data.industries,
+        stats: data.stats || emptyState.stats,
+        adjustments: data.adjustments || [],
+        hasData: true,
+      };
+    }
+
+    return emptyState;
+  } catch (error) {
+    console.error('Error fetching calibration data:', error);
+    return emptyState;
+  }
 }
 
 // ================================================================
@@ -402,11 +281,7 @@ function RecentAdjustmentRow({ adjustment }: { adjustment: RecentAdjustment }) {
 // ================================================================
 
 export default async function CalibrationDashboardPage() {
-  const [calibrations, stats, adjustments] = await Promise.all([
-    getIndustryCalibrations(),
-    getCalibrationStats(),
-    getRecentAdjustments(),
-  ]);
+  const { calibrations, stats, adjustments, hasData } = await getCalibrationData();
 
   // Sort by MAE (worst first for attention)
   const sortedCalibrations = [...calibrations].sort((a, b) => b.mae - a.mae);
@@ -429,6 +304,18 @@ export default async function CalibrationDashboardPage() {
             </button>
           </div>
         </div>
+
+        {/* No Data Notice */}
+        {!hasData && (
+          <div className="mb-8 p-6 bg-gray-800 rounded-xl border border-gray-700 text-center">
+            <div className="text-4xl mb-4">-</div>
+            <h3 className="text-lg font-medium text-white mb-2">No Calibration Data Available</h3>
+            <p className="text-gray-400 text-sm max-w-md mx-auto">
+              RLHF calibration tables are not configured yet. Once feedback is collected
+              and processed, industry calibration curves will appear here.
+            </p>
+          </div>
+        )}
 
         {/* Stats */}
         <section className="mb-8 grid grid-cols-5 gap-4">

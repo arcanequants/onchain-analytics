@@ -72,73 +72,53 @@ interface MigrationAudit {
 }
 
 // ================================================================
-// MOCK DATA
+// DATA FETCHING - Uses real API
 // ================================================================
 
-async function getHealthScores(): Promise<HealthScore> {
+const API_BASE = process.env.NEXT_PUBLIC_APP_URL || 'https://vectorialdata.com';
+
+async function getSemanticAuditData(): Promise<{
+  health: HealthScore;
+  tables: TableHealth[];
+  enums: EnumStatus[];
+  dqRules: DataQualityRule[];
+  orphans: OrphanRecord[];
+  migrations: MigrationAudit[];
+}> {
+  try {
+    const res = await fetch(`${API_BASE}/api/admin/semantic-audit`, {
+      next: { revalidate: 60 }, // Cache for 60 seconds
+    });
+
+    if (!res.ok) {
+      console.error('Failed to fetch semantic audit data:', res.status);
+      return getDefaultData();
+    }
+
+    const data = await res.json();
+    return {
+      health: data.health || getDefaultData().health,
+      tables: data.tables || [],
+      enums: data.enums || [],
+      dqRules: data.dqRules || [],
+      orphans: data.orphans || [],
+      migrations: data.migrations || [],
+    };
+  } catch (error) {
+    console.error('Error fetching semantic audit data:', error);
+    return getDefaultData();
+  }
+}
+
+function getDefaultData() {
   return {
-    overall: 92,
-    schema: 95,
-    dataQuality: 98,
-    namingConvention: 88,
-    referentialIntegrity: 87,
+    health: { overall: 0, schema: 0, dataQuality: 0, namingConvention: 0, referentialIntegrity: 0 },
+    tables: [] as TableHealth[],
+    enums: [] as EnumStatus[],
+    dqRules: [] as DataQualityRule[],
+    orphans: [] as OrphanRecord[],
+    migrations: [] as MigrationAudit[],
   };
-}
-
-async function getEnumStatuses(): Promise<EnumStatus[]> {
-  return [
-    { name: 'ai_provider', canonicalValues: 4, legacyValues: 0, totalUsage: 15234, migrationComplete: true },
-    { name: 'sentiment_type', canonicalValues: 5, legacyValues: 0, totalUsage: 45123, migrationComplete: true },
-    { name: 'severity_level', canonicalValues: 4, legacyValues: 2, totalUsage: 8934, migrationComplete: false },
-    { name: 'status_type', canonicalValues: 6, legacyValues: 0, totalUsage: 23456, migrationComplete: true },
-    { name: 'plan_type', canonicalValues: 4, legacyValues: 1, totalUsage: 3421, migrationComplete: false },
-  ];
-}
-
-async function getDataQualityRules(): Promise<DataQualityRule[]> {
-  return [
-    { id: 'dq_001', name: 'Score in valid range', table: 'analyses', type: 'range_check', status: 'passing', passRate: 100, lastRun: '2024-11-28T10:00:00Z', affectedRows: 0 },
-    { id: 'dq_002', name: 'Confidence between 0-1', table: 'ai_responses', type: 'range_check', status: 'passing', passRate: 100, lastRun: '2024-11-28T10:00:00Z', affectedRows: 0 },
-    { id: 'dq_003', name: 'Cost non-negative', table: 'ai_responses', type: 'range_check', status: 'passing', passRate: 100, lastRun: '2024-11-28T10:00:00Z', affectedRows: 0 },
-    { id: 'dq_004', name: 'Email format valid', table: 'users', type: 'format_check', status: 'passing', passRate: 99.8, lastRun: '2024-11-28T10:00:00Z', affectedRows: 3 },
-    { id: 'dq_005', name: 'URL format valid', table: 'analyses', type: 'format_check', status: 'passing', passRate: 99.9, lastRun: '2024-11-28T10:00:00Z', affectedRows: 1 },
-    { id: 'dq_006', name: 'User FK exists', table: 'analyses', type: 'referential', status: 'passing', passRate: 100, lastRun: '2024-11-28T10:00:00Z', affectedRows: 0 },
-    { id: 'dq_007', name: 'Completed >= Created', table: 'analyses', type: 'custom', status: 'passing', passRate: 100, lastRun: '2024-11-28T10:00:00Z', affectedRows: 0 },
-    { id: 'dq_008', name: 'Required fields present', table: 'recommendations', type: 'null_check', status: 'warning', passRate: 98.5, lastRun: '2024-11-28T10:00:00Z', affectedRows: 23 },
-    { id: 'dq_009', name: 'Token count positive', table: 'ai_responses', type: 'range_check', status: 'passing', passRate: 100, lastRun: '2024-11-28T10:00:00Z', affectedRows: 0 },
-    { id: 'dq_010', name: 'JSON structure valid', table: 'ai_responses', type: 'custom', status: 'passing', passRate: 99.7, lastRun: '2024-11-28T10:00:00Z', affectedRows: 5 },
-  ];
-}
-
-async function getTableHealth(): Promise<TableHealth[]> {
-  return [
-    { name: 'users', columns: 12, rows: 3421, hasAuditColumns: true, namingScore: 100, nullSemantics: 'documented', constraints: 8, issues: 0 },
-    { name: 'analyses', columns: 18, rows: 15234, hasAuditColumns: true, namingScore: 95, nullSemantics: 'documented', constraints: 12, issues: 1 },
-    { name: 'ai_responses', columns: 22, rows: 45678, hasAuditColumns: true, namingScore: 90, nullSemantics: 'partial', constraints: 10, issues: 2 },
-    { name: 'recommendations', columns: 15, rows: 89234, hasAuditColumns: true, namingScore: 88, nullSemantics: 'documented', constraints: 7, issues: 1 },
-    { name: 'subscriptions', columns: 14, rows: 2890, hasAuditColumns: true, namingScore: 100, nullSemantics: 'documented', constraints: 9, issues: 0 },
-    { name: 'feature_flags', columns: 10, rows: 24, hasAuditColumns: true, namingScore: 85, nullSemantics: 'partial', constraints: 5, issues: 1 },
-    { name: 'cron_executions', columns: 8, rows: 4567, hasAuditColumns: false, namingScore: 80, nullSemantics: 'missing', constraints: 3, issues: 3 },
-  ];
-}
-
-async function getOrphanRecords(): Promise<OrphanRecord[]> {
-  return [
-    { table: 'ai_responses', column: 'analysis_id', orphanCount: 0, lastScan: '2024-11-28T06:00:00Z', trend: 'stable' },
-    { table: 'recommendations', column: 'analysis_id', orphanCount: 0, lastScan: '2024-11-28T06:00:00Z', trend: 'stable' },
-    { table: 'feedback', column: 'user_id', orphanCount: 2, lastScan: '2024-11-28T06:00:00Z', trend: 'improving' },
-    { table: 'api_keys', column: 'user_id', orphanCount: 0, lastScan: '2024-11-28T06:00:00Z', trend: 'stable' },
-  ];
-}
-
-async function getMigrationAudit(): Promise<MigrationAudit[]> {
-  return [
-    { id: '20241128_001', name: 'Add calibration tables', appliedAt: '2024-11-28T04:00:00Z', hasRollback: true, breaking: false, status: 'success' },
-    { id: '20241127_001', name: 'Add feature flags', appliedAt: '2024-11-27T04:00:00Z', hasRollback: true, breaking: false, status: 'success' },
-    { id: '20241126_002', name: 'Migrate severity enum', appliedAt: '2024-11-26T16:30:00Z', hasRollback: true, breaking: false, status: 'success' },
-    { id: '20241126_001', name: 'Add audit columns to cron', appliedAt: '2024-11-26T04:00:00Z', hasRollback: true, breaking: false, status: 'success' },
-    { id: '20241125_001', name: 'Add RLHF tables', appliedAt: '2024-11-25T04:00:00Z', hasRollback: true, breaking: false, status: 'success' },
-  ];
 }
 
 // ================================================================
@@ -292,14 +272,7 @@ function TableHealthRow({ table }: { table: TableHealth }) {
 // ================================================================
 
 export default async function SemanticAuditPage() {
-  const [health, enums, dqRules, tables, orphans, migrations] = await Promise.all([
-    getHealthScores(),
-    getEnumStatuses(),
-    getDataQualityRules(),
-    getTableHealth(),
-    getOrphanRecords(),
-    getMigrationAudit(),
-  ]);
+  const { health, enums, dqRules, tables, orphans, migrations } = await getSemanticAuditData();
 
   const passingRules = dqRules.filter(r => r.status === 'passing').length;
   const totalOrphans = orphans.reduce((sum, o) => sum + o.orphanCount, 0);

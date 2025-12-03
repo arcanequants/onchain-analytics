@@ -62,176 +62,32 @@ interface DeadLetterItem {
 }
 
 // ================================================================
-// MOCK DATA
+// DATA FETCHING - Uses real API
 // ================================================================
 
-async function getQueues(): Promise<Queue[]> {
-  return [
-    {
-      name: 'analysis',
-      status: 'active',
-      pending: 12,
-      active: 3,
-      completed: 1542,
-      failed: 23,
-      delayed: 5,
-      throughput: 8.5,
-      avgDuration: 28500,
-      lastActivity: new Date(Date.now() - 1000 * 15).toISOString(),
-      workers: 3,
-      maxWorkers: 5,
-    },
-    {
-      name: 'monitoring',
-      status: 'active',
-      pending: 45,
-      active: 5,
-      completed: 3280,
-      failed: 12,
-      delayed: 0,
-      throughput: 15.2,
-      avgDuration: 4200,
-      lastActivity: new Date(Date.now() - 1000 * 5).toISOString(),
-      workers: 5,
-      maxWorkers: 10,
-    },
-    {
-      name: 'email',
-      status: 'active',
-      pending: 8,
-      active: 2,
-      completed: 892,
-      failed: 5,
-      delayed: 3,
-      throughput: 4.1,
-      avgDuration: 1200,
-      lastActivity: new Date(Date.now() - 1000 * 30).toISOString(),
-      workers: 2,
-      maxWorkers: 3,
-    },
-    {
-      name: 'webhooks',
-      status: 'idle',
-      pending: 0,
-      active: 0,
-      completed: 456,
-      failed: 2,
-      delayed: 0,
-      throughput: 0,
-      avgDuration: 850,
-      lastActivity: new Date(Date.now() - 1000 * 60 * 5).toISOString(),
-      workers: 1,
-      maxWorkers: 3,
-    },
-    {
-      name: 'cleanup',
-      status: 'paused',
-      pending: 0,
-      active: 0,
-      completed: 124,
-      failed: 0,
-      delayed: 0,
-      throughput: 0,
-      avgDuration: 62000,
-      lastActivity: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
-      workers: 0,
-      maxWorkers: 1,
-    },
-  ];
-}
+const API_BASE = process.env.NEXT_PUBLIC_APP_URL || 'https://vectorialdata.com';
 
-async function getRecentJobs(): Promise<Job[]> {
-  return [
-    {
-      id: 'job_001',
-      queue: 'analysis',
-      name: 'analyze_url',
-      status: 'running',
-      priority: 1,
-      attempts: 1,
-      maxAttempts: 3,
-      data: { url: 'https://example.com', userId: 'user_123' },
-      createdAt: new Date(Date.now() - 1000 * 60 * 2).toISOString(),
-      startedAt: new Date(Date.now() - 1000 * 30).toISOString(),
-    },
-    {
-      id: 'job_002',
-      queue: 'analysis',
-      name: 'analyze_url',
-      status: 'completed',
-      priority: 1,
-      attempts: 1,
-      maxAttempts: 3,
-      data: { url: 'https://acme.com', userId: 'user_456' },
-      result: 'Score: 72/100',
-      createdAt: new Date(Date.now() - 1000 * 60 * 5).toISOString(),
-      startedAt: new Date(Date.now() - 1000 * 60 * 4).toISOString(),
-      completedAt: new Date(Date.now() - 1000 * 60 * 3).toISOString(),
-      duration: 58000,
-    },
-    {
-      id: 'job_003',
-      queue: 'monitoring',
-      name: 'check_url',
-      status: 'failed',
-      priority: 2,
-      attempts: 3,
-      maxAttempts: 3,
-      data: { monitorId: 'mon_789', url: 'https://deadsite.com' },
-      error: 'ETIMEDOUT: Connection timed out after 30s',
-      createdAt: new Date(Date.now() - 1000 * 60 * 10).toISOString(),
-      startedAt: new Date(Date.now() - 1000 * 60 * 9).toISOString(),
-      completedAt: new Date(Date.now() - 1000 * 60 * 8).toISOString(),
-      duration: 30500,
-    },
-    {
-      id: 'job_004',
-      queue: 'email',
-      name: 'send_alert',
-      status: 'pending',
-      priority: 1,
-      attempts: 0,
-      maxAttempts: 3,
-      data: { to: 'user@example.com', template: 'score_change' },
-      createdAt: new Date(Date.now() - 1000 * 30).toISOString(),
-    },
-    {
-      id: 'job_005',
-      queue: 'analysis',
-      name: 'analyze_url',
-      status: 'retrying',
-      priority: 1,
-      attempts: 2,
-      maxAttempts: 3,
-      data: { url: 'https://slowsite.io', userId: 'user_999' },
-      error: 'Provider timeout - retrying',
-      createdAt: new Date(Date.now() - 1000 * 60 * 15).toISOString(),
-      startedAt: new Date(Date.now() - 1000 * 60 * 5).toISOString(),
-    },
-  ];
-}
+async function getQueueData(): Promise<{ queues: Queue[]; recentJobs: Job[]; deadLetter: DeadLetterItem[] }> {
+  try {
+    const res = await fetch(`${API_BASE}/api/admin/queues`, {
+      next: { revalidate: 30 }, // Cache for 30 seconds
+    });
 
-async function getDeadLetterQueue(): Promise<DeadLetterItem[]> {
-  return [
-    {
-      id: 'dlq_001',
-      queue: 'analysis',
-      jobName: 'analyze_url',
-      error: 'All AI providers failed after 3 retries',
-      attempts: 3,
-      lastFailedAt: new Date(Date.now() - 1000 * 60 * 30).toISOString(),
-      data: { url: 'https://blocked-by-providers.com', userId: 'user_111' },
-    },
-    {
-      id: 'dlq_002',
-      queue: 'webhooks',
-      jobName: 'send_webhook',
-      error: 'Endpoint returned 503 Service Unavailable',
-      attempts: 5,
-      lastFailedAt: new Date(Date.now() - 1000 * 60 * 60).toISOString(),
-      data: { webhookId: 'wh_222', event: 'analysis.completed' },
-    },
-  ];
+    if (!res.ok) {
+      console.error('Failed to fetch queue data:', res.status);
+      return { queues: [], recentJobs: [], deadLetter: [] };
+    }
+
+    const data = await res.json();
+    return {
+      queues: data.queues || [],
+      recentJobs: data.recentJobs || [],
+      deadLetter: data.deadLetter || [],
+    };
+  } catch (error) {
+    console.error('Error fetching queue data:', error);
+    return { queues: [], recentJobs: [], deadLetter: [] };
+  }
 }
 
 // ================================================================
@@ -435,11 +291,7 @@ function DeadLetterRow({ item }: { item: DeadLetterItem }) {
 // ================================================================
 
 export default async function QueueManagementPage() {
-  const [queues, jobs, deadLetter] = await Promise.all([
-    getQueues(),
-    getRecentJobs(),
-    getDeadLetterQueue(),
-  ]);
+  const { queues, recentJobs: jobs, deadLetter } = await getQueueData();
 
   const totalPending = queues.reduce((sum, q) => sum + q.pending, 0);
   const totalActive = queues.reduce((sum, q) => sum + q.active, 0);

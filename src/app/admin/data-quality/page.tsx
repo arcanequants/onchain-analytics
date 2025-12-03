@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 
 // ============================================================================
 // Types
@@ -26,13 +26,14 @@ interface DataQualityRule {
 interface DataQualityResult {
   id: string;
   rule_code: string;
-  rule_name: string;
+  rule_name?: string;
   status: 'pass' | 'fail' | 'error' | 'skipped';
-  executed_at: string;
-  execution_duration_ms: number;
-  rows_violated: number;
-  violation_percentage: number | null;
-  sample_violations: unknown[] | null;
+  executed_at?: string;
+  execution_duration_ms?: number;
+  rows_violated?: number;
+  rows_checked?: number;
+  violation_percentage?: number | null;
+  sample_violations?: unknown[] | null;
 }
 
 interface DataQualitySummary {
@@ -58,180 +59,18 @@ interface OrphanScan {
 }
 
 // ============================================================================
-// Mock Data
+// Default Data (used as fallback)
 // ============================================================================
 
-const MOCK_RULES: DataQualityRule[] = [
-  {
-    id: '1',
-    rule_code: 'DQ001',
-    rule_name: 'user_profiles_email_required',
-    description: 'All user profiles must have an email address',
-    rule_type: 'completeness',
-    target_table: 'user_profiles',
-    target_column: 'email',
-    severity: 'critical',
-    check_frequency: 'hourly',
-    is_enabled: true,
-    last_check_at: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
-    last_status: 'pass',
-    consecutive_failures: 0,
-    category: 'users',
-  },
-  {
-    id: '2',
-    rule_code: 'DQ005',
-    rule_name: 'perception_score_range',
-    description: 'Perception scores must be between 0 and 100',
-    rule_type: 'validity',
-    target_table: 'analyses',
-    target_column: 'perception_score',
-    severity: 'critical',
-    check_frequency: 'hourly',
-    is_enabled: true,
-    last_check_at: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
-    last_status: 'pass',
-    consecutive_failures: 0,
-    category: 'scores',
-  },
-  {
-    id: '3',
-    rule_code: 'DQ011',
-    rule_name: 'completed_at_after_created_at',
-    description: 'Completion time must be after creation time',
-    rule_type: 'consistency',
-    target_table: 'analyses',
-    target_column: null,
-    severity: 'error',
-    check_frequency: 'hourly',
-    is_enabled: true,
-    last_check_at: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
-    last_status: 'fail',
-    consecutive_failures: 2,
-    category: 'temporal',
-  },
-  {
-    id: '4',
-    rule_code: 'DQ014',
-    rule_name: 'user_email_unique',
-    description: 'User emails must be unique',
-    rule_type: 'uniqueness',
-    target_table: 'user_profiles',
-    target_column: 'email',
-    severity: 'critical',
-    check_frequency: 'hourly',
-    is_enabled: true,
-    last_check_at: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
-    last_status: 'pass',
-    consecutive_failures: 0,
-    category: 'users',
-  },
-  {
-    id: '5',
-    rule_code: 'DQ019',
-    rule_name: 'orphan_ai_responses',
-    description: 'AI responses must belong to existing analyses',
-    rule_type: 'integrity',
-    target_table: 'ai_responses',
-    target_column: 'analysis_id',
-    severity: 'error',
-    check_frequency: 'hourly',
-    is_enabled: true,
-    last_check_at: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
-    last_status: 'pass',
-    consecutive_failures: 0,
-    category: 'integrity',
-  },
-  {
-    id: '6',
-    rule_code: 'DQ022',
-    rule_name: 'provider_name_valid',
-    description: 'AI provider must be a known provider',
-    rule_type: 'accuracy',
-    target_table: 'ai_responses',
-    target_column: 'provider',
-    severity: 'error',
-    check_frequency: 'hourly',
-    is_enabled: true,
-    last_check_at: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
-    last_status: 'error',
-    consecutive_failures: 1,
-    category: 'ai',
-  },
-];
-
-const MOCK_RESULTS: DataQualityResult[] = [
-  {
-    id: '1',
-    rule_code: 'DQ001',
-    rule_name: 'user_profiles_email_required',
-    status: 'pass',
-    executed_at: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
-    execution_duration_ms: 45,
-    rows_violated: 0,
-    violation_percentage: 0,
-    sample_violations: null,
-  },
-  {
-    id: '2',
-    rule_code: 'DQ011',
-    rule_name: 'completed_at_after_created_at',
-    status: 'fail',
-    executed_at: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
-    execution_duration_ms: 120,
-    rows_violated: 3,
-    violation_percentage: 0.02,
-    sample_violations: [
-      { id: 'abc-123', created_at: '2025-01-01T10:00:00Z', completed_at: '2025-01-01T09:00:00Z' },
-    ],
-  },
-  {
-    id: '3',
-    rule_code: 'DQ022',
-    rule_name: 'provider_name_valid',
-    status: 'error',
-    executed_at: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
-    execution_duration_ms: 0,
-    rows_violated: 0,
-    violation_percentage: null,
-    sample_violations: null,
-  },
-];
-
-const MOCK_SUMMARY: DataQualitySummary = {
-  total_rules: 26,
-  passing_rules: 23,
-  failing_rules: 2,
-  error_rules: 1,
-  pass_rate: 88.46,
+const DEFAULT_SUMMARY: DataQualitySummary = {
+  total_rules: 0,
+  passing_rules: 0,
+  failing_rules: 0,
+  error_rules: 0,
+  pass_rate: 0,
   critical_failures: 0,
-  last_check: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
+  last_check: null,
 };
-
-const MOCK_ORPHAN_SCANS: OrphanScan[] = [
-  {
-    id: '1',
-    scan_id: 'scan-001',
-    source_table: 'ai_responses',
-    source_column: 'analysis_id',
-    target_table: 'analyses',
-    target_column: 'id',
-    orphan_count: 0,
-    scanned_at: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-    resolution_action: null,
-  },
-  {
-    id: '2',
-    scan_id: 'scan-001',
-    source_table: 'recommendations',
-    source_column: 'analysis_id',
-    target_table: 'analyses',
-    target_column: 'id',
-    orphan_count: 5,
-    scanned_at: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-    resolution_action: 'notified',
-  },
-];
 
 // ============================================================================
 // Helper Functions
@@ -491,13 +330,56 @@ function RuleRow({
 // ============================================================================
 
 export default function DataQualityPage() {
-  const [rules] = useState<DataQualityRule[]>(MOCK_RULES);
-  const [results] = useState<DataQualityResult[]>(MOCK_RESULTS);
-  const [summary] = useState<DataQualitySummary>(MOCK_SUMMARY);
-  const [orphanScans] = useState<OrphanScan[]>(MOCK_ORPHAN_SCANS);
+  const [rules, setRules] = useState<DataQualityRule[]>([]);
+  const [results, setResults] = useState<DataQualityResult[]>([]);
+  const [summary, setSummary] = useState<DataQualitySummary>(DEFAULT_SUMMARY);
+  const [orphanScans, setOrphanScans] = useState<OrphanScan[]>([]);
   const [selectedTab, setSelectedTab] = useState<'rules' | 'results' | 'orphans'>('rules');
   const [filterType, setFilterType] = useState<string>('all');
   const [filterSeverity, setFilterSeverity] = useState<string>('all');
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetch data from API
+  useEffect(() => {
+    async function fetchDataQuality() {
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        const res = await fetch('/api/admin/data-quality');
+
+        if (!res.ok) {
+          throw new Error(`Failed to fetch: ${res.status}`);
+        }
+
+        const data = await res.json();
+
+        setRules(data.rules || []);
+        setResults(data.results?.map((r: DataQualityResult, idx: number) => ({
+          id: String(idx),
+          rule_code: r.rule_code,
+          rule_name: r.rule_code,
+          status: r.status,
+          executed_at: new Date().toISOString(),
+          execution_duration_ms: 0,
+          rows_violated: 0,
+          rows_checked: r.rows_checked || 0,
+          violation_percentage: null,
+          sample_violations: null,
+        })) || []);
+        setSummary(data.summary || DEFAULT_SUMMARY);
+        setOrphanScans(data.orphan_scans || []);
+      } catch (err) {
+        console.error('Error fetching data quality:', err);
+        setError(err instanceof Error ? err.message : 'Unknown error');
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchDataQuality();
+  }, []);
 
   const ruleTypes = useMemo(() => {
     const types = new Set(rules.map((r) => r.rule_type));
@@ -525,6 +407,42 @@ export default function DataQualityPage() {
     console.log('Running all rules...');
     alert('Running all data quality checks...');
   };
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="p-6 max-w-7xl mx-auto">
+        <div className="animate-pulse">
+          <div className="h-8 bg-gray-200 rounded w-1/4 mb-4"></div>
+          <div className="h-4 bg-gray-200 rounded w-1/3 mb-8"></div>
+          <div className="grid grid-cols-5 gap-4 mb-6">
+            {[...Array(5)].map((_, i) => (
+              <div key={i} className="h-24 bg-gray-200 rounded-lg"></div>
+            ))}
+          </div>
+          <div className="h-64 bg-gray-200 rounded-lg"></div>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="p-6 max-w-7xl mx-auto">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+          <h2 className="text-lg font-semibold text-red-800 mb-2">Error Loading Data</h2>
+          <p className="text-red-600">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
@@ -753,11 +671,11 @@ export default function DataQualityPage() {
                     <p className="text-sm text-gray-500">{result.rule_name}</p>
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-600">
-                    {formatRelativeTime(result.executed_at)}
+                    {formatRelativeTime(result.executed_at ?? null)}
                   </td>
-                  <td className="px-4 py-3 text-sm text-gray-600">{result.execution_duration_ms}ms</td>
+                  <td className="px-4 py-3 text-sm text-gray-600">{result.execution_duration_ms ?? 0}ms</td>
                   <td className="px-4 py-3 text-sm">
-                    {result.rows_violated > 0 ? (
+                    {(result.rows_violated ?? 0) > 0 ? (
                       <span className="text-red-600 font-medium">{result.rows_violated} rows</span>
                     ) : (
                       <span className="text-gray-400">0</span>

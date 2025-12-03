@@ -42,114 +42,37 @@ interface NotificationStats {
 }
 
 // ================================================================
-// MOCK DATA
+// DATA FETCHING - Uses real API
 // ================================================================
 
-async function getNotifications(): Promise<Notification[]> {
-  return [
-    {
-      id: 'notif_001',
-      type: 'error',
-      priority: 'critical',
-      category: 'security',
-      title: 'Multiple failed login attempts detected',
-      message: '15 failed login attempts from IP 192.168.1.100 in the last 5 minutes. Consider blocking this IP.',
-      createdAt: new Date(Date.now() - 1000 * 60 * 5).toISOString(),
-      actionUrl: '/admin/security/blocked-ips',
-      actionLabel: 'Review',
-    },
-    {
-      id: 'notif_002',
-      type: 'warning',
-      priority: 'high',
-      category: 'ai',
-      title: 'OpenAI API approaching rate limit',
-      message: 'Current usage at 85% of rate limit. Consider implementing request queuing.',
-      createdAt: new Date(Date.now() - 1000 * 60 * 15).toISOString(),
-      actionUrl: '/admin/costs',
-      actionLabel: 'View Usage',
-    },
-    {
-      id: 'notif_003',
-      type: 'info',
-      priority: 'medium',
-      category: 'billing',
-      title: 'New enterprise customer signed up',
-      message: 'Acme Corp signed up for Enterprise plan. $499/month MRR added.',
-      createdAt: new Date(Date.now() - 1000 * 60 * 30).toISOString(),
-      readAt: new Date(Date.now() - 1000 * 60 * 25).toISOString(),
-      actionUrl: '/admin/users?id=acme-corp',
-      actionLabel: 'View Customer',
-    },
-    {
-      id: 'notif_004',
-      type: 'success',
-      priority: 'low',
-      category: 'ops',
-      title: 'Daily backup completed successfully',
-      message: 'Database backup completed. Size: 1.2GB. Duration: 45 seconds.',
-      createdAt: new Date(Date.now() - 1000 * 60 * 60).toISOString(),
-      readAt: new Date(Date.now() - 1000 * 60 * 55).toISOString(),
-    },
-    {
-      id: 'notif_005',
-      type: 'warning',
-      priority: 'medium',
-      category: 'user',
-      title: 'High churn risk detected',
-      message: '3 Pro users have not logged in for 14+ days. Consider sending win-back emails.',
-      createdAt: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
-      actionUrl: '/admin/users?filter=at-risk',
-      actionLabel: 'View Users',
-    },
-    {
-      id: 'notif_006',
-      type: 'info',
-      priority: 'low',
-      category: 'system',
-      title: 'Deployment successful',
-      message: 'Version 2.4.1 deployed to production. 3 commits, 2 contributors.',
-      createdAt: new Date(Date.now() - 1000 * 60 * 60 * 4).toISOString(),
-      readAt: new Date(Date.now() - 1000 * 60 * 60 * 3).toISOString(),
-      actionUrl: 'https://github.com/org/repo/releases/v2.4.1',
-      actionLabel: 'View Release',
-    },
-    {
-      id: 'notif_007',
-      type: 'alert',
-      priority: 'high',
-      category: 'ai',
-      title: 'AI drift detected in Claude responses',
-      message: 'Score variance increased by 12% compared to baseline. Review prompt performance.',
-      createdAt: new Date(Date.now() - 1000 * 60 * 60 * 6).toISOString(),
-      actionUrl: '/admin/rlhf/metrics',
-      actionLabel: 'View Metrics',
-    },
-    {
-      id: 'notif_008',
-      type: 'success',
-      priority: 'low',
-      category: 'billing',
-      title: 'Monthly invoices sent',
-      message: '127 invoices totaling $8,450 sent successfully. 0 failures.',
-      createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(),
-      readAt: new Date(Date.now() - 1000 * 60 * 60 * 23).toISOString(),
-    },
-  ];
-}
+const API_BASE = process.env.NEXT_PUBLIC_APP_URL || 'https://vectorialdata.com';
 
-async function getStats(): Promise<NotificationStats> {
-  const notifications = await getNotifications();
-  return {
-    total: notifications.length,
-    unread: notifications.filter((n) => !n.readAt).length,
-    critical: notifications.filter((n) => n.priority === 'critical').length,
-    today: notifications.filter((n) => {
-      const created = new Date(n.createdAt);
-      const today = new Date();
-      return created.toDateString() === today.toDateString();
-    }).length,
-  };
+async function getNotificationData(): Promise<{ notifications: Notification[]; stats: NotificationStats }> {
+  try {
+    const res = await fetch(`${API_BASE}/api/admin/notifications`, {
+      next: { revalidate: 30 }, // Cache for 30 seconds
+    });
+
+    if (!res.ok) {
+      console.error('Failed to fetch notification data:', res.status);
+      return {
+        notifications: [],
+        stats: { total: 0, unread: 0, critical: 0, today: 0 },
+      };
+    }
+
+    const data = await res.json();
+    return {
+      notifications: data.notifications || [],
+      stats: data.stats || { total: 0, unread: 0, critical: 0, today: 0 },
+    };
+  } catch (error) {
+    console.error('Error fetching notification data:', error);
+    return {
+      notifications: [],
+      stats: { total: 0, unread: 0, critical: 0, today: 0 },
+    };
+  }
 }
 
 // ================================================================
@@ -339,7 +262,7 @@ function StatCard({ label, value, color }: { label: string; value: number; color
 // ================================================================
 
 export default async function NotificationCenterPage() {
-  const [notifications, stats] = await Promise.all([getNotifications(), getStats()]);
+  const { notifications, stats } = await getNotificationData();
 
   // Sort by priority then by date
   const sortedNotifications = [...notifications].sort((a, b) => {

@@ -32,6 +32,8 @@ jobs:
     name: Deploy to Vercel
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    outputs:
+      url: ${{ steps.deploy.outputs.url }}
 
     environment:
       name: ${{ github.event.inputs.environment || (github.ref == 'refs/heads/main' && 'production' || 'preview') }}
@@ -91,7 +93,14 @@ jobs:
 
       - name: Check deployment health
         run: |
-          DEPLOY_URL="${{ needs.deploy.outputs.url || 'https://ai-perception.vercel.app' }}"
+          # Use the deployment URL from the deploy job
+          DEPLOY_URL="${{ needs.deploy.outputs.url }}"
+
+          if [ -z "$DEPLOY_URL" ]; then
+            echo "::error::No deployment URL available"
+            exit 1
+          fi
+
           HEALTH_URL="${DEPLOY_URL}/api/health"
 
           echo "Checking health at: $HEALTH_URL"

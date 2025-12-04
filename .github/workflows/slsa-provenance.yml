@@ -216,10 +216,17 @@ jobs:
           path: sbom.json
           retention-days: 90
 
+      - name: Calculate SBOM digest
+        id: sbom-digest
+        run: |
+          SBOM_DIGEST=$(sha256sum sbom.json | cut -d ' ' -f 1)
+          echo "digest=sha256:${SBOM_DIGEST}" >> $GITHUB_OUTPUT
+
       - name: Attest SBOM
         uses: actions/attest-sbom@v1
         with:
           subject-name: ai-perception-dependencies
+          subject-digest: ${{ steps.sbom-digest.outputs.digest }}
           sbom-path: sbom.json
 
   # ============================================================

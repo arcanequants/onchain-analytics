@@ -74,6 +74,12 @@ jobs:
       OPENAI_API_KEY: test-openai-key
       ANTHROPIC_API_KEY: test-anthropic-key
       PERPLEXITY_API_KEY: test-perplexity-key
+      # Supabase placeholders for tests
+      NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder-anon-key
+      SUPABASE_SERVICE_ROLE_KEY: placeholder-service-key
+      # Resend placeholder for tests
+      RESEND_API_KEY: re_placeholder_test_key
 
     steps:
       - name: Checkout code
@@ -206,6 +212,12 @@ jobs:
       OPENAI_API_KEY: test-openai-key
       ANTHROPIC_API_KEY: test-anthropic-key
       PERPLEXITY_API_KEY: test-perplexity-key
+      # Supabase placeholders for E2E tests
+      NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder-anon-key
+      SUPABASE_SERVICE_ROLE_KEY: placeholder-service-key
+      # Resend placeholder for E2E tests
+      RESEND_API_KEY: re_placeholder_e2e_key
 
     steps:
       - name: Checkout code

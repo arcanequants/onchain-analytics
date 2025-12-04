@@ -4,7 +4,7 @@
 No uses otro sistema de numeración. Actualiza este archivo al completar cada tarea.
 
 **Ultima Actualizacion**: 2025-12-03
-**Posicion Actual**: Phase 4, Week 9 EN PROGRESO - Platform Audit & Critical Fixes
+**Posicion Actual**: Phase 4, Week 9 EN PROGRESO - Database Cleanup & AI Perception Core Setup
 
 ---
 
@@ -1208,26 +1208,57 @@ No uses otro sistema de numeración. Actualiza este archivo al completar cada ta
 
 ---
 
-## PHASE 4: WEEK 9 - PLATFORM AUDIT & CRITICAL FIXES [IN PROGRESS]
+## PHASE 4: WEEK 9 - DATABASE CLEANUP & AI PERCEPTION CORE [IN PROGRESS]
 
 ### Fecha: 2025-12-03
-### Objetivo: Resolver issues críticos identificados en auditoría de plataforma
+### Objetivo: Limpiar proyecto de código crypto heredado y configurar tablas de AI Perception
 
 ---
 
-### PRIORIDAD ALTA: Cron Endpoints Faltantes (7 endpoints)
+### COMPLETADO: Database Cleanup (Eliminar tablas de crypto)
 
-Los siguientes cron jobs están definidos en `vercel.json` pero los endpoints **NO EXISTEN** (retornan 404):
+**IMPORTANTE**: Este proyecto es **VectorialData** (AI Perception Engineering), NO un proyecto de crypto/onchain.
 
-| Endpoint | Schedule | Status | Archivo |
-|----------|----------|--------|---------|
-| `/api/cron/collect-gas` | `* * * * *` | [x] | `src/app/api/cron/collect-gas/route.ts` |
-| `/api/cron/collect-fear-greed` | `0 * * * *` | [x] | `src/app/api/cron/collect-fear-greed/route.ts` |
-| `/api/cron/collect-events` | `0 */6 * * *` | [x] | `src/app/api/cron/collect-events/route.ts` |
-| `/api/cron/collect-prices` | `*/5 * * * *` | [x] | `src/app/api/cron/collect-prices/route.ts` |
-| `/api/cron/collect-dex` | `0 * * * *` | [x] | `src/app/api/cron/collect-dex/route.ts` |
-| `/api/cron/collect-tvl` | `0 * * * *` | [x] | `src/app/api/cron/collect-tvl/route.ts` |
-| `/api/cron/cleanup-old-data` | `0 2 * * *` | [x] | `src/app/api/cron/cleanup-old-data/route.ts` |
+| Tarea | Status | Notas |
+|-------|--------|-------|
+| Eliminar tablas crypto de Supabase | [x] | wallet_balances, wallet_nfts, wallet_history, tracked_wallets, dex_volumes, token_prices, token_price_history, trending_coins, protocol_tvl, gas_prices eliminadas |
+| Eliminar migraciones de crypto | [x] | 8 archivos .sql eliminados de supabase/migrations/ |
+| Eliminar scripts de crypto | [x] | 7 scripts eliminados de scripts/ |
+| Limpiar vercel.json de crons crypto | [x] | Removidos: collect-gas, collect-prices, collect-dex, collect-tvl, collect-fear-greed, collect-events, cleanup-old-data |
+| Actualizar PROJECT_CONFIG.md | [x] | Documentación clara de que es VectorialData, no crypto |
+
+---
+
+### COMPLETADO: AI Perception Core Tables Setup
+
+| Tabla | Status | Propósito |
+|-------|--------|-----------|
+| industries | [x] | Taxonomía de 20 industrias (SaaS, Healthcare, etc.) |
+| analyses | [x] | Registros de análisis de marca |
+| ai_responses | [x] | Respuestas individuales de proveedores AI |
+| competitors | [x] | Competidores detectados por análisis |
+| recommendations | [x] | Recomendaciones accionables |
+| ai_subscriptions | [x] | Billing con Stripe |
+| usage_tracking | [x] | Uso mensual por usuario |
+| hallucination_reports | [x] | Tracking de precisión de AI |
+| api_cost_tracking | [x] | Monitoreo de costos diarios |
+| daily_cost_summary | [x] | Resumen de costos agregados |
+
+---
+
+### REMOVIDO: Cron Endpoints de Crypto (NO APLICAN)
+
+~~Los siguientes cron jobs fueron ELIMINADOS porque eran de un proyecto crypto legacy:~~
+
+| Endpoint | Status | Razón |
+|----------|--------|-------|
+| ~~`/api/cron/collect-gas`~~ | [REMOVED] | Crypto - no aplica |
+| ~~`/api/cron/collect-fear-greed`~~ | [REMOVED] | Crypto - no aplica |
+| ~~`/api/cron/collect-events`~~ | [REMOVED] | Crypto - no aplica |
+| ~~`/api/cron/collect-prices`~~ | [REMOVED] | Crypto - no aplica |
+| ~~`/api/cron/collect-dex`~~ | [REMOVED] | Crypto - no aplica |
+| ~~`/api/cron/collect-tvl`~~ | [REMOVED] | Crypto - no aplica |
+| ~~`/api/cron/cleanup-old-data`~~ | [REMOVED] | Crypto - no aplica |
 
 ---
 

@@ -8,7 +8,8 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { NextRequest } from 'next/server';
 import { GET, OPTIONS } from './route';
-import { POST as createAnalysis, updateAnalysis, getAnalysis } from '../../route';
+import { POST as createAnalysis } from '../../route';
+import { updateAnalysisSync as updateAnalysis, getAnalysisSync as getAnalysis } from '@/lib/analysis/store';
 
 // Helper to create mock NextRequest for progress endpoint
 function createProgressRequest(analysisId: string): NextRequest {

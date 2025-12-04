@@ -8,8 +8,7 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: ['./src/test/setup.ts'],
-    // Prevent JSDOM teardown error from failing tests (known issue in Vitest 4.x)
-    // See: https://github.com/vitest-dev/vitest/issues/6028
+    // Prevent teardown errors from failing the test run
     dangerouslyIgnoreUnhandledErrors: true,
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     exclude: [

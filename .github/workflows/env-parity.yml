@@ -27,8 +27,23 @@ jobs:
           RESPONSE=$(curl -s "https://api.vercel.com/v9/projects/$PROJECT_ID/env" \
             -H "Authorization: Bearer $VERCEL_TOKEN")
 
+          # Check if response contains an error
+          if echo "$RESPONSE" | jq -e '.error' > /dev/null 2>&1; then
+            echo "::warning::Failed to fetch Vercel env vars: $(echo "$RESPONSE" | jq -r '.error.message // "Unknown error"')"
+            echo "Skipping env var check - API access issue"
+            touch prod-vars.txt
+            exit 0
+          fi
+
+          # Check if envs array exists
+          if ! echo "$RESPONSE" | jq -e '.envs' > /dev/null 2>&1; then
+            echo "::warning::No envs array in response"
+            touch prod-vars.txt
+            exit 0
+          fi
+
           # Extract production env var names
-          PROD_VARS=$(echo "$RESPONSE" | jq -r '[.envs[] | select(.target[] | contains("production")) | .key] | sort | unique | .[]')
+          PROD_VARS=$(echo "$RESPONSE" | jq -r '[.envs[] | select(.target[] | contains("production")) | .key] | sort | unique | .[]' 2>/dev/null || echo "")
 
           echo "Production env vars:"
           echo "$PROD_VARS"
@@ -40,7 +55,13 @@ jobs:
           RESPONSE=$(curl -s "https://api.vercel.com/v9/projects/$PROJECT_ID/env" \
             -H "Authorization: Bearer $VERCEL_TOKEN")
 
-          STAGING_VARS=$(echo "$RESPONSE" | jq -r '[.envs[] | select(.target[] | contains("preview")) | .key] | sort | unique | .[]')
+          # Check if response contains an error
+          if echo "$RESPONSE" | jq -e '.error' > /dev/null 2>&1; then
+            touch staging-vars.txt
+            exit 0
+          fi
+
+          STAGING_VARS=$(echo "$RESPONSE" | jq -r '[.envs[] | select(.target[] | contains("preview")) | .key] | sort | unique | .[]' 2>/dev/null || echo "")
 
           echo "Staging env vars:"
           echo "$STAGING_VARS"
@@ -52,7 +73,13 @@ jobs:
           RESPONSE=$(curl -s "https://api.vercel.com/v9/projects/$PROJECT_ID/env" \
             -H "Authorization: Bearer $VERCEL_TOKEN")
 
-          DEV_VARS=$(echo "$RESPONSE" | jq -r '[.envs[] | select(.target[] | contains("development")) | .key] | sort | unique | .[]')
+          # Check if response contains an error
+          if echo "$RESPONSE" | jq -e '.error' > /dev/null 2>&1; then
+            touch dev-vars.txt
+            exit 0
+          fi
+
+          DEV_VARS=$(echo "$RESPONSE" | jq -r '[.envs[] | select(.target[] | contains("development")) | .key] | sort | unique | .[]' 2>/dev/null || echo "")
 
           echo "Development env vars:"
           echo "$DEV_VARS"

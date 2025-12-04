@@ -92,6 +92,9 @@ jobs:
         run: sleep 30
 
       - name: Check deployment health
+        env:
+          # Determine if this is a production deployment
+          IS_PRODUCTION: ${{ (github.event.inputs.environment == 'production' || github.ref == 'refs/heads/main') && 'true' || 'false' }}
         run: |
           # Use the deployment URL from the deploy job
           DEPLOY_URL="${{ needs.deploy.outputs.url }}"
@@ -104,6 +107,7 @@ jobs:
           HEALTH_URL="${DEPLOY_URL}/api/health"
 
           echo "Checking health at: $HEALTH_URL"
+          echo "Is production deployment: $IS_PRODUCTION"
 
           RESPONSE=$(curl -s -w "\n%{http_code}" "$HEALTH_URL" || echo "failed")
           HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
@@ -111,6 +115,26 @@ jobs:
 
           echo "HTTP Code: $HTTP_CODE"
           echo "Response: $BODY"
+
+          # Handle Vercel Deployment Protection for preview deployments
+          # Preview deployments may return 401/403 due to Vercel's security feature
+          # This is expected behavior and indicates the deployment is active but protected
+          if [ "$HTTP_CODE" = "401" ] || [ "$HTTP_CODE" = "403" ]; then
+            if [ "$IS_PRODUCTION" = "true" ]; then
+              # Production should never have deployment protection blocking health checks
+              echo "::error::Production health check blocked with HTTP $HTTP_CODE"
+              exit 1
+            else
+              # Preview deployment with protection enabled - this is valid
+              echo "::notice::Preview deployment is protected by Vercel Deployment Protection (HTTP $HTTP_CODE)"
+              echo "## Health Check" >> $GITHUB_STEP_SUMMARY
+              echo "Status: Protected (Vercel Deployment Protection)" >> $GITHUB_STEP_SUMMARY
+              echo "URL: $HEALTH_URL" >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo "Note: Preview deployments are protected by Vercel. This is expected behavior." >> $GITHUB_STEP_SUMMARY
+              exit 0
+            fi
+          fi
 
           if [ "$HTTP_CODE" != "200" ]; then
             echo "::error::Health check failed with HTTP $HTTP_CODE"

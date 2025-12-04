@@ -78,10 +78,16 @@ jobs:
         id: staging-env
         run: |
           RESPONSE=$(curl -s "https://api.vercel.com/v9/projects/$PROJECT_ID/env" \
-            -H "Authorization: Bearer $VERCEL_TOKEN")
+            -H "Authorization: Bearer $VERCEL_TOKEN" || echo "")
 
-          # Check if response contains an error
-          if echo "$RESPONSE" | jq -e '.error' > /dev/null 2>&1; then
+          # Check if response is empty or contains an error
+          if [ -z "$RESPONSE" ] || echo "$RESPONSE" | jq -e '.error' > /dev/null 2>&1; then
+            touch staging-vars.txt
+            exit 0
+          fi
+
+          # Check if envs array exists
+          if ! echo "$RESPONSE" | jq -e '.envs' > /dev/null 2>&1; then
             touch staging-vars.txt
             exit 0
           fi
@@ -96,10 +102,16 @@ jobs:
         id: dev-env
         run: |
           RESPONSE=$(curl -s "https://api.vercel.com/v9/projects/$PROJECT_ID/env" \
-            -H "Authorization: Bearer $VERCEL_TOKEN")
+            -H "Authorization: Bearer $VERCEL_TOKEN" || echo "")
 
-          # Check if response contains an error
-          if echo "$RESPONSE" | jq -e '.error' > /dev/null 2>&1; then
+          # Check if response is empty or contains an error
+          if [ -z "$RESPONSE" ] || echo "$RESPONSE" | jq -e '.error' > /dev/null 2>&1; then
+            touch dev-vars.txt
+            exit 0
+          fi
+
+          # Check if envs array exists
+          if ! echo "$RESPONSE" | jq -e '.envs' > /dev/null 2>&1; then
             touch dev-vars.txt
             exit 0
           fi

@@ -33,6 +33,10 @@ if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
   process.exit(1);
 }
 
+// TypeScript type narrowing after validation
+const supabaseUrl: string = SUPABASE_URL;
+const supabaseKey: string = SUPABASE_SERVICE_KEY;
+
 async function applyMigration(migrationFile: string) {
   console.log('='.repeat(60));
   console.log('Applying Migration via Supabase REST API');
@@ -47,7 +51,7 @@ async function applyMigration(migrationFile: string) {
   }
 
   console.log(`Migration file: ${filePath}`);
-  console.log(`Supabase URL: ${SUPABASE_URL}`);
+  console.log(`Supabase URL: ${supabaseUrl}`);
   console.log('');
 
   const sql = fs.readFileSync(filePath, 'utf-8');
@@ -63,7 +67,7 @@ async function applyMigration(migrationFile: string) {
   console.log(`Found ${statements.length} SQL statements`);
   console.log('');
 
-  const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
+  const supabase = createClient(supabaseUrl, supabaseKey);
 
   let successCount = 0;
   let errorCount = 0;

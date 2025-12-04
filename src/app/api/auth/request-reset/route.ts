@@ -6,26 +6,14 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
 import { z } from 'zod'
 import { sendPasswordResetEmail } from '@/lib/resend'
+import { getSupabaseAdmin } from '@/lib/supabase'
 
 // Validation schema
 const requestResetSchema = z.object({
   email: z.string().email('Invalid email address'),
 })
-
-// Create Supabase admin client
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false,
-    },
-  }
-)
 
 export async function POST(request: NextRequest) {
   try {
@@ -44,6 +32,9 @@ export async function POST(request: NextRequest) {
     const normalizedEmail = email.toLowerCase().trim()
 
     console.log('[Request Reset] Processing request for:', normalizedEmail)
+
+    // Get lazy-initialized Supabase admin client
+    const supabaseAdmin = getSupabaseAdmin()
 
     // Check if user exists (but don't reveal this to the client)
     const { data: profile, error: profileError } = await supabaseAdmin

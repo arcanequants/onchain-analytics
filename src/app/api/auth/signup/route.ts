@@ -6,8 +6,8 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
 import { z } from 'zod'
+import { getSupabaseAdmin } from '@/lib/supabase'
 
 // Validation schema
 const signupSchema = z.object({
@@ -15,18 +15,6 @@ const signupSchema = z.object({
   password: z.string().min(6, 'Password must be at least 6 characters'),
   fullName: z.string().optional(),
 })
-
-// Create Supabase admin client with service role
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false,
-    },
-  }
-)
 
 export async function POST(request: NextRequest) {
   try {
@@ -44,6 +32,9 @@ export async function POST(request: NextRequest) {
     const { email, password, fullName } = validation.data
 
     console.log('[Signup API] Creating user:', email)
+
+    // Get lazy-initialized Supabase admin client
+    const supabaseAdmin = getSupabaseAdmin()
 
     // Step 1: Create auth user using admin client
     const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({

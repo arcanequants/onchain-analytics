@@ -18,8 +18,29 @@
 
 import { Resend } from 'resend'
 
-// Initialize Resend client
-const resend = new Resend(process.env.RESEND_API_KEY)
+/**
+ * Lazy-initialized Resend client
+ * Prevents build failures when RESEND_API_KEY is not available
+ */
+let _resend: Resend | null = null
+
+function getResendClient(): Resend {
+  if (!_resend) {
+    const apiKey = process.env.RESEND_API_KEY
+    if (!apiKey) {
+      throw new Error(
+        'Resend is not configured. Set RESEND_API_KEY environment variable.'
+      )
+    }
+    _resend = new Resend(apiKey)
+  }
+  return _resend
+}
+
+// Check if Resend is configured (useful for conditional logic)
+function isResendConfigured(): boolean {
+  return Boolean(process.env.RESEND_API_KEY)
+}
 
 // Email configuration
 const FROM_EMAIL = 'VectorialData <noreply@mail.vectorialdata.com>'
@@ -40,13 +61,14 @@ export interface EmailOptions {
 export async function sendEmail(options: EmailOptions) {
   try {
     // Check if Resend is configured
-    if (!process.env.RESEND_API_KEY) {
+    if (!isResendConfigured()) {
       console.warn('[Resend] API key not configured - email not sent')
       console.warn('[Resend] To:', options.to)
       console.warn('[Resend] Subject:', options.subject)
       return { success: true, messageId: 'dev-mode-no-email' }
     }
 
+    const resend = getResendClient()
     const { data, error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: options.to,

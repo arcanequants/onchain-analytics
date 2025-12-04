@@ -74,6 +74,8 @@ jobs:
       NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
       NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder-anon-key
       SUPABASE_SERVICE_ROLE_KEY: placeholder-service-key
+      # Resend placeholder for build
+      RESEND_API_KEY: re_placeholder_build_key
       NEXT_TELEMETRY_DISABLED: 1
 
     steps:

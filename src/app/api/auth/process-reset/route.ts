@@ -6,26 +6,14 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
 import { z } from 'zod'
+import { getSupabaseAdmin } from '@/lib/supabase'
 
 // Validation schema
 const processResetSchema = z.object({
   token: z.string().min(1, 'Reset token is required'),
   password: z.string().min(8, 'Password must be at least 8 characters'),
 })
-
-// Create Supabase admin client
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false,
-    },
-  }
-)
 
 export async function POST(request: NextRequest) {
   try {
@@ -43,6 +31,9 @@ export async function POST(request: NextRequest) {
     const { token, password } = validation.data
 
     console.log('[Process Reset] Validating token...')
+
+    // Get lazy-initialized Supabase admin client
+    const supabaseAdmin = getSupabaseAdmin()
 
     // Verify token and get user info
     const { data: tokenData, error: tokenError } = await supabaseAdmin.rpc(

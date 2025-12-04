@@ -36,35 +36,62 @@ interface ReplicaHealth {
 // CONFIGURATION
 // ================================================================
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 const REPLICA_ENABLED = process.env.ENABLE_READ_REPLICA === 'true';
+
+// Check if Supabase is configured (for build-time safety)
+const isSupabaseConfigured = Boolean(SUPABASE_URL && SUPABASE_ANON_KEY);
 
 // Health check cache duration (30 seconds)
 const HEALTH_CHECK_CACHE_MS = 30_000;
 
 // ================================================================
-// CLIENTS
+// CLIENTS (Lazy Initialization)
 // ================================================================
 
-/**
- * Primary database client (read-write)
- */
-export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-  db: { schema: 'public' },
-  global: {
-    headers: { 'x-client-info': 'ai-perception-primary' },
-  },
-});
+let _supabase: SupabaseClient | null = null;
+let _supabaseReplica: SupabaseClient | null = null;
 
 /**
- * Read replica client (read-only, for analytics)
- *
- * In Supabase, read replicas use connection pooling with read-only mode.
- * This is configured via the connection string options.
+ * Get the primary database client (read-write)
+ * Lazily initialized to prevent build failures
  */
-export const supabaseReplica: SupabaseClient = REPLICA_ENABLED
-  ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+function getPrimaryClient(): SupabaseClient {
+  if (!isSupabaseConfigured) {
+    throw new Error(
+      'Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.'
+    );
+  }
+
+  if (!_supabase) {
+    _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      db: { schema: 'public' },
+      global: {
+        headers: { 'x-client-info': 'ai-perception-primary' },
+      },
+    });
+  }
+  return _supabase;
+}
+
+/**
+ * Get the read replica client (read-only, for analytics)
+ * Lazily initialized to prevent build failures
+ */
+function getReplicaClient(): SupabaseClient {
+  if (!REPLICA_ENABLED) {
+    return getPrimaryClient();
+  }
+
+  if (!isSupabaseConfigured) {
+    throw new Error(
+      'Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.'
+    );
+  }
+
+  if (!_supabaseReplica) {
+    _supabaseReplica = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
       db: { schema: 'public' },
       global: {
         headers: {
@@ -72,8 +99,40 @@ export const supabaseReplica: SupabaseClient = REPLICA_ENABLED
           'x-connection-pool': 'replica',
         },
       },
-    })
-  : supabase; // Fallback to primary if replica not enabled
+    });
+  }
+  return _supabaseReplica;
+}
+
+/**
+ * Primary database client (read-write)
+ * Proxy for lazy initialization
+ */
+export const supabase = new Proxy({} as SupabaseClient, {
+  get(_target, prop) {
+    const client = getPrimaryClient();
+    const value = client[prop as keyof SupabaseClient];
+    if (typeof value === 'function') {
+      return value.bind(client);
+    }
+    return value;
+  },
+});
+
+/**
+ * Read replica client (read-only, for analytics)
+ * Proxy for lazy initialization
+ */
+export const supabaseReplica = new Proxy({} as SupabaseClient, {
+  get(_target, prop) {
+    const client = getReplicaClient();
+    const value = client[prop as keyof SupabaseClient];
+    if (typeof value === 'function') {
+      return value.bind(client);
+    }
+    return value;
+  },
+});
 
 // ================================================================
 // HEALTH MONITORING

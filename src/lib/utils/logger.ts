@@ -80,21 +80,27 @@ class Logger {
   private formatEntry(entry: LogEntry): string {
     if (this.config.enableStructured) {
       // Structured JSON format for production (good for log aggregation)
-      return JSON.stringify({
+      const logObject: Record<string, unknown> = {
         timestamp: entry.timestamp,
         level: entry.level,
         context: entry.context,
         message: entry.message,
-        ...(entry.data && { data: entry.data }),
-        ...(entry.error && {
-          error: {
-            name: entry.error.name,
-            message: entry.error.message,
-            // Only include stack in non-production
-            ...(!isProduction && { stack: entry.error.stack }),
-          },
-        }),
-      });
+      };
+
+      if (entry.data !== undefined) {
+        logObject.data = entry.data;
+      }
+
+      if (entry.error) {
+        logObject.error = {
+          name: entry.error.name,
+          message: entry.error.message,
+          // Only include stack in non-production
+          ...((!isProduction && entry.error.stack) ? { stack: entry.error.stack } : {}),
+        };
+      }
+
+      return JSON.stringify(logObject);
     }
 
     // Human-readable format for development

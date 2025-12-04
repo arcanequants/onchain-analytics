@@ -181,11 +181,12 @@ export async function decrypt(
   combined.set(ciphertext);
   combined.set(tag, ciphertext.length);
 
-  // Decrypt
+  // Decrypt - create new Uint8Array to ensure ArrayBuffer compatibility
+  const ivBuffer = new Uint8Array(iv).buffer;
   const plaintext = await crypto.subtle.decrypt(
     {
       name: 'AES-GCM',
-      iv,
+      iv: ivBuffer,
       tagLength: TAG_LENGTH,
     },
     key,

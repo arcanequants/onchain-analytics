@@ -214,7 +214,14 @@ export function getPreflightHeaders(origin: string | null): Record<string, strin
     return null;
   }
 
-  return corsHeaders as Record<string, string>;
+  // Convert to plain object, filtering out undefined values
+  const headers: Record<string, string> = {};
+  for (const [key, value] of Object.entries(corsHeaders)) {
+    if (value !== undefined) {
+      headers[key] = value;
+    }
+  }
+  return headers;
 }
 
 // ================================================================

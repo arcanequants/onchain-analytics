@@ -341,7 +341,7 @@ function dbRowToRecord(row: Record<string, unknown>): AnalysisRecord {
     id: String(row.id),
     url: String(row.url || ''),
     options: {
-      providers: (row.providers_queried as string[]) || ['openai', 'anthropic'],
+      providers: (row.providers_queried as ('openai' | 'anthropic')[]) || ['openai', 'anthropic'],
       queryBudget: 20,
       includeCompetitors: true,
     },

@@ -20,7 +20,6 @@ on:
 
 env:
   NODE_VERSION: '20'
-  PNPM_VERSION: '9'
 
 permissions:
   contents: read
@@ -45,19 +44,14 @@ jobs:
         with:
           fetch-depth: 0  # Full history for provenance
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: ${{ env.PNPM_VERSION }}
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
+          cache: 'npm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: Build application
         id: build
@@ -70,12 +64,12 @@ jobs:
           ANTHROPIC_API_KEY: build-placeholder
           PERPLEXITY_API_KEY: build-placeholder
         run: |
-          pnpm build
+          npm run build
 
           # Create build artifact
           ARTIFACT_NAME="ai-perception-build-${{ github.sha }}"
           mkdir -p dist
-          tar -czf dist/${ARTIFACT_NAME}.tar.gz .next package.json pnpm-lock.yaml
+          tar -czf dist/${ARTIFACT_NAME}.tar.gz .next package.json package-lock.json
 
           # Calculate SHA256 digest
           DIGEST=$(sha256sum dist/${ARTIFACT_NAME}.tar.gz | cut -d ' ' -f 1)
@@ -195,19 +189,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: ${{ env.PNPM_VERSION }}
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
+          cache: 'npm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: Generate CycloneDX SBOM
         run: |

@@ -1,51 +1,87 @@
 #!/usr/bin/env node
 
-const https = require('https');
+/**
+ * Configure Vercel Environment Variables
+ *
+ * RED TEAM AUDIT FIX: CRITICAL-002
+ * Secrets now loaded from environment variables, not hardcoded
+ *
+ * Usage:
+ *   VERCEL_TOKEN=xxx PROJECT_ID=xxx node scripts/configure-vercel-env.js
+ *
+ * Or source your .env.local first:
+ *   source .env.local && node scripts/configure-vercel-env.js
+ */
 
-const VERCEL_TOKEN = 'E4SHDXmoBXQo1v3GgJZ7azqQ';
-const PROJECT_ID = 'prj_TjGvY8Y0j2pCoE7O8amiBf7wZ8CP';
+const https = require('https');
+const path = require('path');
+
+// Load environment variables from .env.local
+require('dotenv').config({ path: path.join(__dirname, '../.env.local') });
+
+const VERCEL_TOKEN = process.env.VERCEL_TOKEN;
+const PROJECT_ID = process.env.VERCEL_PROJECT_ID;
+
+if (!VERCEL_TOKEN || !PROJECT_ID) {
+  console.error('ERROR: Missing required environment variables');
+  console.error('');
+  console.error('Required:');
+  console.error('  - VERCEL_TOKEN: Your Vercel API token');
+  console.error('  - VERCEL_PROJECT_ID: The project ID from Vercel');
+  console.error('');
+  console.error('Set these in .env.local or pass them as environment variables');
+  process.exit(1);
+}
 
 console.log('🔧 Configuring environment variables in Vercel...');
+console.log(`   Project ID: ${PROJECT_ID}`);
 console.log('');
 
+// Build env vars from current environment
 const envVars = [
   {
     key: 'NEXT_PUBLIC_SUPABASE_URL',
-    value: 'https://xkrkqntnpzkwzqkbfyex.supabase.co',
+    value: process.env.NEXT_PUBLIC_SUPABASE_URL,
     type: 'plain',
     target: ['production', 'preview', 'development']
   },
   {
     key: 'NEXT_PUBLIC_SUPABASE_ANON_KEY',
-    value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhrcmtxbnRucHprd3pxa2JmeWV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzNDgzNzMsImV4cCI6MjA3ODkyNDM3M30.szioW9K48P4KKw_BmhmH-Kj7mNGZekEB2WFv1bM317M',
+    value: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     type: 'plain',
     target: ['production', 'preview', 'development']
   },
   {
+    key: 'SUPABASE_SERVICE_ROLE_KEY',
+    value: process.env.SUPABASE_SERVICE_ROLE_KEY,
+    type: 'secret',
+    target: ['production', 'preview', 'development']
+  },
+  {
     key: 'DATABASE_URL',
-    value: 'postgresql://postgres:muxmos-toxqoq-8dyCfi@db.xkrkqntnpzkwzqkbfyex.supabase.co:5432/postgres',
+    value: process.env.DATABASE_URL,
     type: 'secret',
     target: ['production', 'preview', 'development']
   },
   {
     key: 'CRON_SECRET',
-    value: 'L+e90h3WQtfGF0I/P/dTuKAVA0S9q5IZ7Nb3hiu9rsI=',
+    value: process.env.CRON_SECRET,
     type: 'secret',
     target: ['production', 'preview', 'development']
   },
   {
     key: 'SENTRY_DSN',
-    value: 'https://bc6e1a96e8cef9873aa7ab8f4196a26e@o4510379533860864.ingest.us.sentry.io/4510379538710528',
+    value: process.env.SENTRY_DSN,
     type: 'plain',
     target: ['production', 'preview', 'development']
   },
   {
     key: 'NEXT_PUBLIC_SENTRY_DSN',
-    value: 'https://bc6e1a96e8cef9873aa7ab8f4196a26e@o4510379533860864.ingest.us.sentry.io/4510379538710528',
+    value: process.env.NEXT_PUBLIC_SENTRY_DSN,
     type: 'plain',
     target: ['production', 'preview', 'development']
   }
-];
+].filter(env => env.value); // Only include vars that have values
 
 let completed = 0;
 

@@ -4,8 +4,14 @@
  * Phase 1, Week 1, Day 1
  * Based on EXECUTIVE-ROADMAP-BCG.md Section 2.4
  *
+ * RED TEAM AUDIT FIX: MEDIUM-001
+ * Enhanced SSRF protection for edge cases
+ *
  * Security features:
  * - SSRF protection (blocks internal IPs, localhost, metadata endpoints)
+ * - IPv6 SSRF protection (all variations and encodings)
+ * - DNS rebinding protection (blocks suspicious TLDs and patterns)
+ * - IP encoding bypass protection (decimal, octal, hex)
  * - Protocol validation (only http/https)
  * - Domain validation (blocks known malicious patterns)
  * - URL normalization and sanitization
@@ -70,6 +76,43 @@ const BLOCKED_HOSTNAME_PATTERNS = [
   /\.private$/i,
   /^kubernetes\.default/i,
   /^metadata\./i,
+  // DNS rebinding protection - suspicious TLDs
+  /\.xip\.io$/i,
+  /\.nip\.io$/i,
+  /\.sslip\.io$/i,
+  /\.localtest\.me$/i,
+  /\.lvh\.me$/i,
+  /\.vcap\.me$/i,
+  /\.lacolhost\.com$/i,
+  /\.127-0-0-1\.org$/i,
+  // Additional internal patterns
+  /\.cluster\.local$/i,
+  /\.svc\.cluster/i,
+  /\.pod\.cluster/i,
+];
+
+/**
+ * IPv6 blocked patterns for comprehensive SSRF protection
+ */
+const BLOCKED_IPV6_PATTERNS = [
+  /^::1$/i,                         // Loopback
+  /^::$/,                           // Unspecified
+  /^::ffff:127\./i,                 // IPv4-mapped loopback
+  /^::ffff:10\./i,                  // IPv4-mapped 10.x
+  /^::ffff:172\.(1[6-9]|2[0-9]|3[0-1])\./i,  // IPv4-mapped 172.16-31.x
+  /^::ffff:192\.168\./i,            // IPv4-mapped 192.168.x
+  /^::ffff:169\.254\./i,            // IPv4-mapped link-local
+  /^fe80:/i,                        // Link-local unicast
+  /^fc00:/i,                        // Unique local (private)
+  /^fd[0-9a-f]{2}:/i,               // Unique local (private)
+  /^ff[0-9a-f]{2}:/i,               // Multicast
+  /^::ffff:0\./i,                   // IPv4-mapped 0.x
+  /^2001:db8:/i,                    // Documentation
+  /^100::/i,                        // Discard
+  /^64:ff9b::/i,                    // NAT64
+  // Compressed variations of ::1
+  /^0:0:0:0:0:0:0:1$/i,
+  /^0000:0000:0000:0000:0000:0000:0000:0001$/i,
 ];
 
 /**
@@ -115,19 +158,121 @@ export interface URLValidationOptions {
 // ================================================================
 
 /**
+ * Decode IP address from various encodings (decimal, octal, hex)
+ * Attackers use these to bypass simple regex checks
+ */
+function decodeIPAddress(hostname: string): string | null {
+  // Check for decimal encoding (e.g., 2130706433 = 127.0.0.1)
+  if (/^\d{9,10}$/.test(hostname)) {
+    const num = parseInt(hostname, 10);
+    if (num >= 0 && num <= 4294967295) {
+      const octet1 = (num >>> 24) & 255;
+      const octet2 = (num >>> 16) & 255;
+      const octet3 = (num >>> 8) & 255;
+      const octet4 = num & 255;
+      return `${octet1}.${octet2}.${octet3}.${octet4}`;
+    }
+  }
+
+  // Check for hex encoding (e.g., 0x7f000001 = 127.0.0.1)
+  if (/^0x[0-9a-f]{1,8}$/i.test(hostname)) {
+    const num = parseInt(hostname, 16);
+    if (num >= 0 && num <= 4294967295) {
+      const octet1 = (num >>> 24) & 255;
+      const octet2 = (num >>> 16) & 255;
+      const octet3 = (num >>> 8) & 255;
+      const octet4 = num & 255;
+      return `${octet1}.${octet2}.${octet3}.${octet4}`;
+    }
+  }
+
+  // Check for octal encoding in dotted format (e.g., 0177.0.0.1 = 127.0.0.1)
+  if (/^0[0-7]+\./.test(hostname)) {
+    const parts = hostname.split('.');
+    if (parts.length === 4) {
+      const octets = parts.map(p => {
+        if (p.startsWith('0') && p.length > 1 && !/[89]/.test(p)) {
+          return parseInt(p, 8);
+        }
+        return parseInt(p, 10);
+      });
+      if (octets.every(o => o >= 0 && o <= 255)) {
+        return octets.join('.');
+      }
+    }
+  }
+
+  // Check for mixed hex octet encoding (e.g., 0x7f.0.0.1)
+  if (/^0x[0-9a-f]+\./i.test(hostname)) {
+    const parts = hostname.split('.');
+    if (parts.length === 4) {
+      const octets = parts.map(p => {
+        if (p.toLowerCase().startsWith('0x')) {
+          return parseInt(p, 16);
+        }
+        return parseInt(p, 10);
+      });
+      if (octets.every(o => o >= 0 && o <= 255)) {
+        return octets.join('.');
+      }
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Normalize IPv6 address to detect variations
+ */
+function normalizeIPv6(hostname: string): string {
+  // Remove brackets if present
+  let normalized = hostname.replace(/^\[|\]$/g, '');
+
+  // Expand :: to full zeros
+  if (normalized.includes('::')) {
+    const parts = normalized.split('::');
+    const left = parts[0] ? parts[0].split(':') : [];
+    const right = parts[1] ? parts[1].split(':') : [];
+    const missing = 8 - left.length - right.length;
+    const middle = Array(missing).fill('0');
+    normalized = [...left, ...middle, ...right].join(':');
+  }
+
+  return normalized.toLowerCase();
+}
+
+/**
  * Check if an IP address is blocked (internal/private)
  */
 function isBlockedIP(hostname: string): boolean {
-  // Check against blocked IP patterns
+  // First, try to decode encoded IP addresses
+  const decodedIP = decodeIPAddress(hostname);
+  const hostnameToCheck = decodedIP || hostname;
+
+  // Check against blocked IPv4 patterns
   for (const pattern of BLOCKED_IP_PATTERNS) {
-    if (pattern.test(hostname)) {
+    if (pattern.test(hostnameToCheck)) {
+      return true;
+    }
+  }
+
+  // Check for IPv6 patterns
+  const normalizedIPv6 = normalizeIPv6(hostnameToCheck);
+  for (const pattern of BLOCKED_IPV6_PATTERNS) {
+    if (pattern.test(hostnameToCheck) || pattern.test(normalizedIPv6)) {
       return true;
     }
   }
 
   // Check for IPv6 localhost variations
-  if (hostname.includes('::1') || hostname === '::') {
+  if (hostnameToCheck.includes('::1') || hostnameToCheck === '::') {
     return true;
+  }
+
+  // Check if it's a bracketed IPv6 that contains blocked patterns
+  if (hostname.startsWith('[') && hostname.endsWith(']')) {
+    const innerIP = hostname.slice(1, -1);
+    return isBlockedIP(innerIP);
   }
 
   return false;

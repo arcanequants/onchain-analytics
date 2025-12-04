@@ -4,7 +4,8 @@ const { withSentryConfig } = require("@sentry/nextjs");
 const nextConfig = {
   reactStrictMode: true,
 
-  // Security Headers
+  // RED TEAM AUDIT FIX: LOW-001
+  // Enhanced Security Headers
   async headers() {
     return [
       {
@@ -33,7 +34,7 @@ const nextConfig = {
           // Permissions policy (restrict browser features)
           {
             key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()'
+            value: 'camera=(), microphone=(), geolocation=(), interest-cohort=(), accelerometer=(), gyroscope=(), magnetometer=(), payment=(), usb=()'
           },
           // Content Security Policy (CSP)
           {
@@ -47,13 +48,29 @@ const nextConfig = {
               "connect-src 'self' https://*.supabase.co https://www.google-analytics.com https://vitals.vercel-insights.com wss://*.supabase.co https://*.alchemy.com https://*.infura.io https://mainnet.base.org https://arb1.arbitrum.io https://mainnet.optimism.io https://polygon-rpc.com",
               "frame-src 'self' https://www.google.com",
               "base-uri 'self'",
-              "form-action 'self'"
+              "form-action 'self'",
+              "frame-ancestors 'none'",
+              "upgrade-insecure-requests"
             ].join('; ')
           },
           // Strict Transport Security (HTTPS only)
           {
             key: 'Strict-Transport-Security',
             value: 'max-age=31536000; includeSubDomains; preload'
+          },
+          // Cross-Origin headers for isolation
+          {
+            key: 'Cross-Origin-Opener-Policy',
+            value: 'same-origin'
+          },
+          {
+            key: 'Cross-Origin-Resource-Policy',
+            value: 'same-origin'
+          },
+          // Cache control for sensitive pages
+          {
+            key: 'Cache-Control',
+            value: 'no-store, max-age=0'
           }
         ]
       },

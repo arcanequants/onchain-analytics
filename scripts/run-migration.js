@@ -2,6 +2,9 @@
  * Run SQL Migration via Supabase
  * Phase 1, Week 1, Day 1
  *
+ * RED TEAM AUDIT FIX: CRITICAL-002
+ * Secrets now loaded from environment variables
+ *
  * Usage: node scripts/run-migration.js
  */
 
@@ -9,8 +12,18 @@ const { createClient } = require('@supabase/supabase-js');
 const fs = require('fs');
 const path = require('path');
 
-const SUPABASE_URL = 'https://xkrkqntnpzkwzqkbfyex.supabase.co';
-const SUPABASE_SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhrcmtxbnRucHprd3pxa2JmeWV4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MzM0ODM3MywiZXhwIjoyMDc4OTI0MzczfQ.MP3KudtKW2fiIOM0TxR-bhxtihi3k4z0vnyf7_NS_4c';
+// Load environment variables from .env.local
+require('dotenv').config({ path: path.join(__dirname, '../.env.local') });
+
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
+  console.error('ERROR: Missing required environment variables');
+  console.error('Required: NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY');
+  console.error('Configure these in .env.local');
+  process.exit(1);
+}
 
 async function runMigration() {
   console.log('🚀 Starting AI Perception Core Migration...\n');
@@ -42,12 +55,9 @@ async function runMigration() {
 
   console.log('\n⚠️  IMPORTANT: Complex DDL migrations must be run via Supabase Dashboard SQL Editor');
   console.log('\n📋 Steps to apply migration:');
-  console.log('   1. Open: https://supabase.com/dashboard/project/xkrkqntnpzkwzqkbfyex/sql');
+  console.log('   1. Open the Supabase SQL Editor');
   console.log('   2. Copy contents of: supabase/migrations/20251127_ai_perception_core.sql');
   console.log('   3. Paste into SQL Editor and click "Run"\n');
-
-  console.log('🔗 Direct link to SQL Editor:');
-  console.log('   https://supabase.com/dashboard/project/xkrkqntnpzkwzqkbfyex/sql/new\n');
 
   // Let's verify what tables currently exist
   const { data: tables, error: tablesError } = await supabase

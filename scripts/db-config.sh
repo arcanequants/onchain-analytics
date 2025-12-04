@@ -3,6 +3,9 @@
 # DATABASE CONFIGURATION FOR ONCHAIN-ANALYTICS
 # ================================================================
 #
+# RED TEAM AUDIT FIX: CRITICAL-002
+# Secrets removed - now loaded from .env.local
+#
 # THIS IS THE CORRECT CONFIGURATION FOR THIS PROJECT
 # Project: onchain-analytics (vectorialdata.com)
 # Supabase Project ID: xkrkqntnpzkwzqkbfyex
@@ -10,26 +13,59 @@
 # DO NOT USE crypto-lotto credentials (fjxbuyxephlfoivcpckd)
 # ================================================================
 
-# Supabase Project Configuration
-export SUPABASE_PROJECT_ID="xkrkqntnpzkwzqkbfyex"
-export SUPABASE_URL="https://xkrkqntnpzkwzqkbfyex.supabase.co"
+# Load secrets from .env.local if it exists
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ENV_FILE="$SCRIPT_DIR/../.env.local"
+
+if [ -f "$ENV_FILE" ]; then
+  export $(grep -v '^#' "$ENV_FILE" | xargs)
+else
+  echo "WARNING: .env.local not found at $ENV_FILE"
+  echo "Please ensure environment variables are set manually"
+fi
+
+# Supabase Project Configuration (non-sensitive)
+export SUPABASE_PROJECT_ID="${SUPABASE_PROJECT_ID:-xkrkqntnpzkwzqkbfyex}"
+export SUPABASE_URL="${NEXT_PUBLIC_SUPABASE_URL:-https://xkrkqntnpzkwzqkbfyex.supabase.co}"
 
 # Database Connection (Pooler - Transaction Mode)
-export DB_HOST="aws-0-us-west-1.pooler.supabase.com"
-export DB_PORT="6543"
-export DB_NAME="postgres"
-export DB_USER="postgres.xkrkqntnpzkwzqkbfyex"
+export DB_HOST="${DB_HOST:-aws-0-us-west-1.pooler.supabase.com}"
+export DB_PORT="${DB_PORT:-6543}"
+export DB_NAME="${DB_NAME:-postgres}"
+export DB_USER="${DB_USER:-postgres.xkrkqntnpzkwzqkbfyex}"
 
 # Direct Connection (for migrations that need session mode)
-export DB_DIRECT_HOST="db.xkrkqntnpzkwzqkbfyex.supabase.co"
-export DB_DIRECT_PORT="5432"
+export DB_DIRECT_HOST="${DB_DIRECT_HOST:-db.xkrkqntnpzkwzqkbfyex.supabase.co}"
+export DB_DIRECT_PORT="${DB_DIRECT_PORT:-5432}"
 
-# API Keys (from .env.local)
-export SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhrcmtxbnRucHprd3pxa2JmeWV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzNDgzNzMsImV4cCI6MjA3ODkyNDM3M30.szioW9K48P4KKw_BmhmH-Kj7mNGZekEB2WFv1bM317M"
-export SUPABASE_SERVICE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhrcmtxbnRucHprd3pxa2JmeWV4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MzM0ODM3MywiZXhwIjoyMDc4OTI0MzczfQ.MP3KudtKW2fiIOM0TxR-bhxtihi3k4z0vnyf7_NS_4c"
+# API Keys (loaded from .env.local)
+export SUPABASE_ANON_KEY="${NEXT_PUBLIC_SUPABASE_ANON_KEY:-}"
+export SUPABASE_SERVICE_KEY="${SUPABASE_SERVICE_ROLE_KEY:-}"
 
-# Database Password (from .env.local DATABASE_URL)
-export DB_PASSWORD="muxmos-toxqoq-8dyCfi"
+# Database Password (extracted from DATABASE_URL if not set directly)
+if [ -z "$DB_PASSWORD" ] && [ -n "$DATABASE_URL" ]; then
+  DB_PASSWORD=$(echo "$DATABASE_URL" | sed -n 's/.*:\/\/[^:]*:\([^@]*\)@.*/\1/p')
+fi
+export DB_PASSWORD
+
+# Validate that required secrets are present
+validate_secrets() {
+  local missing=0
+  if [ -z "$SUPABASE_SERVICE_KEY" ]; then
+    echo "ERROR: SUPABASE_SERVICE_ROLE_KEY not set"
+    missing=1
+  fi
+  if [ -z "$DB_PASSWORD" ]; then
+    echo "ERROR: DB_PASSWORD not set (check DATABASE_URL in .env.local)"
+    missing=1
+  fi
+  if [ $missing -eq 1 ]; then
+    echo ""
+    echo "Please configure secrets in .env.local"
+    return 1
+  fi
+  return 0
+}
 
 # Supabase Dashboard URLs
 export DASHBOARD_URL="https://supabase.com/dashboard/project/xkrkqntnpzkwzqkbfyex"

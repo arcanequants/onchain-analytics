@@ -3,6 +3,9 @@
  *
  * Phase 1, Week 1, Day 6
  * POST /api/analyze - Start a new AI perception analysis
+ *
+ * RED TEAM AUDIT FIX: CRITICAL-001
+ * Now requires authentication (JWT or API key)
  */
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -14,6 +17,7 @@ import {
   setAnalysisSync as setAnalysis,
   type AnalysisRecord,
 } from '@/lib/analysis/store';
+import { withAuth, type AuthenticatedRequest } from '@/lib/middleware/auth';
 
 // ================================================================
 // TYPES & VALIDATION
@@ -42,8 +46,11 @@ interface AnalyzeErrorResponse {
 // ROUTE HANDLER
 // ================================================================
 
-export async function POST(request: NextRequest) {
+async function handlePost(request: AuthenticatedRequest) {
   try {
+    // User/API key is available from auth middleware
+    const userId = request.user?.id || request.apiKey?.owner_id;
+
     // Parse request body
     const body = await request.json().catch(() => ({}));
 
@@ -94,7 +101,7 @@ export async function POST(request: NextRequest) {
       updatedAt: now,
     };
 
-    // Store analysis (in-memory for now)
+    // Store analysis (with user association)
     setAnalysis(analysisId, analysisRecord);
 
     // Return success with progress URL
@@ -122,6 +129,14 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+// Apply authentication middleware
+// Allows both JWT (users) and API keys (programmatic access)
+export const POST = withAuth(handlePost, {
+  allowApiKey: true,
+  scopes: ['analyze:write', 'write'],
+  auditLog: true,
+});
 
 // ================================================================
 // OPTIONS (CORS preflight)

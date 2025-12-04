@@ -1,15 +1,37 @@
 /**
  * Apply SQL Migration via Supabase REST API
  *
+ * RED TEAM AUDIT FIX: CRITICAL-002
+ * Secrets now loaded from environment variables
+ *
  * Usage: npx ts-node scripts/apply-migration-rest.ts <migration-file>
+ *
+ * Required environment variables:
+ * - NEXT_PUBLIC_SUPABASE_URL (or SUPABASE_URL)
+ * - SUPABASE_SERVICE_ROLE_KEY
  */
 
 import { createClient } from '@supabase/supabase-js';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as dotenv from 'dotenv';
 
-const SUPABASE_URL = 'https://xkrkqntnpzkwzqkbfyex.supabase.co';
-const SUPABASE_SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhrcmtxbnRucHprd3pxa2JmeWV4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MzM0ODM3MywiZXhwIjoyMDc4OTI0MzczfQ.MP3KudtKW2fiIOM0TxR-bhxtihi3k4z0vnyf7_NS_4c';
+// Load environment variables from .env.local
+dotenv.config({ path: '.env.local' });
+
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
+  console.error('ERROR: Missing required environment variables');
+  console.error('');
+  console.error('Required:');
+  console.error('  - NEXT_PUBLIC_SUPABASE_URL or SUPABASE_URL');
+  console.error('  - SUPABASE_SERVICE_ROLE_KEY');
+  console.error('');
+  console.error('Create a .env.local file with these values or set them in your environment.');
+  process.exit(1);
+}
 
 async function applyMigration(migrationFile: string) {
   console.log('='.repeat(60));
@@ -77,8 +99,7 @@ async function applyMigration(migrationFile: string) {
   console.log('');
   console.log('Note: Some "errors" may be expected (e.g., dropping non-existent objects)');
   console.log('');
-  console.log('To verify, check the Supabase dashboard:');
-  console.log('  https://supabase.com/dashboard/project/xkrkqntnpzkwzqkbfyex/editor');
+  console.log('To verify, check the Supabase dashboard.');
 }
 
 // Get migration file from command line

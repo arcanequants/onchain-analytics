@@ -24,8 +24,33 @@ jobs:
       - name: Get Production Env Vars
         id: prod-env
         run: |
+          # Debug: Check if secrets are set
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "::warning::VERCEL_TOKEN is not set"
+            touch prod-vars.txt
+            exit 0
+          fi
+
+          if [ -z "$PROJECT_ID" ]; then
+            echo "::warning::PROJECT_ID is not set"
+            touch prod-vars.txt
+            exit 0
+          fi
+
+          echo "Fetching env vars for project: $PROJECT_ID"
+
           RESPONSE=$(curl -s "https://api.vercel.com/v9/projects/$PROJECT_ID/env" \
-            -H "Authorization: Bearer $VERCEL_TOKEN")
+            -H "Authorization: Bearer $VERCEL_TOKEN" || echo "")
+
+          # Check if response is empty
+          if [ -z "$RESPONSE" ]; then
+            echo "::warning::Empty response from Vercel API"
+            touch prod-vars.txt
+            exit 0
+          fi
+
+          # Debug: Show response structure (without sensitive data)
+          echo "Response received, checking structure..."
 
           # Check if response contains an error
           if echo "$RESPONSE" | jq -e '.error' > /dev/null 2>&1; then

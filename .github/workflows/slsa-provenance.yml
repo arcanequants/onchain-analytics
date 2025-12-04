@@ -206,7 +206,8 @@ jobs:
 
       - name: Generate CycloneDX SBOM
         run: |
-          npx @cyclonedx/cyclonedx-npm --output-file sbom.json --output-format json
+          # Use --ignore-npm-errors to handle React 19 peer dependency warnings
+          npx @cyclonedx/cyclonedx-npm --ignore-npm-errors --output-file sbom.json --output-format json
           echo "SBOM generated successfully"
 
       - name: Upload SBOM

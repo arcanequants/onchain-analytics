@@ -23,5 +23,19 @@
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules", "**/*.stories.tsx", "**/*.stories.ts", ".storybook"]
+  "exclude": [
+    "node_modules",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "**/*.stories.tsx",
+    "**/*.stories.ts",
+    ".storybook",
+    "tests/**/*",
+    "src/**/__tests__/**/*",
+    "vitest.config.ts",
+    "vitest.integration.config.ts",
+    "playwright.config.ts"
+  ]
 }

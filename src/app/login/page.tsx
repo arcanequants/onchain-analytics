@@ -122,7 +122,7 @@ function LoginForm() {
           </h2>
           <p style={{ fontSize: '14px', color: '#888', margin: 0 }}>
             {mode === 'login' && 'Sign in to access your dashboard'}
-            {mode === 'signup' && 'Get started with crypto analytics'}
+            {mode === 'signup' && 'Discover how AI perceives your brand'}
             {mode === 'reset' && 'Enter your email to reset password'}
           </p>
         </div>

@@ -11,7 +11,7 @@ import {
   createSSEResponse,
   type AnalysisStage,
 } from '@/lib/sse';
-import { getAnalysis, updateAnalysis } from '@/lib/analysis/store';
+import { getAnalysisSync as getAnalysis, updateAnalysisSync as updateAnalysis } from '@/lib/analysis/store';
 
 // ================================================================
 // TYPES
@@ -165,14 +165,9 @@ export async function GET(
 // OPTIONS (CORS preflight)
 // ================================================================
 
-export async function OPTIONS() {
-  return new Response(null, {
-    status: 204,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-      'Access-Control-Max-Age': '86400',
-    },
-  });
+import { createPreflightResponse } from '@/lib/security/cors';
+
+export async function OPTIONS(request: NextRequest) {
+  const origin = request.headers.get('origin');
+  return createPreflightResponse(origin);
 }

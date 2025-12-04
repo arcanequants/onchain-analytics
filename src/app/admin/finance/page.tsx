@@ -666,7 +666,7 @@ export default async function FinanceDashboardPage() {
         <footer className="pt-6 border-t border-gray-800">
           <div className="flex justify-between text-sm text-gray-500">
             <span>Data from real financial snapshots • Last updated: {new Date().toLocaleTimeString()}</span>
-            <span>Onchain Analytics Finance</span>
+            <span>Vectorial Data Finance</span>
           </div>
         </footer>
       </div>

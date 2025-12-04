@@ -49,47 +49,60 @@ interface DashboardData {
 }
 
 // ================================================================
-// MOCK DATA (Replace with real API calls)
+// API HELPER
 // ================================================================
 
-const MOCK_ANALYSES: Analysis[] = [
-  {
-    id: '1',
-    url: 'https://example.com',
-    domain: 'example.com',
-    score: 78,
-    status: 'completed',
-    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 2), // 2 hours ago
-    providers: { openai: 82, anthropic: 75, google: 79, perplexity: 76 },
-  },
-  {
-    id: '2',
-    url: 'https://acme.io',
-    domain: 'acme.io',
-    score: 65,
-    status: 'completed',
-    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24), // 1 day ago
-    providers: { openai: 70, anthropic: 62, google: 65, perplexity: 63 },
-  },
-  {
-    id: '3',
-    url: 'https://startup.dev',
-    domain: 'startup.dev',
-    score: 45,
-    status: 'completed',
-    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 48), // 2 days ago
-    providers: { openai: 50, anthropic: 42, google: 45, perplexity: 43 },
-  },
-];
+async function fetchUserDashboardData(): Promise<DashboardData | null> {
+  try {
+    const response = await fetch('/api/user/analyses?limit=10');
 
-const MOCK_USAGE: UsageData = {
-  periodStart: new Date(Date.now() - 1000 * 60 * 60 * 24 * 15),
-  periodEnd: new Date(Date.now() + 1000 * 60 * 60 * 24 * 15),
-  analysesUsed: 3,
-  lastAnalysisAt: new Date(Date.now() - 1000 * 60 * 60 * 2),
-  monitoredUrls: 0,
-  apiCallsUsed: 0,
-};
+    if (!response.ok) {
+      if (response.status === 401) {
+        // User not logged in - show empty state
+        return null;
+      }
+      throw new Error('Failed to fetch data');
+    }
+
+    const json = await response.json();
+
+    if (!json.success) {
+      throw new Error(json.error || 'Unknown error');
+    }
+
+    const { analyses, totalCount, avgScore, usage, plan } = json.data;
+
+    // Transform dates from strings
+    const transformedAnalyses: Analysis[] = analyses.map((a: Record<string, unknown>) => ({
+      ...a,
+      createdAt: new Date(a.createdAt as string),
+    }));
+
+    const transformedUsage: UsageData = {
+      periodStart: new Date(usage.periodStart),
+      periodEnd: new Date(usage.periodEnd),
+      analysesUsed: usage.analysesUsed,
+      lastAnalysisAt: usage.lastAnalysisAt ? new Date(usage.lastAnalysisAt) : undefined,
+      monitoredUrls: usage.monitoredUrls,
+      apiCallsUsed: usage.apiCallsUsed,
+    };
+
+    // Calculate score trend (simplified - would need historical data)
+    const scoreTrend = 0; // TODO: Calculate from historical data
+
+    return {
+      analyses: transformedAnalyses,
+      totalAnalyses: totalCount,
+      avgScore,
+      scoreTrend,
+      usage: transformedUsage,
+      plan: plan as PlanTier,
+    };
+  } catch (error) {
+    console.error('Error fetching dashboard data:', error);
+    return null;
+  }
+}
 
 // ================================================================
 // COMPONENTS
@@ -343,7 +356,7 @@ function QuickActions({ canAnalyze }: { canAnalyze: boolean }) {
       </Link>
 
       <Link
-        href="/compare"
+        href="/pricing"
         className="p-4 bg-gray-800/50 border border-gray-700 rounded-lg hover:bg-gray-800 transition-colors text-center"
       >
         <div className="w-10 h-10 mx-auto mb-2 bg-green-500/20 rounded-lg flex items-center justify-center">
@@ -351,33 +364,31 @@ function QuickActions({ canAnalyze }: { canAnalyze: boolean }) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
           </svg>
         </div>
-        <span className="text-white text-sm font-medium">Compare</span>
+        <span className="text-white text-sm font-medium">Upgrade</span>
       </Link>
 
       <Link
-        href="/monitoring"
+        href="/help"
         className="p-4 bg-gray-800/50 border border-gray-700 rounded-lg hover:bg-gray-800 transition-colors text-center"
       >
         <div className="w-10 h-10 mx-auto mb-2 bg-purple-500/20 rounded-lg flex items-center justify-center">
           <svg className="w-5 h-5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
         </div>
-        <span className="text-white text-sm font-medium">Monitoring</span>
+        <span className="text-white text-sm font-medium">Help</span>
       </Link>
 
       <Link
-        href="/settings"
+        href="/faq"
         className="p-4 bg-gray-800/50 border border-gray-700 rounded-lg hover:bg-gray-800 transition-colors text-center"
       >
         <div className="w-10 h-10 mx-auto mb-2 bg-gray-500/20 rounded-lg flex items-center justify-center">
           <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
         </div>
-        <span className="text-white text-sm font-medium">Settings</span>
+        <span className="text-white text-sm font-medium">FAQ</span>
       </Link>
     </div>
   );
@@ -482,20 +493,14 @@ export default function DashboardPage() {
   const [data, setData] = useState<DashboardData | null>(null);
 
   useEffect(() => {
-    // Simulate loading data
-    const timer = setTimeout(() => {
-      setData({
-        analyses: MOCK_ANALYSES,
-        totalAnalyses: 15,
-        avgScore: 63,
-        scoreTrend: 5,
-        usage: MOCK_USAGE,
-        plan: 'free' as PlanTier,
-      });
+    // Fetch real data from API
+    async function loadData() {
+      const dashboardData = await fetchUserDashboardData();
+      setData(dashboardData);
       setIsLoading(false);
-    }, 500);
+    }
 
-    return () => clearTimeout(timer);
+    loadData();
   }, []);
 
   if (isLoading) {
@@ -575,9 +580,9 @@ export default function DashboardPage() {
           <div className="lg:col-span-2 bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden">
             <div className="p-4 border-b border-gray-700 flex items-center justify-between">
               <h2 className="text-lg font-semibold text-white">Recent Analyses</h2>
-              <Link href="/analyses" className="text-indigo-400 hover:text-indigo-300 text-sm">
-                View All
-              </Link>
+              <span className="text-gray-500 text-sm">
+                {data.totalAnalyses} total
+              </span>
             </div>
             <AnalysisHistory
               analyses={analyses}

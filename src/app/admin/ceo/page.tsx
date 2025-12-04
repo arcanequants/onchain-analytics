@@ -686,7 +686,7 @@ export default async function CEODashboardPage() {
         <footer className="mt-12 pt-6 border-t border-gray-800">
           <div className="flex justify-between text-sm text-gray-500">
             <span>Data from real sources • Last updated: {new Date().toLocaleTimeString()}</span>
-            <span>Onchain Analytics Admin</span>
+            <span>Vectorial Data Admin</span>
           </div>
         </footer>
       </div>

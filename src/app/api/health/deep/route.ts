@@ -442,33 +442,14 @@ async function checkResend(): Promise<ServiceCheck> {
 }
 
 // ============================================================================
-// CIRCUIT BREAKER STATUS (mock - would integrate with actual circuit breakers)
+// CIRCUIT BREAKER STATUS (connected to real circuit breakers)
 // ============================================================================
 
+import { getCircuitBreakerHealthStatus } from '@/lib/ai/circuit-breaker';
+
 function getCircuitBreakerStatus(): CircuitBreakerStatus[] {
-  // In a real implementation, this would read from the circuit breaker instances
-  return [
-    {
-      name: 'openai',
-      state: 'closed',
-      failureCount: 0,
-    },
-    {
-      name: 'anthropic',
-      state: 'closed',
-      failureCount: 0,
-    },
-    {
-      name: 'google',
-      state: 'closed',
-      failureCount: 0,
-    },
-    {
-      name: 'perplexity',
-      state: 'closed',
-      failureCount: 0,
-    },
-  ];
+  // Get real circuit breaker status from the global registry
+  return getCircuitBreakerHealthStatus();
 }
 
 // ============================================================================

@@ -194,14 +194,9 @@ async function handleAnalyze(
 export const POST = withVersioning(handleAnalyze);
 
 // OPTIONS (CORS preflight)
-export async function OPTIONS() {
-  return new NextResponse(null, {
-    status: 204,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-API-Version',
-      'Access-Control-Max-Age': '86400',
-    },
-  });
+import { createPreflightResponse } from '@/lib/security/cors';
+
+export async function OPTIONS(request: NextRequest) {
+  const origin = request.headers.get('origin');
+  return createPreflightResponse(origin);
 }

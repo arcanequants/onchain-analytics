@@ -619,6 +619,88 @@ export function withCircuitBreaker<TArgs extends unknown[], TResult>(
 }
 
 // ================================================================
+// GLOBAL SINGLETON REGISTRY
+// ================================================================
+
+let globalRegistry: CircuitBreakerRegistry | null = null;
+
+/**
+ * Get the global circuit breaker registry singleton
+ */
+export function getCircuitBreakerRegistry(): CircuitBreakerRegistry {
+  if (!globalRegistry) {
+    globalRegistry = new CircuitBreakerRegistry(DEFAULT_CONFIG);
+
+    // Initialize breakers for all AI providers
+    const providers: AIProvider[] = ['openai', 'anthropic', 'google', 'perplexity'];
+    for (const provider of providers) {
+      globalRegistry.get(provider);
+    }
+  }
+  return globalRegistry;
+}
+
+/**
+ * Get circuit breaker status for health checks
+ * Returns status in the format expected by /api/health/deep
+ */
+export function getCircuitBreakerHealthStatus(): {
+  name: string;
+  state: 'closed' | 'open' | 'half-open';
+  failureCount: number;
+  lastFailure?: string;
+  nextRetry?: string;
+}[] {
+  const registry = getCircuitBreakerRegistry();
+  const stats = registry.getAllStats();
+  const results: {
+    name: string;
+    state: 'closed' | 'open' | 'half-open';
+    failureCount: number;
+    lastFailure?: string;
+    nextRetry?: string;
+  }[] = [];
+
+  for (const [provider, stat] of stats) {
+    const result: {
+      name: string;
+      state: 'closed' | 'open' | 'half-open';
+      failureCount: number;
+      lastFailure?: string;
+      nextRetry?: string;
+    } = {
+      name: provider,
+      state: stat.state,
+      failureCount: stat.consecutiveFailures,
+    };
+
+    if (stat.lastFailure) {
+      result.lastFailure = stat.lastFailure.toISOString();
+    }
+
+    // Calculate next retry time if circuit is open
+    if (stat.state === 'open') {
+      const nextRetryTime = new Date(stat.stateChangedAt.getTime() + DEFAULT_CONFIG.resetTimeout);
+      result.nextRetry = nextRetryTime.toISOString();
+    }
+
+    results.push(result);
+  }
+
+  return results;
+}
+
+/**
+ * Reset the global registry (for testing)
+ */
+export function resetGlobalRegistry(): void {
+  if (globalRegistry) {
+    globalRegistry.destroy();
+    globalRegistry = null;
+  }
+}
+
+// ================================================================
 // EXPORTS
 // ================================================================
 
@@ -630,5 +712,8 @@ export default {
   createCircuitBreakerRegistry,
   createCircuitBreaker,
   withCircuitBreaker,
+  getCircuitBreakerRegistry,
+  getCircuitBreakerHealthStatus,
+  resetGlobalRegistry,
   DEFAULT_CONFIG,
 };

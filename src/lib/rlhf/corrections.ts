@@ -1,9 +1,11 @@
 /**
  * RLHF Corrections Workflow
  *
- * Phase 4, Week 8, Day 5
+ * Phase 4, Week 8, Day 5 - Updated for Supabase Persistence
  * Human-AI correction workflow for brand corrections
  */
+
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
 // ================================================================
 // TYPES
@@ -126,12 +128,128 @@ export interface CorrectionStats {
 }
 
 // ================================================================
+// DATABASE ROW TYPES
+// ================================================================
+
+interface BrandCorrectionRow {
+  id: string;
+  brand_id: string;
+  brand_name: string;
+  brand_domain: string | null;
+  original_score: number;
+  original_sentiment: 'positive' | 'neutral' | 'negative';
+  original_category: string | null;
+  original_summary: string | null;
+  corrected_score: number | null;
+  corrected_sentiment: 'positive' | 'neutral' | 'negative' | null;
+  corrected_category: string | null;
+  corrected_summary: string | null;
+  correction_reason: string;
+  correction_type: CorrectionType;
+  submitted_by: string;
+  submitted_at: string;
+  reviewed_by: string | null;
+  reviewed_at: string | null;
+  status: CorrectionStatus;
+  priority: 'low' | 'medium' | 'high' | 'critical';
+  evidence_urls: string[] | null;
+  attachments: string[] | null;
+  notes: string | null;
+}
+
+interface ScoreDisputeRow {
+  id: string;
+  analysis_id: string;
+  user_id: string;
+  user_email: string;
+  disputed_score: number;
+  expected_score: number;
+  reason: string;
+  category: DisputeCategory;
+  evidence_description: string | null;
+  evidence_urls: string[] | null;
+  status: DisputeStatus;
+  resolution: string | null;
+  resolved_by: string | null;
+  resolved_at: string | null;
+  final_score: number | null;
+  priority: 'low' | 'medium' | 'high';
+  created_at: string;
+  updated_at: string;
+}
+
+// ================================================================
+// HELPER FUNCTIONS
+// ================================================================
+
+function rowToCorrection(row: BrandCorrectionRow): BrandCorrection {
+  return {
+    id: row.id,
+    brandId: row.brand_id,
+    brandName: row.brand_name,
+    brandDomain: row.brand_domain || '',
+    originalScore: row.original_score,
+    originalSentiment: row.original_sentiment,
+    originalCategory: row.original_category || '',
+    originalSummary: row.original_summary || '',
+    correctedScore: row.corrected_score ?? undefined,
+    correctedSentiment: row.corrected_sentiment ?? undefined,
+    correctedCategory: row.corrected_category ?? undefined,
+    correctedSummary: row.corrected_summary ?? undefined,
+    correctionReason: row.correction_reason,
+    correctionType: row.correction_type,
+    submittedBy: row.submitted_by,
+    submittedAt: row.submitted_at,
+    reviewedBy: row.reviewed_by ?? undefined,
+    reviewedAt: row.reviewed_at ?? undefined,
+    status: row.status,
+    priority: row.priority,
+    evidenceUrls: row.evidence_urls ?? undefined,
+    attachments: row.attachments ?? undefined,
+    notes: row.notes ?? undefined,
+  };
+}
+
+function rowToDispute(row: ScoreDisputeRow): ScoreDispute {
+  return {
+    id: row.id,
+    analysisId: row.analysis_id,
+    userId: row.user_id,
+    userEmail: row.user_email,
+    disputedScore: row.disputed_score,
+    expectedScore: row.expected_score,
+    reason: row.reason,
+    category: row.category,
+    evidenceDescription: row.evidence_description ?? undefined,
+    evidenceUrls: row.evidence_urls ?? undefined,
+    status: row.status,
+    resolution: row.resolution ?? undefined,
+    resolvedBy: row.resolved_by ?? undefined,
+    resolvedAt: row.resolved_at ?? undefined,
+    finalScore: row.final_score ?? undefined,
+    priority: row.priority,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
+}
+
+// ================================================================
 // CORRECTION SERVICE
 // ================================================================
 
 export class CorrectionService {
-  private corrections: Map<string, BrandCorrection> = new Map();
-  private disputes: Map<string, ScoreDispute> = new Map();
+  private supabase: SupabaseClient;
+
+  constructor(supabaseUrl?: string, supabaseKey?: string) {
+    const url = supabaseUrl || process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const key = supabaseKey || process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+    if (!url || !key) {
+      throw new Error('Supabase credentials not configured for CorrectionService');
+    }
+
+    this.supabase = createClient(url, key);
+  }
 
   /**
    * Submit a brand correction
@@ -139,26 +257,38 @@ export class CorrectionService {
   async submitCorrection(
     correction: Omit<BrandCorrection, 'id' | 'status' | 'submittedAt'>
   ): Promise<BrandCorrection> {
-    const id = `corr_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+    const priority = correction.priority || this.calculatePriority(correction as BrandCorrection);
 
-    const newCorrection: BrandCorrection = {
-      ...correction,
-      id,
-      status: 'pending',
-      submittedAt: new Date().toISOString(),
-    };
+    const { data, error } = await this.supabase
+      .from('brand_corrections')
+      .insert({
+        brand_id: correction.brandId,
+        brand_name: correction.brandName,
+        brand_domain: correction.brandDomain || null,
+        original_score: correction.originalScore,
+        original_sentiment: correction.originalSentiment,
+        original_category: correction.originalCategory || null,
+        original_summary: correction.originalSummary || null,
+        corrected_score: correction.correctedScore ?? null,
+        corrected_sentiment: correction.correctedSentiment ?? null,
+        corrected_category: correction.correctedCategory ?? null,
+        corrected_summary: correction.correctedSummary ?? null,
+        correction_reason: correction.correctionReason,
+        correction_type: correction.correctionType,
+        submitted_by: correction.submittedBy,
+        priority: priority,
+        evidence_urls: correction.evidenceUrls ?? null,
+        attachments: correction.attachments ?? null,
+        notes: correction.notes ?? null,
+      })
+      .select()
+      .single();
 
-    // Auto-set priority based on correction type
-    if (!newCorrection.priority) {
-      newCorrection.priority = this.calculatePriority(newCorrection);
+    if (error) {
+      throw new Error(`Failed to submit correction: ${error.message}`);
     }
 
-    this.corrections.set(id, newCorrection);
-
-    // In production: Insert to database
-    // await supabase.from('brand_corrections').insert(newCorrection);
-
-    return newCorrection;
+    return rowToCorrection(data as BrandCorrectionRow);
   }
 
   /**
@@ -193,38 +323,47 @@ export class CorrectionService {
     priority?: BrandCorrection['priority'];
     limit?: number;
   }): Promise<CorrectionQueueItem[]> {
-    let corrections = Array.from(this.corrections.values());
+    let query = this.supabase
+      .from('brand_corrections')
+      .select('*')
+      .order('priority', { ascending: true }) // critical=0, low=3
+      .order('submitted_at', { ascending: true });
 
-    // Filter by status
     if (options?.status) {
-      corrections = corrections.filter((c) => c.status === options.status);
+      query = query.eq('status', options.status);
     }
 
-    // Filter by priority
     if (options?.priority) {
-      corrections = corrections.filter((c) => c.priority === options.priority);
+      query = query.eq('priority', options.priority);
     }
 
-    // Sort by priority then by date
-    const priorityOrder = { critical: 0, high: 1, medium: 2, low: 3 };
-    corrections.sort((a, b) => {
-      const priorityDiff = priorityOrder[a.priority] - priorityOrder[b.priority];
-      if (priorityDiff !== 0) return priorityDiff;
-      return new Date(a.submittedAt).getTime() - new Date(b.submittedAt).getTime();
-    });
-
-    // Apply limit
     if (options?.limit) {
-      corrections = corrections.slice(0, options.limit);
+      query = query.limit(options.limit);
     }
 
-    // Build queue items
-    return corrections.map((correction, index) => ({
-      correction,
-      queuePosition: index + 1,
-      estimatedReviewTime: this.estimateReviewTime(correction),
-      similarCorrections: this.countSimilarCorrections(correction),
-    }));
+    const { data, error } = await query;
+
+    if (error) {
+      throw new Error(`Failed to get correction queue: ${error.message}`);
+    }
+
+    const corrections = (data as BrandCorrectionRow[]).map(rowToCorrection);
+
+    // Build queue items with position and similar count
+    const queueItems: CorrectionQueueItem[] = [];
+    for (let i = 0; i < corrections.length; i++) {
+      const correction = corrections[i];
+      const similarCount = await this.countSimilarCorrections(correction);
+
+      queueItems.push({
+        correction,
+        queuePosition: i + 1,
+        estimatedReviewTime: this.estimateReviewTime(correction),
+        similarCorrections: similarCount,
+      });
+    }
+
+    return queueItems;
   }
 
   /**
@@ -253,10 +392,37 @@ export class CorrectionService {
   /**
    * Count similar corrections for the same brand
    */
-  private countSimilarCorrections(correction: BrandCorrection): number {
-    return Array.from(this.corrections.values()).filter(
-      (c) => c.brandId === correction.brandId && c.id !== correction.id
-    ).length;
+  private async countSimilarCorrections(correction: BrandCorrection): Promise<number> {
+    const { count, error } = await this.supabase
+      .from('brand_corrections')
+      .select('*', { count: 'exact', head: true })
+      .eq('brand_id', correction.brandId)
+      .neq('id', correction.id);
+
+    if (error) {
+      console.warn('Failed to count similar corrections:', error.message);
+      return 0;
+    }
+
+    return count || 0;
+  }
+
+  /**
+   * Get a single correction by ID
+   */
+  async getCorrection(correctionId: string): Promise<BrandCorrection | null> {
+    const { data, error } = await this.supabase
+      .from('brand_corrections')
+      .select('*')
+      .eq('id', correctionId)
+      .single();
+
+    if (error) {
+      if (error.code === 'PGRST116') return null; // Not found
+      throw new Error(`Failed to get correction: ${error.message}`);
+    }
+
+    return rowToCorrection(data as BrandCorrectionRow);
   }
 
   /**
@@ -270,28 +436,44 @@ export class CorrectionService {
       notes?: string;
     }
   ): Promise<BrandCorrection> {
-    const correction = this.corrections.get(correctionId);
-    if (!correction) {
+    const existing = await this.getCorrection(correctionId);
+    if (!existing) {
       throw new Error(`Correction not found: ${correctionId}`);
     }
 
-    correction.status = review.status;
-    correction.reviewedBy = review.reviewedBy;
-    correction.reviewedAt = new Date().toISOString();
-    if (review.notes) {
-      correction.notes = (correction.notes || '') + '\n' + review.notes;
+    const newNotes = review.notes
+      ? (existing.notes || '') + '\n' + review.notes
+      : existing.notes;
+
+    const { data, error } = await this.supabase
+      .from('brand_corrections')
+      .update({
+        status: review.status,
+        reviewed_by: review.reviewedBy,
+        reviewed_at: new Date().toISOString(),
+        notes: newNotes,
+      })
+      .eq('id', correctionId)
+      .select()
+      .single();
+
+    if (error) {
+      throw new Error(`Failed to review correction: ${error.message}`);
     }
 
-    this.corrections.set(correctionId, correction);
+    // Update user points if approved
+    if (review.status === 'approved') {
+      await this.updateUserPoints(existing.submittedBy, existing, true);
+    }
 
-    return correction;
+    return rowToCorrection(data as BrandCorrectionRow);
   }
 
   /**
    * Apply an approved correction
    */
   async applyCorrection(correctionId: string): Promise<void> {
-    const correction = this.corrections.get(correctionId);
+    const correction = await this.getCorrection(correctionId);
     if (!correction) {
       throw new Error(`Correction not found: ${correctionId}`);
     }
@@ -300,59 +482,97 @@ export class CorrectionService {
       throw new Error(`Correction must be approved before applying. Current status: ${correction.status}`);
     }
 
-    // In production: Update the brand data and trigger re-training
-    // await this.updateBrandData(correction);
-    // await this.triggerModelRetraining(correction);
+    const { error } = await this.supabase
+      .from('brand_corrections')
+      .update({ status: 'applied' })
+      .eq('id', correctionId);
 
-    correction.status = 'applied';
-    this.corrections.set(correctionId, correction);
+    if (error) {
+      throw new Error(`Failed to apply correction: ${error.message}`);
+    }
+
+    // TODO: Trigger model retraining signal
+  }
+
+  /**
+   * Update user incentive points
+   */
+  private async updateUserPoints(
+    userId: string,
+    correction: BrandCorrection,
+    accepted: boolean
+  ): Promise<void> {
+    const points = calculatePoints(correction, accepted);
+
+    try {
+      await this.supabase.rpc('update_user_points', {
+        p_user_id: userId,
+        p_points_to_add: points,
+        p_is_accepted: accepted,
+      });
+    } catch (error) {
+      console.warn('Failed to update user points:', error);
+    }
   }
 
   /**
    * Get correction statistics
    */
   async getStats(): Promise<CorrectionStats> {
-    const corrections = Array.from(this.corrections.values());
+    const { data, error } = await this.supabase.rpc('get_correction_stats');
 
-    const byStatus: Record<CorrectionStatus, number> = {
+    if (error) {
+      throw new Error(`Failed to get correction stats: ${error.message}`);
+    }
+
+    const statsRow = data?.[0] || {
+      total_corrections: 0,
       pending: 0,
-      under_review: 0,
       approved: 0,
       rejected: 0,
       applied: 0,
-      disputed: 0,
+      avg_review_time_minutes: 0,
     };
 
-    const byType: Record<string, number> = {};
-    const byPriority: Record<string, number> = {};
-    let totalReviewTime = 0;
-    let reviewedCount = 0;
+    // Get top correction types
+    const { data: typeData } = await this.supabase
+      .from('brand_corrections')
+      .select('correction_type')
+      .limit(1000);
 
-    for (const c of corrections) {
-      byStatus[c.status]++;
-      byType[c.correctionType] = (byType[c.correctionType] || 0) + 1;
-      byPriority[c.priority] = (byPriority[c.priority] || 0) + 1;
+    const typeCounts: Record<string, number> = {};
+    const priorityCounts: Record<string, number> = {};
 
-      if (c.reviewedAt && c.submittedAt) {
-        totalReviewTime += new Date(c.reviewedAt).getTime() - new Date(c.submittedAt).getTime();
-        reviewedCount++;
-      }
+    for (const row of (typeData || [])) {
+      const type = (row as { correction_type: string }).correction_type;
+      typeCounts[type] = (typeCounts[type] || 0) + 1;
     }
 
-    const topCorrectionTypes = Object.entries(byType)
+    // Get priority distribution
+    const { data: priorityData } = await this.supabase
+      .from('brand_corrections')
+      .select('priority')
+      .limit(1000);
+
+    for (const row of (priorityData || [])) {
+      const priority = (row as { priority: string }).priority;
+      priorityCounts[priority] = (priorityCounts[priority] || 0) + 1;
+    }
+
+    const topCorrectionTypes = Object.entries(typeCounts)
       .map(([type, count]) => ({ type: type as CorrectionType, count }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 5);
 
     return {
-      totalCorrections: corrections.length,
-      pending: byStatus.pending,
-      approved: byStatus.approved,
-      rejected: byStatus.rejected,
-      applied: byStatus.applied,
-      avgReviewTime: reviewedCount > 0 ? Math.round(totalReviewTime / reviewedCount / 60000) : 0,
+      totalCorrections: statsRow.total_corrections,
+      pending: statsRow.pending,
+      approved: statsRow.approved,
+      rejected: statsRow.rejected,
+      applied: statsRow.applied,
+      avgReviewTime: Math.round(statsRow.avg_review_time_minutes || 0),
       topCorrectionTypes,
-      correctionsByPriority: byPriority,
+      correctionsByPriority: priorityCounts,
     };
   }
 
@@ -366,19 +586,28 @@ export class CorrectionService {
   async submitDispute(
     dispute: Omit<ScoreDispute, 'id' | 'status' | 'createdAt' | 'updatedAt'>
   ): Promise<ScoreDispute> {
-    const id = `disp_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+    const { data, error } = await this.supabase
+      .from('score_disputes')
+      .insert({
+        analysis_id: dispute.analysisId,
+        user_id: dispute.userId,
+        user_email: dispute.userEmail,
+        disputed_score: dispute.disputedScore,
+        expected_score: dispute.expectedScore,
+        reason: dispute.reason,
+        category: dispute.category,
+        evidence_description: dispute.evidenceDescription ?? null,
+        evidence_urls: dispute.evidenceUrls ?? null,
+        priority: dispute.priority,
+      })
+      .select()
+      .single();
 
-    const newDispute: ScoreDispute = {
-      ...dispute,
-      id,
-      status: 'open',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
+    if (error) {
+      throw new Error(`Failed to submit dispute: ${error.message}`);
+    }
 
-    this.disputes.set(id, newDispute);
-
-    return newDispute;
+    return rowToDispute(data as ScoreDisputeRow);
   }
 
   /**
@@ -389,29 +618,31 @@ export class CorrectionService {
     userId?: string;
     limit?: number;
   }): Promise<ScoreDispute[]> {
-    let disputes = Array.from(this.disputes.values());
+    let query = this.supabase
+      .from('score_disputes')
+      .select('*')
+      .order('priority', { ascending: true })
+      .order('created_at', { ascending: true });
 
     if (options?.status) {
-      disputes = disputes.filter((d) => d.status === options.status);
+      query = query.eq('status', options.status);
     }
 
     if (options?.userId) {
-      disputes = disputes.filter((d) => d.userId === options.userId);
+      query = query.eq('user_id', options.userId);
     }
-
-    // Sort by priority then by date
-    const priorityOrder = { high: 0, medium: 1, low: 2 };
-    disputes.sort((a, b) => {
-      const priorityDiff = priorityOrder[a.priority] - priorityOrder[b.priority];
-      if (priorityDiff !== 0) return priorityDiff;
-      return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
-    });
 
     if (options?.limit) {
-      disputes = disputes.slice(0, options.limit);
+      query = query.limit(options.limit);
     }
 
-    return disputes;
+    const { data, error } = await query;
+
+    if (error) {
+      throw new Error(`Failed to get disputes: ${error.message}`);
+    }
+
+    return (data as ScoreDisputeRow[]).map(rowToDispute);
   }
 
   /**
@@ -426,42 +657,54 @@ export class CorrectionService {
       finalScore?: number;
     }
   ): Promise<ScoreDispute> {
-    const dispute = this.disputes.get(disputeId);
-    if (!dispute) {
+    const { data: existingData, error: fetchError } = await this.supabase
+      .from('score_disputes')
+      .select('*')
+      .eq('id', disputeId)
+      .single();
+
+    if (fetchError || !existingData) {
       throw new Error(`Dispute not found: ${disputeId}`);
     }
 
-    dispute.status = resolution.status;
-    dispute.resolution = resolution.resolution;
-    dispute.resolvedBy = resolution.resolvedBy;
-    dispute.resolvedAt = new Date().toISOString();
-    dispute.updatedAt = new Date().toISOString();
+    const existing = rowToDispute(existingData as ScoreDisputeRow);
 
-    if (resolution.finalScore !== undefined) {
-      dispute.finalScore = resolution.finalScore;
+    const { data, error } = await this.supabase
+      .from('score_disputes')
+      .update({
+        status: resolution.status,
+        resolution: resolution.resolution,
+        resolved_by: resolution.resolvedBy,
+        resolved_at: new Date().toISOString(),
+        final_score: resolution.finalScore ?? null,
+      })
+      .eq('id', disputeId)
+      .select()
+      .single();
+
+    if (error) {
+      throw new Error(`Failed to resolve dispute: ${error.message}`);
     }
-
-    this.disputes.set(disputeId, dispute);
 
     // If accepted, create a correction
     if (resolution.status === 'resolved_accepted' && resolution.finalScore !== undefined) {
       await this.submitCorrection({
-        brandId: dispute.analysisId,
+        brandId: existing.analysisId,
         brandName: 'From Dispute',
         brandDomain: '',
-        originalScore: dispute.disputedScore,
+        originalScore: existing.disputedScore,
         originalSentiment: 'neutral',
         originalCategory: '',
         originalSummary: '',
         correctedScore: resolution.finalScore,
         correctionReason: `Resolved from dispute: ${resolution.resolution}`,
-        correctionType: 'score_too_high', // or calculate based on difference
+        correctionType: existing.disputedScore > resolution.finalScore ? 'score_too_high' : 'score_too_low',
         submittedBy: resolution.resolvedBy,
         priority: 'high',
       });
     }
 
-    return dispute;
+    return rowToDispute(data as ScoreDisputeRow);
   }
 }
 

@@ -628,7 +628,7 @@ export default async function OperationsDashboardPage() {
         <footer className="pt-6 border-t border-gray-800">
           <div className="flex justify-between text-sm text-gray-500">
             <span>Data from real cron executions • Last updated: {new Date().toLocaleTimeString()}</span>
-            <span>Onchain Analytics Ops</span>
+            <span>Vectorial Data Ops</span>
           </div>
         </footer>
       </div>

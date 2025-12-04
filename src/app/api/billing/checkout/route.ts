@@ -104,13 +104,9 @@ export async function POST(request: NextRequest) {
 // OPTIONS - CORS
 // ================================================================
 
-export async function OPTIONS() {
-  return new NextResponse(null, {
-    status: 204,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-    },
-  });
+import { createPreflightResponse } from '@/lib/security/cors';
+
+export async function OPTIONS(request: NextRequest) {
+  const origin = request.headers.get('origin');
+  return createPreflightResponse(origin);
 }

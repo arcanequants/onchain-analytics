@@ -2,7 +2,7 @@
  * About Page
  * Phase 4, Week 9 - Legal Pages
  *
- * Company and product information.
+ * Company and product information for AI Perception platform.
  */
 
 import { Metadata } from 'next';
@@ -10,39 +10,39 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'About Us | Vectorial Data',
-  description: 'Learn about Vectorial Data - your comprehensive on-chain analytics platform for crypto and DeFi insights.',
+  description: 'Learn about Vectorial Data - AI Perception Engineering platform that helps brands understand how AI systems see and recommend them.',
   openGraph: {
     title: 'About Us | Vectorial Data',
-    description: 'Learn about Vectorial Data - your comprehensive on-chain analytics platform.',
+    description: 'AI Perception Engineering - discover how AI models perceive your brand.',
     type: 'website',
   },
 };
 
 const features = [
   {
+    icon: '🤖',
+    title: 'Multi-Model Analysis',
+    description: 'Query OpenAI, Anthropic, Google, and Perplexity to see how each AI perceives your brand.',
+  },
+  {
     icon: '📊',
-    title: 'Real-Time Analytics',
-    description: 'Track gas prices, token prices, DEX volumes, and TVL data updated every minute.',
+    title: 'Perception Scores',
+    description: 'Get quantified scores for visibility, sentiment, authority, and competitive positioning.',
   },
   {
-    icon: '👛',
-    title: 'Wallet Tracking',
-    description: 'Monitor wallet balances, NFT holdings, and transaction history across multiple chains.',
-  },
-  {
-    icon: '🏦',
-    title: 'DeFi Insights',
-    description: 'Comprehensive TVL tracking and DEX volume analysis across major protocols.',
+    icon: '🔍',
+    title: 'Competitive Intelligence',
+    description: 'Discover how AI systems rank you against competitors in your industry.',
   },
   {
     icon: '📈',
-    title: 'Market Intelligence',
-    description: 'Fear & Greed Index, trending tokens, and market sentiment indicators.',
+    title: 'Trend Monitoring',
+    description: 'Track how AI perception of your brand changes over time with continuous monitoring.',
   },
   {
-    icon: '🔔',
-    title: 'Smart Alerts',
-    description: 'Customizable alerts for price movements, whale transactions, and market events.',
+    icon: '💡',
+    title: 'Actionable Recommendations',
+    description: 'Get specific, prioritized actions to improve your AI visibility and perception.',
   },
   {
     icon: '🔐',
@@ -52,9 +52,9 @@ const features = [
 ];
 
 const stats = [
-  { label: 'Chains Supported', value: '5+' },
-  { label: 'Protocols Tracked', value: '100+' },
-  { label: 'Data Points/Day', value: '1M+' },
+  { label: 'AI Providers', value: '4+' },
+  { label: 'Industries Covered', value: '20+' },
+  { label: 'Queries/Analysis', value: '50+' },
   { label: 'Uptime SLA', value: '99.9%' },
 ];
 
@@ -62,7 +62,7 @@ const team = [
   {
     name: 'Alberto Sorno',
     role: 'Founder & CEO',
-    description: 'Blockchain entrepreneur with deep expertise in DeFi and on-chain analytics.',
+    description: 'AI and analytics entrepreneur focused on helping brands navigate the AI-first future.',
   },
 ];
 
@@ -73,11 +73,11 @@ export default function AboutPage() {
       <div className="bg-gradient-to-b from-indigo-900/50 to-gray-900 py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            On-Chain Intelligence for the Modern Investor
+            AI Perception Engineering for Modern Brands
           </h1>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            Vectorial Data provides comprehensive blockchain analytics to help you make informed
-            decisions in the fast-moving world of crypto and DeFi.
+            Vectorial Data helps you understand how AI systems perceive and recommend your brand,
+            giving you the insights to thrive in an AI-first world.
           </p>
         </div>
       </div>
@@ -102,9 +102,10 @@ export default function AboutPage() {
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-white mb-4">Our Mission</h2>
           <p className="text-lg text-gray-300 leading-relaxed">
-            We believe that access to quality on-chain data should be available to everyone, not
-            just institutions. Our mission is to democratize blockchain analytics, providing
-            retail investors and traders with the same powerful tools used by professional firms.
+            As AI assistants become the primary way people discover and evaluate brands,
+            understanding how these systems perceive you is critical. Our mission is to
+            democratize AI perception analytics, giving every brand the tools to optimize
+            their visibility across AI platforms.
           </p>
         </div>
 
@@ -112,15 +113,15 @@ export default function AboutPage() {
           <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-6">
             <h3 className="text-xl font-semibold text-white mb-3">Transparency</h3>
             <p className="text-gray-300">
-              We&apos;re committed to providing accurate, unbiased data directly from blockchain
-              sources. No manipulation, no hidden agendas.
+              We provide clear, actionable insights into how AI systems view your brand.
+              No black boxes, no hidden agendas - just data you can act on.
             </p>
           </div>
           <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-6">
             <h3 className="text-xl font-semibold text-white mb-3">Innovation</h3>
             <p className="text-gray-300">
-              We continuously push the boundaries of what&apos;s possible with on-chain analytics,
-              incorporating AI and machine learning for deeper insights.
+              We continuously evolve our platform as AI systems change, ensuring your
+              brand perception strategy stays ahead of the curve.
             </p>
           </div>
         </div>
@@ -151,23 +152,23 @@ export default function AboutPage() {
         <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-8">
           <div className="grid md:grid-cols-2 gap-8">
             <div>
-              <h3 className="text-lg font-semibold text-white mb-4">Data Infrastructure</h3>
+              <h3 className="text-lg font-semibold text-white mb-4">AI Infrastructure</h3>
               <ul className="space-y-2 text-gray-300">
                 <li className="flex items-center gap-2">
                   <span className="text-green-400">✓</span>
-                  Real-time blockchain node connections
+                  Multi-provider AI integration
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="text-green-400">✓</span>
-                  Multi-provider data aggregation
+                  Intelligent response caching
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="text-green-400">✓</span>
-                  Sub-second data latency
+                  Real-time perception scoring
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="text-green-400">✓</span>
-                  Historical data archive
+                  Historical trend analysis
                 </li>
               </ul>
             </div>
@@ -176,19 +177,19 @@ export default function AboutPage() {
               <ul className="space-y-2 text-gray-300">
                 <li className="flex items-center gap-2">
                   <span className="text-green-400">✓</span>
-                  REST and WebSocket APIs
+                  Industry-specific analysis
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="text-green-400">✓</span>
-                  Custom webhook integrations
+                  Competitive benchmarking
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="text-green-400">✓</span>
-                  Advanced charting tools
+                  Automated monitoring
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="text-green-400">✓</span>
-                  Export to CSV/JSON
+                  API access for developers
                 </li>
               </ul>
             </div>
@@ -223,15 +224,15 @@ export default function AboutPage() {
         <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg p-8 text-center">
           <h2 className="text-2xl font-bold text-white mb-4">Ready to Get Started?</h2>
           <p className="text-indigo-100 mb-6">
-            Join thousands of traders and investors using Vectorial Data for their on-chain
-            analytics needs.
+            Discover how AI systems perceive your brand and get actionable recommendations
+            to improve your visibility.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link
               href="/dashboard"
               className="px-6 py-3 bg-white text-indigo-600 font-semibold rounded-lg hover:bg-indigo-50 transition-colors"
             >
-              View Dashboard
+              Try Free Analysis
             </Link>
             <Link
               href="/contact"

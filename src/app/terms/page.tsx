@@ -10,10 +10,10 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Terms of Service | Vectorial Data',
-  description: 'Terms and conditions for using Vectorial Data on-chain analytics platform.',
+  description: 'Terms and conditions for using Vectorial Data AI Perception platform.',
   openGraph: {
     title: 'Terms of Service | Vectorial Data',
-    description: 'Terms and conditions for using Vectorial Data on-chain analytics platform.',
+    description: 'Terms and conditions for using Vectorial Data AI Perception platform.',
     type: 'website',
   },
 };
@@ -37,7 +37,7 @@ export default function TermsPage() {
             <h2 className="text-2xl font-semibold text-white mb-4">1. Introduction</h2>
             <p className="text-gray-300 leading-relaxed">
               Welcome to Vectorial Data (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;). These Terms of Service (&quot;Terms&quot;) govern your
-              access to and use of our on-chain analytics platform, website, and related services
+              access to and use of our AI Perception platform, website, and related services
               (collectively, the &quot;Services&quot;). By accessing or using our Services, you agree to be bound
               by these Terms.
             </p>
@@ -88,14 +88,14 @@ export default function TermsPage() {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-white mb-4">5. Data and Analytics</h2>
             <p className="text-gray-300 leading-relaxed mb-4">
-              Our Services provide on-chain analytics and data aggregation. You acknowledge that:
+              Our Services provide AI perception analytics and brand visibility insights. You acknowledge that:
             </p>
             <ul className="list-disc list-inside text-gray-300 space-y-2">
-              <li>Data is provided &quot;as is&quot; from public blockchain sources</li>
+              <li>Data is provided &quot;as is&quot; from AI model responses</li>
               <li>We do not guarantee the accuracy, completeness, or timeliness of data</li>
-              <li>Analytics should not be considered financial, investment, or trading advice</li>
+              <li>Analytics should not be considered marketing or business advice</li>
               <li>You are solely responsible for decisions made based on our data</li>
-              <li>Historical data may be subject to delays or corrections</li>
+              <li>AI model responses may vary over time as models are updated</li>
             </ul>
           </section>
 

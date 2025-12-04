@@ -270,12 +270,15 @@ export async function GET(
     });
   }
 
+  // SECURITY NOTE: This endpoint intentionally uses wildcard CORS
+  // because badges are meant to be embedded on any website.
+  // This is a read-only, public endpoint with no sensitive data.
   return new NextResponse(svg, {
     status: 200,
     headers: {
       'Content-Type': 'image/svg+xml',
       'Cache-Control': 'public, max-age=3600', // Cache for 1 hour
-      'Access-Control-Allow-Origin': '*', // Allow embedding on any website
+      'Access-Control-Allow-Origin': '*', // Allow embedding on any website (intentional)
     },
   });
 }

@@ -11,7 +11,7 @@ import { nanoid } from 'nanoid';
 import { validateUrl, type URLValidationResult } from '@/lib/security/url-validator';
 import {
   AnalyzeOptionsSchema,
-  setAnalysis,
+  setAnalysisSync as setAnalysis,
   type AnalysisRecord,
 } from '@/lib/analysis/store';
 
@@ -127,14 +127,9 @@ export async function POST(request: NextRequest) {
 // OPTIONS (CORS preflight)
 // ================================================================
 
-export async function OPTIONS() {
-  return new NextResponse(null, {
-    status: 204,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-      'Access-Control-Max-Age': '86400',
-    },
-  });
+import { createPreflightResponse } from '@/lib/security/cors';
+
+export async function OPTIONS(request: NextRequest) {
+  const origin = request.headers.get('origin');
+  return createPreflightResponse(origin);
 }

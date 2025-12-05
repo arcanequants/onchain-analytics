@@ -102,6 +102,11 @@ const nextConfig = {
   }
 }
 
+// Check if we have Sentry credentials (for source map upload)
+const hasSentryCredentials = process.env.SENTRY_AUTH_TOKEN &&
+  process.env.SENTRY_ORG &&
+  process.env.SENTRY_PROJECT;
+
 module.exports = withSentryConfig(
   nextConfig,
   {
@@ -110,15 +115,20 @@ module.exports = withSentryConfig(
 
     // Suppresses source map uploading logs during build
     silent: true,
-    org: "o-qp",
-    project: "javascript-nextjs",
+    org: process.env.SENTRY_ORG || "o-qp",
+    project: process.env.SENTRY_PROJECT || "javascript-nextjs",
   },
   {
     // For all available options, see:
     // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
 
+    // Skip source map upload in CI without credentials
+    sourcemaps: {
+      disable: !hasSentryCredentials,
+    },
+
     // Upload a larger set of source maps for prettier stack traces (increases build time)
-    widenClientFileUpload: true,
+    widenClientFileUpload: hasSentryCredentials,
 
     // Transpiles SDK to be compatible with IE11 (increases bundle size)
     transpileClientSDK: true,

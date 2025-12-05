@@ -161,7 +161,14 @@ jobs:
         run: npm ci
 
       - name: Build application
-        run: npm run build
+        run: |
+          set +e
+          npm run build 2>&1
+          BUILD_EXIT_CODE=$?
+          if [ $BUILD_EXIT_CODE -ne 0 ]; then
+            echo "::error::Build failed with exit code $BUILD_EXIT_CODE"
+            exit $BUILD_EXIT_CODE
+          fi
 
       - name: Archive build output
         uses: actions/upload-artifact@v4

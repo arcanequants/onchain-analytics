@@ -1,5 +1,3 @@
-const { withSentryConfig } = require("@sentry/nextjs");
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -102,37 +100,31 @@ const nextConfig = {
   }
 }
 
-module.exports = withSentryConfig(
-  nextConfig,
-  {
-    // For all available options, see:
-    // https://github.com/getsentry/sentry-webpack-plugin#options
+// Conditionally apply Sentry configuration
+// Only use Sentry webpack plugin when SENTRY_AUTH_TOKEN is available
+const { withSentryConfig } = require("@sentry/nextjs");
 
-    // Suppresses source map uploading logs during build
-    silent: true,
-    org: "o-qp",
-    project: "javascript-nextjs",
-  },
-  {
-    // For all available options, see:
-    // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
+const sentryWebpackPluginOptions = {
+  // For all available options, see:
+  // https://github.com/getsentry/sentry-webpack-plugin#options
+  silent: true,
+  org: "o-qp",
+  project: "javascript-nextjs",
+};
 
-    // Upload a larger set of source maps for prettier stack traces (increases build time)
-    widenClientFileUpload: true,
+const sentryOptions = {
+  // For all available options, see:
+  // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
+  widenClientFileUpload: true,
+  transpileClientSDK: true,
+  tunnelRoute: "/monitoring",
+  hideSourceMaps: true,
+  disableLogger: true,
+  automaticVercelMonitors: true,
+};
 
-    // Transpiles SDK to be compatible with IE11 (increases bundle size)
-    transpileClientSDK: true,
-
-    // Routes browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers (increases server load)
-    tunnelRoute: "/monitoring",
-
-    // Hides source maps from generated client bundles
-    hideSourceMaps: true,
-
-    // Automatically tree-shake Sentry logger statements to reduce bundle size
-    disableLogger: true,
-
-    // Enables automatic instrumentation of Vercel Cron Monitors.
-    automaticVercelMonitors: true,
-  }
-)
+// Export with Sentry only if we have auth token, otherwise export plain config
+// This prevents Sentry webpack plugin from failing during CI builds
+module.exports = process.env.SENTRY_AUTH_TOKEN
+  ? withSentryConfig(nextConfig, sentryWebpackPluginOptions, sentryOptions)
+  : nextConfig;

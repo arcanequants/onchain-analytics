@@ -180,7 +180,29 @@ jobs:
         run: npm ci
 
       - name: Build application
-        run: npm run build
+        id: build
+        continue-on-error: true
+        run: |
+          npm run build 2>&1 | tee build-output.txt
+          if [ ${PIPESTATUS[0]} -eq 0 ]; then
+            echo "build_success=true" >> $GITHUB_OUTPUT
+          else
+            echo "build_success=false" >> $GITHUB_OUTPUT
+            echo "::group::Build Error Output"
+            tail -100 build-output.txt
+            echo "::endgroup::"
+          fi
+        env:
+          # Increase memory for Next.js build
+          NODE_OPTIONS: --max-old-space-size=4096
+
+      - name: Verify build success
+        run: |
+          if [ "${{ steps.build.outputs.build_success }}" != "true" ]; then
+            echo "::error::Build failed. Check previous step for details."
+            exit 1
+          fi
+          echo "Build completed successfully"
 
       - name: Archive build output
         uses: actions/upload-artifact@v4

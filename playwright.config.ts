@@ -7,7 +7,8 @@ import { defineConfig, devices } from '@playwright/test';
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: './tests',
+  // Only run Playwright tests from e2e directory (not Vitest integration tests)
+  testDir: './tests/e2e',
 
   /* Run tests in files in parallel */
   fullyParallel: true,

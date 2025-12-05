@@ -161,10 +161,8 @@ jobs:
       RESEND_API_KEY: re_placeholder_build_key
       # Skip telemetry during build
       NEXT_TELEMETRY_DISABLED: 1
-      # Sentry: Skip source map upload in CI (no auth token)
+      # Sentry: Suppress warnings in CI
       SENTRY_SUPPRESS_GLOBAL_ERROR_HANDLER_FILE_WARNING: 1
-      SENTRY_ORG: ''
-      SENTRY_PROJECT: ''
 
     steps:
       - name: Checkout code
@@ -181,6 +179,9 @@ jobs:
 
       - name: Build application
         run: npm run build
+        env:
+          # Explicitly skip Sentry source map upload
+          CI: true
 
       - name: Archive build output
         uses: actions/upload-artifact@v4
@@ -242,10 +243,8 @@ jobs:
       SUPABASE_SERVICE_ROLE_KEY: placeholder-service-key
       # Resend placeholder for E2E tests
       RESEND_API_KEY: re_placeholder_e2e_key
-      # Sentry: Skip source map upload in CI
+      # Sentry: Suppress warnings in CI
       SENTRY_SUPPRESS_GLOBAL_ERROR_HANDLER_FILE_WARNING: 1
-      SENTRY_ORG: ''
-      SENTRY_PROJECT: ''
 
     steps:
       - name: Checkout code

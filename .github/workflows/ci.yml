@@ -181,9 +181,6 @@ jobs:
 
       - name: Build application
         run: npm run build
-        env:
-          # Increase memory for Next.js build
-          NODE_OPTIONS: --max-old-space-size=4096
 
       - name: Archive build output
         uses: actions/upload-artifact@v4

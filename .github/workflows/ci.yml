@@ -128,25 +128,6 @@ jobs:
     timeout-minutes: 15
     needs: lint
 
-    env:
-      # Build environment variables
-      NODE_ENV: production
-      NEXT_PUBLIC_APP_URL: https://example.com
-      # Placeholder keys for build (not real API keys)
-      OPENAI_API_KEY: build-placeholder
-      ANTHROPIC_API_KEY: build-placeholder
-      PERPLEXITY_API_KEY: build-placeholder
-      # Supabase placeholders for build
-      NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
-      NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder-anon-key
-      SUPABASE_SERVICE_ROLE_KEY: placeholder-service-key
-      # Resend placeholder for build
-      RESEND_API_KEY: re_placeholder_build_key
-      # Skip telemetry during build
-      NEXT_TELEMETRY_DISABLED: 1
-      # Sentry: Suppress warnings in CI
-      SENTRY_SUPPRESS_GLOBAL_ERROR_HANDLER_FILE_WARNING: 1
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -161,6 +142,24 @@ jobs:
         run: npm ci
 
       - name: Build application
+        env:
+          # Build environment variables (only for this step)
+          NODE_ENV: production
+          NEXT_PUBLIC_APP_URL: https://example.com
+          # Placeholder keys for build (not real API keys)
+          OPENAI_API_KEY: build-placeholder
+          ANTHROPIC_API_KEY: build-placeholder
+          PERPLEXITY_API_KEY: build-placeholder
+          # Supabase placeholders for build
+          NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder-anon-key
+          SUPABASE_SERVICE_ROLE_KEY: placeholder-service-key
+          # Resend placeholder for build
+          RESEND_API_KEY: re_placeholder_build_key
+          # Skip telemetry during build
+          NEXT_TELEMETRY_DISABLED: 1
+          # Sentry: Suppress warnings in CI
+          SENTRY_SUPPRESS_GLOBAL_ERROR_HANDLER_FILE_WARNING: 1
         run: npm run build
 
       - name: Archive build output

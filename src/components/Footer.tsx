@@ -36,13 +36,13 @@ export default function Footer() {
       "priceCurrency": "USD",
       "description": "Free analysis available with paid upgrades for monitoring"
     },
-    "termsOfService": "https://www.vectorialdata.com/terms",
-    "privacyPolicy": "https://www.vectorialdata.com/privacy",
+    "termsOfService": "https://vectorialdata.com/terms",
+    "privacyPolicy": "https://vectorialdata.com/privacy",
     "provider": {
       "@type": "Organization",
       "name": "AI Perception",
       "legalName": "AI Perception Engineering Agency",
-      "url": "https://www.vectorialdata.com",
+      "url": "https://vectorialdata.com",
       "foundingDate": "2025",
       "description": "AI Perception Engineering - helping businesses understand and improve how AI models perceive them"
     },

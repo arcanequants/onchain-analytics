@@ -31,6 +31,7 @@ import {
   SchemaValidationError,
 } from '../errors';
 import { Result, Ok, Err } from '../result';
+import { getSupabaseAdmin, isSupabaseAvailable } from '../supabase';
 
 // ================================================================
 // TYPES
@@ -133,9 +134,29 @@ setInterval(() => {
 // AUTH HELPERS
 // ================================================================
 
+/**
+ * SRE AUDIT FIX: SRE-011
+ * Removed insecure dev_ token bypass.
+ * Implemented proper JWT verification via Supabase.
+ */
+
 interface AuthResult {
   userId: string;
   userPlan: UserPlan;
+}
+
+/**
+ * Get user plan from Supabase user metadata or database
+ * Defaults to 'free' if not specified
+ */
+function getUserPlan(userMetadata: Record<string, unknown> | undefined): UserPlan {
+  const plan = userMetadata?.plan as string | undefined;
+
+  if (plan && ['free', 'starter', 'pro', 'enterprise'].includes(plan)) {
+    return plan as UserPlan;
+  }
+
+  return 'free';
 }
 
 async function extractAuth(req: NextRequest): Promise<Result<AuthResult | null, AppError>> {
@@ -152,28 +173,41 @@ async function extractAuth(req: NextRequest): Promise<Result<AuthResult | null, 
 
   const token = authHeader.slice(7);
 
-  // TODO: Implement actual JWT validation with Supabase
-  // For now, this is a placeholder that should be replaced
-  // with actual Supabase auth verification
+  // Verify Supabase is configured
+  if (!isSupabaseAvailable()) {
+    apiLogger.warn('Supabase not configured, cannot verify auth token');
+    return Ok(null);
+  }
 
   try {
-    // Placeholder: In production, verify JWT and fetch user data
-    // const { data: { user }, error } = await supabase.auth.getUser(token);
+    // Verify JWT with Supabase Admin client
+    const supabaseAdmin = getSupabaseAdmin();
+    const { data: { user }, error } = await supabaseAdmin.auth.getUser(token);
 
-    // For development, return mock auth if token matches pattern
-    if (token.startsWith('dev_')) {
-      return Ok({
-        userId: 'dev-user-' + token.slice(4, 12),
-        userPlan: 'free' as UserPlan,
+    if (error) {
+      apiLogger.debug('Auth token verification failed', {
+        error: error.message,
+        code: error.code,
       });
+      // Return null instead of error to allow unauthenticated access
+      // The requireAuth check will handle enforcing auth when needed
+      return Ok(null);
     }
 
-    // In production, this would verify the actual token
-    return Ok(null);
+    if (!user) {
+      return Ok(null);
+    }
+
+    // Successfully verified - return user data
+    return Ok({
+      userId: user.id,
+      userPlan: getUserPlan(user.user_metadata),
+    });
   } catch (error) {
-    apiLogger.warn('Auth token verification failed', {
+    apiLogger.warn('Auth token verification error', {
       error: error instanceof Error ? error.message : 'Unknown error',
     });
+    // Fail open for verification errors (let requireAuth handle enforcement)
     return Ok(null);
   }
 }

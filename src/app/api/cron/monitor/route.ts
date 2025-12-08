@@ -186,8 +186,14 @@ async function processMonitoringJob(
 }
 
 // ================================================================
-// ANALYSIS RUNNER (Mock)
+// ANALYSIS RUNNER
 // ================================================================
+
+/**
+ * SRE AUDIT FIX: SRE-010
+ * Connected to real analysis service instead of mock data.
+ * Uses internal API call to /api/analyze and polls for completion.
+ */
 
 interface AnalysisResult {
   analysisId: string;
@@ -198,21 +204,101 @@ async function runAnalysis(
   brandUrl: string,
   brandName: string
 ): Promise<AnalysisResult> {
-  // In production, this would call the actual analysis service
-  // For now, return mock data
+  // Get the base URL for internal API calls
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL ||
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
 
-  // Simulate API call delay
-  await new Promise((resolve) => setTimeout(resolve, 100));
+  // Use service role key for internal authentication
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-  // Generate a somewhat realistic score with some randomness
-  const baseScore = 65;
-  const variation = Math.floor(Math.random() * 30) - 15;
-  const score = Math.max(0, Math.min(100, baseScore + variation));
+  try {
+    // 1. Start the analysis via internal API
+    const startResponse = await fetch(`${baseUrl}/api/analyze`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        // Use CRON secret as API key for internal calls
+        ...(process.env.CRON_SECRET && {
+          'Authorization': `Bearer ${process.env.CRON_SECRET}`,
+        }),
+      },
+      body: JSON.stringify({
+        url: brandUrl,
+        options: {
+          providers: ['openai', 'anthropic'],
+          queryBudget: 10, // Lower budget for monitoring (faster)
+          includeCompetitors: false,
+        },
+      }),
+    });
 
-  return {
-    analysisId: `analysis_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
-    score,
-  };
+    if (!startResponse.ok) {
+      const errorText = await startResponse.text();
+      throw new Error(`Failed to start analysis: ${startResponse.status} - ${errorText}`);
+    }
+
+    const startData = await startResponse.json();
+
+    if (!startData.success || !startData.analysisId) {
+      throw new Error(`Invalid analysis response: ${JSON.stringify(startData)}`);
+    }
+
+    const analysisId = startData.analysisId;
+
+    // 2. Poll for completion (max 5 minutes)
+    const maxWaitMs = 5 * 60 * 1000;
+    const pollIntervalMs = 5000;
+    const startTime = Date.now();
+
+    while (Date.now() - startTime < maxWaitMs) {
+      await new Promise((resolve) => setTimeout(resolve, pollIntervalMs));
+
+      const progressResponse = await fetch(`${baseUrl}${startData.progressUrl}`, {
+        method: 'GET',
+        headers: {
+          ...(process.env.CRON_SECRET && {
+            'Authorization': `Bearer ${process.env.CRON_SECRET}`,
+          }),
+        },
+      });
+
+      if (!progressResponse.ok) {
+        continue; // Retry on error
+      }
+
+      const progressData = await progressResponse.json();
+
+      if (progressData.status === 'completed') {
+        // Extract score from completed analysis
+        const score = progressData.result?.overallScore ??
+                     progressData.result?.score ??
+                     progressData.overallScore ??
+                     0;
+
+        return {
+          analysisId,
+          score: Math.round(score),
+        };
+      }
+
+      if (progressData.status === 'failed') {
+        throw new Error(`Analysis failed: ${progressData.error || 'Unknown error'}`);
+      }
+    }
+
+    // Timeout - analysis took too long
+    throw new Error('Analysis timeout - exceeded 5 minutes');
+
+  } catch (error) {
+    // Log error and return a fallback score based on previous data or 0
+    console.error('[CRON Monitor] Analysis error:', error);
+
+    // Return a failure result with score 0 to trigger alerts
+    return {
+      analysisId: `failed_${Date.now()}`,
+      score: 0,
+    };
+  }
 }
 
 // ================================================================

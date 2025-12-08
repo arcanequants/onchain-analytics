@@ -69,7 +69,8 @@ export function ResultsPageSchema({ data }: ResultsPageSchemaProps): React.React
 // ================================================================
 
 function generateStructuredData(data: ResultsSchemaData): object {
-  const baseUrl = 'https://www.vectorialdata.com';
+  // SRE-008: Use canonical domain without www
+  const baseUrl = 'https://vectorialdata.com';
 
   // Main AnalysisAction schema
   const analysisAction = {

@@ -1,12 +1,19 @@
 import * as Sentry from "@sentry/nextjs";
 
-Sentry.init({
-  dsn: "https://bc6e1a96e8cef9873aa7ab8f4196a26e@o4510379533860864.ingest.us.sentry.io/4510379538710528",
+/**
+ * Sentry Client Configuration
+ *
+ * SRE AUDIT FIX: SRE-006, SRE-007
+ * - Moved DSN to environment variable
+ * - Reduced tracesSampleRate from 100% to 10% for production
+ */
 
-  // Set tracesSampleRate to 1.0 to capture 100%
-  // of transactions for performance monitoring.
-  // We recommend adjusting this value in production
-  tracesSampleRate: 1.0,
+Sentry.init({
+  // SRE-006: DSN from environment variable
+  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+
+  // SRE-007: Sample 10% of transactions in production, 100% in development
+  tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,
 
   // Capture Replay for 10% of all sessions,
   // plus 100% of sessions with an error

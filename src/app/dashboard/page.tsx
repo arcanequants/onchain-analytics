@@ -9,7 +9,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { TrendChart, TREND_PRESETS, generateMockTrendData } from '@/components/charts/TrendChart';
+import { TrendChart, TREND_PRESETS } from '@/components/charts/TrendChart';
 import { ProviderBreakdown, createProviderData } from '@/components/charts/ProviderBreakdown';
 import {
   PlanTier,
@@ -394,17 +394,49 @@ function QuickActions({ canAnalyze }: { canAnalyze: boolean }) {
   );
 }
 
-function ScoreTrendCard() {
-  const trendData = generateMockTrendData(30, 65, 15).map((point, i) => ({
-    ...point,
-    score: Math.round(point.value),
-  }));
+interface MetricsData {
+  trend: {
+    data: Array<{ timestamp: string; score: number; value: number }>;
+    hasData: boolean;
+  };
+  providers: {
+    data: Array<{
+      id: string;
+      name: string;
+      requests: number;
+      tokensUsed: number;
+      cost: number;
+      avgLatency: number;
+      successRate: number;
+      cacheHitRate: number;
+    }>;
+    hasData: boolean;
+  };
+}
+
+function ScoreTrendCard({ metricsData }: { metricsData: MetricsData | null }) {
+  // Show loading or empty state if no data
+  if (!metricsData?.trend.hasData) {
+    return (
+      <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-4">
+        <h3 className="text-white font-medium mb-4">Score Trend (30 Days)</h3>
+        <div className="h-[200px] flex items-center justify-center text-gray-500">
+          <div className="text-center">
+            <svg className="w-12 h-12 mx-auto mb-2 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
+            </svg>
+            <p className="text-sm">Run analyses to see your score trend</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-4">
       <h3 className="text-white font-medium mb-4">Score Trend (30 Days)</h3>
       <TrendChart
-        data={trendData}
+        data={metricsData.trend.data}
         series={TREND_PRESETS.score.series}
         variant="area"
         height={200}
@@ -416,41 +448,35 @@ function ScoreTrendCard() {
   );
 }
 
-function ProviderComparisonCard() {
-  const providerData = [
-    createProviderData('openai', 'OpenAI', {
-      requests: 150,
-      tokensUsed: 45000,
-      cost: 12.50,
-      avgLatency: 850,
-      successRate: 99.2,
-      cacheHitRate: 45,
-    }),
-    createProviderData('anthropic', 'Anthropic', {
-      requests: 150,
-      tokensUsed: 52000,
-      cost: 15.60,
-      avgLatency: 920,
-      successRate: 98.8,
-      cacheHitRate: 42,
-    }),
-    createProviderData('google', 'Google', {
-      requests: 150,
-      tokensUsed: 38000,
-      cost: 8.20,
-      avgLatency: 780,
-      successRate: 97.5,
-      cacheHitRate: 38,
-    }),
-    createProviderData('perplexity', 'Perplexity', {
-      requests: 150,
-      tokensUsed: 35000,
-      cost: 7.80,
-      avgLatency: 650,
-      successRate: 96.5,
-      cacheHitRate: 55,
-    }),
-  ];
+function ProviderComparisonCard({ metricsData }: { metricsData: MetricsData | null }) {
+  // Show loading or empty state if no data
+  if (!metricsData?.providers.hasData) {
+    return (
+      <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-4">
+        <h3 className="text-white font-medium mb-4">Provider Performance</h3>
+        <div className="h-[250px] flex items-center justify-center text-gray-500">
+          <div className="text-center">
+            <svg className="w-12 h-12 mx-auto mb-2 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+            <p className="text-sm">Run analyses to see provider metrics</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Transform API data to chart format
+  const providerData = metricsData.providers.data.map(p =>
+    createProviderData(p.id, p.name, {
+      requests: p.requests,
+      tokensUsed: p.tokensUsed,
+      cost: p.cost,
+      avgLatency: p.avgLatency,
+      successRate: p.successRate,
+      cacheHitRate: p.cacheHitRate,
+    })
+  );
 
   return (
     <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-4">
@@ -488,15 +514,32 @@ function getTimeAgo(date: Date): string {
 // MAIN COMPONENT
 // ================================================================
 
+async function fetchUserMetrics(): Promise<MetricsData | null> {
+  try {
+    const response = await fetch('/api/user/metrics');
+    if (!response.ok) return null;
+    const json = await response.json();
+    if (!json.success) return null;
+    return json.data;
+  } catch {
+    return null;
+  }
+}
+
 export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState<DashboardData | null>(null);
+  const [metricsData, setMetricsData] = useState<MetricsData | null>(null);
 
   useEffect(() => {
     // Fetch real data from API
     async function loadData() {
-      const dashboardData = await fetchUserDashboardData();
+      const [dashboardData, metrics] = await Promise.all([
+        fetchUserDashboardData(),
+        fetchUserMetrics(),
+      ]);
       setData(dashboardData);
+      setMetricsData(metrics);
       setIsLoading(false);
     }
 
@@ -593,8 +636,8 @@ export default function DashboardPage() {
 
           {/* Sidebar */}
           <div className="space-y-6">
-            <ScoreTrendCard />
-            <ProviderComparisonCard />
+            <ScoreTrendCard metricsData={metricsData} />
+            <ProviderComparisonCard metricsData={metricsData} />
           </div>
         </div>
       </div>

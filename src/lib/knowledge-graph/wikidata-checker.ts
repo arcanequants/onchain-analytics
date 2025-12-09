@@ -221,96 +221,258 @@ function detectEntityType(properties: WikidataProperty[]): WikidataEntityType {
 }
 
 // ================================================================
-// MOCK WIKIDATA API
+// WIKIDATA API IMPLEMENTATION
 // ================================================================
 
+const WIKIDATA_API_BASE = 'https://www.wikidata.org/w/api.php';
+const WIKIDATA_TIMEOUT_MS = 10000;
+
 /**
- * Mock Wikidata search (in production, this would call the actual API)
- *
- * Wikidata API endpoint: https://www.wikidata.org/w/api.php
- *
- * Example search:
- * ?action=wbsearchentities&search=Microsoft&language=en&format=json
+ * Wikidata API search response types
+ */
+interface WikidataSearchResult {
+  id: string;
+  label: string;
+  description?: string;
+  aliases?: string[];
+}
+
+interface WikidataSearchResponse {
+  search: WikidataSearchResult[];
+  success: number;
+}
+
+interface WikidataEntityData {
+  type: string;
+  id: string;
+  labels?: Record<string, { language: string; value: string }>;
+  descriptions?: Record<string, { language: string; value: string }>;
+  aliases?: Record<string, Array<{ language: string; value: string }>>;
+  claims?: Record<string, WikidataClaim[]>;
+  sitelinks?: Record<string, { site: string; title: string; url?: string }>;
+}
+
+interface WikidataClaim {
+  mainsnak: {
+    snaktype: string;
+    property: string;
+    datavalue?: {
+      value: unknown;
+      type: string;
+    };
+  };
+}
+
+interface WikidataEntitiesResponse {
+  entities: Record<string, WikidataEntityData>;
+  success: number;
+}
+
+/**
+ * Search Wikidata for entities matching the query
  */
 async function searchWikidata(
   query: string,
-  _options: WikidataCheckOptions
+  options: WikidataCheckOptions
 ): Promise<WikidataEntity[]> {
-  // In production, this would make actual API calls
-  // For now, return mock data for known companies
+  const language = options.language || 'en';
 
-  const knownEntities: Record<string, WikidataEntity> = {
-    microsoft: {
-      id: 'Q2283',
-      label: 'Microsoft',
-      description: 'American multinational technology corporation',
-      aliases: ['Microsoft Corporation', 'MSFT', 'MS'],
-      entityType: 'business',
-      properties: [
-        { id: 'P31', label: 'instance of', value: 'business', valueType: 'entity' },
-        { id: 'P856', label: 'official website', value: 'https://microsoft.com', valueType: 'url' },
-        { id: 'P571', label: 'inception', value: '1975', valueType: 'time' },
-        { id: 'P159', label: 'headquarters', value: 'Redmond, Washington', valueType: 'string' },
-        { id: 'P452', label: 'industry', value: 'software industry', valueType: 'entity' },
-        { id: 'P154', label: 'logo image', value: 'Microsoft logo (2012).svg', valueType: 'string' },
-        { id: 'P2002', label: 'Twitter username', value: 'Microsoft', valueType: 'string' },
-        { id: 'P3225', label: 'Crunchbase ID', value: 'microsoft', valueType: 'string' },
-      ],
-      wikipediaUrl: 'https://en.wikipedia.org/wiki/Microsoft',
-      officialWebsite: 'https://microsoft.com',
-    },
-    google: {
-      id: 'Q95',
-      label: 'Google',
-      description: 'American multinational technology company',
-      aliases: ['Google LLC', 'Google Inc.', 'GOOGL'],
-      entityType: 'business',
-      properties: [
-        { id: 'P31', label: 'instance of', value: 'business', valueType: 'entity' },
-        { id: 'P856', label: 'official website', value: 'https://google.com', valueType: 'url' },
-        { id: 'P571', label: 'inception', value: '1998', valueType: 'time' },
-        { id: 'P452', label: 'industry', value: 'technology', valueType: 'entity' },
-      ],
-      wikipediaUrl: 'https://en.wikipedia.org/wiki/Google',
-      officialWebsite: 'https://google.com',
-    },
-    openai: {
-      id: 'Q21063165',
-      label: 'OpenAI',
-      description: 'American artificial intelligence research laboratory',
-      aliases: ['OpenAI LP', 'OpenAI Inc'],
-      entityType: 'organization',
-      properties: [
-        { id: 'P31', label: 'instance of', value: 'organization', valueType: 'entity' },
-        { id: 'P856', label: 'official website', value: 'https://openai.com', valueType: 'url' },
-        { id: 'P571', label: 'inception', value: '2015', valueType: 'time' },
-        { id: 'P452', label: 'industry', value: 'artificial intelligence', valueType: 'entity' },
-      ],
-      wikipediaUrl: 'https://en.wikipedia.org/wiki/OpenAI',
-      officialWebsite: 'https://openai.com',
-    },
-  };
+  try {
+    // Step 1: Search for entities
+    const searchUrl = new URL(WIKIDATA_API_BASE);
+    searchUrl.searchParams.set('action', 'wbsearchentities');
+    searchUrl.searchParams.set('search', query);
+    searchUrl.searchParams.set('language', language);
+    searchUrl.searchParams.set('limit', '10');
+    searchUrl.searchParams.set('format', 'json');
+    searchUrl.searchParams.set('origin', '*');
 
-  const queryLower = query.toLowerCase();
+    const searchResponse = await fetch(searchUrl.toString(), {
+      headers: { 'Accept': 'application/json' },
+      signal: AbortSignal.timeout(WIKIDATA_TIMEOUT_MS),
+    });
 
-  // Direct match
-  if (knownEntities[queryLower]) {
-    return [knownEntities[queryLower]];
+    if (!searchResponse.ok) {
+      console.error('[Wikidata] Search failed:', searchResponse.status);
+      return [];
+    }
+
+    const searchData: WikidataSearchResponse = await searchResponse.json();
+
+    if (!searchData.search || searchData.search.length === 0) {
+      return [];
+    }
+
+    // Step 2: Get full entity data for top results
+    const entityIds = searchData.search.slice(0, 5).map(r => r.id);
+    const entities = await fetchEntityDetails(entityIds, language);
+
+    return entities;
+  } catch (error) {
+    console.error('[Wikidata] Search error:', error);
+    return [];
   }
+}
 
-  // Partial match
-  const matches: WikidataEntity[] = [];
-  for (const [key, entity] of Object.entries(knownEntities)) {
-    if (
-      key.includes(queryLower) ||
-      entity.label.toLowerCase().includes(queryLower) ||
-      entity.aliases.some(a => a.toLowerCase().includes(queryLower))
-    ) {
-      matches.push(entity);
+/**
+ * Fetch detailed entity data from Wikidata
+ */
+async function fetchEntityDetails(
+  entityIds: string[],
+  language: string
+): Promise<WikidataEntity[]> {
+  if (entityIds.length === 0) return [];
+
+  try {
+    const entitiesUrl = new URL(WIKIDATA_API_BASE);
+    entitiesUrl.searchParams.set('action', 'wbgetentities');
+    entitiesUrl.searchParams.set('ids', entityIds.join('|'));
+    entitiesUrl.searchParams.set('languages', language);
+    entitiesUrl.searchParams.set('props', 'labels|descriptions|aliases|claims|sitelinks');
+    entitiesUrl.searchParams.set('format', 'json');
+    entitiesUrl.searchParams.set('origin', '*');
+
+    const response = await fetch(entitiesUrl.toString(), {
+      headers: { 'Accept': 'application/json' },
+      signal: AbortSignal.timeout(WIKIDATA_TIMEOUT_MS),
+    });
+
+    if (!response.ok) {
+      console.error('[Wikidata] Entity fetch failed:', response.status);
+      return [];
+    }
+
+    const data: WikidataEntitiesResponse = await response.json();
+
+    if (!data.entities) return [];
+
+    return Object.values(data.entities)
+      .filter(e => e.type === 'item')
+      .map(e => transformToWikidataEntity(e, language));
+  } catch (error) {
+    console.error('[Wikidata] Entity fetch error:', error);
+    return [];
+  }
+}
+
+/**
+ * Transform Wikidata API response to our entity format
+ */
+function transformToWikidataEntity(
+  data: WikidataEntityData,
+  language: string
+): WikidataEntity {
+  const label = data.labels?.[language]?.value || data.id;
+  const description = data.descriptions?.[language]?.value;
+  const aliases = data.aliases?.[language]?.map(a => a.value) || [];
+
+  // Extract properties from claims
+  const properties: WikidataProperty[] = [];
+
+  if (data.claims) {
+    for (const [propId, claims] of Object.entries(data.claims)) {
+      const claim = claims[0]; // Take first claim for each property
+      if (claim?.mainsnak?.datavalue) {
+        const prop = extractPropertyValue(propId, claim.mainsnak.datavalue);
+        if (prop) {
+          properties.push(prop);
+        }
+      }
     }
   }
 
-  return matches;
+  // Extract Wikipedia URL from sitelinks
+  let wikipediaUrl: string | undefined;
+  const wikiSitelink = data.sitelinks?.[`${language}wiki`];
+  if (wikiSitelink?.title) {
+    wikipediaUrl = `https://${language}.wikipedia.org/wiki/${encodeURIComponent(wikiSitelink.title.replace(/ /g, '_'))}`;
+  }
+
+  // Extract official website from claims
+  const websiteClaim = properties.find(p => p.id === 'P856');
+  const officialWebsite = websiteClaim?.value;
+
+  return {
+    id: data.id,
+    label,
+    description,
+    aliases,
+    entityType: detectEntityType(properties),
+    properties,
+    wikipediaUrl,
+    officialWebsite,
+  };
+}
+
+/**
+ * Extract property value from Wikidata claim
+ */
+function extractPropertyValue(
+  propId: string,
+  datavalue: { value: unknown; type: string }
+): WikidataProperty | null {
+  const propInfo = IMPORTANT_PROPERTIES[propId];
+  const label = propInfo?.label || propId;
+
+  try {
+    switch (datavalue.type) {
+      case 'string':
+        return {
+          id: propId,
+          label,
+          value: datavalue.value as string,
+          valueType: 'string',
+        };
+
+      case 'wikibase-entityid': {
+        const entityValue = datavalue.value as { id: string; 'numeric-id': number };
+        return {
+          id: propId,
+          label,
+          value: entityValue.id,
+          valueType: 'entity',
+          linkedEntityId: entityValue.id,
+        };
+      }
+
+      case 'time': {
+        const timeValue = datavalue.value as { time: string };
+        // Extract year from time string like "+1975-04-04T00:00:00Z"
+        const year = timeValue.time?.match(/[+-]?(\d{4})/)?.[1] || timeValue.time;
+        return {
+          id: propId,
+          label,
+          value: year,
+          valueType: 'time',
+        };
+      }
+
+      case 'quantity': {
+        const quantityValue = datavalue.value as { amount: string };
+        return {
+          id: propId,
+          label,
+          value: quantityValue.amount,
+          valueType: 'quantity',
+        };
+      }
+
+      case 'monolingualtext': {
+        const textValue = datavalue.value as { text: string };
+        return {
+          id: propId,
+          label,
+          value: textValue.text,
+          valueType: 'string',
+        };
+      }
+
+      default:
+        return null;
+    }
+  } catch {
+    return null;
+  }
 }
 
 // ================================================================
@@ -404,27 +566,34 @@ export async function checkWikidataPresence(
 }
 
 /**
- * Validate existing Wikidata entity
+ * Validate existing Wikidata entity by ID
  */
 export async function validateWikidataEntity(
   entityId: string
 ): Promise<WikidataEntity | null> {
-  // In production, fetch from Wikidata API
-  // For now, return null (entity not found in mock)
-  return null;
+  return getWikidataEntity(entityId);
 }
 
 /**
  * Get Wikidata entity by Q-number
  */
 export async function getWikidataEntity(
-  qNumber: string
+  qNumber: string,
+  language: string = 'en'
 ): Promise<WikidataEntity | null> {
-  // In production, this would call:
-  // https://www.wikidata.org/wiki/Special:EntityData/{qNumber}.json
+  // Validate Q-number format
+  if (!qNumber.match(/^Q\d+$/)) {
+    console.error('[Wikidata] Invalid Q-number format:', qNumber);
+    return null;
+  }
 
-  // For now, return null
-  return null;
+  try {
+    const entities = await fetchEntityDetails([qNumber], language);
+    return entities.length > 0 ? entities[0] : null;
+  } catch (error) {
+    console.error('[Wikidata] Failed to fetch entity:', error);
+    return null;
+  }
 }
 
 // ================================================================

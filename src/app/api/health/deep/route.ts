@@ -388,6 +388,71 @@ async function checkStripe(): Promise<ServiceCheck> {
   }
 }
 
+async function checkGoogle(): Promise<ServiceCheck> {
+  const start = Date.now();
+
+  try {
+    const apiKey = process.env.GOOGLE_AI_API_KEY;
+
+    if (!apiKey) {
+      return {
+        name: 'google',
+        status: 'unhealthy',
+        latencyMs: Date.now() - start,
+        message: 'Missing GOOGLE_AI_API_KEY',
+        lastChecked: new Date().toISOString(),
+      };
+    }
+
+    // Use the Gemini API models endpoint for lightweight check
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1/models?key=${apiKey}`,
+      {
+        method: 'GET',
+        signal: AbortSignal.timeout(CHECK_TIMEOUT_MS),
+      }
+    );
+
+    const latencyMs = Date.now() - start;
+
+    if (response.ok) {
+      return {
+        name: 'google',
+        status: latencyMs > 2000 ? 'degraded' : 'healthy',
+        latencyMs,
+        message: latencyMs > 2000 ? 'High latency detected' : 'Gemini Available',
+        lastChecked: new Date().toISOString(),
+      };
+    }
+
+    if (response.status === 429) {
+      return {
+        name: 'google',
+        status: 'degraded',
+        latencyMs,
+        message: 'Rate limited',
+        lastChecked: new Date().toISOString(),
+      };
+    }
+
+    return {
+      name: 'google',
+      status: 'unhealthy',
+      latencyMs,
+      message: `HTTP ${response.status}`,
+      lastChecked: new Date().toISOString(),
+    };
+  } catch (error) {
+    return {
+      name: 'google',
+      status: 'unhealthy',
+      latencyMs: Date.now() - start,
+      message: error instanceof Error ? error.message : 'Connection failed',
+      lastChecked: new Date().toISOString(),
+    };
+  }
+}
+
 async function checkResend(): Promise<ServiceCheck> {
   const start = Date.now();
 
@@ -475,16 +540,17 @@ export async function GET() {
   const startTime = Date.now();
 
   // Run all checks in parallel
-  const [supabase, redis, openai, anthropic, stripe, resend] = await Promise.all([
+  const [supabase, redis, openai, anthropic, google, stripe, resend] = await Promise.all([
     checkSupabase(),
     checkRedis(),
     checkOpenAI(),
     checkAnthropic(),
+    checkGoogle(),
     checkStripe(),
     checkResend(),
   ]);
 
-  const services: ServiceCheck[] = [supabase, redis, openai, anthropic, stripe, resend];
+  const services: ServiceCheck[] = [supabase, redis, openai, anthropic, google, stripe, resend];
   const circuitBreakers = getCircuitBreakerStatus();
 
   // Calculate summary

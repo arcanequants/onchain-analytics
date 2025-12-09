@@ -322,17 +322,47 @@ export function createEventLoopCheck(
 }
 
 /**
- * Create a disk space check (basic)
+ * Create a disk space check
+ *
+ * Uses Node.js fs.statfs to check actual disk space on the filesystem.
+ * Works in Vercel/serverless environments where the temp filesystem
+ * is the relevant storage to monitor.
  */
 export function createDiskCheck(
   minFreePercent: number = 10
 ): HealthCheck {
   return {
     name: 'disk',
-    check: () => {
-      // This is a placeholder - real implementation would check actual disk space
-      // For Node.js, you'd use 'fs' or a library like 'check-disk-space'
-      return true;
+    check: async () => {
+      try {
+        // Dynamic import for fs/promises to avoid issues in edge runtime
+        const fs = await import('fs/promises');
+
+        // Check the tmp directory (most relevant for serverless)
+        const path = process.platform === 'win32' ? 'C:\\' : '/tmp';
+
+        // Node.js 18.15+ has fs.statfs
+        if (typeof fs.statfs === 'function') {
+          const stats = await fs.statfs(path);
+          const totalBytes = stats.blocks * stats.bsize;
+          const freeBytes = stats.bfree * stats.bsize;
+          const freePercent = (freeBytes / totalBytes) * 100;
+
+          return freePercent >= minFreePercent;
+        }
+
+        // Fallback: Check if we can write to tmp (basic health check)
+        const testFile = `${path}/.health-check-${Date.now()}`;
+        await fs.writeFile(testFile, 'health-check');
+        await fs.unlink(testFile);
+
+        return true;
+      } catch (error) {
+        // Log but don't fail hard - disk checks may not work in all environments
+        console.warn('[Health Check] Disk check failed:', error);
+        // Return true to avoid false negatives in environments without disk access
+        return true;
+      }
     },
     critical: false,
     timeout: 5000,

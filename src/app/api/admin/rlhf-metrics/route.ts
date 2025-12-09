@@ -266,8 +266,25 @@ async function getPairMetrics(
     pairsByOutcome[outcome] = (pairsByOutcome[outcome] || 0) + 1;
   }
 
-  // Training conversion (placeholder - would need actual training data)
-  const conversionToTraining = 0.75;
+  // Calculate actual training conversion rate from training runs
+  let conversionToTraining = 0;
+
+  if (totalPairs > 0) {
+    // Get training runs to calculate actual conversion
+    const { data: trainingRuns } = await supabase
+      .from('model_training_runs')
+      .select('training_samples')
+      .eq('status', 'completed');
+
+    const totalTrainedSamples = (trainingRuns || []).reduce(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (sum: number, r: any) => sum + (r.training_samples || 0),
+      0
+    );
+
+    // Conversion rate = pairs used in training / total pairs
+    conversionToTraining = Math.min(totalTrainedSamples / totalPairs, 1);
+  }
 
   return {
     totalPairs,

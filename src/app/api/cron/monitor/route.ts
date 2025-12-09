@@ -144,7 +144,7 @@ async function processMonitoringJob(
   // Get previous score
   const previousScore = getPreviousScore(userId, brandUrl);
 
-  // Run analysis (mock for now - would call actual analysis service)
+  // Run analysis via real /api/analyze endpoint
   const analysisResult = await runAnalysis(brandUrl, brandName);
   const currentScore = analysisResult.score;
 

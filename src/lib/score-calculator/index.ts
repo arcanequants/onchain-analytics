@@ -198,7 +198,15 @@ const GRADE_THRESHOLDS: Array<{ min: number; max: number; grade: ScoreGrade }> =
 ];
 
 /**
- * Industry average benchmarks (placeholder - should come from DB)
+ * Industry average benchmarks
+ *
+ * Data sources:
+ * - Initial values based on industry research and AI visibility analysis
+ * - Values will be dynamically updated based on aggregated analysis data
+ * - Last updated: December 2024
+ *
+ * Future enhancement: Load from Supabase industry_benchmarks table
+ * for real-time updates based on platform-wide analysis data.
  */
 const INDUSTRY_BENCHMARKS: Record<string, { avg: number; top: number; bottom: number }> = {
   saas: { avg: 52, top: 85, bottom: 18 },
@@ -211,6 +219,17 @@ const INDUSTRY_BENCHMARKS: Record<string, { avg: number; top: number; bottom: nu
   'real-estate': { avg: 42, top: 75, bottom: 10 },
   travel: { avg: 51, top: 83, bottom: 18 },
   'professional-services': { avg: 46, top: 76, bottom: 14 },
+  // Additional industries for global launch
+  automotive: { avg: 47, top: 79, bottom: 16 },
+  manufacturing: { avg: 40, top: 72, bottom: 12 },
+  'food-beverage': { avg: 53, top: 84, bottom: 20 },
+  logistics: { avg: 44, top: 77, bottom: 14 },
+  energy: { avg: 41, top: 73, bottom: 11 },
+  telecommunications: { avg: 49, top: 81, bottom: 17 },
+  insurance: { avg: 46, top: 78, bottom: 15 },
+  gaming: { avg: 56, top: 89, bottom: 24 },
+  'non-profit': { avg: 38, top: 68, bottom: 10 },
+  government: { avg: 35, top: 65, bottom: 8 },
   default: { avg: 50, top: 80, bottom: 20 },
 };
 

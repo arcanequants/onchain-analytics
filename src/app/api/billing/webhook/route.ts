@@ -472,6 +472,15 @@ async function handleCustomerSubscriptionTrialWillEnd(
 // ================================================================
 
 export async function POST(request: NextRequest) {
+  // Check if Stripe is configured before processing webhook
+  if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_WEBHOOK_SECRET) {
+    console.error('[Webhook] Stripe not configured');
+    return NextResponse.json(
+      { error: 'Stripe is not configured' },
+      { status: 503 }
+    );
+  }
+
   const body = await request.text();
   const signature = request.headers.get('stripe-signature');
 

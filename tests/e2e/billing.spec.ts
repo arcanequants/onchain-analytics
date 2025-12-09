@@ -165,8 +165,8 @@ test.describe('Billing & Checkout', () => {
         }
       });
 
-      // Should return 400 (bad signature) not 404 or 405
-      expect([400, 401, 403]).toContain(response.status());
+      // Should return 400 (bad signature), 503 (Stripe not configured), not 404 or 405
+      expect([400, 401, 403, 503]).toContain(response.status());
     });
   });
 

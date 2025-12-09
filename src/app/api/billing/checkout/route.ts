@@ -4,11 +4,13 @@
  * Creates a Stripe Checkout session for subscription purchases
  *
  * Phase 2, Week 5, Day 2
+ * SRE Audit Fix: Added real authentication
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createCheckoutSession, getOrCreateCustomer } from '@/lib/stripe/client';
-import { PLANS, getPlanByPriceId } from '@/lib/stripe/config';
+import { getPlanByPriceId } from '@/lib/stripe/config';
+import { getSupabaseAdmin, isSupabaseAvailable } from '@/lib/supabase';
 
 // ================================================================
 // TYPES
@@ -46,12 +48,46 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // TODO: Get user from session/auth
-    // For now, we'll use a placeholder - in production, get from auth
+    // Get authenticated user from Authorization header
+    const authHeader = request.headers.get('authorization');
+    if (!authHeader?.startsWith('Bearer ')) {
+      return NextResponse.json(
+        { error: 'Authentication required' },
+        { status: 401 }
+      );
+    }
+
+    const token = authHeader.replace('Bearer ', '');
+
+    if (!isSupabaseAvailable()) {
+      return NextResponse.json(
+        { error: 'Service unavailable' },
+        { status: 503 }
+      );
+    }
+
+    const supabase = getSupabaseAdmin();
+    const { data: { user: authUser }, error: authError } = await supabase.auth.getUser(token);
+
+    if (authError || !authUser) {
+      return NextResponse.json(
+        { error: 'Invalid or expired token' },
+        { status: 401 }
+      );
+    }
+
+    // Get user profile from database
+    const { data: userProfile } = await supabase
+      .from('users')
+      .select('id, email, full_name, stripe_customer_id')
+      .eq('id', authUser.id)
+      .single();
+
     const user = {
-      id: 'user-placeholder',
-      email: 'user@example.com',
-      name: 'User',
+      id: authUser.id,
+      email: authUser.email || userProfile?.email || '',
+      name: userProfile?.full_name || authUser.user_metadata?.full_name || 'User',
+      stripeCustomerId: userProfile?.stripe_customer_id || null,
     };
 
     // Get or create Stripe customer

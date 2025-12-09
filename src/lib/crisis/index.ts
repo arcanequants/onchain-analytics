@@ -83,6 +83,29 @@ export interface AnalysisData {
     content: string;
     provider: string;
   }>;
+  // For brand confusion detection
+  brandConfusion?: Array<{
+    provider: string;
+    confusedWith: string;
+    context: string;
+    confidence: number;
+  }>;
+  // For outdated info detection
+  outdatedInfo?: Array<{
+    provider: string;
+    outdatedClaim: string;
+    currentInfo?: string;
+    infoType: 'leadership' | 'product' | 'location' | 'pricing' | 'contact' | 'general';
+    detectedAge?: string;
+  }>;
+  // For controversy detection
+  controversies?: Array<{
+    provider: string;
+    topic: string;
+    description: string;
+    severity: 'minor' | 'moderate' | 'major';
+    isResolved?: boolean;
+  }>;
 }
 
 // ================================================================
@@ -317,30 +340,139 @@ export class CrisisDetector {
   }
 
   private detectBrandConfusion(
-    _data: AnalysisData,
-    _indicators: CrisisIndicator[]
+    data: AnalysisData,
+    indicators: CrisisIndicator[]
   ): void {
-    // TODO: Implement brand confusion detection
-    // This would analyze if AI providers confuse the brand with similar names
-    // or attribute incorrect products/services to the brand
+    if (!data.brandConfusion || data.brandConfusion.length === 0) return;
+
+    // Filter high-confidence confusions
+    const significantConfusions = data.brandConfusion.filter(c => c.confidence >= 0.6);
+
+    if (significantConfusions.length === 0) return;
+
+    const affectedProviders = [...new Set(significantConfusions.map(c => c.provider))];
+    const avgConfidence = significantConfusions.reduce((sum, c) => sum + c.confidence, 0) /
+      significantConfusions.length;
+
+    // Score based on frequency and confidence
+    const score = Math.min(significantConfusions.length * 20 * avgConfidence, 100);
+
+    indicators.push({
+      category: 'brand_confusion',
+      severity: this.scoreToSeverity(score),
+      score,
+      confidence: avgConfidence,
+      description: `AI providers are confusing ${data.brandName} with ${significantConfusions.length} other brand(s)`,
+      evidence: significantConfusions.map(c =>
+        `[${c.provider}] Confused with "${c.confusedWith}": ${c.context.substring(0, 100)}...`
+      ),
+      affectedProviders,
+      detectedAt: new Date(),
+    });
   }
 
   private detectOutdatedInfo(
-    _data: AnalysisData,
-    _indicators: CrisisIndicator[]
+    data: AnalysisData,
+    indicators: CrisisIndicator[]
   ): void {
-    // TODO: Implement outdated info detection
-    // This would check if AI responses contain outdated information
-    // about products, leadership, locations, etc.
+    if (!data.outdatedInfo || data.outdatedInfo.length === 0) return;
+
+    const affectedProviders = [...new Set(data.outdatedInfo.map(o => o.provider))];
+
+    // Weight by info type importance
+    const typeWeights: Record<string, number> = {
+      leadership: 1.5,  // CEO changes are critical
+      product: 1.3,     // Product info matters
+      pricing: 1.2,     // Pricing affects purchase decisions
+      location: 1.0,    // Location changes
+      contact: 0.9,     // Contact info
+      general: 0.8,     // General outdated info
+    };
+
+    let weightedScore = 0;
+    for (const item of data.outdatedInfo) {
+      const weight = typeWeights[item.infoType] || 1.0;
+      weightedScore += 15 * weight;
+    }
+
+    const score = Math.min(weightedScore, 100);
+    const confidence = 0.8;
+
+    // Group by info type for evidence
+    const byType = data.outdatedInfo.reduce((acc, item) => {
+      if (!acc[item.infoType]) acc[item.infoType] = [];
+      acc[item.infoType].push(item);
+      return acc;
+    }, {} as Record<string, typeof data.outdatedInfo>);
+
+    const evidence = Object.entries(byType).map(([type, items]) => {
+      const examples = items.slice(0, 2).map(i =>
+        `[${i.provider}] ${i.outdatedClaim}${i.currentInfo ? ` (Current: ${i.currentInfo})` : ''}`
+      );
+      return `${type.toUpperCase()}: ${examples.join('; ')}`;
+    });
+
+    indicators.push({
+      category: 'outdated_info',
+      severity: this.scoreToSeverity(score),
+      score,
+      confidence,
+      description: `${data.outdatedInfo.length} instance(s) of outdated information found across AI providers`,
+      evidence,
+      affectedProviders,
+      detectedAt: new Date(),
+    });
   }
 
   private detectControversy(
-    _data: AnalysisData,
-    _indicators: CrisisIndicator[]
+    data: AnalysisData,
+    indicators: CrisisIndicator[]
   ): void {
-    // TODO: Implement controversy detection
-    // This would scan for mentions of controversies, lawsuits,
-    // scandals, or other negative news associated with the brand
+    if (!data.controversies || data.controversies.length === 0) return;
+
+    // Filter out resolved controversies (unless major)
+    const activeControversies = data.controversies.filter(c =>
+      !c.isResolved || c.severity === 'major'
+    );
+
+    if (activeControversies.length === 0) return;
+
+    const affectedProviders = [...new Set(activeControversies.map(c => c.provider))];
+
+    // Score by severity
+    const severityScores: Record<string, number> = {
+      minor: 15,
+      moderate: 35,
+      major: 60,
+    };
+
+    let totalScore = 0;
+    for (const controversy of activeControversies) {
+      totalScore += severityScores[controversy.severity] || 20;
+    }
+    const score = Math.min(totalScore, 100);
+
+    // Higher confidence if multiple providers mention same controversy
+    const topicCounts = activeControversies.reduce((acc, c) => {
+      acc[c.topic] = (acc[c.topic] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+
+    const maxTopicMentions = Math.max(...Object.values(topicCounts));
+    const confidence = Math.min(0.5 + maxTopicMentions * 0.15, 0.95);
+
+    indicators.push({
+      category: 'controversy',
+      severity: this.scoreToSeverity(score),
+      score,
+      confidence,
+      description: `${activeControversies.length} controversy mention(s) detected in AI responses`,
+      evidence: activeControversies.map(c =>
+        `[${c.provider}] ${c.severity.toUpperCase()}: ${c.topic} - ${c.description.substring(0, 80)}...${c.isResolved ? ' (marked as resolved)' : ''}`
+      ),
+      affectedProviders,
+      detectedAt: new Date(),
+    });
   }
 
   // ================================================================
@@ -438,6 +570,29 @@ export class CrisisDetector {
       actions.push('Conduct competitive analysis');
       actions.push('Identify differentiation opportunities');
       actions.push('Strengthen brand authority signals');
+    }
+
+    if (categories.has('brand_confusion')) {
+      actions.push('Audit brand naming and differentiation strategies');
+      actions.push('Strengthen unique brand identifiers in structured data');
+      actions.push('Create disambiguation content to clarify brand identity');
+      actions.push('Consider trademark enforcement if confusion is with specific competitor');
+    }
+
+    if (categories.has('outdated_info')) {
+      actions.push('Audit all public-facing information for accuracy');
+      actions.push('Update website, Wikipedia, and knowledge base entries');
+      actions.push('Submit corrections to AI providers via their feedback channels');
+      actions.push('Implement regular information freshness audits');
+      actions.push('Strengthen Schema.org markup with current information');
+    }
+
+    if (categories.has('controversy')) {
+      actions.push('Prepare or update crisis communication materials');
+      actions.push('Review legal implications with counsel if needed');
+      actions.push('Develop proactive narrative to address concerns');
+      actions.push('Monitor social media sentiment closely');
+      actions.push('Consider official statement if controversy is active');
     }
 
     // Always include monitoring action

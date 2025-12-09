@@ -4,10 +4,12 @@
  * Creates a Stripe Billing Portal session for subscription management
  *
  * Phase 2, Week 5, Day 2
+ * SRE Audit Fix: Added real authentication
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createPortalSession, getCustomer } from '@/lib/stripe/client';
+import { getSupabaseAdmin, isSupabaseAvailable } from '@/lib/supabase';
 
 // ================================================================
 // TYPES
@@ -26,11 +28,51 @@ export async function POST(request: NextRequest) {
     const body: PortalRequestBody = await request.json().catch(() => ({}));
     const { returnUrl } = body;
 
-    // TODO: Get user and their Stripe customer ID from session/auth
-    // For now, we'll use a placeholder - in production, get from database
-    const stripeCustomerId = 'cus_placeholder';
+    // Get authenticated user from Authorization header
+    const authHeader = request.headers.get('authorization');
+    if (!authHeader?.startsWith('Bearer ')) {
+      return NextResponse.json(
+        { error: 'Authentication required' },
+        { status: 401 }
+      );
+    }
 
-    // Verify customer exists
+    const token = authHeader.replace('Bearer ', '');
+
+    if (!isSupabaseAvailable()) {
+      return NextResponse.json(
+        { error: 'Service unavailable' },
+        { status: 503 }
+      );
+    }
+
+    const supabase = getSupabaseAdmin();
+    const { data: { user: authUser }, error: authError } = await supabase.auth.getUser(token);
+
+    if (authError || !authUser) {
+      return NextResponse.json(
+        { error: 'Invalid or expired token' },
+        { status: 401 }
+      );
+    }
+
+    // Get user's Stripe customer ID from database
+    const { data: userProfile, error: profileError } = await supabase
+      .from('users')
+      .select('stripe_customer_id')
+      .eq('id', authUser.id)
+      .single();
+
+    if (profileError || !userProfile?.stripe_customer_id) {
+      return NextResponse.json(
+        { error: 'No subscription found. Please subscribe first.' },
+        { status: 404 }
+      );
+    }
+
+    const stripeCustomerId = userProfile.stripe_customer_id;
+
+    // Verify customer exists in Stripe
     const customer = await getCustomer(stripeCustomerId);
     if (!customer) {
       return NextResponse.json(

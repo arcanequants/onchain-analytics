@@ -105,18 +105,65 @@ export async function GET(request: NextRequest) {
       ? Math.round(completedAnalyses.reduce((sum, a) => sum + a.score, 0) / completedAnalyses.length)
       : 0;
 
+    // Calculate score trend from historical data (current month vs previous month)
+    const previousMonthStart = new Date(periodStart);
+    previousMonthStart.setMonth(previousMonthStart.getMonth() - 1);
+    const previousMonthEnd = new Date(periodStart);
+    previousMonthEnd.setDate(previousMonthEnd.getDate() - 1);
+
+    // Fetch previous month's analyses for trend calculation
+    const { data: previousMonthAnalyses } = await supabase
+      .from('analyses')
+      .select('overall_score')
+      .eq('user_id', user.id)
+      .eq('status', 'completed')
+      .gte('created_at', previousMonthStart.toISOString())
+      .lt('created_at', periodStart.toISOString());
+
+    // Fetch current month's analyses
+    const { data: currentMonthAnalyses } = await supabase
+      .from('analyses')
+      .select('overall_score')
+      .eq('user_id', user.id)
+      .eq('status', 'completed')
+      .gte('created_at', periodStart.toISOString());
+
+    // Calculate averages for trend
+    const prevMonthScores = previousMonthAnalyses || [];
+    const currMonthScores = currentMonthAnalyses || [];
+
+    const prevAvg = prevMonthScores.length > 0
+      ? prevMonthScores.reduce((sum, a) => sum + (a.overall_score || 0), 0) / prevMonthScores.length
+      : 0;
+
+    const currAvg = currMonthScores.length > 0
+      ? currMonthScores.reduce((sum, a) => sum + (a.overall_score || 0), 0) / currMonthScores.length
+      : 0;
+
+    // Score trend: positive = improvement, negative = decline
+    const scoreTrend = prevAvg > 0 ? Math.round(currAvg - prevAvg) : 0;
+
+    // Get distinct URLs for URL monitoring count
+    const { data: distinctUrls } = await supabase
+      .from('analyses')
+      .select('url')
+      .eq('user_id', user.id);
+
+    const uniqueUrls = new Set((distinctUrls || []).map(u => u.url));
+
     return NextResponse.json({
       success: true,
       data: {
         analyses: transformedAnalyses,
         totalCount: count || 0,
         avgScore,
+        scoreTrend,
         usage: {
           periodStart: periodStart.toISOString(),
           periodEnd: new Date(periodStart.getFullYear(), periodStart.getMonth() + 1, 0).toISOString(),
           analysesUsed: profile?.analyses_used_this_month || 0,
           lastAnalysisAt: transformedAnalyses[0]?.createdAt || null,
-          monitoredUrls: 0, // TODO: implement URL monitoring
+          monitoredUrls: uniqueUrls.size,
           apiCallsUsed: usage?.ai_calls_count || 0,
         },
         plan: profile?.subscription_tier || 'free',

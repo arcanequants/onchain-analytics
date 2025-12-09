@@ -24,6 +24,15 @@ import {
   downgradeToFree,
 } from '@/lib/billing/subscription-service';
 import type { SubscriptionStatus } from '@/lib/billing/subscription-service';
+import {
+  sendSubscriptionWelcomeEmail,
+  sendPaymentReceiptEmail,
+  sendPaymentFailedEmail,
+  sendTrialEndingEmail,
+  sendCancellationConfirmationEmail,
+  sendSubscriptionEndedEmail,
+} from '@/lib/billing/emails';
+import { getPlanById, formatPrice, type PlanId } from '@/lib/stripe/config';
 
 // ================================================================
 // HELPERS
@@ -195,7 +204,20 @@ async function handleSubscriptionCreated(
   });
 
   console.log('[Webhook] Subscription created in database');
-  // TODO: Send welcome email
+
+  // Send welcome email
+  try {
+    const plan = getPlanById(planId as PlanId);
+    await sendSubscriptionWelcomeEmail({
+      email: user.email,
+      planName: plan.name,
+      planPrice: formatPrice(plan.price),
+    });
+    console.log('[Webhook] Welcome email sent');
+  } catch (emailError) {
+    console.error('[Webhook] Failed to send welcome email:', emailError);
+    // Don't fail the webhook for email errors
+  }
 }
 
 async function handleSubscriptionUpdated(
@@ -254,7 +276,19 @@ async function handleSubscriptionUpdated(
   // Handle cancellation at period end
   if (subscription.cancel_at_period_end) {
     console.log('[Webhook] Subscription will cancel at period end');
-    // TODO: Send cancellation confirmation email
+
+    // Send cancellation confirmation email
+    try {
+      const plan = getPlanById(planId as PlanId);
+      await sendCancellationConfirmationEmail({
+        email: user.email,
+        planName: plan.name,
+        endDate: currentPeriodEnd,
+      });
+      console.log('[Webhook] Cancellation confirmation email sent');
+    } catch (emailError) {
+      console.error('[Webhook] Failed to send cancellation email:', emailError);
+    }
   }
 
   console.log('[Webhook] Subscription updated in database');
@@ -266,11 +300,15 @@ async function handleSubscriptionDeleted(
   console.log('[Webhook] Subscription deleted:', subscription.id);
 
   const customerId = subscription.customer as string;
+  const planId = extractPlanFromSubscription(subscription);
 
   console.log('[Webhook] Downgrading user to free plan:', {
     subscriptionId: subscription.id,
     customerId,
   });
+
+  // Find user before downgrading (for email)
+  const user = await findUserByStripeCustomer(customerId);
 
   // Mark subscription as cancelled in subscriptions table
   await cancelSubscription(subscription.id);
@@ -280,7 +318,20 @@ async function handleSubscriptionDeleted(
 
   if (downgraded) {
     console.log('[Webhook] User downgraded to free plan');
-    // TODO: Send cancellation email
+
+    // Send subscription ended email
+    if (user) {
+      try {
+        const plan = getPlanById(planId as PlanId);
+        await sendSubscriptionEndedEmail({
+          email: user.email,
+          planName: plan.name,
+        });
+        console.log('[Webhook] Subscription ended email sent');
+      } catch (emailError) {
+        console.error('[Webhook] Failed to send subscription ended email:', emailError);
+      }
+    }
   } else {
     console.error('[Webhook] Failed to downgrade user to free plan');
   }
@@ -304,8 +355,30 @@ async function handleInvoicePaymentSucceeded(
     currency: invoice.currency,
   });
 
-  // TODO: Send receipt email
-  // TODO: Log successful payment for analytics
+  // Skip receipt for $0 invoices (trials, etc.)
+  if (amountPaid === 0) {
+    console.log('[Webhook] Skipping receipt for $0 invoice');
+    return;
+  }
+
+  // Find user and send receipt email
+  if (customerId) {
+    const user = await findUserByStripeCustomer(customerId);
+    if (user) {
+      try {
+        await sendPaymentReceiptEmail({
+          email: user.email,
+          amount: amountPaid,
+          currency: invoice.currency,
+          invoiceId: invoice.id,
+          invoiceUrl: invoice.hosted_invoice_url || undefined,
+        });
+        console.log('[Webhook] Receipt email sent');
+      } catch (emailError) {
+        console.error('[Webhook] Failed to send receipt email:', emailError);
+      }
+    }
+  }
 }
 
 async function handleInvoicePaymentFailed(
@@ -337,7 +410,25 @@ async function handleInvoicePaymentFailed(
     }
   }
 
-  // TODO: Send payment failed email with update link
+  // Find user and send payment failed email
+  if (customerId) {
+    const user = await findUserByStripeCustomer(customerId);
+    if (user) {
+      try {
+        await sendPaymentFailedEmail({
+          email: user.email,
+          amount: invoice.amount_due,
+          currency: invoice.currency,
+          retryDate: invoice.next_payment_attempt
+            ? new Date(invoice.next_payment_attempt * 1000)
+            : undefined,
+        });
+        console.log('[Webhook] Payment failed email sent');
+      } catch (emailError) {
+        console.error('[Webhook] Failed to send payment failed email:', emailError);
+      }
+    }
+  }
 }
 
 async function handleCustomerSubscriptionTrialWillEnd(
@@ -346,6 +437,7 @@ async function handleCustomerSubscriptionTrialWillEnd(
   console.log('[Webhook] Trial will end:', subscription.id);
 
   const customerId = subscription.customer as string;
+  const planId = extractPlanFromSubscription(subscription);
   const trialEnd = subscription.trial_end
     ? new Date(subscription.trial_end * 1000)
     : null;
@@ -356,8 +448,23 @@ async function handleCustomerSubscriptionTrialWillEnd(
     trialEnd,
   });
 
-  // TODO: Send trial ending email
-  // await sendTrialEndingEmail(customerId, trialEnd);
+  // Find user and send trial ending email
+  if (trialEnd) {
+    const user = await findUserByStripeCustomer(customerId);
+    if (user) {
+      try {
+        const plan = getPlanById(planId as PlanId);
+        await sendTrialEndingEmail({
+          email: user.email,
+          trialEndDate: trialEnd,
+          planName: plan.name,
+        });
+        console.log('[Webhook] Trial ending email sent');
+      } catch (emailError) {
+        console.error('[Webhook] Failed to send trial ending email:', emailError);
+      }
+    }
+  }
 }
 
 // ================================================================

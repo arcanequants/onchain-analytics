@@ -4,6 +4,7 @@
  * Gets current user subscription status
  *
  * Phase 2, Week 5, Day 3
+ * SRE Audit Fix: Added real authentication and usage tracking
  */
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -11,9 +12,9 @@ import {
   getActiveSubscription,
   extractPlanFromSubscription,
   formatSubscriptionPeriod,
-  isSubscriptionActive,
 } from '@/lib/stripe/client';
-import { getPlanById, calculateUsageStatus } from '@/lib/stripe/config';
+import { getPlanById, calculateUsageStatus, type PlanId } from '@/lib/stripe/config';
+import { getSupabaseAdmin, isSupabaseAvailable } from '@/lib/supabase';
 
 // ================================================================
 // GET - Get Subscription Status
@@ -21,14 +22,59 @@ import { getPlanById, calculateUsageStatus } from '@/lib/stripe/config';
 
 export async function GET(request: NextRequest) {
   try {
-    // TODO: Get user and their Stripe customer ID from session/auth
-    // For now, return a mock response for development
-    const stripeCustomerId = null; // Would come from database
+    // Get authenticated user from Authorization header
+    const authHeader = request.headers.get('authorization');
+    if (!authHeader?.startsWith('Bearer ')) {
+      return NextResponse.json(
+        { error: 'Authentication required' },
+        { status: 401 }
+      );
+    }
+
+    const token = authHeader.replace('Bearer ', '');
+
+    if (!isSupabaseAvailable()) {
+      return NextResponse.json(
+        { error: 'Service unavailable' },
+        { status: 503 }
+      );
+    }
+
+    const supabase = getSupabaseAdmin();
+    const { data: { user: authUser }, error: authError } = await supabase.auth.getUser(token);
+
+    if (authError || !authUser) {
+      return NextResponse.json(
+        { error: 'Invalid or expired token' },
+        { status: 401 }
+      );
+    }
+
+    // Get user profile with subscription info
+    const { data: userProfile } = await supabase
+      .from('users')
+      .select('stripe_customer_id, subscription_tier, subscription_status')
+      .eq('id', authUser.id)
+      .single();
+
+    const stripeCustomerId = userProfile?.stripe_customer_id || null;
+
+    // Get usage count for current month
+    const now = new Date();
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+    const { count: analysesUsed } = await supabase
+      .from('analyses')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', authUser.id)
+      .gte('created_at', startOfMonth.toISOString());
+
+    const currentUsage = analysesUsed || 0;
 
     // If no customer ID, user is on free plan
     if (!stripeCustomerId) {
       const freePlan = getPlanById('free');
-      const usageStatus = calculateUsageStatus('free', 0, new Date());
+      const usageStatus = calculateUsageStatus('free', currentUsage, startOfMonth);
 
       return NextResponse.json({
         plan: 'free',
@@ -46,7 +92,7 @@ export async function GET(request: NextRequest) {
     // No subscription means free plan
     if (!subscription) {
       const freePlan = getPlanById('free');
-      const usageStatus = calculateUsageStatus('free', 0, new Date());
+      const usageStatus = calculateUsageStatus('free', currentUsage, startOfMonth);
 
       return NextResponse.json({
         plan: 'free',
@@ -59,13 +105,10 @@ export async function GET(request: NextRequest) {
     }
 
     // Extract plan and period info
-    const planId = extractPlanFromSubscription(subscription);
+    const planId = extractPlanFromSubscription(subscription) as PlanId;
     const plan = getPlanById(planId);
     const period = formatSubscriptionPeriod(subscription);
-
-    // TODO: Get actual usage from database
-    const analysesUsed = 0; // Would come from database
-    const usageStatus = calculateUsageStatus(planId, analysesUsed, period.start);
+    const usageStatus = calculateUsageStatus(planId, currentUsage, period.start);
 
     return NextResponse.json({
       plan: planId,

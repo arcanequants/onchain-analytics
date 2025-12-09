@@ -4,6 +4,7 @@
  * Handles Stripe webhook events for subscription lifecycle
  *
  * Phase 2, Week 5, Day 3
+ * SRE Audit Fix: Connected to real database via subscription-service
  */
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -13,6 +14,64 @@ import {
   getSubscription,
   extractPlanFromSubscription,
 } from '@/lib/stripe/client';
+import {
+  findUserByStripeCustomer,
+  updateUserSubscription,
+  linkStripeCustomerToUser,
+  upsertSubscription,
+  updateSubscriptionStatus,
+  cancelSubscription,
+  downgradeToFree,
+} from '@/lib/billing/subscription-service';
+import type { SubscriptionStatus } from '@/lib/billing/subscription-service';
+
+// ================================================================
+// HELPERS
+// ================================================================
+
+/**
+ * Map Stripe subscription status to our internal status type
+ */
+function mapStripeStatus(stripeStatus: Stripe.Subscription.Status): SubscriptionStatus {
+  switch (stripeStatus) {
+    case 'active':
+      return 'active';
+    case 'canceled':
+      return 'cancelled';
+    case 'past_due':
+      return 'past_due';
+    case 'unpaid':
+      return 'unpaid';
+    case 'trialing':
+      return 'trialing';
+    default:
+      // incomplete, incomplete_expired, paused
+      return 'unpaid';
+  }
+}
+
+/**
+ * Extract current period dates from subscription items
+ * In Stripe API 2024+, current_period_start/end are on items, not subscription
+ */
+function getSubscriptionPeriod(subscription: Stripe.Subscription): {
+  currentPeriodStart: Date;
+  currentPeriodEnd: Date;
+} {
+  const firstItem = subscription.items?.data?.[0];
+  if (firstItem) {
+    return {
+      currentPeriodStart: new Date(firstItem.current_period_start * 1000),
+      currentPeriodEnd: new Date(firstItem.current_period_end * 1000),
+    };
+  }
+  // Fallback to current date if no items (shouldn't happen)
+  const now = new Date();
+  return {
+    currentPeriodStart: now,
+    currentPeriodEnd: new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000), // +30 days
+  };
+}
 
 // ================================================================
 // WEBHOOK EVENT HANDLERS
@@ -41,28 +100,57 @@ async function handleCheckoutSessionCompleted(
 
   const planId = extractPlanFromSubscription(subscription);
 
-  // TODO: Update user subscription in database
-  // Get current period end from first subscription item
-  const currentPeriodEnd = subscription.items?.data?.[0]?.current_period_end;
+  // Map Stripe status to our status type
+  const status = mapStripeStatus(subscription.status);
+  const { currentPeriodStart, currentPeriodEnd } = getSubscriptionPeriod(subscription);
+
   console.log('[Webhook] Updating user subscription:', {
     userId,
     customerId,
     subscriptionId,
     planId,
-    status: subscription.status,
-    currentPeriodEnd: currentPeriodEnd ? new Date(currentPeriodEnd * 1000) : null,
+    status,
   });
 
-  // In production, update the database:
-  // await updateUserSubscription({
-  //   userId,
-  //   stripeCustomerId: customerId,
-  //   stripeSubscriptionId: subscriptionId,
-  //   plan: planId,
-  //   status: subscription.status,
-  //   currentPeriodStart: new Date(subscription.current_period_start * 1000),
-  //   currentPeriodEnd: new Date(subscription.current_period_end * 1000),
-  // });
+  // Link Stripe customer to user (first time checkout)
+  await linkStripeCustomerToUser(userId, customerId);
+
+  // Update user's subscription in users table
+  const userUpdated = await updateUserSubscription({
+    userId,
+    stripeCustomerId: customerId,
+    stripeSubscriptionId: subscriptionId,
+    plan: planId,
+    status,
+    currentPeriodStart,
+    currentPeriodEnd,
+  });
+
+  if (!userUpdated) {
+    console.error('[Webhook] Failed to update user subscription');
+  }
+
+  // Get the price ID from subscription items
+  const priceId = subscription.items?.data?.[0]?.price?.id || '';
+
+  // Create subscription record in subscriptions table
+  const subscriptionCreated = await upsertSubscription({
+    userId,
+    stripeSubscriptionId: subscriptionId,
+    stripeCustomerId: customerId,
+    stripePriceId: priceId,
+    plan: planId,
+    status,
+    currentPeriodStart,
+    currentPeriodEnd,
+    cancelAtPeriodEnd: subscription.cancel_at_period_end,
+  });
+
+  if (!subscriptionCreated) {
+    console.error('[Webhook] Failed to create subscription record');
+  }
+
+  console.log('[Webhook] Checkout session processed successfully');
 }
 
 async function handleSubscriptionCreated(
@@ -72,16 +160,42 @@ async function handleSubscriptionCreated(
 
   const customerId = subscription.customer as string;
   const planId = extractPlanFromSubscription(subscription);
+  const status = mapStripeStatus(subscription.status);
+  const { currentPeriodStart, currentPeriodEnd } = getSubscriptionPeriod(subscription);
 
   console.log('[Webhook] New subscription details:', {
     subscriptionId: subscription.id,
     customerId,
     planId,
-    status: subscription.status,
+    status,
   });
 
+  // Find user by Stripe customer ID
+  const user = await findUserByStripeCustomer(customerId);
+  if (!user) {
+    console.warn('[Webhook] User not found for customer:', customerId);
+    // This is OK - user might be created via checkout.session.completed
+    return;
+  }
+
+  // Get the price ID from subscription items
+  const priceId = subscription.items?.data?.[0]?.price?.id || '';
+
+  // Create/update subscription record
+  await upsertSubscription({
+    userId: user.id,
+    stripeSubscriptionId: subscription.id,
+    stripeCustomerId: customerId,
+    stripePriceId: priceId,
+    plan: planId,
+    status,
+    currentPeriodStart,
+    currentPeriodEnd,
+    cancelAtPeriodEnd: subscription.cancel_at_period_end,
+  });
+
+  console.log('[Webhook] Subscription created in database');
   // TODO: Send welcome email
-  // await sendWelcomeEmail(customerId, planId);
 }
 
 async function handleSubscriptionUpdated(
@@ -91,13 +205,49 @@ async function handleSubscriptionUpdated(
 
   const customerId = subscription.customer as string;
   const planId = extractPlanFromSubscription(subscription);
+  const status = mapStripeStatus(subscription.status);
+  const { currentPeriodStart, currentPeriodEnd } = getSubscriptionPeriod(subscription);
 
-  // TODO: Update user subscription in database
   console.log('[Webhook] Subscription update:', {
     subscriptionId: subscription.id,
     customerId,
     planId,
-    status: subscription.status,
+    status,
+    cancelAtPeriodEnd: subscription.cancel_at_period_end,
+  });
+
+  // Find user by Stripe customer ID
+  const user = await findUserByStripeCustomer(customerId);
+  if (!user) {
+    console.warn('[Webhook] User not found for customer:', customerId);
+    return;
+  }
+
+  // Update user subscription in users table
+  await updateUserSubscription({
+    userId: user.id,
+    stripeCustomerId: customerId,
+    stripeSubscriptionId: subscription.id,
+    plan: planId,
+    status,
+    currentPeriodStart,
+    currentPeriodEnd,
+    cancelAtPeriodEnd: subscription.cancel_at_period_end,
+  });
+
+  // Get the price ID from subscription items
+  const priceId = subscription.items?.data?.[0]?.price?.id || '';
+
+  // Update subscription record
+  await upsertSubscription({
+    userId: user.id,
+    stripeSubscriptionId: subscription.id,
+    stripeCustomerId: customerId,
+    stripePriceId: priceId,
+    plan: planId,
+    status,
+    currentPeriodStart,
+    currentPeriodEnd,
     cancelAtPeriodEnd: subscription.cancel_at_period_end,
   });
 
@@ -106,6 +256,8 @@ async function handleSubscriptionUpdated(
     console.log('[Webhook] Subscription will cancel at period end');
     // TODO: Send cancellation confirmation email
   }
+
+  console.log('[Webhook] Subscription updated in database');
 }
 
 async function handleSubscriptionDeleted(
@@ -115,22 +267,23 @@ async function handleSubscriptionDeleted(
 
   const customerId = subscription.customer as string;
 
-  // TODO: Downgrade user to free plan
   console.log('[Webhook] Downgrading user to free plan:', {
     subscriptionId: subscription.id,
     customerId,
   });
 
-  // In production:
-  // await updateUserSubscription({
-  //   stripeCustomerId: customerId,
-  //   plan: 'free',
-  //   status: 'canceled',
-  //   stripeSubscriptionId: null,
-  // });
+  // Mark subscription as cancelled in subscriptions table
+  await cancelSubscription(subscription.id);
 
-  // TODO: Send cancellation email
-  // await sendCancellationEmail(customerId);
+  // Downgrade user to free plan in users table
+  const downgraded = await downgradeToFree(customerId);
+
+  if (downgraded) {
+    console.log('[Webhook] User downgraded to free plan');
+    // TODO: Send cancellation email
+  } else {
+    console.error('[Webhook] Failed to downgrade user to free plan');
+  }
 }
 
 async function handleInvoicePaymentSucceeded(
@@ -174,11 +327,17 @@ async function handleInvoicePaymentFailed(
       : null,
   });
 
-  // TODO: Send payment failed email with update link
-  // await sendPaymentFailedEmail(customerId, invoice);
+  // Update subscription status to past_due
+  if (subscriptionId) {
+    const updated = await updateSubscriptionStatus(subscriptionId, 'past_due');
+    if (updated) {
+      console.log('[Webhook] Subscription status updated to past_due');
+    } else {
+      console.error('[Webhook] Failed to update subscription status');
+    }
+  }
 
-  // TODO: Update subscription status in database
-  // await updateSubscriptionStatus(subscriptionId, 'past_due');
+  // TODO: Send payment failed email with update link
 }
 
 async function handleCustomerSubscriptionTrialWillEnd(

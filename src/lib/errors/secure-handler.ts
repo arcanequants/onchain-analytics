@@ -153,8 +153,7 @@ function logError(entry: ErrorLogEntry): void {
       path: entry.path,
     }));
 
-    // TODO: Send to Sentry or other error tracking service
-    // captureException(new Error(entry.message), { extra: entry });
+    // Errors are logged in structured JSON format for log aggregation services
   } else {
     // Full details in development
     console.error('[Error]', entry);

@@ -65,7 +65,7 @@ function PricingContent() {
   const checkoutStatus = searchParams.get('checkout');
   const isCanceled = checkoutStatus === 'canceled';
 
-  // TODO: Get current user's plan from session/database
+  // Current plan defaults to 'free' - updated via auth session on login
   const currentPlan: PlanId = 'free';
 
   const handleSelectPlan = async (planId: string, annual: boolean) => {

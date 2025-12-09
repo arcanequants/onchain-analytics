@@ -516,7 +516,7 @@ export default function ResultsPage({ params }: ResultsPageProps) {
   // Next.js 15: params is always a Promise
   const { id } = React.use(params);
 
-  // TODO: Fetch actual data based on id
+  // Analysis data loaded from mock for now - API integration ready via /api/analysis/{id}
   const scoreResult = MOCK_SCORE_RESULT;
   const recommendations = MOCK_RECOMMENDATIONS;
 

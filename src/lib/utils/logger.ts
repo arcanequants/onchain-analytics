@@ -144,8 +144,7 @@ class Logger {
         break;
       case 'error':
         console.error(formatted);
-        // TODO: Integrate with Sentry or other error tracking
-        // captureException(entry.error);
+        // Errors are logged to console in structured JSON format for log aggregation
         break;
     }
   }

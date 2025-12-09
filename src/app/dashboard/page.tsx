@@ -87,8 +87,8 @@ async function fetchUserDashboardData(): Promise<DashboardData | null> {
       apiCallsUsed: usage.apiCallsUsed,
     };
 
-    // Calculate score trend (simplified - would need historical data)
-    const scoreTrend = 0; // TODO: Calculate from historical data
+    // Use scoreTrend from API (calculated from historical data)
+    const scoreTrend = json.data.scoreTrend || 0;
 
     return {
       analyses: transformedAnalyses,

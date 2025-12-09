@@ -114,7 +114,7 @@ jobs:
           echo "Checking health at: $HEALTH_URL"
           echo "Is production deployment: $IS_PRODUCTION"
 
-          RESPONSE=$(curl -s -w "\n%{http_code}" "$HEALTH_URL" || echo "failed")
+          RESPONSE=$(curl -sL -w "\n%{http_code}" "$HEALTH_URL" || echo "failed")
           HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
           BODY=$(echo "$RESPONSE" | head -n-1)
 

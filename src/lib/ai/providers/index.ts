@@ -16,6 +16,8 @@ import { aiLogger } from '../../logger';
 import { Result, Ok, Err } from '../../result';
 import { AIProviderError, RateLimitError } from '../../errors';
 import { getProviderParameters, type PromptType, type AIProvider as ProviderName, type PromptParameters } from '../prompts';
+import { getAPILatencyMonitor } from '../../performance/api-latency-monitor';
+import { recordAIAnalysisTime } from '../../monitoring/sla';
 
 // ================================================================
 // TYPES
@@ -115,6 +117,44 @@ const PERPLEXITY_COSTS = {
   'llama-3.1-sonar-large-128k-online': { input: 1.0, output: 1.0 },
   'llama-3.1-sonar-huge-128k-online': { input: 5.0, output: 5.0 },
 } as const;
+
+// ================================================================
+// LATENCY MONITORING HELPER
+// ================================================================
+
+/**
+ * Record AI provider latency to monitoring systems
+ */
+function recordProviderLatency(
+  provider: ProviderName,
+  model: string,
+  latencyMs: number,
+  statusCode: number,
+  cached: boolean = false
+): void {
+  try {
+    // Record to API latency monitor (percentiles tracking)
+    const monitor = getAPILatencyMonitor();
+    monitor.record({
+      endpoint: `/ai/${provider}`,
+      method: 'POST',
+      statusCode,
+      durationMs: latencyMs,
+      cached,
+    });
+
+    // Record to SLA monitor
+    recordAIAnalysisTime(latencyMs);
+
+    // Log for debugging in development
+    if (process.env.NODE_ENV === 'development') {
+      aiLogger.debug(`[${provider}/${model}] Latency: ${latencyMs}ms`);
+    }
+  } catch (error) {
+    // Don't let monitoring errors affect the main flow
+    console.error('[AI Latency Monitor] Error recording latency:', error);
+  }
+}
 
 // ================================================================
 // OPENAI PROVIDER
@@ -218,18 +258,24 @@ export class OpenAIProvider implements IAIProvider {
           attempt,
         });
 
+        // Record latency to monitoring systems
+        recordProviderLatency('openai', this.model, latencyMs, 200);
+
         return Ok(result);
       } catch (error) {
         lastError = error instanceof Error ? error : new Error(String(error));
+        const errorLatencyMs = Date.now() - startTime;
 
         // Don't retry on rate limits or abort
         if (error instanceof RateLimitError) {
           timer.failure(error, { attempt });
+          recordProviderLatency('openai', this.model, errorLatencyMs, 429);
           return Err(new AIProviderError('openai', error.message, true, error));
         }
 
         if (error instanceof Error && error.name === 'AbortError') {
           timer.failure(error, { attempt });
+          recordProviderLatency('openai', this.model, errorLatencyMs, 408);
           return Err(new AIProviderError('openai', 'Request timed out', true, error));
         }
 
@@ -240,7 +286,9 @@ export class OpenAIProvider implements IAIProvider {
       }
     }
 
+    const finalLatencyMs = Date.now() - startTime;
     timer.failure(lastError!, { attempt: this.maxRetries });
+    recordProviderLatency('openai', this.model, finalLatencyMs, 500);
     return Err(
       new AIProviderError(
         'openai',
@@ -442,18 +490,24 @@ export class AnthropicProvider implements IAIProvider {
           attempt,
         });
 
+        // Record latency to monitoring systems
+        recordProviderLatency('anthropic', this.model, latencyMs, 200);
+
         return Ok(result);
       } catch (error) {
         lastError = error instanceof Error ? error : new Error(String(error));
+        const errorLatencyMs = Date.now() - startTime;
 
         // Don't retry on rate limits or abort
         if (error instanceof RateLimitError) {
           timer.failure(error, { attempt });
+          recordProviderLatency('anthropic', this.model, errorLatencyMs, 429);
           return Err(new AIProviderError('anthropic', error.message, true, error));
         }
 
         if (error instanceof Error && error.name === 'AbortError') {
           timer.failure(error, { attempt });
+          recordProviderLatency('anthropic', this.model, errorLatencyMs, 408);
           return Err(new AIProviderError('anthropic', 'Request timed out', true, error));
         }
 
@@ -464,7 +518,9 @@ export class AnthropicProvider implements IAIProvider {
       }
     }
 
+    const finalLatencyMs = Date.now() - startTime;
     timer.failure(lastError!, { attempt: this.maxRetries });
+    recordProviderLatency('anthropic', this.model, finalLatencyMs, 500);
     return Err(
       new AIProviderError(
         'anthropic',
@@ -684,17 +740,23 @@ export class GoogleProvider implements IAIProvider {
           attempt,
         });
 
+        // Record latency to monitoring systems
+        recordProviderLatency('google', this.model, latencyMs, 200);
+
         return Ok(result);
       } catch (error) {
         lastError = error instanceof Error ? error : new Error(String(error));
+        const errorLatencyMs = Date.now() - startTime;
 
         if (error instanceof RateLimitError) {
           timer.failure(error, { attempt });
+          recordProviderLatency('google', this.model, errorLatencyMs, 429);
           return Err(new AIProviderError('google', error.message, true, error));
         }
 
         if (error instanceof Error && error.name === 'AbortError') {
           timer.failure(error, { attempt });
+          recordProviderLatency('google', this.model, errorLatencyMs, 408);
           return Err(new AIProviderError('google', 'Request timed out', true, error));
         }
 
@@ -704,7 +766,9 @@ export class GoogleProvider implements IAIProvider {
       }
     }
 
+    const finalLatencyMs = Date.now() - startTime;
     timer.failure(lastError!, { attempt: this.maxRetries });
+    recordProviderLatency('google', this.model, finalLatencyMs, 500);
     return Err(
       new AIProviderError(
         'google',
@@ -896,17 +960,23 @@ export class PerplexityProvider implements IAIProvider {
           attempt,
         });
 
+        // Record latency to monitoring systems
+        recordProviderLatency('perplexity', this.model, latencyMs, 200);
+
         return Ok(result);
       } catch (error) {
         lastError = error instanceof Error ? error : new Error(String(error));
+        const errorLatencyMs = Date.now() - startTime;
 
         if (error instanceof RateLimitError) {
           timer.failure(error, { attempt });
+          recordProviderLatency('perplexity', this.model, errorLatencyMs, 429);
           return Err(new AIProviderError('perplexity', error.message, true, error));
         }
 
         if (error instanceof Error && error.name === 'AbortError') {
           timer.failure(error, { attempt });
+          recordProviderLatency('perplexity', this.model, errorLatencyMs, 408);
           return Err(new AIProviderError('perplexity', 'Request timed out', true, error));
         }
 
@@ -916,7 +986,9 @@ export class PerplexityProvider implements IAIProvider {
       }
     }
 
+    const finalLatencyMs = Date.now() - startTime;
     timer.failure(lastError!, { attempt: this.maxRetries });
+    recordProviderLatency('perplexity', this.model, finalLatencyMs, 500);
     return Err(
       new AIProviderError(
         'perplexity',

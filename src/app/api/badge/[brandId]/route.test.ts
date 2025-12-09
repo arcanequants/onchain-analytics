@@ -2,11 +2,137 @@
  * Public Score Badge API Tests
  *
  * Phase 2, Week 7, Day 1
+ *
+ * SRE AUDIT FIX: Updated tests to mock Supabase database instead of
+ * relying on removed MOCK_SCORES (SRE audit database connection fix).
  */
 
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { GET } from './route';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { NextRequest } from 'next/server';
+
+// ================================================================
+// SUPABASE MOCK - Must be defined before importing the route
+// ================================================================
+
+// Mock analyses data for testing
+const mockAnalysesData: Record<string, Array<{
+  id: string;
+  brand_name: string;
+  overall_score: number;
+  url: string;
+  created_at: string;
+  is_public: boolean;
+  share_token: string | null;
+}>> = {
+  'stripe': [
+    {
+      id: 'analysis-stripe-1',
+      brand_name: 'Stripe',
+      overall_score: 87,
+      url: 'https://stripe.com',
+      created_at: new Date().toISOString(),
+      is_public: true,
+      share_token: 'stripe-token',
+    },
+    {
+      id: 'analysis-stripe-2',
+      brand_name: 'Stripe',
+      overall_score: 82,
+      url: 'https://stripe.com',
+      created_at: new Date(Date.now() - 86400000).toISOString(),
+      is_public: true,
+      share_token: null,
+    },
+  ],
+  'openai': [
+    {
+      id: 'analysis-openai-1',
+      brand_name: 'OpenAI',
+      overall_score: 92,
+      url: 'https://openai.com',
+      created_at: new Date().toISOString(),
+      is_public: true,
+      share_token: 'openai-token',
+    },
+  ],
+  'notion': [
+    {
+      id: 'analysis-notion-1',
+      brand_name: 'Notion',
+      overall_score: 78,
+      url: 'https://notion.so',
+      created_at: new Date().toISOString(),
+      is_public: true,
+      share_token: 'notion-token',
+    },
+  ],
+  'anthropic': [
+    {
+      id: 'analysis-anthropic-1',
+      brand_name: 'Anthropic',
+      overall_score: 95,
+      url: 'https://anthropic.com',
+      created_at: new Date().toISOString(),
+      is_public: true,
+      share_token: 'anthropic-token',
+    },
+  ],
+};
+
+// Mock the Supabase module
+vi.mock('@supabase/supabase-js', () => {
+  return {
+    createClient: vi.fn(() => {
+      // Track state for chained query builder
+      let currentBrandQuery: string | null = null;
+
+      // Create a chainable query builder mock
+      const mockQueryBuilder = {
+        from: vi.fn().mockReturnThis(),
+        select: vi.fn().mockReturnThis(),
+        eq: vi.fn().mockReturnThis(),
+        not: vi.fn().mockReturnThis(),
+        or: vi.fn((query: string) => {
+          currentBrandQuery = query;
+          return mockQueryBuilder;
+        }),
+        order: vi.fn().mockReturnThis(),
+        limit: vi.fn(() => {
+          // Parse the or() query to find the brand
+          let brandKey: string | null = null;
+
+          if (currentBrandQuery) {
+            // Extract brand name from query like "share_token.eq.stripe,brand_name.ilike.%stripe%"
+            const match = currentBrandQuery.match(/brand_name\.ilike\.%([^%]+)%/i);
+            if (match) {
+              brandKey = match[1].toLowerCase();
+            }
+          }
+
+          // Find matching analyses
+          const matchingAnalyses = brandKey ? (mockAnalysesData[brandKey] || []) : [];
+
+          // Reset for next query
+          currentBrandQuery = null;
+
+          return Promise.resolve({
+            data: matchingAnalyses,
+            error: null,
+          });
+        }),
+      };
+
+      return mockQueryBuilder;
+    }),
+  };
+});
+
+// Set environment variables for the test
+process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://test.supabase.co';
+process.env.SUPABASE_SERVICE_ROLE_KEY = 'test-service-role-key';
+
+// Import the route AFTER setting up mocks
+import { GET } from './route';
 
 // ================================================================
 // TEST HELPERS

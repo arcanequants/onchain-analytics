@@ -4,9 +4,12 @@
  * Generates embeddable SVG badges showing AI perception scores
  *
  * Phase 2, Week 7, Day 1
+ *
+ * SRE AUDIT FIX: Removed mock data, connected to real database
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+import { createClient } from '@supabase/supabase-js';
 
 // ================================================================
 // TYPES
@@ -19,17 +22,97 @@ interface BadgeParams {
 type BadgeStyle = 'flat' | 'flat-square' | 'plastic' | 'for-the-badge';
 type BadgeSize = 'small' | 'medium' | 'large';
 
+interface ScoreData {
+  score: number;
+  trend: 'up' | 'down' | 'stable';
+  brandName: string;
+}
+
 // ================================================================
-// MOCK DATA (Replace with database lookups)
+// DATABASE CLIENT (read-only, public data)
 // ================================================================
 
-const MOCK_SCORES: Record<string, { score: number; trend: 'up' | 'down' | 'stable'; brandName: string }> = {
-  'stripe': { score: 87, trend: 'up', brandName: 'Stripe' },
-  'openai': { score: 92, trend: 'up', brandName: 'OpenAI' },
-  'anthropic': { score: 89, trend: 'stable', brandName: 'Anthropic' },
-  'figma': { score: 84, trend: 'up', brandName: 'Figma' },
-  'notion': { score: 78, trend: 'down', brandName: 'Notion' },
-};
+function getSupabaseClient() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!url || !key) {
+    return null;
+  }
+
+  return createClient(url, key);
+}
+
+// ================================================================
+// DATABASE LOOKUP
+// ================================================================
+
+async function getScoreFromDatabase(brandId: string): Promise<ScoreData | null> {
+  const supabase = getSupabaseClient();
+
+  if (!supabase) {
+    console.warn('[Badge API] Supabase not configured');
+    return null;
+  }
+
+  try {
+    // brandId can be: analysis ID, share_token, or brand name/URL slug
+    // Try to find by share_token first (most common for badges)
+    let query = supabase
+      .from('analyses')
+      .select('id, brand_name, overall_score, url, created_at, is_public, share_token')
+      .eq('status', 'completed')
+      .not('overall_score', 'is', null);
+
+    // Check if brandId looks like a UUID
+    const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(brandId);
+
+    if (isUUID) {
+      // Search by analysis ID
+      query = query.eq('id', brandId);
+    } else {
+      // Search by share_token or brand_name (case insensitive)
+      query = query.or(`share_token.eq.${brandId},brand_name.ilike.%${brandId}%`);
+    }
+
+    const { data: analyses, error } = await query
+      .order('created_at', { ascending: false })
+      .limit(2); // Get 2 to calculate trend
+
+    if (error) {
+      console.error('[Badge API] Database error:', error);
+      return null;
+    }
+
+    if (!analyses || analyses.length === 0) {
+      return null;
+    }
+
+    const latestAnalysis = analyses[0];
+
+    // Only return data for public analyses or those with share tokens
+    if (!latestAnalysis.is_public && !latestAnalysis.share_token) {
+      return null;
+    }
+
+    // Calculate trend based on previous analysis
+    let trend: 'up' | 'down' | 'stable' = 'stable';
+    if (analyses.length > 1 && analyses[1].overall_score !== null) {
+      const diff = latestAnalysis.overall_score - analyses[1].overall_score;
+      if (diff > 2) trend = 'up';
+      else if (diff < -2) trend = 'down';
+    }
+
+    return {
+      score: latestAnalysis.overall_score,
+      trend,
+      brandName: latestAnalysis.brand_name,
+    };
+  } catch (error) {
+    console.error('[Badge API] Error fetching score:', error);
+    return null;
+  }
+}
 
 // ================================================================
 // COLOR HELPERS
@@ -221,8 +304,8 @@ export async function GET(
     );
   }
 
-  // Get score data (mock for now)
-  const scoreData = MOCK_SCORES[brandId.toLowerCase()];
+  // Get score data from database
+  const scoreData = await getScoreFromDatabase(brandId);
 
   if (!scoreData) {
     // Return a "not found" badge

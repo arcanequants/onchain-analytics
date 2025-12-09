@@ -3,6 +3,9 @@
  *
  * Phase 1, Week 1, Day 1
  * Tests for the API middleware factory
+ *
+ * SRE AUDIT FIX: Updated tests to mock Supabase auth instead of using
+ * insecure dev_ tokens (removed in SRE-011).
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
@@ -19,6 +22,46 @@ import {
 } from './middleware';
 import { Ok, Err } from '../result';
 import { ValidationError, NotFoundError } from '../errors';
+
+// ================================================================
+// SUPABASE MOCKS
+// ================================================================
+
+// Mock user data for authenticated requests
+const mockAuthUser = {
+  id: 'test-user-12345',
+  email: 'test@example.com',
+  user_metadata: { plan: 'free' },
+};
+
+const mockProUser = {
+  id: 'pro-user-67890',
+  email: 'pro@example.com',
+  user_metadata: { plan: 'pro' },
+};
+
+// Mock Supabase module
+vi.mock('../supabase', () => ({
+  isSupabaseAvailable: vi.fn(() => true),
+  getSupabaseAdmin: vi.fn(() => ({
+    auth: {
+      getUser: vi.fn(async (token: string) => {
+        // Simulate different auth scenarios based on token
+        if (token === 'valid-token') {
+          return { data: { user: mockAuthUser }, error: null };
+        }
+        if (token === 'pro-token') {
+          return { data: { user: mockProUser }, error: null };
+        }
+        if (token === 'invalid-token' || token.startsWith('dev_')) {
+          return { data: { user: null }, error: { message: 'Invalid token', code: 'invalid_token' } };
+        }
+        // Default: return no user (for any other token)
+        return { data: { user: null }, error: { message: 'Invalid token' } };
+      }),
+    },
+  })),
+}));
 
 // ================================================================
 // TEST HELPERS
@@ -260,12 +303,12 @@ describe('withMiddleware', () => {
       expect(json.error.code).toBe('ERR_UNAUTHENTICATED');
     });
 
-    it('should accept dev token in development', async () => {
+    it('should accept valid JWT token', async () => {
       const handler = vi.fn().mockResolvedValue(Ok({ success: true }));
 
       const endpoint = withMiddleware(handler, { requireAuth: true });
       const req = createMockRequest('/api/test', {
-        headers: { authorization: 'Bearer dev_testuser' },
+        headers: { authorization: 'Bearer valid-token' },
       });
       const response = await endpoint(req, createRouteContext());
 
@@ -281,11 +324,11 @@ describe('withMiddleware', () => {
 
       const endpoint = withMiddleware(handler, { requireAuth: true });
       const req = createMockRequest('/api/test', {
-        headers: { authorization: 'Bearer dev_abc12345' },
+        headers: { authorization: 'Bearer valid-token' },
       });
       await endpoint(req, createRouteContext());
 
-      expect(capturedUserId).toBe('dev-user-abc12345');
+      expect(capturedUserId).toBe('test-user-12345');
     });
 
     it('should reject invalid authorization header format', async () => {
@@ -322,14 +365,30 @@ describe('withMiddleware', () => {
         requiredPlan: 'pro',
       });
       const req = createMockRequest('/api/test', {
-        headers: { authorization: 'Bearer dev_user123' },
+        headers: { authorization: 'Bearer valid-token' },
       });
       const response = await endpoint(req, createRouteContext());
 
-      // Dev tokens get 'free' plan
+      // Mock user has 'free' plan, so should be rejected
       expect(response.status).toBe(401);
       const json = await response.json();
       expect(json.error.message).toContain('pro plan or higher');
+    });
+
+    it('should allow when user plan meets required', async () => {
+      const handler = vi.fn().mockResolvedValue(Ok({ success: true }));
+
+      const endpoint = withMiddleware(handler, {
+        requireAuth: true,
+        requiredPlan: 'pro',
+      });
+      const req = createMockRequest('/api/test', {
+        headers: { authorization: 'Bearer pro-token' },
+      });
+      const response = await endpoint(req, createRouteContext());
+
+      // Mock pro user has 'pro' plan
+      expect(response.status).toBe(200);
     });
   });
 
@@ -539,7 +598,7 @@ describe('protectedEndpoint', () => {
 
     const endpoint = protectedEndpoint(handler);
     const req = createMockRequest('/api/protected', {
-      headers: { authorization: 'Bearer dev_user123' },
+      headers: { authorization: 'Bearer valid-token' },
     });
     const response = await endpoint(req, createRouteContext());
 
@@ -558,19 +617,34 @@ describe('proEndpoint', () => {
     expect(response.status).toBe(401);
   });
 
-  it('should require pro plan', async () => {
+  it('should reject free plan users', async () => {
     const handler = vi.fn().mockResolvedValue(Ok({ pro: true }));
 
     const endpoint = proEndpoint(handler);
     const req = createMockRequest('/api/pro', {
-      headers: { authorization: 'Bearer dev_user123' },
+      headers: { authorization: 'Bearer valid-token' },
     });
     const response = await endpoint(req, createRouteContext());
 
-    // Dev tokens get 'free' plan, so should be rejected
+    // Mock user has 'free' plan, so should be rejected
     expect(response.status).toBe(401);
     const json = await response.json();
     expect(json.error.message).toContain('pro plan');
+  });
+
+  it('should allow pro plan users', async () => {
+    const handler = vi.fn().mockResolvedValue(Ok({ pro: true }));
+
+    const endpoint = proEndpoint(handler);
+    const req = createMockRequest('/api/pro', {
+      headers: { authorization: 'Bearer pro-token' },
+    });
+    const response = await endpoint(req, createRouteContext());
+
+    // Mock pro user has 'pro' plan
+    expect(response.status).toBe(200);
+    const json = await response.json();
+    expect(json.data).toEqual({ pro: true });
   });
 });
 

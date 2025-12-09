@@ -95,16 +95,21 @@ jobs:
         env:
           # Determine if this is a production deployment
           IS_PRODUCTION: ${{ (github.event.inputs.environment == 'production' || github.ref == 'refs/heads/main') && 'true' || 'false' }}
+          # Production URL (canonical domain)
+          PRODUCTION_URL: 'https://vectorialdata.com'
         run: |
-          # Use the deployment URL from the deploy job
-          DEPLOY_URL="${{ needs.deploy.outputs.url }}"
-
-          if [ -z "$DEPLOY_URL" ]; then
-            echo "::error::No deployment URL available"
-            exit 1
+          # For production deployments, use the canonical domain to avoid Deployment Protection
+          # Vercel's temporary deployment URLs have protection enabled by default
+          if [ "$IS_PRODUCTION" = "true" ]; then
+            HEALTH_URL="${PRODUCTION_URL}/api/health"
+          else
+            DEPLOY_URL="${{ needs.deploy.outputs.url }}"
+            if [ -z "$DEPLOY_URL" ]; then
+              echo "::error::No deployment URL available"
+              exit 1
+            fi
+            HEALTH_URL="${DEPLOY_URL}/api/health"
           fi
-
-          HEALTH_URL="${DEPLOY_URL}/api/health"
 
           echo "Checking health at: $HEALTH_URL"
           echo "Is production deployment: $IS_PRODUCTION"
